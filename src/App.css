@@ -28,6 +28,50 @@
   color: #61dafb;
 }
 
+.clockNav {
+  display: flex;
+  flex-direction: row;
+}
+
+.clockMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.clockBody {
+  /*
+  display: flex;
+  flex-direction: column;
+  */
+
+  width: 100vw;
+}
+
+.clockFormDiv {
+  display:flex;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  background-color: gray;
+}
+
+.clockTableDiv {
+  display: flex;
+  height: 40vh;
+  justify-content: center;
+}
+
+.clockTable {
+  height: 100px;
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

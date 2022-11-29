@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Navbar, Container, Nav, Button, Table, H1 } from 'react-bootstrap';
+import { Form, Navbar, Container, Nav, Button, Table } from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {ClOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
 
 class App extends Component {
 
@@ -10,7 +10,7 @@ class App extends Component {
 
   componentWillMount() {
     //const web3 = new Web3("http://localhost:8545")
-    //this.loadBlockchainData()
+    this.loadBlockchainData()
   }
 
   
@@ -18,14 +18,20 @@ class App extends Component {
     //connects to hardhat network and sets the default state
     const web3 = new Web3("http://localhost:8545")
     this.setState({web3: web3})
-    //const accounts = await web3.eth.getAccounts()
-    //this.setState({ account: accounts[0] })
-
+    
     //gets contract interface
-    //const clocktower = new web3.eth.Contract(ClOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
-    //this.setState({clocktower});
+    const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+    this.setState({clocktower});
   }
 
+  //changes wallet button based on status
+  walletButtonClick() {
+    this.connectWallet();
+    this.setState({buttonClicked: true});
+  }
+
+  
+  //connects to metamask wallet
   async connectWallet() {
     try {
       const { ethereum } = window;
@@ -43,20 +49,10 @@ class App extends Component {
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-      
-      const web3 = new Web3("http://localhost:8545")
-     // const accounts = await web3.ethereum.getAccounts()
-
 
       this.setState({account: accounts[0]})
 
-       //gets contract interface
-      const clocktower = new web3.ethereum.Contract(ClOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
-      this.setState({clocktower});
-
       console.log("Connected", accounts[0]);
-
-      //this.state.clicked = true;
 
     } catch (error) {
       console.log(error);
@@ -79,7 +75,7 @@ class App extends Component {
           <Container className="clockNav">
             <Navbar.Brand href="#home">Clocktower</Navbar.Brand>
             <Nav className="topNav">
-              {this.state.buttonClicked ? (<Navbar.Brand>Clicked</Navbar.Brand>) : (<Button variant="outline-success" className = "walletButton" onClick = {this.setState({buttonClicked: true}) }>Sign in Wallet</Button>)}
+              {this.state.buttonClicked ? (<Navbar.Brand>Account: {this.state.account}</Navbar.Brand>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => {this.walletButtonClick()} }>Sign in Wallet</Button>)}
               {/*
               <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
               */}

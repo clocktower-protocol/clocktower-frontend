@@ -1,6 +1,6 @@
-export const CLOCKTOWER_ADDRESS = 'YOUR_SMART_CONTRACT_ADDRESS_GOES_HERE';
+export const CLOCKTOWER_ADDRESS = '0x5fbdb2315678afecb367f032d93f642f64180aa3';
 
-export const ClOCKTOWER_ABI = [
+export const CLOCKTOWER_ABI = [
     {
       "inputs": [],
       "stateMutability": "payable",

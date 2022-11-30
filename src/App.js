@@ -4,9 +4,10 @@ import Web3 from 'web3'
 import './App.css';
 import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
 import {HourSelect} from "./hourSelect.js";
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 class App extends Component {
-
   
   async loadBlockchainData() {
     //connects to hardhat network and sets the default state
@@ -77,6 +78,24 @@ class App extends Component {
     event.stopPropagation();
     
     //validates data
+
+    //checks address is formatted correctly
+    if(!this.state.web3.utils.isAddress(this.state.formAddress)) {
+      console.log(
+        "account input error"
+      )
+      return
+    }
+
+    //checks date is in proper format
+    dayjs.extend(customParseFormat)
+    if(!dayjs(this.state.formDate, 'MM/DD/YYYY').isValid) {
+      console.log(
+        "date incorrectly formatted"
+      )
+      return
+    }
+    
 
   };
 
@@ -169,7 +188,7 @@ class App extends Component {
                 <option value="21">9:00 PM</option>
                 <option value="22">10:00 PM</option>
                 <option value="23">11:00 PM</option>
-                <option value="1424">12:00 PM</option>
+                <option value="24">12:00 PM</option>
               </Form.Select>
             </Form.Group>
           </Col>

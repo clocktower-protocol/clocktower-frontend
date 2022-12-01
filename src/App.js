@@ -93,6 +93,11 @@ class App extends Component {
     return isCorrect
   }
 
+  //formats date to UTC Unix Epoch
+  toUtcEpoch() {
+
+  }
+
   //Form------------------------------------------------
   receiverChange(event) {
     this.setState({formAddress: event.target.value});

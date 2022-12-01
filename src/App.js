@@ -9,6 +9,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 class App extends Component {
   
+  /*
   async loadBlockchainData() {
     //connects to hardhat network and sets the default state
     const web3 = new Web3("http://localhost:8545")
@@ -18,6 +19,7 @@ class App extends Component {
     const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
     this.setState({clocktower});
   }
+  */
 
   //Metamask-----------------------------------------
 
@@ -55,6 +57,42 @@ class App extends Component {
     }
   }
 
+  //Validation-----------------------------
+  formValidate() {
+
+    let isCorrect = true;
+
+    //checks address is formatted correctly
+    if(!Web3.utils.isAddress(this.state.formAddress)) {
+      console.log(
+        "account input error"
+      )
+      isCorrect = false
+    }
+
+    //checks ethereum amount
+    console.log (
+      this.state.formAmount
+    )
+    if(this.state.formAmount <= 0) {
+      console.log (
+        "amount incorrect"
+      )
+      isCorrect = false
+    }
+
+    //checks date is in proper format
+    dayjs.extend(customParseFormat)
+    if(!dayjs(this.state.formDate, 'MM/DD/YYYY').isValid()) {
+      console.log(
+        "date incorrectly formatted"
+      )
+      isCorrect = false
+    }
+
+    return isCorrect
+  }
+
   //Form------------------------------------------------
   receiverChange(event) {
     this.setState({formAddress: event.target.value});
@@ -63,7 +101,12 @@ class App extends Component {
     this.setState({formDate: event.target.value});
   }
   amountChange(event) {
-    this.setState({formAmount: event.target.value});
+    if(event.target.value > 0) {
+      let wei = Web3.utils.toWei(event.target.value)
+      this.setState({formAmount: wei});
+    } else {
+      this.setState({formAmount: 0})
+    }
   }
   hourChange(event) {
     this.setState({formSelect: event.target.value});
@@ -78,25 +121,11 @@ class App extends Component {
     event.stopPropagation();
     
     //validates data
-
-    //checks address is formatted correctly
-    if(!this.state.web3.utils.isAddress(this.state.formAddress)) {
+    if(!this.formValidate()) {
       console.log(
-        "account input error"
+        "Form data wrong"
       )
-      return
     }
-
-    //checks date is in proper format
-    dayjs.extend(customParseFormat)
-    if(!dayjs(this.state.formDate, 'MM/DD/YYYY').isValid) {
-      console.log(
-        "date incorrectly formatted"
-      )
-      return
-    }
-    
-
   };
 
   
@@ -105,7 +134,15 @@ class App extends Component {
     super(props)
 
     //loads blockchain data
-    //this.loadBlockchainData()
+    //connects to hardhat network and sets the default state
+    const web3 = new Web3("http://localhost:8545")
+    this.state = ({web3: web3})
+     
+    //gets contract interface
+    const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+    this.state = ({clocktower});
+
+
     //hardhat test account
     this.state = { account: '' }
     this.state = {buttonClicked: false}
@@ -119,6 +156,7 @@ class App extends Component {
     this.amountChange = this.amountChange.bind(this);
     this.hourChange = this.hourChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+
   }
 
   render() {

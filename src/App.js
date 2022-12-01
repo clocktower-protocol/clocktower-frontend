@@ -6,6 +6,7 @@ import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config";
 import {HourSelect} from "./hourSelect.js";
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import utc from 'dayjs/plugin/utc'
 
 class App extends Component {
   
@@ -71,9 +72,6 @@ class App extends Component {
     }
 
     //checks ethereum amount
-    console.log (
-      this.state.formAmount
-    )
     if(this.state.formAmount <= 0) {
       console.log (
         "amount incorrect"
@@ -90,12 +88,18 @@ class App extends Component {
       isCorrect = false
     }
 
+    //checks date is in the future
+    if((dayjs().unix()) > (dayjs(this.state.timeString).unix())) {
+      isCorrect = false
+    }
+
     return isCorrect
   }
 
   //formats date to UTC Unix Epoch
-  toUtcEpoch() {
-
+  convertToEpoch() {
+  
+    let timeObject = dayjs(this.state.formDate)
   }
 
   //Form------------------------------------------------
@@ -104,6 +108,11 @@ class App extends Component {
   }
   dateChange(event) {
     this.setState({formDate: event.target.value});
+
+    //adjusts time string
+    let stringArray = this.state.timeString.split(" ")
+    this.setState({timeString: event.target.value + " " + stringArray[1]})
+
   }
   amountChange(event) {
     if(event.target.value > 0) {
@@ -114,10 +123,12 @@ class App extends Component {
     }
   }
   hourChange(event) {
-    this.setState({formSelect: event.target.value});
-    console.log(
-      event.target.value
-    )
+
+    this.setState({hour: event.target.value});
+
+    //adjusts time string
+    let stringArray = this.state.timeString.split(" ")
+    this.setState({timeString: stringArray[0] + " " + event.target.value + ":00"})
   }
   submitForm(event) {
     const form = event.currentTarget;
@@ -130,6 +141,13 @@ class App extends Component {
       console.log(
         "Form data wrong"
       )
+    }else {
+      //TODO: converts to UTC Epoch time
+      dayjs.extend(utc)
+      let test = dayjs(this.state.timeString).utc().unix()
+      console.log(
+        test
+      )
     }
   };
 
@@ -138,6 +156,7 @@ class App extends Component {
   constructor(props) {
     super(props)
 
+    /*
     //loads blockchain data
     //connects to hardhat network and sets the default state
     const web3 = new Web3("http://localhost:8545")
@@ -146,6 +165,7 @@ class App extends Component {
     //gets contract interface
     const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
     this.state = ({clocktower});
+    */
 
 
     //hardhat test account
@@ -154,7 +174,9 @@ class App extends Component {
     this.connectWallet = this.connectWallet.bind(this);
 
     //form default info
-    this.state = {formAddress: "0x0", formDate: "947462400", formAmount: 0.00};
+    this.state = {formAddress: "0x0", formDate: "947462400", formAmount: 0.00, hour: "0"};
+    //default time string
+    this.state = {timeString: "00/00/0000 00:00"};
     //form methods
     this.receiverChange = this.receiverChange.bind(this);
     this.dateChange = this.dateChange.bind(this);

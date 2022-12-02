@@ -59,6 +59,12 @@ class App extends Component {
   }
 
   //Validation-----------------------------
+
+  //checks if user is logged in 
+  isLoggedIn() {
+    return(this.state.account == "-1" ? false : true) 
+  }
+
   formValidate() {
 
     let isCorrect = true;
@@ -131,55 +137,10 @@ class App extends Component {
 
     event.preventDefault();
     event.stopPropagation();
-
     
-    const outcome = this.addTransaction()
+    //const outcome = this.addTransaction()
+    this.getAccountTransactions();
 
-    /*
-    console.log (
-      outcome.status
-    )
-    */
-    /*
-    //validates data
-    if(!this.formValidate()) {
-      console.log(
-        "Form data wrong"
-      )
-    }else {
-      
-      //TODO: converts to UTC Epoch time
-      dayjs.extend(utc)
-      let time = dayjs(this.state.timeString).utc().unix()
-      console.log(
-        time
-      )
-
-      
-      let address = this.state.formAddress
-      let amount = this.state.formAmount
-      let sendAmount = Web3.utils.toWei("6");
-      let account = this.state.account
-      
-      const web3 = new Web3("http://localhost:8545")
-    
-     
-      //gets contract interface
-      const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
-
-      
-      //calls on Metamask to addTransaction to Clocktower contract
-      clocktower.methods.addTransaction(address, time, amount).send({from: account, value: sendAmount})
-      .then(function(receipt) {
-        console.log(
-          "sent"
-        )
-      })
-      
-      
-      
-    }
-    */
   };
 
   //Contract functions-----------------------------------------------
@@ -198,17 +159,11 @@ class App extends Component {
     dayjs.extend(utc)
     let time = dayjs(this.state.timeString).utc().unix()
 
-    const web3 = new Web3("http://localhost:8545")
-
-    //gets contract interface
-    const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
-
     let receiver = this.state.formAddress
     let amount = this.state.formAmount
     let sendAmount = Web3.utils.toWei("6")
     //metamask needs sent wei converted to hex
     sendAmount = Web3.utils.toHex(sendAmount)
-    //let sendAmount = Web3.utils.toWei("6");
     let account = this.state.account
 
 
@@ -217,7 +172,7 @@ class App extends Component {
       to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
       from: account, // must match user's active address.
       value: sendAmount,
-      data: clocktower.methods.addTransaction(receiver,time,amount).encodeABI(),
+      data: this.state.clocktower.methods.addTransaction(receiver,time,amount).encodeABI(),
     };
     
     //get metamask to sign transaction
@@ -237,40 +192,67 @@ class App extends Component {
    
   }
 
+  async getAccountTransactions() {
+
+    console.log(
+      this.state.account
+    )
+
+    //checks if user is logged into account
+    if(!this.isLoggedIn()) {
+      console.log(
+        "Not Logged in"
+      )
+      return
+    }
+
+    //calls contract
+    await this.state.clocktower.methods.getAccountTransactions().call({from: this.state.account})
+    .then(function(result){
+      const accountTransactions = result;
+      const transaction = accountTransactions[0];
+      console.log(
+        transaction.payload
+      )
+    });
+  }
+
   
   //initializes values
   constructor(props) {
     super(props)
-
     
-    //loads blockchain data
-    //connects to hardhat network and sets the default state
-
-    /*
+    //creates contract variable
     const web3 = new Web3("http://localhost:8545")
-    this.state = ({web3: web3})
      
     //gets contract interface
     const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
-    */
+    
 
+    //initializes state variables
+    this.state = {
+      web3: web3,
+      clocktower: clocktower,
+      account: "-1",
+      buttonClicked: false,
+      formAddress: "0x0", 
+      formDate: "947462400", 
+      formAmount: 0.00, 
+      hour: "0",
+      timeString: "00/00/0000 00:00"
+    }
 
-    //hardhat test account
-    this.state = { account: '' }
-    this.state = {buttonClicked: false}
-    this.connectWallet = this.connectWallet.bind(this);
-
-    //form default info
-    this.state = {formAddress: "0x0", formDate: "947462400", formAmount: 0.00, hour: "0"};
-    //default time string
-    this.state = {timeString: "00/00/0000 00:00"};
     //form methods
     this.receiverChange = this.receiverChange.bind(this);
     this.dateChange = this.dateChange.bind(this);
     this.amountChange = this.amountChange.bind(this);
     this.hourChange = this.hourChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    //contract methods
     this.addTransaction = this.addTransaction.bind(this);
+    this.getAccountTransactions = this.getAccountTransactions.bind(this)
+    //metamask methods
+    this.connectWallet = this.connectWallet.bind(this);
 
   }
 
@@ -404,12 +386,6 @@ class App extends Component {
         </div>
       </div>
     </div>
-      /*
-      <div className="container">
-        <h1>Hello, World!</h1>
-        <p>Your account: {this.state.account}</p>
-      </div>
-      */
     );
   }
 }

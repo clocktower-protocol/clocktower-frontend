@@ -309,3 +309,4 @@ export const CLOCKTOWER_ABI = [
     }
   ]
   
+export const FEE = 1.1;

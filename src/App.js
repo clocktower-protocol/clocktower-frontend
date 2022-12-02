@@ -96,12 +96,6 @@ class App extends Component {
     return isCorrect
   }
 
-  //formats date to UTC Unix Epoch
-  convertToEpoch() {
-  
-    let timeObject = dayjs(this.state.formDate)
-  }
-
   //Form------------------------------------------------
   receiverChange(event) {
     this.setState({formAddress: event.target.value});
@@ -130,41 +124,134 @@ class App extends Component {
     let stringArray = this.state.timeString.split(" ")
     this.setState({timeString: stringArray[0] + " " + event.target.value + ":00"})
   }
+
+
   submitForm(event) {
     const form = event.currentTarget;
 
     event.preventDefault();
     event.stopPropagation();
+
     
+    const outcome = this.addTransaction()
+
+    /*
+    console.log (
+      outcome.status
+    )
+    */
+    /*
     //validates data
     if(!this.formValidate()) {
       console.log(
         "Form data wrong"
       )
     }else {
+      
       //TODO: converts to UTC Epoch time
       dayjs.extend(utc)
-      let test = dayjs(this.state.timeString).utc().unix()
+      let time = dayjs(this.state.timeString).utc().unix()
       console.log(
-        test
+        time
       )
+
+      
+      let address = this.state.formAddress
+      let amount = this.state.formAmount
+      let sendAmount = Web3.utils.toWei("6");
+      let account = this.state.account
+      
+      const web3 = new Web3("http://localhost:8545")
+    
+     
+      //gets contract interface
+      const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+
+      
+      //calls on Metamask to addTransaction to Clocktower contract
+      clocktower.methods.addTransaction(address, time, amount).send({from: account, value: sendAmount})
+      .then(function(receipt) {
+        console.log(
+          "sent"
+        )
+      })
+      
+      
+      
     }
+    */
   };
+
+  //Contract functions-----------------------------------------------
+  async addTransaction() {
+
+    console.log (
+      "click"
+    )
+
+    //validates data
+    if(!this.formValidate()) {
+      return {status: "Form data incorrect"}
+    }
+
+    //converts to UTC Epoch time
+    dayjs.extend(utc)
+    let time = dayjs(this.state.timeString).utc().unix()
+
+    const web3 = new Web3("http://localhost:8545")
+
+    //gets contract interface
+    const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+
+    let receiver = this.state.formAddress
+    let amount = this.state.formAmount
+    let sendAmount = Web3.utils.toWei("6")
+    //metamask needs sent wei converted to hex
+    sendAmount = Web3.utils.toHex(sendAmount)
+    //let sendAmount = Web3.utils.toWei("6");
+    let account = this.state.account
+
+
+    //set up transaction parameters
+    const transactionParameters = {
+      to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+      from: account, // must match user's active address.
+      value: sendAmount,
+      data: clocktower.methods.addTransaction(receiver,time,amount).encodeABI(),
+    };
+    
+    //get metamask to sign transaction
+    try {
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
+      return {
+        status: "transaction sent!",
+      };
+    } catch (error) {
+      return {
+        status: error.message
+      }
+    }
+   
+  }
 
   
   //initializes values
   constructor(props) {
     super(props)
 
-    /*
+    
     //loads blockchain data
     //connects to hardhat network and sets the default state
+
+    /*
     const web3 = new Web3("http://localhost:8545")
     this.state = ({web3: web3})
      
     //gets contract interface
     const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
-    this.state = ({clocktower});
     */
 
 
@@ -183,6 +270,7 @@ class App extends Component {
     this.amountChange = this.amountChange.bind(this);
     this.hourChange = this.hourChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.addTransaction = this.addTransaction.bind(this);
 
   }
 

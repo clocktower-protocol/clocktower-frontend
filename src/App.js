@@ -10,18 +10,6 @@ import utc from 'dayjs/plugin/utc'
 
 class App extends Component {
   
-  /*
-  async loadBlockchainData() {
-    //connects to hardhat network and sets the default state
-    const web3 = new Web3("http://localhost:8545")
-    this.setState({web3: web3})
-    
-    //gets contract interface
-    const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
-    this.setState({clocktower});
-  }
-  */
-
   //Metamask-----------------------------------------
 
   //changes wallet button based on status
@@ -181,9 +169,12 @@ class App extends Component {
         method: "eth_sendTransaction",
         params: [transactionParameters],
       });
+      //increments transaction count
+      //this.setState({transactions: (this.state.transactions + 1)})
       return {
-        status: "transaction sent!",
+        status: "transaction sent!"
       };
+      
     } catch (error) {
       return {
         status: error.message
@@ -206,15 +197,60 @@ class App extends Component {
       return
     }
 
+    /*
+    //checks if no transaction has been sent yet
+    if(this.state.transactions == 0){
+      console.log(
+        "no transactions"
+      )
+      return
+    }
+    */
+    //variable to pass scope so that the state can be set
+    var that = this
+
     //calls contract
     await this.state.clocktower.methods.getAccountTransactions().call({from: this.state.account})
     .then(function(result){
-      const accountTransactions = result;
+      let accountTransactions = result
+      //resets transaction list in state
+      that.setState({transactionArray: accountTransactions})
+      
       const transaction = accountTransactions[0];
       console.log(
         transaction.payload
       )
+      
     });
+  }
+
+  //Table function
+  //FIXME:
+  tableMaker(event) {
+    
+    //checks for empty array
+    if(!Array.isArray(this.state.transactionArray) || !this.state.transactionArray.length) {
+      console.log(
+        "Array is empty"
+      )
+      return
+    }
+
+    const transactionArray = this.state.transactionArray
+
+    let table = [];
+
+    //loops through array to create table
+    for(let i = 0; i < transactionArray.length; i++) {
+      console.log(
+        i
+      )
+      let row = []
+      row.push(<td>{transactionArray[i].receiver}</td>, <td>Date</td>, <td>Amount</td>, <td>Cancel</td>)
+      table.push(<tr>{row}</tr>)
+    }
+
+    return table
   }
 
   
@@ -227,6 +263,9 @@ class App extends Component {
      
     //gets contract interface
     const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+
+    //creates empty array for table
+    const transactionArray = [];
     
 
     //initializes state variables
@@ -239,7 +278,9 @@ class App extends Component {
       formDate: "947462400", 
       formAmount: 0.00, 
       hour: "0",
-      timeString: "00/00/0000 00:00"
+      timeString: "00/00/0000 00:00",
+      transactionArray: transactionArray,
+      transactions: 0
     }
 
     //form methods
@@ -253,6 +294,7 @@ class App extends Component {
     this.getAccountTransactions = this.getAccountTransactions.bind(this)
     //metamask methods
     this.connectWallet = this.connectWallet.bind(this);
+    
 
   }
 
@@ -364,6 +406,8 @@ class App extends Component {
               </tr>
             </thead>
             <tbody>
+              {this.tableMaker()}
+            {/*
               <tr>
                 <td>1</td>
                 <td>Mark</td>
@@ -381,6 +425,7 @@ class App extends Component {
                 <td colSpan={2}>Larry the Bird</td>
                 <td>@twitter</td>
               </tr>
+          */}
             </tbody>
           </Table>
         </div>

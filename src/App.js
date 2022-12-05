@@ -3,7 +3,7 @@ import { Form, Navbar, Container, Nav, Button, Table, Row, Col } from 'react-boo
 import Web3 from 'web3'
 import './App.css';
 import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
-import {HourSelect} from "./hourSelect.js";
+//import {HourSelect} from "./hourSelect.js";
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -37,7 +37,7 @@ class App extends Component {
         method: "eth_requestAccounts",
       });
 
-      //sets the account and loads the transactions
+      //sets the account and loads the table of transactions if any
       this.setState({account: accounts[0]}, async function() {
         await this.getAccountTransactions();
       });
@@ -124,12 +124,12 @@ class App extends Component {
 
 
   submitForm(event) {
-    const form = event.currentTarget;
+    const target = event.currentTarget;
 
     event.preventDefault();
     event.stopPropagation();
     
-    const outcome = this.addTransaction()
+    this.addTransaction()
     //this.getAccountTransactions();
 
   };
@@ -264,11 +264,7 @@ class App extends Component {
   }
 
   //Table function
-  //FIXME:
   tableMaker(event) {
-
-    //gets transactions
-    //this.getAccountTransactions();
     
     //checks for empty array
     if(!Array.isArray(this.state.transactionArray) || !this.state.transactionArray.length) {

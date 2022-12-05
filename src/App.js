@@ -171,10 +171,6 @@ class App extends Component {
       });
       await this.getAccountTransactions();
 
-      //increments transaction count
-      //this.setState({transactions: (this.state.transactions + 1)})
-      //await this.getAccountTransactions();
-
       return {
         status: "transaction sent!"
       };
@@ -187,43 +183,6 @@ class App extends Component {
    
   }
 
-  /*
-  
-  //converts hour time trigger to epoch time
-  convertTime(timeTrigger) {
-
-     //calculates unixEpoch time from hours since merge
-    return ((timeTrigger * 3600) + this.state.mergeUnixEpoch)
-
-   // let accountTransactions2 = []
-
-    //for(let i = 0; i < accountTransactions.length; i++){
-    /*
-    let unixTime = await this.state.clocktower.methods.unixFromHours(accountTransactions[arrayIndex].timeTrigger).call({from: this.state.account})
-    return unixTime
-    */
-      
-      /*
-      console.log(unixTime)
-      let transaction = accountTransactions[i]
-      transaction.timeTrigger = unixTime
-      accountTransactions[i] = transaction
-      */
-      /*
-      .then(function(result){
-        let accountTransactions2 = accountTransactions
-        accountTransactions2[i].timeTrigger = result
-      });
-      console.log(
-        "checktime"
-      )
-      */
-   // }
-
-    //return accountTransactions
-    
-  //} 
-  
 
 
   async getAccountTransactions() {
@@ -235,25 +194,13 @@ class App extends Component {
       )
       return
     }
-
-    /*
-    //checks if no transaction has been sent yet
-    if(this.state.transactions == 0){
-      console.log(
-        "no transactions"
-      )
-      return
-    }
-    */
     
     //variable to pass scope so that the state can be set
-    //var that = this
     let accountTransactions = []
     var that = this;
 
 
-    //calls contract
-    
+    //calls contract 
     await this.state.clocktower.methods.getAccountTransactions().call({from: this.state.account})
     .then(function(result) {
       accountTransactions = result
@@ -410,27 +357,7 @@ class App extends Component {
           <Col align="center"><Button type="submit">Submit</Button></Col>
         </Row>
         </Form>
-        </div>
-        {/*
-        <div className="clockFormDiv">
-          <Form className="mb-3" onSubmit={this.submitForm}>
-          <Form.Group className="mb-3" controlId="formAddress" value={this.state.formAddress} onChange={this.receiverChange}>
-            <Form.Label>Address to Send to:</Form.Label>
-            <Form.Control type="input" placeholder="receiver" />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formDate" value={this.state.formDate} onChange={this.dateChange}>  
-            <Form.Label>Date:</Form.Label>
-            <Form.Control type="input" placeholder="date" />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formAmount" value={this.state.formAmount} onChange={this.amountChange}>
-            <Form.Label>Amount:</Form.Label>
-            <Form.Control type="input" placeholder="amount" />
-          </Form.Group>
-          <Button type="submit">Submit form</Button>
-          </Form>
-        </div>
-            */}
-        
+        </div>     
         <div className="clockTableDiv">
           <Table striped bordered hover size="sm" className="clockTable">
             <thead>

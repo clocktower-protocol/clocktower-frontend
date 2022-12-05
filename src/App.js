@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Navbar, Container, Nav, Button, Table, Row, Col } from 'react-bootstrap';
+import { Form, Navbar, Container, Nav, Button, Table, Row, Col, Alert } from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
 import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
@@ -66,6 +66,11 @@ class App extends Component {
         "account input error"
       )
       isCorrect = false
+      this.setState({alert: true})
+      this.setState({alertText: "Receiving address formatted wrong"})
+      return
+    } else {
+      this.setState({alert: false})
     }
 
     //checks ethereum amount
@@ -74,6 +79,11 @@ class App extends Component {
         "amount incorrect"
       )
       isCorrect = false
+      this.setState({alert: true})
+      this.setState({alertText: "ethereum amount invalid"})
+      return
+    } else {
+      this.setState({alert: false})
     }
 
     //checks date is in proper format
@@ -83,11 +93,21 @@ class App extends Component {
         "date incorrectly formatted"
       )
       isCorrect = false
+      this.setState({alert: true})
+      this.setState({alertText: "Date incorrectly formatted"})
+      return
+    } else {
+      this.setState({alert: false})
     }
 
     //checks date is in the future
     if((dayjs().unix()) > (dayjs(this.state.timeString).unix())) {
       isCorrect = false
+      this.setState({alert:true})
+      this.setState({alertText: "Date must be in the future"})
+      return
+    } else {
+      this.setState({alert:false})
     }
 
     return isCorrect
@@ -235,6 +255,17 @@ class App extends Component {
     return table
   }
 
+  //Creates alert
+  alertMaker() {
+    if(this.state.alert) {
+    return (
+    <div className="alertDiv">
+    <Alert variant="danger" align="center">{this.state.alertText}</Alert>
+    </div>
+    )
+    }
+  }
+
   
   //initializes values
   constructor(props) {
@@ -263,7 +294,9 @@ class App extends Component {
       fee: 0.1,
       timeString: "00/00/0000 00:00",
       transactionArray: transactionArray,
-      transactions: 0
+      transactions: 0,
+      alert: false,
+      alertText: ""
     }
 
     //form methods
@@ -295,84 +328,84 @@ class App extends Component {
             </Nav>
           </Container>
         </Navbar>
-    
-      <div className="clockBody">
-      <div className="clockFormDiv">
-        <Form className="mb-3" onSubmit={this.submitForm}>
-        <Row>
-          <Col>
-            <Form.Group className="mb-3" controlId="formAddress" value={this.state.formAddress} onChange={this.receiverChange}>
-            <Form.Label>Address to Send to:</Form.Label>
-            <Form.Control type="input" placeholder="receiver" />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="formAmount" value={this.state.formAmount} onChange={this.amountChange}>
-              <Form.Label>Amount:</Form.Label>
-              <Form.Control type="input" placeholder="amount" />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group className="mb-3" controlId="formDate" value={this.state.formDate} onChange={this.dateChange}>  
-              <Form.Label>Date: (MM/DD/YYYY)</Form.Label>
-              <Form.Control type="input" placeholder="date" />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="formSelect" value={this.state.formSelect} onChange={this.hourChange}>
-            <Form.Label>Hour:</Form.Label>
-            <Form.Select>
-                <option>Select which hour</option>
-                <option value="1">1:00 AM</option>
-                <option value="2">2:00 AM</option>
-                <option value="3">3:00 AM</option>
-                <option value="4">4:00 AM</option>
-                <option value="5">5:00 AM</option>
-                <option value="6">6:00 AM</option>
-                <option value="7">7:00 AM</option>
-                <option value="8">8:00 AM</option>
-                <option value="9">9:00 AM</option>
-                <option value="10">10:00 AM</option>
-                <option value="11">11:00 AM</option>
-                <option value="12">12:00 AM</option>
-                <option value="13">1:00 PM</option>
-                <option value="14">2:00 PM</option>
-                <option value="15">3:00 PM</option>
-                <option value="16">4:00 PM</option>
-                <option value="17">5:00 PM</option>
-                <option value="18">6:00 PM</option>
-                <option value="19">7:00 PM</option>
-                <option value="20">8:00 PM</option>
-                <option value="21">9:00 PM</option>
-                <option value="22">10:00 PM</option>
-                <option value="23">11:00 PM</option>
-                <option value="24">12:00 PM</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col align="center"><Button type="submit">Submit</Button></Col>
-        </Row>
-        </Form>
-        </div>     
-        <div className="clockTableDiv">
-          <Table striped bordered hover size="sm" className="clockTable">
-            <thead>
-              <tr align="center">
-                <th>Receiver</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Cancel</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.tableMaker()}
-            </tbody>
-          </Table>
-        </div>
+        {this.alertMaker()}
+        <div className="clockBody">
+          <div className="clockFormDiv">
+            <Form className="mb-3" onSubmit={this.submitForm}>
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="formAddress" value={this.state.formAddress} onChange={this.receiverChange}>
+                <Form.Label>Address to Send to:</Form.Label>
+                <Form.Control type="input" placeholder="receiver" />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="formAmount" value={this.state.formAmount} onChange={this.amountChange}>
+                  <Form.Label>Amount:</Form.Label>
+                  <Form.Control type="input" placeholder="amount" />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="formDate" value={this.state.formDate} onChange={this.dateChange}>  
+                  <Form.Label>Date: (MM/DD/YYYY)</Form.Label>
+                  <Form.Control type="input" placeholder="date" />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="formSelect" value={this.state.formSelect} onChange={this.hourChange}>
+                <Form.Label>Hour:</Form.Label>
+                <Form.Select>
+                    <option>Select which hour</option>
+                    <option value="1">1:00 AM</option>
+                    <option value="2">2:00 AM</option>
+                    <option value="3">3:00 AM</option>
+                    <option value="4">4:00 AM</option>
+                    <option value="5">5:00 AM</option>
+                    <option value="6">6:00 AM</option>
+                    <option value="7">7:00 AM</option>
+                    <option value="8">8:00 AM</option>
+                    <option value="9">9:00 AM</option>
+                    <option value="10">10:00 AM</option>
+                    <option value="11">11:00 AM</option>
+                    <option value="12">12:00 AM</option>
+                    <option value="13">1:00 PM</option>
+                    <option value="14">2:00 PM</option>
+                    <option value="15">3:00 PM</option>
+                    <option value="16">4:00 PM</option>
+                    <option value="17">5:00 PM</option>
+                    <option value="18">6:00 PM</option>
+                    <option value="19">7:00 PM</option>
+                    <option value="20">8:00 PM</option>
+                    <option value="21">9:00 PM</option>
+                    <option value="22">10:00 PM</option>
+                    <option value="23">11:00 PM</option>
+                    <option value="24">12:00 PM</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col align="center"><Button type="submit">Submit</Button></Col>
+            </Row>
+            </Form>
+            </div> 
+            <div className="clockTableDiv">
+              <Table striped bordered hover size="sm" className="clockTable">
+                <thead>
+                  <tr align="center">
+                    <th>Receiver</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Cancel</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.tableMaker()}
+                </tbody>
+              </Table>
+            </div>
       </div>
     </div>
     );

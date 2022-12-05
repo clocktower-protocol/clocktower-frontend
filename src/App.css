@@ -31,6 +31,7 @@
 .clockNav {
   display: flex;
   flex-direction: row;
+  
 }
 
 .clockMeta {
@@ -38,18 +39,24 @@
   flex-direction: column;
 }
 
+.alertDiv {
+  background: yellow;
+  margin-bottom: -20px;
+  background-color: gray;
+}
+
 .clockBody {
+  
   /*
   display: flex;
   flex-direction: column;
   */
-
   width: 100vw;
 }
 
 .clockFormDiv {
   display:flex;
-  height: 40vh;
+  padding-top: 20px;
   justify-content: center;
   align-items: center;
   align-content: center;
@@ -58,12 +65,11 @@
 
 .clockTableDiv {
   display: flex;
-  height: 60vh;
   justify-content: center;
 }
 
 .clockTable {
-  height: 100px;
+  
   width: 100%;
   margin-top: 20px;
   margin-left: 200px;

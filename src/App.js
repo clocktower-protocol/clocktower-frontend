@@ -80,7 +80,7 @@ class App extends Component {
       )
       isCorrect = false
       this.setState({alert: true})
-      this.setState({alertText: "ethereum amount invalid"})
+      this.setState({alertText: "Ethereum amount invalid"})
       return
     } else {
       this.setState({alert: false})

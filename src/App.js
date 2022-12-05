@@ -37,7 +37,10 @@ class App extends Component {
         method: "eth_requestAccounts",
       });
 
-      this.setState({account: accounts[0]})
+      //sets the account and loads the transactions
+      this.setState({account: accounts[0]}, async function() {
+        await this.getAccountTransactions();
+      });
 
       console.log("Connected", accounts[0]);
 
@@ -126,8 +129,8 @@ class App extends Component {
     event.preventDefault();
     event.stopPropagation();
     
-    //const outcome = this.addTransaction()
-    this.getAccountTransactions();
+    const outcome = this.addTransaction()
+    //this.getAccountTransactions();
 
   };
 
@@ -145,7 +148,8 @@ class App extends Component {
 
     let receiver = this.state.formAddress
     let amount = this.state.formAmount
-    let sendAmount = Web3.utils.toWei("6")
+    let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
+    console.log(sendAmount)
     //metamask needs sent wei converted to hex
     sendAmount = Web3.utils.toHex(sendAmount)
     let account = this.state.account
@@ -165,8 +169,12 @@ class App extends Component {
         method: "eth_sendTransaction",
         params: [transactionParameters],
       });
+      await this.getAccountTransactions();
+
       //increments transaction count
       //this.setState({transactions: (this.state.transactions + 1)})
+      //await this.getAccountTransactions();
+
       return {
         status: "transaction sent!"
       };
@@ -175,10 +183,11 @@ class App extends Component {
       return {
         status: error.message
       }
-    }
+    } 
    
   }
 
+  /*
   
   //converts hour time trigger to epoch time
   convertTime(timeTrigger) {
@@ -213,7 +222,7 @@ class App extends Component {
 
     //return accountTransactions
     
-  } 
+  //} 
   
 
 
@@ -257,6 +266,9 @@ class App extends Component {
   //Table function
   //FIXME:
   tableMaker(event) {
+
+    //gets transactions
+    //this.getAccountTransactions();
     
     //checks for empty array
     if(!Array.isArray(this.state.transactionArray) || !this.state.transactionArray.length) {
@@ -273,8 +285,8 @@ class App extends Component {
     //loops through array to create table
     for(let i = 0; i < transactionArray.length; i++) {
       let row = []
-      row.push(<td>{transactionArray[i].receiver}</td>, <td>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>, <td>{Web3.utils.fromWei(transactionArray[0].payload)} ETH</td>, <td>Cancel</td>)
-      table.push(<tr align="center">{row}</tr>)
+      row.push(<td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>, <td key={String(transactionArray[i].id)+2}>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>, <td key={String(transactionArray[i].id)+3}>{Web3.utils.fromWei(transactionArray[i].payload)} ETH</td>, <td key={String(transactionArray[i].id)+4}>Cancel</td>)
+      table.push(<tr align="center" key={String(transactionArray[i].id)}>{row}</tr>)
     }
 
     return table
@@ -303,9 +315,9 @@ class App extends Component {
       buttonClicked: false,
       formAddress: "0x0", 
       formDate: "947462400",
-      mergeUnixEpoch: 1663264750,
       formAmount: 0.00, 
       hour: "0",
+      fee: 0.1,
       timeString: "00/00/0000 00:00",
       transactionArray: transactionArray,
       transactions: 0
@@ -435,25 +447,6 @@ class App extends Component {
             </thead>
             <tbody>
               {this.tableMaker()}
-            {/*
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colSpan={2}>Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-          */}
             </tbody>
           </Table>
         </div>

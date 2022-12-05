@@ -134,10 +134,6 @@ class App extends Component {
   //Contract functions-----------------------------------------------
   async addTransaction() {
 
-    console.log (
-      "click"
-    )
-
     //validates data
     if(!this.formValidate()) {
       return {status: "Form data incorrect"}
@@ -183,11 +179,45 @@ class App extends Component {
    
   }
 
-  async getAccountTransactions() {
+  
+  //converts hour time trigger to epoch time
+  convertTime(timeTrigger) {
 
-    console.log(
-      this.state.account
-    )
+     //calculates unixEpoch time from hours since merge
+    return ((timeTrigger * 3600) + this.state.mergeUnixEpoch)
+
+   // let accountTransactions2 = []
+
+    //for(let i = 0; i < accountTransactions.length; i++){
+    /*
+    let unixTime = await this.state.clocktower.methods.unixFromHours(accountTransactions[arrayIndex].timeTrigger).call({from: this.state.account})
+    return unixTime
+    */
+      
+      /*
+      console.log(unixTime)
+      let transaction = accountTransactions[i]
+      transaction.timeTrigger = unixTime
+      accountTransactions[i] = transaction
+      */
+      /*
+      .then(function(result){
+        let accountTransactions2 = accountTransactions
+        accountTransactions2[i].timeTrigger = result
+      });
+      console.log(
+        "checktime"
+      )
+      */
+   // }
+
+    //return accountTransactions
+    
+  } 
+  
+
+
+  async getAccountTransactions() {
 
     //checks if user is logged into account
     if(!this.isLoggedIn()) {
@@ -206,22 +236,22 @@ class App extends Component {
       return
     }
     */
+    
     //variable to pass scope so that the state can be set
-    var that = this
+    //var that = this
+    let accountTransactions = []
+    var that = this;
+
 
     //calls contract
+    
     await this.state.clocktower.methods.getAccountTransactions().call({from: this.state.account})
-    .then(function(result){
-      let accountTransactions = result
-      //resets transaction list in state
+    .then(function(result) {
+      accountTransactions = result
+
       that.setState({transactionArray: accountTransactions})
-      
-      const transaction = accountTransactions[0];
-      console.log(
-        transaction.payload
-      )
-      
-    });
+    })
+  
   }
 
   //Table function
@@ -242,12 +272,9 @@ class App extends Component {
 
     //loops through array to create table
     for(let i = 0; i < transactionArray.length; i++) {
-      console.log(
-        i
-      )
       let row = []
-      row.push(<td>{transactionArray[i].receiver}</td>, <td>Date</td>, <td>Amount</td>, <td>Cancel</td>)
-      table.push(<tr>{row}</tr>)
+      row.push(<td>{transactionArray[i].receiver}</td>, <td>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>, <td>{Web3.utils.fromWei(transactionArray[0].payload)} ETH</td>, <td>Cancel</td>)
+      table.push(<tr align="center">{row}</tr>)
     }
 
     return table
@@ -265,7 +292,7 @@ class App extends Component {
     const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
 
     //creates empty array for table
-    const transactionArray = [];
+    let transactionArray = [];
     
 
     //initializes state variables
@@ -275,7 +302,8 @@ class App extends Component {
       account: "-1",
       buttonClicked: false,
       formAddress: "0x0", 
-      formDate: "947462400", 
+      formDate: "947462400",
+      mergeUnixEpoch: 1663264750,
       formAmount: 0.00, 
       hour: "0",
       timeString: "00/00/0000 00:00",

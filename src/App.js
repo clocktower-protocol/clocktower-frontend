@@ -44,6 +44,31 @@ class App extends Component {
 
       console.log("Connected", accounts[0]);
 
+      //checks for change of account or change of chain
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          //reloads connection upon wallet change
+          this.connectWallet()
+          return
+        } else {
+         console.log("Logged Out")
+        }
+      });
+
+      //checks if chain has changed (only currently allows hardhat network)
+      window.ethereum.on("chainChanged", (chainId) => {
+        if (chainId != 31337) {
+          this.setState({alertText: "Clocktower currently only works on Hardhat Network. Please switch back"})
+          this.setState({alert:true})
+          this.setState({account: "-1"})
+          return
+        } else {
+          this.connectWallet()
+          this.setState({alert:false})
+          return
+        }
+      });
+
     } catch (error) {
       console.log(error);
     }

@@ -51,7 +51,9 @@ class App extends Component {
           this.connectWallet()
           return
         } else {
-         console.log("Logged Out")
+          this.setState({account: "-1"})
+          this.setState({buttonClicked: false})
+          console.log("Logged Out")
         }
       });
 
@@ -61,6 +63,7 @@ class App extends Component {
           this.setState({alertText: "Clocktower currently only works on Hardhat Network. Please switch back"})
           this.setState({alert:true})
           this.setState({account: "-1"})
+          this.setState({buttonClicked: false})
           return
         } else {
           this.connectWallet()

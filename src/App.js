@@ -252,7 +252,7 @@ class App extends Component {
       await this.getAccountTransactions();
 
       return {
-        status: "transaction sent!"
+        status: "transaction cancelled!"
       };
       
     } catch (error) {
@@ -300,7 +300,7 @@ class App extends Component {
     if(this.state.alert) {
     return (
     <div className="alertDiv">
-    <Alert variant="danger" align="center">{this.state.alertText}</Alert>
+    <Alert variant="danger" align="center" onClose={() => this.setState({alert: false})} dismissible>{this.state.alertText}</Alert>
     </div>
     )
     }

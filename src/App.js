@@ -169,7 +169,6 @@ class App extends Component {
     let receiver = this.state.formAddress
     let amount = this.state.formAmount
     let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
-    console.log(sendAmount)
     //metamask needs sent wei converted to hex
     sendAmount = Web3.utils.toHex(sendAmount)
     let account = this.state.account
@@ -244,10 +243,6 @@ class App extends Component {
       data: this.state.clocktower.methods.cancelTransaction(id,timeTrigger).encodeABI(),
     };
 
-    console.log(
-      "function called"
-    )
-
     //get metamask to sign transaction
     try {
       const txHash = await window.ethereum.request({
@@ -285,13 +280,16 @@ class App extends Component {
 
     //loops through array to create table
     for(let i = 0; i < transactionArray.length; i++) {
-      let row = []
-      row.push(
-        <td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>,
-        <td key={String(transactionArray[i].id)+2}>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>,
-        <td key={String(transactionArray[i].id)+3}>{Web3.utils.fromWei(transactionArray[i].payload)} ETH</td>, 
-        <td key={String(transactionArray[i].id)+4}><Button type="submit" onClick={() => this.cancelTransaction(transactionArray[i])}>Cancel</Button></td>)
-      table.push(<tr align="center" key={String(transactionArray[i].id)}>{row}</tr>)
+      //doesn't show cancelled transactions
+      if(!transactionArray[i].cancelled) {
+        let row = []
+        row.push(
+          <td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>,
+          <td key={String(transactionArray[i].id)+2}>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>,
+          <td key={String(transactionArray[i].id)+3}>{Web3.utils.fromWei(transactionArray[i].payload)} ETH</td>, 
+          <td key={String(transactionArray[i].id)+4}><Button type="submit" onClick={() => this.cancelTransaction(transactionArray[i])}>Cancel</Button></td>)
+        table.push(<tr align="center" key={String(transactionArray[i].id)}>{row}</tr>)
+      }
     }
 
     return table

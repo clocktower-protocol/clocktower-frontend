@@ -230,6 +230,44 @@ class App extends Component {
   
   }
 
+  async cancelTransaction(transaction) {
+
+    //gets id and timeTrigger from transaction
+    let id = transaction.id
+    let timeTrigger = transaction.timeTrigger
+    let account = this.state.account
+
+     //set up transaction parameters
+     const transactionParameters = {
+      to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+      from: account, // must match user's active address.
+      data: this.state.clocktower.methods.cancelTransaction(id,timeTrigger).encodeABI(),
+    };
+
+    console.log(
+      "function called"
+    )
+
+    //get metamask to sign transaction
+    try {
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
+      await this.getAccountTransactions();
+
+      return {
+        status: "transaction sent!"
+      };
+      
+    } catch (error) {
+      return {
+        status: error.message
+      }
+    } 
+
+  }
+
   //Table function
   tableMaker(event) {
     
@@ -248,7 +286,11 @@ class App extends Component {
     //loops through array to create table
     for(let i = 0; i < transactionArray.length; i++) {
       let row = []
-      row.push(<td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>, <td key={String(transactionArray[i].id)+2}>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>, <td key={String(transactionArray[i].id)+3}>{Web3.utils.fromWei(transactionArray[i].payload)} ETH</td>, <td key={String(transactionArray[i].id)+4}>Cancel</td>)
+      row.push(
+        <td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>,
+        <td key={String(transactionArray[i].id)+2}>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>,
+        <td key={String(transactionArray[i].id)+3}>{Web3.utils.fromWei(transactionArray[i].payload)} ETH</td>, 
+        <td key={String(transactionArray[i].id)+4}><Button type="submit" onClick={() => this.cancelTransaction(transactionArray[i])}>Cancel</Button></td>)
       table.push(<tr align="center" key={String(transactionArray[i].id)}>{row}</tr>)
     }
 
@@ -308,6 +350,7 @@ class App extends Component {
     //contract methods
     this.addTransaction = this.addTransaction.bind(this);
     this.getAccountTransactions = this.getAccountTransactions.bind(this)
+    this.cancelTransaction = this.cancelTransaction.bind(this)
     //metamask methods
     this.connectWallet = this.connectWallet.bind(this);
     

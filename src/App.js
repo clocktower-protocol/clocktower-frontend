@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Navbar, Container, Nav, Button, Table, Row, Col, Alert } from 'react-bootstrap';
+import { Form, Navbar, Container, Nav, Button, Table, Row, Col, Alert, Toast } from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
 import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
@@ -75,6 +75,29 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  //confirms transaction by looping until it gets confirmed
+  async confirmTransaction(txHash) {
+
+    //gets transaction details
+    const trx = await this.state.web3.eth.getTransaction(txHash)
+
+    console.log(txHash)
+    
+
+    //trys every five seconds to see if transaction is confirmed
+    setTimeout(async () => {
+      console.log(trx.blockNumber)
+      if(trx.blockNumber) {
+        //turns off alert
+        this.setState({alert:false})
+        this.setState({alertType: "danger"})
+        this.getAccountTransactions()
+        return
+      }
+      return this.confirmTransaction(txHash)
+    },5*1000)
   }
 
   //Validation-----------------------------
@@ -171,14 +194,14 @@ class App extends Component {
   }
 
 
-  submitForm(event) {
+  async submitForm(event) {
     const target = event.currentTarget;
 
     event.preventDefault();
     event.stopPropagation();
     
-    this.addTransaction()
-    //this.getAccountTransactions();
+    await this.addTransaction()
+    //await this.getAccountTransactions();
 
   };
 
@@ -212,11 +235,27 @@ class App extends Component {
     
     //get metamask to sign transaction
     try {
+      /*
       const txHash = await window.ethereum.request({
         method: "eth_sendTransaction",
         params: [transactionParameters],
       });
-      await this.getAccountTransactions();
+      */
+     await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [transactionParameters],
+     })
+     .then (async (txhash) => {
+        console.log(txhash)
+        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+        this.setState({alertType: "warning"})
+        this.setState({alert:true})
+        this.setState({alertText: "Transaction Pending..."})
+        
+        this.confirmTransaction(txhash)
+     })
+     
+      //await this.getAccountTransactions();
 
       return {
         status: "transaction sent!"
@@ -328,7 +367,7 @@ class App extends Component {
     if(this.state.alert) {
     return (
     <div className="alertDiv">
-    <Alert variant="danger" align="center" onClose={() => this.setState({alert: false})} dismissible>{this.state.alertText}</Alert>
+    <Alert variant={this.state.alertType} align="center" onClose={() => this.setState({alert: false})} dismissible>{this.state.alertText}</Alert>
     </div>
     )
     }
@@ -364,7 +403,8 @@ class App extends Component {
       transactionArray: transactionArray,
       transactions: 0,
       alert: false,
-      alertText: ""
+      alertText: "",
+      alertType: "danger"
     }
 
     //form methods
@@ -379,6 +419,7 @@ class App extends Component {
     this.cancelTransaction = this.cancelTransaction.bind(this)
     //metamask methods
     this.connectWallet = this.connectWallet.bind(this);
+
     
 
   }

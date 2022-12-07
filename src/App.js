@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Navbar, Container, Nav, Button, Table, Row, Col, Alert, Toast } from 'react-bootstrap';
+import { Form, Navbar, Container, Nav, Button, Table, Row, Col, Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
 import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
@@ -59,7 +59,7 @@ class App extends Component {
 
       //checks if chain has changed (only currently allows hardhat network)
       window.ethereum.on("chainChanged", (chainId) => {
-        if (chainId != 31337) {
+        if (chainId !== 31337) {
           this.setState({alertText: "Clocktower currently only works on Hardhat Network. Please switch back"})
           this.setState({alert:true})
           this.setState({account: "-1"})
@@ -85,17 +85,18 @@ class App extends Component {
 
     console.log(txHash)
     
-
     //trys every five seconds to see if transaction is confirmed
     setTimeout(async () => {
+
       console.log(trx.blockNumber)
       if(trx.blockNumber) {
-        //turns off alert
+        //turns off alert and loads/reloads table
         this.setState({alert:false})
         this.setState({alertType: "danger"})
         this.getAccountTransactions()
         return
       }
+
       return this.confirmTransaction(txHash)
     },5*1000)
   }
@@ -104,7 +105,7 @@ class App extends Component {
 
   //checks if user is logged in 
   isLoggedIn() {
-    return(this.state.account == "-1" ? false : true) 
+    return(this.state.account === "-1" ? false : true) 
   }
 
   formValidate() {
@@ -247,6 +248,8 @@ class App extends Component {
      })
      .then (async (txhash) => {
         console.log(txhash)
+        
+        
         //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
         this.setState({alertType: "warning"})
         this.setState({alert:true})
@@ -312,11 +315,22 @@ class App extends Component {
 
     //get metamask to sign transaction
     try {
-      const txHash = await window.ethereum.request({
+      await window.ethereum.request({
         method: "eth_sendTransaction",
         params: [transactionParameters],
-      });
-      await this.getAccountTransactions();
+      })
+      .then (async (txhash) => {
+        console.log(txhash)
+        
+        
+        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+        this.setState({alertType: "warning"})
+        this.setState({alert:true})
+        this.setState({alertText: "Transaction Pending..."})
+        
+        this.confirmTransaction(txhash)
+     })
+     // await this.getAccountTransactions();
 
       return {
         status: "transaction cancelled!"

@@ -272,8 +272,6 @@ class App extends Component {
    
   }
 
-
-
   async getAccountTransactions() {
 
     //checks if user is logged into account
@@ -368,7 +366,8 @@ class App extends Component {
           <td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>,
           <td key={String(transactionArray[i].id)+2}>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>,
           <td key={String(transactionArray[i].id)+3}>{Web3.utils.fromWei(transactionArray[i].payload)} ETH</td>, 
-          <td key={String(transactionArray[i].id)+4}><Button type="submit" onClick={() => this.cancelTransaction(transactionArray[i])}>Cancel</Button></td>)
+          <td key={String(transactionArray[i].id)+4}>{(transactionArray[i].sent ? "Sent" : "Ready")}</td>,
+          <td key={String(transactionArray[i].id)+5}><Button type="submit" onClick={() => this.cancelTransaction(transactionArray[i])}>Cancel</Button></td>)
         table.push(<tr align="center" key={String(transactionArray[i].id)}>{row}</tr>)
       }
     }
@@ -522,6 +521,7 @@ class App extends Component {
                     <th>Receiver</th>
                     <th>Date</th>
                     <th>Amount</th>
+                    <th>Status</th>
                     <th>Cancel</th>
                   </tr>
                 </thead>

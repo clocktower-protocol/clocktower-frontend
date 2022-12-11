@@ -7,6 +7,9 @@ import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config";
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
+import ClockTable from './ClockTable';
+import ClockForm from './ClockForm';
+import ClockNav from './ClockNav';
 
 class App extends Component {
   
@@ -16,6 +19,7 @@ class App extends Component {
   walletButtonClick() {
     this.connectWallet();
     this.setState({buttonClicked: true});
+    console.log("Button Click Called")
   }
 
   
@@ -299,6 +303,8 @@ class App extends Component {
 
   async cancelTransaction(transaction) {
 
+    console.log("Cancel Transaction Called")
+
     //gets id and timeTrigger from transaction
     let id = transaction.id
     let timeTrigger = transaction.timeTrigger
@@ -342,6 +348,7 @@ class App extends Component {
 
   }
 
+  /*
   //Table function
   tableMaker(event) {
     
@@ -357,10 +364,13 @@ class App extends Component {
 
     let table = [];
 
+    
+
     //loops through array to create table
     for(let i = 0; i < transactionArray.length; i++) {
       //doesn't show cancelled transactions
       if(!transactionArray[i].cancelled) {
+        console.log(transactionArray[i].sent)
         let row = []
         row.push(
           <td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>,
@@ -374,6 +384,7 @@ class App extends Component {
 
     return table
   }
+  */
 
   //Creates alert
   alertMaker() {
@@ -432,6 +443,7 @@ class App extends Component {
     this.cancelTransaction = this.cancelTransaction.bind(this)
     //metamask methods
     this.connectWallet = this.connectWallet.bind(this);
+    this.walletButtonClick = this.walletButtonClick.bind(this);
 
     
 
@@ -440,6 +452,14 @@ class App extends Component {
   render() {
     return (
       <div className="clockMeta">
+        <div>
+          <ClockNav 
+            buttonClicked = {this.state.buttonClicked}
+            account = {this.state.account}
+            walletButtonClick = {this.walletButtonClick}
+          ></ClockNav>
+        </div>
+        {/*
         <Navbar bg="dark" variant="dark" expand="lg">
           <Container className="clockNav">
             <Navbar.Brand href="#home">Clocktower</Navbar.Brand>
@@ -448,12 +468,26 @@ class App extends Component {
               {/*
               <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
               */}
+              {/*}
             </Nav>
           </Container>
         </Navbar>
+            */}
         {this.alertMaker()}
         <div className="clockBody">
           <div className="clockFormDiv">
+            <ClockForm 
+            submitForm = {this.submitForm} 
+            formAddress = {this.state.formAddress} 
+            receiverChange = {this.receiverChange}
+            formAmount = {this.state.formAmount}
+            amountChange = {this.amountChange}
+            formDate = {this.state.formDate}
+            dateChange = {this.dateChange}
+            formSelect = {this.state.formSelect}
+            hourChange = {this.hourChange}
+            ></ClockForm>
+            {/*
             <Form className="mb-3" onSubmit={this.submitForm}>
             <Row>
               <Col>
@@ -513,8 +547,10 @@ class App extends Component {
               <Col align="center"><Button type="submit">Submit</Button></Col>
             </Row>
             </Form>
+            */}
             </div> 
             <div className="clockTableDiv">
+              {/*
               <Table striped bordered hover size="sm" className="clockTable">
                 <thead>
                   <tr align="center">
@@ -526,9 +562,17 @@ class App extends Component {
                   </tr>
                 </thead>
                 <tbody>
+            */ }
+              <ClockTable transactionArray={this.state.transactionArray} cancelTransaction={this.cancelTransaction}></ClockTable>
+                  {/*
                   {this.tableMaker()}
+                 
+                  
+
                 </tbody>
               </Table>
+              */}
+
             </div>
       </div>
     </div>

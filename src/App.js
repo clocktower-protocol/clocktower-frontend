@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Navbar, Container, Nav, Button, Table, Row, Col, Alert} from 'react-bootstrap';
+import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
 import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
-//import {HourSelect} from "./hourSelect.js";
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -19,7 +18,6 @@ class App extends Component {
   walletButtonClick() {
     this.connectWallet();
     this.setState({buttonClicked: true});
-    console.log("Button Click Called")
   }
 
   
@@ -32,10 +30,6 @@ class App extends Component {
         alert("Please install MetaMask!");
         return;
       }
-
-      console.log(
-        "connectWallet called"
-      )
       
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
@@ -240,12 +234,6 @@ class App extends Component {
     
     //get metamask to sign transaction
     try {
-      /*
-      const txHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
-      });
-      */
      await window.ethereum.request({
       method: "eth_sendTransaction",
       params: [transactionParameters],
@@ -262,8 +250,6 @@ class App extends Component {
         this.confirmTransaction(txhash)
      })
      
-      //await this.getAccountTransactions();
-
       return {
         status: "transaction sent!"
       };
@@ -334,7 +320,6 @@ class App extends Component {
         
         this.confirmTransaction(txhash)
      })
-     // await this.getAccountTransactions();
 
       return {
         status: "transaction cancelled!"
@@ -348,44 +333,6 @@ class App extends Component {
 
   }
 
-  /*
-  //Table function
-  tableMaker(event) {
-    
-    //checks for empty array
-    if(!Array.isArray(this.state.transactionArray) || !this.state.transactionArray.length) {
-      console.log(
-        "Array is empty"
-      )
-      return
-    }
-
-    const transactionArray = this.state.transactionArray
-
-    let table = [];
-
-    
-
-    //loops through array to create table
-    for(let i = 0; i < transactionArray.length; i++) {
-      //doesn't show cancelled transactions
-      if(!transactionArray[i].cancelled) {
-        console.log(transactionArray[i].sent)
-        let row = []
-        row.push(
-          <td key={String(transactionArray[i].id)+1}>{transactionArray[i].receiver}</td>,
-          <td key={String(transactionArray[i].id)+2}>{dayjs.unix(transactionArray[i].timeTrigger).format('MM/DD/YYYY HH:00')}</td>,
-          <td key={String(transactionArray[i].id)+3}>{Web3.utils.fromWei(transactionArray[i].payload)} ETH</td>, 
-          <td key={String(transactionArray[i].id)+4}>{(transactionArray[i].sent ? "Sent" : "Ready")}</td>,
-          <td key={String(transactionArray[i].id)+5}><Button type="submit" onClick={() => this.cancelTransaction(transactionArray[i])}>Cancel</Button></td>)
-        table.push(<tr align="center" key={String(transactionArray[i].id)}>{row}</tr>)
-      }
-    }
-
-    return table
-  }
-  */
-
   //Creates alert
   alertMaker() {
     if(this.state.alert) {
@@ -397,7 +344,6 @@ class App extends Component {
     }
   }
 
-  
   //initializes values
   constructor(props) {
     super(props)
@@ -411,7 +357,6 @@ class App extends Component {
     //creates empty array for table
     let transactionArray = [];
     
-
     //initializes state variables
     this.state = {
       web3: web3,
@@ -445,8 +390,6 @@ class App extends Component {
     this.connectWallet = this.connectWallet.bind(this);
     this.walletButtonClick = this.walletButtonClick.bind(this);
 
-    
-
   }
 
   render() {
@@ -459,20 +402,6 @@ class App extends Component {
             walletButtonClick = {this.walletButtonClick}
           ></ClockNav>
         </div>
-        {/*
-        <Navbar bg="dark" variant="dark" expand="lg">
-          <Container className="clockNav">
-            <Navbar.Brand href="#home">Clocktower</Navbar.Brand>
-            <Nav className="topNav">
-              {this.state.buttonClicked ? (<Navbar.Brand>Account: {this.state.account}</Navbar.Brand>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => {this.walletButtonClick()} }>Sign in Wallet</Button>)}
-              {/*
-              <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
-              */}
-              {/*}
-            </Nav>
-          </Container>
-        </Navbar>
-            */}
         {this.alertMaker()}
         <div className="clockBody">
           <div className="clockFormDiv">
@@ -487,93 +416,11 @@ class App extends Component {
             formSelect = {this.state.formSelect}
             hourChange = {this.hourChange}
             ></ClockForm>
-            {/*
-            <Form className="mb-3" onSubmit={this.submitForm}>
-            <Row>
-              <Col>
-                <Form.Group className="mb-3" controlId="formAddress" value={this.state.formAddress} onChange={this.receiverChange}>
-                <Form.Label>Address to Send to:</Form.Label>
-                <Form.Control type="input" placeholder="receiver" />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group className="mb-3" controlId="formAmount" value={this.state.formAmount} onChange={this.amountChange}>
-                  <Form.Label>Amount:</Form.Label>
-                  <Form.Control type="input" placeholder="amount" />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Form.Group className="mb-3" controlId="formDate" value={this.state.formDate} onChange={this.dateChange}>  
-                  <Form.Label>Date: (MM/DD/YYYY)</Form.Label>
-                  <Form.Control type="input" placeholder="date" />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group className="mb-3" controlId="formSelect" value={this.state.formSelect} onChange={this.hourChange}>
-                <Form.Label>Hour:</Form.Label>
-                <Form.Select>
-                    <option>Select which hour</option>
-                    <option value="1">1:00 AM</option>
-                    <option value="2">2:00 AM</option>
-                    <option value="3">3:00 AM</option>
-                    <option value="4">4:00 AM</option>
-                    <option value="5">5:00 AM</option>
-                    <option value="6">6:00 AM</option>
-                    <option value="7">7:00 AM</option>
-                    <option value="8">8:00 AM</option>
-                    <option value="9">9:00 AM</option>
-                    <option value="10">10:00 AM</option>
-                    <option value="11">11:00 AM</option>
-                    <option value="12">12:00 AM</option>
-                    <option value="13">1:00 PM</option>
-                    <option value="14">2:00 PM</option>
-                    <option value="15">3:00 PM</option>
-                    <option value="16">4:00 PM</option>
-                    <option value="17">5:00 PM</option>
-                    <option value="18">6:00 PM</option>
-                    <option value="19">7:00 PM</option>
-                    <option value="20">8:00 PM</option>
-                    <option value="21">9:00 PM</option>
-                    <option value="22">10:00 PM</option>
-                    <option value="23">11:00 PM</option>
-                    <option value="24">12:00 PM</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col align="center"><Button type="submit">Submit</Button></Col>
-            </Row>
-            </Form>
-            */}
-            </div> 
-            <div className="clockTableDiv">
-              {/*
-              <Table striped bordered hover size="sm" className="clockTable">
-                <thead>
-                  <tr align="center">
-                    <th>Receiver</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Cancel</th>
-                  </tr>
-                </thead>
-                <tbody>
-            */ }
-              <ClockTable transactionArray={this.state.transactionArray} cancelTransaction={this.cancelTransaction}></ClockTable>
-                  {/*
-                  {this.tableMaker()}
-                 
-                  
-
-                </tbody>
-              </Table>
-              */}
-
-            </div>
+           
+          </div> 
+          <div className="clockTableDiv">
+            <ClockTable transactionArray={this.state.transactionArray} cancelTransaction={this.cancelTransaction}></ClockTable>
+          </div>
       </div>
     </div>
     );

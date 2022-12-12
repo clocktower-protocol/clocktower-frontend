@@ -243,11 +243,6 @@ export const CLOCKTOWER_ABI = [
             "type": "uint40"
           },
           {
-            "internalType": "uint16",
-            "name": "arrayIndex",
-            "type": "uint16"
-          },
-          {
             "internalType": "bool",
             "name": "sent",
             "type": "bool"
@@ -301,25 +296,6 @@ export const CLOCKTOWER_ABI = [
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint40",
-        "name": "timeTrigger",
-        "type": "uint40"
-      }
-    ],
-    "name": "unixFromHours",
-    "outputs": [
-      {
-        "internalType": "uint40",
-        "name": "unixTime",
-        "type": "uint40"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

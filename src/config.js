@@ -164,6 +164,36 @@ export const CLOCKTOWER_ABI = [
   {
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "address payable",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint40",
+            "name": "unixTime",
+            "type": "uint40"
+          },
+          {
+            "internalType": "uint256",
+            "name": "payload",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Clocktower.Batch[]",
+        "name": "batch",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "batchAddTransactions",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "id",
         "type": "bytes32"
@@ -184,36 +214,6 @@ export const CLOCKTOWER_ABI = [
     "name": "checkTime",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getAccount",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "accountAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "exists",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint256",
-            "name": "balance",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct Clocktower.Account",
-        "name": "returnAccount",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

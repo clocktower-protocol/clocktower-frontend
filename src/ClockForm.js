@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI} from "./config"; 
+import {ZERO_ADDRESS, CLOCKTOKEN_ADDRESS} from "./config"; 
 
 
 const ClockForm = (props) => {

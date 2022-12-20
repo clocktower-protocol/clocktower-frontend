@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI} from "./config"; 
+
 
 const ClockForm = (props) => {
 
@@ -16,6 +18,16 @@ const ClockForm = (props) => {
             <Form.Group className="mb-3" controlId="formAmount" value={props.formAmount} onChange={props.amountChange}>
               <Form.Label>Amount:</Form.Label>
               <Form.Control type="input" placeholder="amount" />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={props.tokenChange}>
+              <Form.Label>Token</Form.Label>
+              <Form.Select>
+                <option>Select which hour</option>
+                <option value={ZERO_ADDRESS}>ETH</option>
+                <option value={CLOCKTOKEN_ADDRESS}>CLOCK</option>
+              </Form.Select>
             </Form.Group>
           </Col>
         </Row>

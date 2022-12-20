@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -184,14 +184,16 @@ class App extends Component {
     }
   }
   hourChange(event) {
-
     this.setState({hour: event.target.value});
 
     //adjusts time string
     let stringArray = this.state.timeString.split(" ")
     this.setState({timeString: stringArray[0] + " " + event.target.value + ":00"})
   }
-
+  tokenChange(event) {
+    this.setState({token: event.target.value});
+    console.log(event.target.value);
+  }
 
   async submitForm(event) {
     const target = event.currentTarget;
@@ -215,7 +217,7 @@ class App extends Component {
     //converts to UTC Epoch time
     dayjs.extend(utc)
     let time = dayjs(this.state.timeString).utc().unix()
-    let token = Web3.utils.toChecksumAddress(ZERO_ADDRESS);
+    let token = this.state.token;
     let receiver = this.state.formAddress
     let amount = this.state.formAmount
     let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
@@ -367,6 +369,7 @@ class App extends Component {
       formDate: "947462400",
       formAmount: 0.00, 
       hour: "0",
+      token: ZERO_ADDRESS,
       fee: 0.1,
       timeString: "00/00/0000 00:00",
       transactionArray: transactionArray,
@@ -381,6 +384,7 @@ class App extends Component {
     this.dateChange = this.dateChange.bind(this);
     this.amountChange = this.amountChange.bind(this);
     this.hourChange = this.hourChange.bind(this);
+    this.tokenChange = this.tokenChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
     //contract methods
     this.addTransaction = this.addTransaction.bind(this);
@@ -413,8 +417,10 @@ class App extends Component {
             amountChange = {this.amountChange}
             formDate = {this.state.formDate}
             dateChange = {this.dateChange}
-            formSelect = {this.state.formSelect}
+            formSelect = {this.state.hour}
             hourChange = {this.hourChange}
+            tokenSelect = {this.state.token}
+            tokenChange = {this.tokenChange}
             ></ClockForm>
            
           </div> 

@@ -37,19 +37,6 @@ export const CLOCKTOWER_ABI = [
     "inputs": [
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "houseSent",
-        "type": "bool"
-      }
-    ],
-    "name": "HoursCalc",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "user",
         "type": "address"
@@ -141,29 +128,6 @@ export const CLOCKTOWER_ABI = [
   {
     "inputs": [
       {
-        "internalType": "address payable",
-        "name": "receiver",
-        "type": "address"
-      },
-      {
-        "internalType": "uint40",
-        "name": "unixTime",
-        "type": "uint40"
-      },
-      {
-        "internalType": "uint256",
-        "name": "payload",
-        "type": "uint256"
-      }
-    ],
-    "name": "addTransaction",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "components": [
           {
             "internalType": "address payable",
@@ -179,6 +143,11 @@ export const CLOCKTOWER_ABI = [
             "internalType": "uint256",
             "name": "payload",
             "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
           }
         ],
         "internalType": "struct Clocktower.Batch[]",
@@ -186,9 +155,140 @@ export const CLOCKTOWER_ABI = [
         "type": "tuple[]"
       }
     ],
-    "name": "batchAddTransactions",
+    "name": "addBatchTransactions",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "erc20Contract",
+        "type": "address"
+      }
+    ],
+    "name": "addERC20Contract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint40",
+        "name": "unixTime",
+        "type": "uint40"
+      },
+      {
+        "internalType": "uint256",
+        "name": "payload",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "addTransaction",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "allAccounts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "accountAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "exists",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint40[]",
+            "name": "timeTriggers",
+            "type": "uint40[]"
+          },
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          }
+        ],
+        "internalType": "struct Clocktower.Account[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "allTransactions",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "id",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint40",
+            "name": "timeTrigger",
+            "type": "uint40"
+          },
+          {
+            "internalType": "bool",
+            "name": "sent",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "cancelled",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "payload",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Clocktower.Transaction[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -207,6 +307,32 @@ export const CLOCKTOWER_ABI = [
     "name": "cancelTransaction",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
+      }
+    ],
+    "name": "changeAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -238,6 +364,11 @@ export const CLOCKTOWER_ABI = [
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
             "internalType": "uint40",
             "name": "timeTrigger",
             "type": "uint40"
@@ -259,7 +390,7 @@ export const CLOCKTOWER_ABI = [
           }
         ],
         "internalType": "struct Clocktower.Transaction[]",
-        "name": "transactions",
+        "name": "",
         "type": "tuple[]"
       }
     ],
@@ -282,6 +413,67 @@ export const CLOCKTOWER_ABI = [
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "getTransactionsByAccount",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "id",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint40",
+            "name": "timeTrigger",
+            "type": "uint40"
+          },
+          {
+            "internalType": "bool",
+            "name": "sent",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "cancelled",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "payload",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Clocktower.Transaction[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint40",
         "name": "unixTime",
         "type": "uint40"
@@ -295,6 +487,26 @@ export const CLOCKTOWER_ABI = [
         "type": "uint40"
       }
     ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "erc20Contract",
+        "type": "address"
+      }
+    ],
+    "name": "removeERC20Contract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "toggleContractActive",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -303,6 +515,7 @@ export const CLOCKTOWER_ABI = [
     "type": "receive"
   }
 ]
+
 
   
 export const FEE = 1.1;

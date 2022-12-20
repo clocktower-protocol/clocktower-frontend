@@ -18,6 +18,7 @@ const ClockTable = (props) => {
   
       //loops through array to create table rows
       for(let i = 0; i < transactionArray.length; i++) {
+        console.log(transactionArray[i].cancelled)
         //doesn't show cancelled transactions
         if(!transactionArray[i].cancelled) {
           let row = []

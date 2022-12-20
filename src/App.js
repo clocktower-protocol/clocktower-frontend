@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -215,7 +215,7 @@ class App extends Component {
     //converts to UTC Epoch time
     dayjs.extend(utc)
     let time = dayjs(this.state.timeString).utc().unix()
-
+    let token = Web3.utils.toChecksumAddress(ZERO_ADDRESS);
     let receiver = this.state.formAddress
     let amount = this.state.formAmount
     let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
@@ -229,7 +229,7 @@ class App extends Component {
       to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
       from: account, // must match user's active address.
       value: sendAmount,
-      data: this.state.clocktower.methods.addTransaction(receiver,time,amount).encodeABI(),
+      data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
     };
     
     //get metamask to sign transaction

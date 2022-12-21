@@ -24,7 +24,7 @@ const ClockForm = (props) => {
             <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={props.tokenChange}>
               <Form.Label>Token</Form.Label>
               <Form.Select>
-                <option>Select which hour</option>
+                <option>Select which token</option>
                 <option value={ZERO_ADDRESS}>ETH</option>
                 <option value={CLOCKTOKEN_ADDRESS}>CLOCK</option>
               </Form.Select>

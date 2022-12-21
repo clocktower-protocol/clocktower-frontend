@@ -86,17 +86,18 @@ class App extends Component {
     //trys every five seconds to see if transaction is confirmed
     setTimeout(async () => {
 
-      console.log(trx.blockNumber)
+     // console.log(trx.blockNumber)
       if(trx.blockNumber) {
         //turns off alert and loads/reloads table
         this.setState({alert:false})
         this.setState({alertType: "danger"})
         this.getAccountTransactions()
-        return
+        return true
       }
 
-      return this.confirmTransaction(txHash)
+      return await this.confirmTransaction(txHash)
     },5*1000)
+
   }
 
   //Validation-----------------------------
@@ -209,6 +210,7 @@ class App extends Component {
   //Contract functions-----------------------------------------------
   async addTransaction() {
 
+    
     //validates data
     if(!this.formValidate()) {
       return {status: "Form data incorrect"}
@@ -218,50 +220,95 @@ class App extends Component {
     dayjs.extend(utc)
     let time = dayjs(this.state.timeString).utc().unix()
     let token = this.state.token;
+    let tokenFee = Web3.utils.toWei(String(this.state.fee))
+    tokenFee = Web3.utils.toHex(tokenFee);
     let receiver = this.state.formAddress
     let amount = this.state.formAmount
     let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
     //metamask needs sent wei converted to hex
     sendAmount = Web3.utils.toHex(sendAmount)
     let account = this.state.account
+    let transactionParameters = {};
 
 
     //set up transaction parameters
-    const transactionParameters = {
-      to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
-      from: account, // must match user's active address.
-      value: sendAmount,
-      data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
-    };
+    if(token == ZERO_ADDRESS) {
+      transactionParameters = {
+        to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+        from: account, // must match user's active address.
+        value: sendAmount,
+        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
+      };
+
+      const txhash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
     
-    //get metamask to sign transaction
-    try {
-     await window.ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters],
-     })
-     .then (async (txhash) => {
-        console.log(txhash)
-        
-        
         //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
         this.setState({alertType: "warning"})
         this.setState({alert:true})
         this.setState({alertText: "Transaction Pending..."})
-        
-        this.confirmTransaction(txhash)
-     })
-     
-      return {
-        status: "transaction sent!"
+                
+        const isDone = await this.confirmTransaction(txhash)
+    } else {
+
+      const transactionParameters1 = {
+        to: CLOCKTOKEN_ADDRESS, // Required except during contract publications.
+        from: account, // must match user's active address.
+        data: this.state.clocktoken.methods.approve(CLOCKTOWER_ADDRESS, amount).encodeABI(),
       };
+      transactionParameters = {
+        to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+        from: account, // must match user's active address.
+        value: tokenFee,
+        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
+      };
+
+      //TODO:
+      //gets metamask to approve token transfer
+      //get metamask to sign transaction
       
-    } catch (error) {
-      return {
-        status: error.message
-      }
-    } 
-   
+     // try {
+        const txhash = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [transactionParameters1],
+        });
+        //async (txhash) => {
+          console.log("test")
+            //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+            this.setState({alertType: "warning"})
+            this.setState({alert:true})
+            this.setState({alertText: "Transaction Pending..."})
+                  
+           
+          const isDone = await this.confirmTransaction(txhash)
+              
+          
+     // catch {
+
+     // } finally {
+        
+          
+          let txhash2 =  await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameters],
+          });
+    
+          //async (txhash) => {
+          console.log(txhash2)
+                  
+          //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+          this.setState({alertType: "warning"})
+          this.setState({alert:true})
+          this.setState({alertText: "Transaction Pending..."})
+                  
+          await this.confirmTransaction(txhash2)
+        
+     
+    }
+    
+
   }
 
   async getAccountTransactions() {
@@ -305,7 +352,7 @@ class App extends Component {
       data: this.state.clocktower.methods.cancelTransaction(id,timeTrigger).encodeABI(),
     };
 
-    //get metamask to sign transaction
+    //get metamask to sign transaction 
     try {
       await window.ethereum.request({
         method: "eth_sendTransaction",
@@ -313,7 +360,6 @@ class App extends Component {
       })
       .then (async (txhash) => {
         console.log(txhash)
-        
         
         //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
         this.setState({alertType: "warning"})
@@ -332,7 +378,6 @@ class App extends Component {
         status: error.message
       }
     } 
-
   }
 
   //Creates alert
@@ -355,6 +400,7 @@ class App extends Component {
      
     //gets contract interface
     const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+    const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
     //creates empty array for table
     let transactionArray = [];
@@ -363,6 +409,7 @@ class App extends Component {
     this.state = {
       web3: web3,
       clocktower: clocktower,
+      clocktoken: clocktoken,
       account: "-1",
       buttonClicked: false,
       formAddress: "0x0", 

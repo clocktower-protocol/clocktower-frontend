@@ -2,8 +2,17 @@ export const CLOCKTOWER_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 export const CLOCKTOKEN_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
+export const EMPTY_PERMIT = {
+  owner: "",
+  spender: "",
+  value: "",
+  deadline: "",
+  v: 0,
+  r: "",
+  s: ""
+}
 
-export let TOKEN_LOOKUP = {
+export const TOKEN_LOOKUP = {
   "0x0000000000000000000000000000000000000000" : "ETH",
   "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512" : "CLOCK"
 };
@@ -202,6 +211,48 @@ export const CLOCKTOWER_ABI = [
         "internalType": "address",
         "name": "token",
         "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct Clocktower.Permit",
+        "name": "permit",
+        "type": "tuple"
       }
     ],
     "name": "addTransaction",
@@ -407,6 +458,19 @@ export const CLOCKTOWER_ABI = [
   },
   {
     "inputs": [],
+    "name": "getFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getTime",
     "outputs": [
       {
@@ -523,6 +587,9 @@ export const CLOCKTOWER_ABI = [
     "type": "receive"
   }
 ]
+
+ 
+
 
 export const CLOCKTOKEN_ABI = [
   {
@@ -806,6 +873,7 @@ export const CLOCKTOKEN_ABI = [
     "stateMutability": "nonpayable",
     "type": "function"
   }
-];
+]
+
   
 export const FEE = 1.1;

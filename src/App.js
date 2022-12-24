@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
 import ClockTable from './ClockTable';
 import ClockForm from './ClockForm';
 import ClockNav from './ClockNav';
+import { signERC2612Permit } from "eth-permit";
 
 class App extends Component {
   
@@ -20,7 +21,6 @@ class App extends Component {
     this.setState({buttonClicked: true});
   }
 
-  
   //connects to metamask wallet
   async connectWallet() {
     try {
@@ -81,10 +81,14 @@ class App extends Component {
     //gets transaction details
     const trx = await this.state.web3.eth.getTransaction(txHash)
 
-    console.log(txHash)
+    //console.log(txHash)
+
+    console.log("Yo boyee!");
+
+    let isDone = false;
     
     //trys every five seconds to see if transaction is confirmed
-    setTimeout(async () => {
+    isDone = setTimeout(async () => {
 
      // console.log(trx.blockNumber)
       if(trx.blockNumber) {
@@ -95,9 +99,15 @@ class App extends Component {
         return true
       }
 
-      return await this.confirmTransaction(txHash)
+      //return await this.confirmTransaction(txHash)
+      await this.confirmTransaction(txHash)
+      return false
     },5*1000)
 
+    
+    if(isDone) {
+      return true
+    } 
   }
 
   //Validation-----------------------------
@@ -210,7 +220,6 @@ class App extends Component {
   //Contract functions-----------------------------------------------
   async addTransaction() {
 
-    
     //validates data
     if(!this.formValidate()) {
       return {status: "Form data incorrect"}
@@ -237,7 +246,7 @@ class App extends Component {
         to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
         value: sendAmount,
-        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
+        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token, EMPTY_PERMIT).encodeABI(),
       };
 
       const txhash = await window.ethereum.request({
@@ -253,62 +262,28 @@ class App extends Component {
         const isDone = await this.confirmTransaction(txhash)
     } else {
 
-      const transactionParameters1 = {
-        to: CLOCKTOKEN_ADDRESS, // Required except during contract publications.
-        from: account, // must match user's active address.
-        data: this.state.clocktoken.methods.approve(CLOCKTOWER_ADDRESS, amount).encodeABI(),
-      };
+      //makes permit
+      let permit = await this.setPermit(amount, 1766556423, token)
+
       transactionParameters = {
         to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
         value: tokenFee,
-        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
+        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token, permit).encodeABI(),
       };
 
-      //TODO:
-      //gets metamask to approve token transfer
-      //get metamask to sign transaction
-      
-     // try {
-        const txhash = await window.ethereum.request({
-          method: "eth_sendTransaction",
-          params: [transactionParameters1],
-        });
-        //async (txhash) => {
-          console.log("test")
-            //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
-            this.setState({alertType: "warning"})
-            this.setState({alert:true})
-            this.setState({alertText: "Transaction Pending..."})
-                  
-           
-          const isDone = await this.confirmTransaction(txhash)
-              
-          
-     // catch {
-
-     // } finally {
-        
-          
-          let txhash2 =  await window.ethereum.request({
-            method: "eth_sendTransaction",
-            params: [transactionParameters],
-          });
+      const txhash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
     
-          //async (txhash) => {
-          console.log(txhash2)
-                  
-          //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
-          this.setState({alertType: "warning"})
-          this.setState({alert:true})
-          this.setState({alertText: "Transaction Pending..."})
-                  
-          await this.confirmTransaction(txhash2)
-        
-     
+        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+        this.setState({alertType: "warning"})
+        this.setState({alert:true})
+        this.setState({alertText: "Transaction Pending..."})
+                
+        const isDone = await this.confirmTransaction(txhash)
     }
-    
-
   }
 
   async getAccountTransactions() {
@@ -378,6 +353,31 @@ class App extends Component {
         status: error.message
       }
     } 
+  }
+
+  //Creates permit
+  async setPermit(value, deadline, token_address) {
+      
+    let _value = String(Web3.utils.toWei(value))
+    
+    //signs permit
+    const result = await signERC2612Permit(
+        window.ethereum,
+        token_address,
+        this.state.account,
+        CLOCKTOWER_ADDRESS,
+        _value,
+        deadline
+    );
+
+    let _permit = {
+        owner: this.state.account, 
+        spender: CLOCKTOWER_ADDRESS, 
+        value: result.value, 
+        deadline: result.deadline, 
+        v: result.v, r: result.r , s: result.s};
+
+    return _permit
   }
 
   //Creates alert

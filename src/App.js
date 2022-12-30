@@ -258,7 +258,6 @@ class App extends Component {
         to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
         value: sendAmount,
-        //FIXME:
         data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token, permit2).encodeABI(),
       };
 

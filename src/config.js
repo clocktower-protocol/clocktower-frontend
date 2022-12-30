@@ -3,13 +3,13 @@ export const CLOCKTOKEN_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export const EMPTY_PERMIT = {
-  owner: "",
-  spender: "",
-  value: "",
-  deadline: "",
+  owner: "0x0000000000000000000000000000000000000000",
+  spender: "0x0000000000000000000000000000000000000000",
+  value: "20000000000000000000000000000000000000",
+  deadline: 1766556423,
   v: 0,
-  r: "",
-  s: ""
+  r: (1).toString(16),
+  s: (1).toString(16)
 }
 
 export const TOKEN_LOOKUP = {
@@ -165,6 +165,48 @@ export const CLOCKTOWER_ABI = [
             "internalType": "address",
             "name": "token",
             "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct Clocktower.Permit",
+            "name": "permit",
+            "type": "tuple"
           }
         ],
         "internalType": "struct Clocktower.Batch[]",
@@ -337,6 +379,11 @@ export const CLOCKTOWER_ABI = [
             "type": "bool"
           },
           {
+            "internalType": "bool",
+            "name": "failed",
+            "type": "bool"
+          },
+          {
             "internalType": "uint256",
             "name": "payload",
             "type": "uint256"
@@ -397,8 +444,14 @@ export const CLOCKTOWER_ABI = [
   {
     "inputs": [],
     "name": "checkTime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -440,6 +493,11 @@ export const CLOCKTOWER_ABI = [
           {
             "internalType": "bool",
             "name": "cancelled",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "failed",
             "type": "bool"
           },
           {
@@ -530,6 +588,11 @@ export const CLOCKTOWER_ABI = [
             "type": "bool"
           },
           {
+            "internalType": "bool",
+            "name": "failed",
+            "type": "bool"
+          },
+          {
             "internalType": "uint256",
             "name": "payload",
             "type": "uint256"
@@ -541,25 +604,6 @@ export const CLOCKTOWER_ABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint40",
-        "name": "unixTime",
-        "type": "uint40"
-      }
-    ],
-    "name": "hoursSinceMerge",
-    "outputs": [
-      {
-        "internalType": "uint40",
-        "name": "hourCount",
-        "type": "uint40"
-      }
-    ],
-    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -577,6 +621,13 @@ export const CLOCKTOWER_ABI = [
   },
   {
     "inputs": [],
+    "name": "sendTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "toggleContractActive",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -587,6 +638,7 @@ export const CLOCKTOWER_ABI = [
     "type": "receive"
   }
 ]
+
 
  
 

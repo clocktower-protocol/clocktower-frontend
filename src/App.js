@@ -83,7 +83,7 @@ class App extends Component {
 
     //console.log(txHash)
 
-    console.log("Yo boyee!");
+   // console.log("Yo boyee!");
 
     let isDone = false;
     
@@ -242,11 +242,24 @@ class App extends Component {
 
     //set up transaction parameters
     if(token == ZERO_ADDRESS) {
+
+      let byteArray = []
+      //creates empty 32 byte array
+      for(let i = 0; i < 32; i++) {
+        byteArray[i] = 0x0
+      }
+
+    //empty permit
+    let permit2 = {owner: ZERO_ADDRESS, spender: ZERO_ADDRESS, value: 0, deadline: 0, v:0, r: byteArray , s: byteArray};
+
+      //let permit = await this.setPermit(amount, 1766556423, token)
+      console.log(amount);
       transactionParameters = {
         to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
         value: sendAmount,
-        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token, EMPTY_PERMIT).encodeABI(),
+        //FIXME:
+        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token, permit2).encodeABI(),
       };
 
       const txhash = await window.ethereum.request({

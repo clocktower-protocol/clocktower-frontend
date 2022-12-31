@@ -165,48 +165,6 @@ export const CLOCKTOWER_ABI = [
             "internalType": "address",
             "name": "token",
             "type": "address"
-          },
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "owner",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "spender",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "value",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "deadline",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint8",
-                "name": "v",
-                "type": "uint8"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "r",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "s",
-                "type": "bytes32"
-              }
-            ],
-            "internalType": "struct Clocktower.Permit",
-            "name": "permit",
-            "type": "tuple"
           }
         ],
         "internalType": "struct Clocktower.Batch[]",
@@ -322,11 +280,6 @@ export const CLOCKTOWER_ABI = [
             "internalType": "uint40[]",
             "name": "timeTriggers",
             "type": "uint40[]"
-          },
-          {
-            "internalType": "address[]",
-            "name": "tokens",
-            "type": "address[]"
           }
         ],
         "internalType": "struct Clocktower.Account[]",
@@ -375,11 +328,6 @@ export const CLOCKTOWER_ABI = [
           },
           {
             "internalType": "bool",
-            "name": "cancelled",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
             "name": "failed",
             "type": "bool"
           },
@@ -406,8 +354,13 @@ export const CLOCKTOWER_ABI = [
       },
       {
         "internalType": "uint40",
-        "name": "timeTrigger",
+        "name": "unixTrigger",
         "type": "uint40"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
       }
     ],
     "name": "cancelTransaction",
@@ -488,11 +441,6 @@ export const CLOCKTOWER_ABI = [
           {
             "internalType": "bool",
             "name": "sent",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "cancelled",
             "type": "bool"
           },
           {
@@ -584,11 +532,6 @@ export const CLOCKTOWER_ABI = [
           },
           {
             "internalType": "bool",
-            "name": "cancelled",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
             "name": "failed",
             "type": "bool"
           },
@@ -638,9 +581,6 @@ export const CLOCKTOWER_ABI = [
     "type": "receive"
   }
 ]
-
-
- 
 
 
 export const CLOCKTOKEN_ABI = [
@@ -927,5 +867,4 @@ export const CLOCKTOKEN_ABI = [
   }
 ]
 
-  
 export const FEE = 1.1;

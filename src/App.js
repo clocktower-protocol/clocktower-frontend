@@ -331,12 +331,13 @@ class App extends Component {
     let id = transaction.id
     let timeTrigger = transaction.timeTrigger
     let account = this.state.account
+    let token = this.state.token;
 
      //set up transaction parameters
      const transactionParameters = {
       to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
       from: account, // must match user's active address.
-      data: this.state.clocktower.methods.cancelTransaction(id,timeTrigger).encodeABI(),
+      data: this.state.clocktower.methods.cancelTransaction(id,timeTrigger, token).encodeABI(),
     };
 
     //get metamask to sign transaction 

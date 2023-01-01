@@ -28,6 +28,7 @@ const ClockForm = (props) => {
                 <option value={ZERO_ADDRESS}>ETH</option>
                 <option value={CLOCKTOKEN_ADDRESS}>CLOCK</option>
               </Form.Select>
+              <Form.Check type="checkbox" id="checkBox" label="Max Approval (Recommended)" />
             </Form.Group>
           </Col>
         </Row>

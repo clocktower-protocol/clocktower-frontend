@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT, INFINITE_APPROVAL} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -10,6 +10,7 @@ import ClockTable from './ClockTable';
 import ClockForm from './ClockForm';
 import ClockNav from './ClockNav';
 import { signERC2612Permit } from "eth-permit";
+/* global BigInt */
 
 class App extends Component {
   
@@ -202,8 +203,15 @@ class App extends Component {
     this.setState({timeString: stringArray[0] + " " + event.target.value + ":00"})
   }
   tokenChange(event) {
-    this.setState({token: event.target.value});
-    console.log(event.target.value);
+    this.setState({token: event.target.value}, async () => {
+
+      //checks if allowance is infinite. 
+      if(await this.checkInfiniteAllowance(this.state.token)) {
+        console.log("Infinite!")
+      } else {
+        console.log("Not Infinite")
+      }
+    });
   }
 
   async submitForm(event) {
@@ -218,6 +226,18 @@ class App extends Component {
   };
 
   //Contract functions-----------------------------------------------
+  async checkInfiniteAllowance(token_address) {
+
+    console.log(token_address);
+
+    /*
+    let allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, token_address).call({from: this.state.account}))
+
+    return (allowance == INFINITE_APPROVAL) ? true : false
+    */
+    
+  }
+
   async addTransaction() {
 
     //validates data
@@ -456,6 +476,7 @@ class App extends Component {
     this.addTransaction = this.addTransaction.bind(this);
     this.getAccountTransactions = this.getAccountTransactions.bind(this)
     this.cancelTransaction = this.cancelTransaction.bind(this)
+    this.checkInfiniteAllowance = this.checkInfiniteAllowance.bind(this)
     //metamask methods
     this.connectWallet = this.connectWallet.bind(this);
     this.walletButtonClick = this.walletButtonClick.bind(this);

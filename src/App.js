@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT, INFINITE_APPROVAL} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT, INFINITE_APPROVAL, ABI_LOOKUP} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -207,10 +207,10 @@ class App extends Component {
 
       //checks if allowance is infinite. 
       if(await this.checkInfiniteAllowance(this.state.token)) {
-        console.log("Infinite!")
+        //console.log("Infinite!")
         this.setState({isTokenInfiniteApproved: false})
       } else {
-        console.log("Not Infinite")
+        //console.log("Not Infinite")
         //this.setInfiniteAllowance(this.state.token)
         this.setState({isTokenInfiniteApproved: true})
       }
@@ -239,48 +239,60 @@ class App extends Component {
       allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
     }
     
-
-    console.log(allowance.toString());
     return (allowance == INFINITE_APPROVAL) ? true : false
   }
 
   //TODO: create token lookup of abi in config so we can dynamically call different erc20 addresses
-  async setInfiniteAllowance(token_address) {
+  //FIXME: checkbox needs to be disabled or dissapear while waiting for transaction
+  async setInfiniteAllowance() {
     let transactionParameters = {};
     let account = this.state.account
+    let token = this.state.token
 
-    transactionParameters = {
-      to: CLOCKTOKEN_ADDRESS, // Required except during contract publications.
-      from: account, // must match user's active address.
-      data: this.state.clocktoken.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
-    };
+    //console.log(ABI_LOOKUP.token);
+    //console.log(ABI_LOOKUP.token);
+    console.log(token)
 
-     //get metamask to sign transaction 
-     try {
-      await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
-      })
-      .then (async (txhash) => {
-        console.log(txhash)
-        
-        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
-        this.setState({alertType: "warning"})
-        this.setState({alert:true})
-        this.setState({alertText: "Transaction Pending..."})
-        
-        this.confirmTransaction(txhash)
-     })
-
-      return {
-        status: "transaction cancelled!"
+    if(token != ZERO_ADDRESS) {
+      let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
+      console.log("here");
+    
+      transactionParameters = {
+        to: token, // Required except during contract publications.
+        from: account, // must match user's active address.
+        data: contract.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
       };
+
+      //get metamask to sign transaction 
+      try {
+        await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [transactionParameters],
+        })
+        .then (async (txhash) => {
+          console.log(txhash)
+          
+          //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+          this.setState({alertType: "warning"})
+          this.setState({alert:true})
+          this.setState({alertText: "Transaction Pending..."})
+          
+          this.confirmTransaction(txhash)
+
+          this.setState({isTokenInfiniteApproved: true})
+      })
+
+        return {
+          status: "transaction cancelled!"
+        };
+        
+      } catch (error) {
+        return {
+          status: error.message
+        }
+      } 
       
-    } catch (error) {
-      return {
-        status: error.message
-      }
-    } 
+    }
   }
 
   async addTransaction() {
@@ -556,6 +568,7 @@ class App extends Component {
             tokenSelect = {this.state.token}
             tokenChange = {this.tokenChange}
             isTokenBoxVisible = {this.state.isTokenInfiniteApproved}
+            setInfiniteAllowance = {this.setInfiniteAllowance}
             ></ClockForm>
            
           </div> 

@@ -210,6 +210,7 @@ class App extends Component {
         console.log("Infinite!")
       } else {
         console.log("Not Infinite")
+        //this.setInfiniteAllowance(this.state.token)
       }
     });
   }
@@ -221,21 +222,65 @@ class App extends Component {
     event.stopPropagation();
     
     await this.addTransaction()
-    //await this.getAccountTransactions();
+    await this.getAccountTransactions();
 
   };
 
   //Contract functions-----------------------------------------------
   async checkInfiniteAllowance(token_address) {
 
-    console.log(token_address);
+    //console.log(token_address);
+    let allowance = 0n
 
-    /*
-    let allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, token_address).call({from: this.state.account}))
-
-    return (allowance == INFINITE_APPROVAL) ? true : false
-    */
     
+    if(token_address != ZERO_ADDRESS) {
+      allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
+    }
+    
+
+    console.log(allowance.toString());
+    return (allowance == INFINITE_APPROVAL) ? true : false
+  }
+
+  //TODO: create token lookup of abi in config so we can dynamically call different erc20 addresses
+  async setInfiniteAllowance(token_address) {
+    let transactionParameters = {};
+    let account = this.state.account
+    let amount = Web3.utils.toWei("1");
+    console.log(amount);
+
+    transactionParameters = {
+      to: CLOCKTOKEN_ADDRESS, // Required except during contract publications.
+      from: account, // must match user's active address.
+      data: this.state.clocktoken.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
+    };
+
+     //get metamask to sign transaction 
+     try {
+      await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      })
+      .then (async (txhash) => {
+        console.log(txhash)
+        
+        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+        this.setState({alertType: "warning"})
+        this.setState({alert:true})
+        this.setState({alertText: "Transaction Pending..."})
+        
+        this.confirmTransaction(txhash)
+     })
+
+      return {
+        status: "transaction cancelled!"
+      };
+      
+    } catch (error) {
+      return {
+        status: error.message
+      }
+    } 
   }
 
   async addTransaction() {
@@ -477,6 +522,7 @@ class App extends Component {
     this.getAccountTransactions = this.getAccountTransactions.bind(this)
     this.cancelTransaction = this.cancelTransaction.bind(this)
     this.checkInfiniteAllowance = this.checkInfiniteAllowance.bind(this)
+    this.setInfiniteAllowance = this.setInfiniteAllowance.bind(this)
     //metamask methods
     this.connectWallet = this.connectWallet.bind(this);
     this.walletButtonClick = this.walletButtonClick.bind(this);

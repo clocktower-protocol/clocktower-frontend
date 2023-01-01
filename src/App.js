@@ -208,9 +208,11 @@ class App extends Component {
       //checks if allowance is infinite. 
       if(await this.checkInfiniteAllowance(this.state.token)) {
         console.log("Infinite!")
+        this.setState({isTokenInfiniteApproved: false})
       } else {
         console.log("Not Infinite")
         //this.setInfiniteAllowance(this.state.token)
+        this.setState({isTokenInfiniteApproved: true})
       }
     });
   }
@@ -246,8 +248,6 @@ class App extends Component {
   async setInfiniteAllowance(token_address) {
     let transactionParameters = {};
     let account = this.state.account
-    let amount = Web3.utils.toWei("1");
-    console.log(amount);
 
     transactionParameters = {
       to: CLOCKTOKEN_ADDRESS, // Required except during contract publications.
@@ -496,6 +496,7 @@ class App extends Component {
       clocktoken: clocktoken,
       account: "-1",
       buttonClicked: false,
+      isTokenInfiniteApproved: true,
       formAddress: "0x0", 
       formDate: "947462400",
       formAmount: 0.00, 
@@ -554,6 +555,7 @@ class App extends Component {
             hourChange = {this.hourChange}
             tokenSelect = {this.state.token}
             tokenChange = {this.tokenChange}
+            isTokenBoxVisible = {this.state.isTokenInfiniteApproved}
             ></ClockForm>
            
           </div> 

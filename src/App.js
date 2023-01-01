@@ -141,7 +141,7 @@ class App extends Component {
       )
       isCorrect = false
       this.setState({alert: true})
-      this.setState({alertText: "Ethereum amount invalid"})
+      this.setState({alertText: "Amount invalid"})
       return
     } else {
       this.setState({alert: false})
@@ -225,6 +225,15 @@ class App extends Component {
       return {status: "Form data incorrect"}
     }
 
+    let account = this.state.account
+    //gets allocation from token
+    let allocation = Number(Web3.utils.fromWei(await this.state.clocktoken.methods.allowance(account, CLOCKTOWER_ADDRESS).call({from: this.state.account})));
+  
+    let amount = this.state.formAmount;
+    let numberAmount = Number(Web3.utils.fromWei(amount));
+    let totalNumber = allocation + numberAmount
+    let total = String(totalNumber)
+
     //converts to UTC Epoch time
     dayjs.extend(utc)
     let time = dayjs(this.state.timeString).utc().unix()
@@ -232,13 +241,10 @@ class App extends Component {
     let tokenFee = Web3.utils.toWei(String(this.state.fee))
     tokenFee = Web3.utils.toHex(tokenFee);
     let receiver = this.state.formAddress
-    let amount = this.state.formAmount
     let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
     //metamask needs sent wei converted to hex
     sendAmount = Web3.utils.toHex(sendAmount)
-    let account = this.state.account
     let transactionParameters = {};
-
 
     //set up transaction parameters
     if(token == ZERO_ADDRESS) {
@@ -275,7 +281,7 @@ class App extends Component {
     } else {
 
       //makes permit
-      let permit = await this.setPermit(amount, 1766556423, token)
+      let permit = await this.setPermit(total, 1766556423, token)
 
       transactionParameters = {
         to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
@@ -337,7 +343,7 @@ class App extends Component {
      const transactionParameters = {
       to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
       from: account, // must match user's active address.
-      data: this.state.clocktower.methods.cancelTransaction(id,timeTrigger, token).encodeABI(),
+      data: this.state.clocktower.methods.cancelTransaction(id, timeTrigger, token).encodeABI(),
     };
 
     //get metamask to sign transaction 

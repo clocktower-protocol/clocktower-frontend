@@ -223,7 +223,7 @@ class App extends Component {
     event.preventDefault();
     event.stopPropagation();
     
-    await this.addTransaction()
+    await this.addTransactionPermit()
     await this.getAccountTransactions();
 
   };
@@ -243,15 +243,10 @@ class App extends Component {
   }
 
   //TODO: create token lookup of abi in config so we can dynamically call different erc20 addresses
-  //FIXME: checkbox needs to be disabled or dissapear while waiting for transaction
   async setInfiniteAllowance() {
     let transactionParameters = {};
     let account = this.state.account
     let token = this.state.token
-
-    //console.log(ABI_LOOKUP.token);
-    //console.log(ABI_LOOKUP.token);
-    console.log(token)
 
     if(token != ZERO_ADDRESS) {
       let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
@@ -284,7 +279,6 @@ class App extends Component {
         })
 
           return {
-            
             status: "transaction cancelled!"
           };
           
@@ -297,7 +291,48 @@ class App extends Component {
     }
   }
 
+  //check existing balance of claims per token
+  async enoughAllowance() {
+   let claims = BigInt(await this.state.clocktower.methods.getTotalClaims(this.state.token).call({from: this.state.account}))
+
+   let allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
+
+   if(allowance >= claims + BigInt(Web3.utils.toWei(this.state.formAmount))) {
+      return true
+   } else {
+      return false
+   }
+  }
+
+  //TODO:
   async addTransaction() {
+     //validates data
+     if(!this.formValidate()) {
+      return {status: "Form data incorrect"}
+    }
+
+    transactionParameters = {
+      to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+      from: account, // must match user's active address.
+      value: sendAmount,
+      data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
+    };
+
+    const txhash = await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [transactionParameters],
+    });
+  
+      //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+      this.setState({alertType: "warning"})
+      this.setState({alert:true})
+      this.setState({alertText: "Transaction Pending..."})
+              
+      const isDone = await this.confirmTransaction(txhash)
+
+  }
+
+  async addTransactionPermit() {
 
     //validates data
     if(!this.formValidate()) {
@@ -325,49 +360,15 @@ class App extends Component {
     sendAmount = Web3.utils.toHex(sendAmount)
     let transactionParameters = {};
 
-    //set up transaction parameters
-    if(token == ZERO_ADDRESS) {
+    //makes permit
+    let permit = await this.setPermit(total, 1766556423, token)
 
-      let byteArray = []
-      //creates empty 32 byte array
-      for(let i = 0; i < 32; i++) {
-        byteArray[i] = 0x0
-      }
-
-    //empty permit
-    let permit2 = {owner: ZERO_ADDRESS, spender: ZERO_ADDRESS, value: 0, deadline: 0, v:0, r: byteArray , s: byteArray};
-
-      //let permit = await this.setPermit(amount, 1766556423, token)
-      console.log(amount);
-      transactionParameters = {
-        to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
-        from: account, // must match user's active address.
-        value: sendAmount,
-        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token, permit2).encodeABI(),
-      };
-
-      const txhash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
-      });
-    
-        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
-        this.setState({alertType: "warning"})
-        this.setState({alert:true})
-        this.setState({alertText: "Transaction Pending..."})
-                
-        const isDone = await this.confirmTransaction(txhash)
-    } else {
-
-      //makes permit
-      let permit = await this.setPermit(total, 1766556423, token)
-
-      transactionParameters = {
+    transactionParameters = {
         to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
         value: tokenFee,
-        data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token, permit).encodeABI(),
-      };
+        data: this.state.clocktower.methods.addPermitTransaction(receiver,time,amount, token, permit).encodeABI(),
+    };
 
       const txhash = await window.ethereum.request({
         method: "eth_sendTransaction",
@@ -380,7 +381,7 @@ class App extends Component {
         this.setState({alertText: "Transaction Pending..."})
                 
         const isDone = await this.confirmTransaction(txhash)
-    }
+    
   }
 
   async getAccountTransactions() {
@@ -533,11 +534,12 @@ class App extends Component {
     this.tokenChange = this.tokenChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
     //contract methods
-    this.addTransaction = this.addTransaction.bind(this);
+    this.addTransactionPermit = this.addTransactionPermit.bind(this);
     this.getAccountTransactions = this.getAccountTransactions.bind(this)
     this.cancelTransaction = this.cancelTransaction.bind(this)
     this.checkInfiniteAllowance = this.checkInfiniteAllowance.bind(this)
     this.setInfiniteAllowance = this.setInfiniteAllowance.bind(this)
+    this.enoughAllowance = this.enoughAllowance.bind(this)
     //metamask methods
     this.connectWallet = this.connectWallet.bind(this);
     this.walletButtonClick = this.walletButtonClick.bind(this);

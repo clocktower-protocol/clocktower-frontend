@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT, INFINITE_APPROVAL, ABI_LOOKUP} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT, INFINITE_APPROVAL} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -208,11 +208,11 @@ class App extends Component {
       //checks if allowance is infinite. 
       if(await this.checkInfiniteAllowance(this.state.token)) {
         //console.log("Infinite!")
-        this.setState({isTokenInfiniteApproved: false})
+        this.setState({isInfinite: true})
       } else {
         //console.log("Not Infinite")
         //this.setInfiniteAllowance(this.state.token)
-        this.setState({isTokenInfiniteApproved: true})
+        this.setState({isInfinite: false})
       }
     });
   }
@@ -263,34 +263,36 @@ class App extends Component {
         data: contract.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
       };
 
-      //get metamask to sign transaction 
-      try {
-        await window.ethereum.request({
-          method: "eth_sendTransaction",
-          params: [transactionParameters],
+        //get metamask to sign transaction 
+        try {
+          await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameters],
+          })
+          .then (async (txhash) => {
+            console.log(txhash)
+            
+            //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+            this.setState({alertType: "warning"})
+            this.setState({alert:true})
+            this.setState({alertText: "Transaction Pending..."})
+            
+            await this.confirmTransaction(txhash)
+
+            this.setState({isInfinite: true})
+            
         })
-        .then (async (txhash) => {
-          console.log(txhash)
-          
-          //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
-          this.setState({alertType: "warning"})
-          this.setState({alert:true})
-          this.setState({alertText: "Transaction Pending..."})
-          
-          this.confirmTransaction(txhash)
 
-          this.setState({isTokenInfiniteApproved: true})
-      })
-
-        return {
-          status: "transaction cancelled!"
-        };
-        
-      } catch (error) {
-        return {
-          status: error.message
-        }
-      } 
+          return {
+            
+            status: "transaction cancelled!"
+          };
+          
+        } catch (error) {
+          return {
+            status: error.message
+          }
+        } 
       
     }
   }
@@ -508,7 +510,7 @@ class App extends Component {
       clocktoken: clocktoken,
       account: "-1",
       buttonClicked: false,
-      isTokenInfiniteApproved: true,
+      isInfinite: true,
       formAddress: "0x0", 
       formDate: "947462400",
       formAmount: 0.00, 
@@ -567,7 +569,7 @@ class App extends Component {
             hourChange = {this.hourChange}
             tokenSelect = {this.state.token}
             tokenChange = {this.tokenChange}
-            isTokenBoxVisible = {this.state.isTokenInfiniteApproved}
+            isInfinite = {this.state.isInfinite}
             setInfiniteAllowance = {this.setInfiniteAllowance}
             ></ClockForm>
            

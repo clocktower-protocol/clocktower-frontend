@@ -28,7 +28,7 @@ const ClockForm = (props) => {
                 <option value={ZERO_ADDRESS}>ETH</option>
                 <option value={CLOCKTOKEN_ADDRESS}>CLOCK</option>
               </Form.Select>
-              {props.isTokenBoxVisible ? <Form.Check type="checkbox" id="checkBox" label="Max Approval (Recommended)" onChange={props.setInfiniteAllowance} /> : null}
+              {props.isInfinite ? null : <Form.Check type="checkbox" id="checkBox" label="Max Approval (Recommended)" onChange={props.setInfiniteAllowance} />}
             </Form.Group>
           </Col>
         </Row>

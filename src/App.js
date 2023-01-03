@@ -10,6 +10,7 @@ import ClockTable from './ClockTable';
 import ClockForm from './ClockForm';
 import ClockNav from './ClockNav';
 import { signERC2612Permit } from "eth-permit";
+import { send } from 'eth-permit/dist/rpc';
 /* global BigInt */
 
 class App extends Component {
@@ -330,12 +331,13 @@ class App extends Component {
   }
 
   //TODO: 
+  //FIXME:
   async addTransaction() {
     let transactionParameters = {};
     let account = this.state.account
-    let fee = this.state.fee
+    //let fee = this.state.fee
     let amount = this.state.formAmount;
-    let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + fee))
+    let fee = Web3.utils.toHex(Web3.utils.toWei(String(this.state.fee)))
     let receiver = this.state.formAddress
     //converts to UTC Epoch time
     dayjs.extend(utc)
@@ -351,7 +353,7 @@ class App extends Component {
     transactionParameters = {
       to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
       from: account, // must match user's active address.
-      value: sendAmount,
+      value: fee,
       data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
     };
 

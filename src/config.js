@@ -378,6 +378,8 @@ export const CLOCKTOKEN_ABI = [
   }
 ]
 
+
+
 export const CLOCKTOWER_ABI = [
   {
     "inputs": [],
@@ -439,7 +441,7 @@ export const CLOCKTOWER_ABI = [
         "type": "string"
       }
     ],
-    "name": "Status",
+    "name": "StatusEmit",
     "type": "event"
   },
   {
@@ -616,6 +618,34 @@ export const CLOCKTOWER_ABI = [
         "type": "tuple"
       }
     ],
+    "name": "addPermitTransaction",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint40",
+        "name": "unixTime",
+        "type": "uint40"
+      },
+      {
+        "internalType": "uint256",
+        "name": "payload",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
     "name": "addTransaction",
     "outputs": [],
     "stateMutability": "payable",
@@ -683,14 +713,9 @@ export const CLOCKTOWER_ABI = [
             "type": "uint40"
           },
           {
-            "internalType": "bool",
-            "name": "sent",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "failed",
-            "type": "bool"
+            "internalType": "enum Clocktower.Status",
+            "name": "status",
+            "type": "uint8"
           },
           {
             "internalType": "uint256",
@@ -756,6 +781,19 @@ export const CLOCKTOWER_ABI = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_fixed_fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeFixedFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "checkTime",
     "outputs": [
@@ -800,14 +838,9 @@ export const CLOCKTOWER_ABI = [
             "type": "uint40"
           },
           {
-            "internalType": "bool",
-            "name": "sent",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "failed",
-            "type": "bool"
+            "internalType": "enum Clocktower.Status",
+            "name": "status",
+            "type": "uint8"
           },
           {
             "internalType": "uint256",
@@ -839,6 +872,25 @@ export const CLOCKTOWER_ABI = [
   {
     "inputs": [],
     "name": "getTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "getTotalClaims",
     "outputs": [
       {
         "internalType": "uint256",
@@ -887,14 +939,9 @@ export const CLOCKTOWER_ABI = [
             "type": "uint40"
           },
           {
-            "internalType": "bool",
-            "name": "sent",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "failed",
-            "type": "bool"
+            "internalType": "enum Clocktower.Status",
+            "name": "status",
+            "type": "uint8"
           },
           {
             "internalType": "uint256",
@@ -942,5 +989,7 @@ export const CLOCKTOWER_ABI = [
     "type": "receive"
   }
 ]
+
+
 
 export const FEE = 1.1;

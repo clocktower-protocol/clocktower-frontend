@@ -222,8 +222,17 @@ class App extends Component {
 
     event.preventDefault();
     event.stopPropagation();
-    
-    await this.addTransactionPermit()
+
+
+    //checks if allowance increase is needed
+    if(await this.enoughAllowance()) {
+      console.log("enough")
+      await this.addTransaction()
+    } else {
+      console.log("not enough")
+      await this.addTransactionPermit()
+    }
+  
     await this.getAccountTransactions();
 
   };
@@ -243,19 +252,20 @@ class App extends Component {
   }
 
   //TODO: create token lookup of abi in config so we can dynamically call different erc20 addresses
+  //FIXME:
   async setInfiniteAllowance() {
     let transactionParameters = {};
     let account = this.state.account
     let token = this.state.token
 
     if(token != ZERO_ADDRESS) {
-      let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
+      //let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
       console.log("here");
     
       transactionParameters = {
-        to: token, // Required except during contract publications.
+        to: CLOCKTOKEN_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
-        data: contract.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
+        data: this.state.clocktoken.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
       };
 
         //get metamask to sign transaction 
@@ -293,19 +303,28 @@ class App extends Component {
 
   //check existing balance of claims per token
   async enoughAllowance() {
-   let claims = BigInt(await this.state.clocktower.methods.getTotalClaims(this.state.token).call({from: this.state.account}))
+    let claims = BigInt(await this.state.clocktower.methods.getTotalClaims(this.state.token).call({from: this.state.account}))
 
-   let allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
+    let allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
 
-   if(allowance >= claims + BigInt(Web3.utils.toWei(this.state.formAmount))) {
-      return true
-   } else {
-      return false
-   }
+    console.log(String(allowance));
+    return (allowance >= claims + BigInt(Web3.utils.toWei(this.state.formAmount)) ? true : false)    
   }
 
-  //TODO:
+  //TODO: 
   async addTransaction() {
+    let transactionParameters = {};
+    let account = this.state.account
+    let fee = this.state.fee
+    let amount = this.state.formAmount;
+    let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + fee))
+    let receiver = this.state.formAddress
+    //converts to UTC Epoch time
+    dayjs.extend(utc)
+    let time = dayjs(this.state.timeString).utc().unix()    
+    let token = this.state.token;
+
+
      //validates data
      if(!this.formValidate()) {
       return {status: "Form data incorrect"}

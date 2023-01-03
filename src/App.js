@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, EMPTY_PERMIT, INFINITE_APPROVAL} from "./config"; 
+import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -10,7 +10,7 @@ import ClockTable from './ClockTable';
 import ClockForm from './ClockForm';
 import ClockNav from './ClockNav';
 import { signERC2612Permit } from "eth-permit";
-import { send } from 'eth-permit/dist/rpc';
+//import { send } from 'eth-permit/dist/rpc';
 /* global BigInt */
 
 class App extends Component {
@@ -206,6 +206,11 @@ class App extends Component {
   tokenChange(event) {
     this.setState({token: event.target.value}, async () => {
 
+        //TODO:
+        //dynamicall loads token info into the state
+
+
+        //controls if checkbox is visible or not
         if(this.state.token != ZERO_ADDRESS) {
           //checks if allowance is infinite. 
           if(await this.checkInfiniteAllowance(this.state.token)) {
@@ -230,6 +235,13 @@ class App extends Component {
         await this.setInfiniteAllowance()
       } 
     })  
+  }
+
+  //populates select info for token based on lookup object in config
+  tokenPulldown() {
+    return TOKEN_LOOKUP.map((token) => {
+      return <option value={token.address} key={token.address}>{token.ticker}</option>;
+    });
   }
 
   async submitForm(event) {
@@ -267,7 +279,7 @@ class App extends Component {
   }
 
   //TODO: create token lookup of abi in config so we can dynamically call different erc20 addresses
-  //FIXME:
+  //FIXME: has weird calls to token that are not recognized as a method
   async setInfiniteAllowance() {
     let transactionParameters = {};
     let account = this.state.account
@@ -278,7 +290,7 @@ class App extends Component {
       console.log("here");
     
       transactionParameters = {
-        to: CLOCKTOKEN_ADDRESS, // Required except during contract publications.
+        to: token, // Required except during contract publications.
         from: account, // must match user's active address.
         data: this.state.clocktoken.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
       };
@@ -330,8 +342,6 @@ class App extends Component {
     return (allowance >= claims + BigInt(Web3.utils.toWei(this.state.formAmount)) ? true : false)    
   }
 
-  //TODO: 
-  //FIXME:
   async addTransaction() {
     let transactionParameters = {};
     let account = this.state.account
@@ -548,6 +558,9 @@ class App extends Component {
       web3: web3,
       clocktower: clocktower,
       clocktoken: clocktoken,
+      //&&
+      tokenABI: "",
+      //
       account: "-1",
       buttonClicked: false,
       checkboxChecked: false,
@@ -574,6 +587,7 @@ class App extends Component {
     this.hourChange = this.hourChange.bind(this);
     this.tokenChange = this.tokenChange.bind(this);
     this.checkboxChange = this.checkboxChange.bind(this);
+    this.tokenPulldown = this.tokenPulldown.bind(this);
     this.submitForm = this.submitForm.bind(this);
     //contract methods
     this.addTransactionPermit = this.addTransactionPermit.bind(this);
@@ -618,6 +632,7 @@ class App extends Component {
             checkboxChange = {this.checkboxChange}
             checkboxChecked = {this.state.checkboxChecked}
             checkboxDisabled = {this.state.checkboxDisabled}
+            tokenPulldown = {this.tokenPulldown}
             ></ClockForm>
            
           </div> 

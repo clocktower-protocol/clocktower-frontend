@@ -25,8 +25,7 @@ const ClockForm = (props) => {
               <Form.Label>Token</Form.Label>
               <Form.Select>
                 <option>Select which token</option>
-                <option value={ZERO_ADDRESS}>ETH</option>
-                <option value={CLOCKTOKEN_ADDRESS}>CLOCK</option>
+                {props.tokenPulldown()}
               </Form.Select>
             </Form.Group>
             {props.isInfinite ? null : props.checkboxDisabled ? <Form.Check type="checkbox"  disabled checked={props.checkboxChecked} label="Max Approval (Recommended)" onChange={props.checkboxChange} /> : <Form.Check type="checkbox"  checked={props.checkboxChecked} label="Max Approval (Recommended)" onChange={props.checkboxChange} />}

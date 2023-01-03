@@ -204,12 +204,11 @@ class App extends Component {
     this.setState({timeString: stringArray[0] + " " + event.target.value + ":00"})
   }
   tokenChange(event) {
+
+    let tokenAddress = event.target.value
+
+    //sets token
     this.setState({token: event.target.value}, async () => {
-
-        //TODO:
-        //dynamicall loads token info into the state
-
-
         //controls if checkbox is visible or not
         if(this.state.token != ZERO_ADDRESS) {
           //checks if allowance is infinite. 
@@ -225,6 +224,16 @@ class App extends Component {
           this.setState({isInfinite: true})
         }
     });
+    
+    //sets abi
+    TOKEN_LOOKUP.map((token) => {
+      if(token.address == tokenAddress){
+        console.log(token.address)
+        this.setState({tokenABI: token.ABI}, () => {
+          console.log(this.state.tokenABI)
+        })
+      }
+    })
   }
 
   checkboxChange(event) {
@@ -235,6 +244,15 @@ class App extends Component {
         await this.setInfiniteAllowance()
       } 
     })  
+  }
+
+  getABI(tokenAddress) {
+    TOKEN_LOOKUP.map((token) => {
+      if(token.address == tokenAddress){
+        console.log(token.address)
+        return token.ABI
+      }
+    })
   }
 
   //populates select info for token based on lookup object in config
@@ -278,12 +296,13 @@ class App extends Component {
     return (allowance == INFINITE_APPROVAL) ? true : false
   }
 
-  //TODO: create token lookup of abi in config so we can dynamically call different erc20 addresses
   //FIXME: has weird calls to token that are not recognized as a method
   async setInfiniteAllowance() {
     let transactionParameters = {};
     let account = this.state.account
     let token = this.state.token
+    const web3 = new Web3(this.state.node)
+    const contract = new web3.eth.Contract(this.state.tokenABI, this.state.token);
 
     if(token != ZERO_ADDRESS) {
       //let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
@@ -292,7 +311,7 @@ class App extends Component {
       transactionParameters = {
         to: token, // Required except during contract publications.
         from: account, // must match user's active address.
-        data: this.state.clocktoken.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
+        data: contract.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
       };
 
         //get metamask to sign transaction 
@@ -555,11 +574,12 @@ class App extends Component {
     
     //initializes state variables
     this.state = {
+      node: "http://localhost:8545",
       web3: web3,
       clocktower: clocktower,
       clocktoken: clocktoken,
       //&&
-      tokenABI: "",
+      tokenABI: {},
       //
       account: "-1",
       buttonClicked: false,
@@ -580,6 +600,8 @@ class App extends Component {
       alertType: "danger"
     }
 
+    //utility methods
+    //this.getABI = this.getABI.bind(this);
     //form methods
     this.receiverChange = this.receiverChange.bind(this);
     this.dateChange = this.dateChange.bind(this);

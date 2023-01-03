@@ -28,8 +28,8 @@ const ClockForm = (props) => {
                 <option value={ZERO_ADDRESS}>ETH</option>
                 <option value={CLOCKTOKEN_ADDRESS}>CLOCK</option>
               </Form.Select>
-              {props.isInfinite ? null : <Form.Check type="checkbox" id="checkBox" label="Max Approval (Recommended)" onClick={props.setInfiniteAllowance} />}
             </Form.Group>
+            {props.isInfinite ? null : props.checkboxDisabled ? <Form.Check type="checkbox"  disabled checked={props.checkboxChecked} label="Max Approval (Recommended)" onChange={props.checkboxChange} /> : <Form.Check type="checkbox"  checked={props.checkboxChecked} label="Max Approval (Recommended)" onChange={props.checkboxChange} />}
           </Col>
         </Row>
         <Row>

@@ -214,7 +214,20 @@ class App extends Component {
         //this.setInfiniteAllowance(this.state.token)
         this.setState({isInfinite: false})
       }
+      
     });
+  }
+
+  checkboxChange(event) {
+    
+    this.setState({checkboxChecked: event.target.checked}, async () => {
+      if(this.state.checkboxChecked){
+        //TODO:
+        //disables button
+        this.setState({checkboxDisabled: true})
+        await this.setInfiniteAllowance()
+      } 
+    })  
   }
 
   async submitForm(event) {
@@ -284,15 +297,19 @@ class App extends Component {
             
             await this.confirmTransaction(txhash)
 
+            this.setState({checkboxChecked: false})
+            this.setState({checkboxDisabled: false})
             this.setState({isInfinite: true})
             
-        })
+          })
 
           return {
             status: "transaction cancelled!"
           };
           
         } catch (error) {
+          this.setState({checkboxChecked: false})
+          this.setState({checkboxDisabled: false})
           return {
             status: error.message
           }
@@ -530,6 +547,8 @@ class App extends Component {
       clocktoken: clocktoken,
       account: "-1",
       buttonClicked: false,
+      checkboxChecked: false,
+      checkboxDisabled: false,
       isInfinite: true,
       formAddress: "0x0", 
       formDate: "947462400",
@@ -551,6 +570,7 @@ class App extends Component {
     this.amountChange = this.amountChange.bind(this);
     this.hourChange = this.hourChange.bind(this);
     this.tokenChange = this.tokenChange.bind(this);
+    this.checkboxChange = this.checkboxChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
     //contract methods
     this.addTransactionPermit = this.addTransactionPermit.bind(this);
@@ -592,6 +612,9 @@ class App extends Component {
             tokenChange = {this.tokenChange}
             isInfinite = {this.state.isInfinite}
             setInfiniteAllowance = {this.setInfiniteAllowance}
+            checkboxChange = {this.checkboxChange}
+            checkboxChecked = {this.state.checkboxChecked}
+            checkboxDisabled = {this.state.checkboxDisabled}
             ></ClockForm>
            
           </div> 

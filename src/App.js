@@ -205,24 +205,23 @@ class App extends Component {
   tokenChange(event) {
     this.setState({token: event.target.value}, async () => {
 
-      //checks if allowance is infinite. 
-      if(await this.checkInfiniteAllowance(this.state.token)) {
-        //console.log("Infinite!")
-        this.setState({isInfinite: true})
-      } else {
-        //console.log("Not Infinite")
-        //this.setInfiniteAllowance(this.state.token)
-        this.setState({isInfinite: false})
-      }
-      
+      if(this.state.token != ZERO_ADDRESS) {
+        //checks if allowance is infinite. 
+        if(await this.checkInfiniteAllowance(this.state.token)) {
+          //console.log("Infinite!")
+          this.setState({isInfinite: true})
+        } else {
+          //console.log("Not Infinite")
+          //this.setInfiniteAllowance(this.state.token)
+          this.setState({isInfinite: false})
+        }
+      } 
     });
   }
 
   checkboxChange(event) {
-    
     this.setState({checkboxChecked: event.target.checked}, async () => {
       if(this.state.checkboxChecked){
-        //TODO:
         //disables button
         this.setState({checkboxDisabled: true})
         await this.setInfiniteAllowance()

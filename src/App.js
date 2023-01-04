@@ -210,7 +210,7 @@ class App extends Component {
     //sets token
     this.setState({token: event.target.value}, async () => {
         //controls if checkbox is visible or not
-        if(this.state.token != ZERO_ADDRESS) {
+        if(this.state.token !== ZERO_ADDRESS) {
           //checks if allowance is infinite. 
           if(await this.checkInfiniteAllowance(this.state.token)) {
             //console.log("Infinite!")
@@ -227,7 +227,7 @@ class App extends Component {
     
     //sets abi
     TOKEN_LOOKUP.map((token) => {
-      if(token.address == tokenAddress){
+      if(token.address === tokenAddress){
         console.log(token.address)
         this.setState({tokenABI: token.ABI}, () => {
           console.log(this.state.tokenABI)
@@ -248,7 +248,7 @@ class App extends Component {
 
   getABI(tokenAddress) {
     TOKEN_LOOKUP.map((token) => {
-      if(token.address == tokenAddress){
+      if(token.address === tokenAddress){
         console.log(token.address)
         return token.ABI
       }
@@ -262,8 +262,24 @@ class App extends Component {
     });
   }
 
+  hoursPulldown() {
+    const optionArray = [];
+      for(let i = 1; i <= 24; i++) {
+        if(i < 13) {
+          optionArray[i-1] = <option value={String(i)} key={String(i)}>{i}:00 AM</option>
+        } else {
+          optionArray[i-1] = <option value={String(i)} key={String(i)}>{i - 12}:00 PM</option>
+        }
+      }
+
+    return optionArray.map((option) => {
+      return option;
+    })
+   
+  }
+
   async submitForm(event) {
-    const target = event.currentTarget;
+   // const target = event.currentTarget;
 
     event.preventDefault();
     event.stopPropagation();
@@ -289,11 +305,11 @@ class App extends Component {
     let allowance = 0n
 
     
-    if(token_address != ZERO_ADDRESS) {
+    if(token_address !== ZERO_ADDRESS) {
       allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
     }
     
-    return (allowance == INFINITE_APPROVAL) ? true : false
+    return (allowance === INFINITE_APPROVAL) ? true : false
   }
 
   //FIXME: has weird calls to token that are not recognized as a method
@@ -304,7 +320,7 @@ class App extends Component {
     const web3 = new Web3(this.state.node)
     const contract = new web3.eth.Contract(this.state.tokenABI, this.state.token);
 
-    if(token != ZERO_ADDRESS) {
+    if(token !== ZERO_ADDRESS) {
       //let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
       console.log("here");
     
@@ -396,7 +412,7 @@ class App extends Component {
       this.setState({alert:true})
       this.setState({alertText: "Transaction Pending..."})
               
-      const isDone = await this.confirmTransaction(txhash)
+      await this.confirmTransaction(txhash)
 
   }
 
@@ -423,9 +439,9 @@ class App extends Component {
     let tokenFee = Web3.utils.toWei(String(this.state.fee))
     tokenFee = Web3.utils.toHex(tokenFee);
     let receiver = this.state.formAddress
-    let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
+    //let sendAmount = Web3.utils.toWei(String(Number(Web3.utils.fromWei(amount)) + this.state.fee))
     //metamask needs sent wei converted to hex
-    sendAmount = Web3.utils.toHex(sendAmount)
+    //sendAmount = Web3.utils.toHex(sendAmount)
     let transactionParameters = {};
 
     //makes permit
@@ -448,7 +464,7 @@ class App extends Component {
         this.setState({alert:true})
         this.setState({alertText: "Transaction Pending..."})
                 
-        const isDone = await this.confirmTransaction(txhash)
+        await this.confirmTransaction(txhash)
     
   }
 
@@ -610,6 +626,7 @@ class App extends Component {
     this.tokenChange = this.tokenChange.bind(this);
     this.checkboxChange = this.checkboxChange.bind(this);
     this.tokenPulldown = this.tokenPulldown.bind(this);
+    this.hoursPulldown = this.hoursPulldown.bind(this);
     this.submitForm = this.submitForm.bind(this);
     //contract methods
     this.addTransactionPermit = this.addTransactionPermit.bind(this);
@@ -655,6 +672,7 @@ class App extends Component {
             checkboxChecked = {this.state.checkboxChecked}
             checkboxDisabled = {this.state.checkboxDisabled}
             tokenPulldown = {this.tokenPulldown}
+            hoursPulldown = {this.hoursPulldown}
             ></ClockForm>
            
           </div> 

@@ -16,6 +16,8 @@ export const EMPTY_PERMIT = {
 }
 */
 
+
+//TODO: these ABIs need to be checked
 export const TOKEN_LOOKUP = [
   {
     address: "0x0000000000000000000000000000000000000000",

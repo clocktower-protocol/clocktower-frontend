@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
 
 
@@ -19,7 +19,7 @@ const ClockNav = (props) => {
               <Nav.Link href="#futurepayments">Future Payments</Nav.Link>
             </Nav>
             <Nav key="nav" className="topNav">
-              {props.buttonClicked ? (<Navbar.Brand>Account: {props.account}</Navbar.Brand>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => props.walletButtonClick()}>Sign in Wallet</Button>)}
+              {props.buttonClicked ? (<Navbar.Text>Account: {props.account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => props.walletButtonClick()}>Sign in Wallet</Button>)}
               {/*
               <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
               */}

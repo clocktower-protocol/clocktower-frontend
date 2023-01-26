@@ -1870,7 +1870,6 @@ export const CLOCKTOWERPAY_ABI = [
 
 
 export const CLOCKTOWERSUB_ABI = [
-  [
   {
     "inputs": [],
     "stateMutability": "payable",
@@ -2568,7 +2567,5 @@ export const CLOCKTOWERSUB_ABI = [
   }
 ]
 
-
-]
 
 export const FEE = 1.1;

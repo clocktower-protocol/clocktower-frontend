@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect} from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "./config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERPAY_ABI, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERPAY_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "./config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -14,7 +14,11 @@ import { signERC2612Permit } from "eth-permit";
 /* global BigInt */
 
 class App extends Component {
-  
+
+  componentDidMount() {
+    document.title = "Clocktower";
+  }
+
   //Metamask-----------------------------------------
 
   //changes wallet button based on status
@@ -306,7 +310,7 @@ class App extends Component {
 
     
     if(token_address !== ZERO_ADDRESS) {
-      allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
+      allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWERPAY_ADDRESS).call({from: this.state.account}))
     }
     
     return (allowance === INFINITE_APPROVAL) ? true : false
@@ -327,7 +331,7 @@ class App extends Component {
       transactionParameters = {
         to: token, // Required except during contract publications.
         from: account, // must match user's active address.
-        data: contract.methods.approve(CLOCKTOWER_ADDRESS, INFINITE_APPROVAL).encodeABI()
+        data: contract.methods.approve(CLOCKTOWERPAY_ADDRESS, INFINITE_APPROVAL).encodeABI()
       };
 
         //get metamask to sign transaction 
@@ -369,9 +373,9 @@ class App extends Component {
 
   //check existing balance of claims per token
   async enoughAllowance() {
-    let claims = BigInt(await this.state.clocktower.methods.getTotalClaims(this.state.token).call({from: this.state.account}))
+    let claims = BigInt(await this.state.clocktowerpay.methods.getTotalClaims(this.state.token).call({from: this.state.account}))
 
-    let allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWER_ADDRESS).call({from: this.state.account}))
+    let allowance = BigInt(await this.state.clocktoken.methods.allowance(this.state.account, CLOCKTOWERPAY_ADDRESS).call({from: this.state.account}))
 
     console.log(String(allowance));
     return (allowance >= claims + BigInt(Web3.utils.toWei(this.state.formAmount)) ? true : false)    
@@ -396,10 +400,10 @@ class App extends Component {
     }
 
     transactionParameters = {
-      to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+      to: CLOCKTOWERPAY_ADDRESS, // Required except during contract publications.
       from: account, // must match user's active address.
       value: fee,
-      data: this.state.clocktower.methods.addTransaction(receiver,time,amount, token).encodeABI(),
+      data: this.state.clocktowerpay.methods.addPayment(receiver,time,amount, token).encodeABI(),
     };
 
     const txhash = await window.ethereum.request({
@@ -425,7 +429,7 @@ class App extends Component {
 
     let account = this.state.account
     //gets allocation from token
-    let allocation = Number(Web3.utils.fromWei(await this.state.clocktoken.methods.allowance(account, CLOCKTOWER_ADDRESS).call({from: this.state.account})));
+    let allocation = Number(Web3.utils.fromWei(await this.state.clocktoken.methods.allowance(account, CLOCKTOWERPAY_ADDRESS).call({from: this.state.account})));
   
     let amount = this.state.formAmount;
     let numberAmount = Number(Web3.utils.fromWei(amount));
@@ -448,10 +452,10 @@ class App extends Component {
     let permit = await this.setPermit(total, 1766556423, token)
 
     transactionParameters = {
-        to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+        to: CLOCKTOWERPAY_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
         value: tokenFee,
-        data: this.state.clocktower.methods.addPermitTransaction(receiver,time,amount, token, permit).encodeABI(),
+        data: this.state.clocktowerpay.methods.addPermitPayment(receiver,time,amount, token, permit).encodeABI(),
     };
 
       const txhash = await window.ethereum.request({
@@ -484,7 +488,7 @@ class App extends Component {
 
 
     //calls contract 
-    await this.state.clocktower.methods.getAccountTransactions().call({from: this.state.account})
+    await this.state.clocktowerpay.methods.getAccountPayments().call({from: this.state.account})
     .then(function(result) {
       accountTransactions = result
 
@@ -505,9 +509,9 @@ class App extends Component {
 
      //set up transaction parameters
      const transactionParameters = {
-      to: CLOCKTOWER_ADDRESS, // Required except during contract publications.
+      to: CLOCKTOWERPAY_ADDRESS, // Required except during contract publications.
       from: account, // must match user's active address.
-      data: this.state.clocktower.methods.cancelTransaction(id, timeTrigger, token).encodeABI(),
+      data: this.state.clocktowerpay.methods.cancelTransaction(id, timeTrigger, token).encodeABI(),
     };
 
     //get metamask to sign transaction 
@@ -548,14 +552,14 @@ class App extends Component {
         window.ethereum,
         token_address,
         this.state.account,
-        CLOCKTOWER_ADDRESS,
+        CLOCKTOWERPAY_ADDRESS,
         _value,
         deadline
     );
 
     let _permit = {
         owner: this.state.account, 
-        spender: CLOCKTOWER_ADDRESS, 
+        spender: CLOCKTOWERPAY_ADDRESS, 
         value: result.value, 
         deadline: result.deadline, 
         v: result.v, r: result.r , s: result.s};
@@ -582,8 +586,11 @@ class App extends Component {
     const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
-    const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+    //const clocktower = new web3.eth.Contract(CLOCKTOWER_ABI, CLOCKTOWER_ADDRESS);
+    const clocktowerpay = new web3.eth.Contract(CLOCKTOWERPAY_ABI, CLOCKTOWERPAY_ADDRESS);
     const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
+    //TODO:
+    //const clocktowerpay = new web3.eth.Contract(CLOCKTOWERPAY_ABI, CLOCK)
 
     //creates empty array for table
     let transactionArray = [];
@@ -592,7 +599,8 @@ class App extends Component {
     this.state = {
       node: "http://localhost:8545",
       web3: web3,
-      clocktower: clocktower,
+      //clocktower: clocktower,
+      clocktowerpay: clocktowerpay,
       clocktoken: clocktoken,
       //&&
       tokenABI: {},

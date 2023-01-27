@@ -2,7 +2,7 @@ import {React, useState} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 
-const ClockNavNew = (props) => {
+const ClockNavNew = () => {
 
     const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("-1")

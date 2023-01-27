@@ -10,6 +10,7 @@ import ClockTable from './ClockTable';
 import ClockForm from './ClockForm';
 import ClockNav from './ClockNav';
 import { signERC2612Permit } from "eth-permit";
+import { useOutletContext } from "react-router-dom";
 //import { send } from 'eth-permit/dist/rpc';
 /* global BigInt */
 
@@ -583,6 +584,9 @@ class App extends Component {
   //initializes values
   constructor(props) {
     super(props)
+
+    //gets props from navbar/root
+    //const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert] = useOutletContext();
     
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")

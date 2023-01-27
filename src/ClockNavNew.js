@@ -1,7 +1,8 @@
-import React from 'react';
+import {React, useState} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap'
 
-const ClockNav2 = (props) => {
+const ClockNavNew = (props) => {
 
     const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("-1")
@@ -43,12 +44,7 @@ const ClockNav2 = (props) => {
         //checks if chain has changed (only currently allows hardhat network)
         window.ethereum.on("chainChanged", (chainId) => {
             if (chainId !== 31337) {
-                /*
-            this.setState({alertText: "Clocktower currently only works on Hardhat Network. Please switch back"})
-            this.setState({alert:true})
-            this.setState({account: "-1"})
-            this.setState({buttonClicked: false})
-            */
+        
             setAlertText("Clocktower currently only works on Hardhat Network. Please switch back")
             setAlert(true)
             setAccount("-1")
@@ -56,7 +52,6 @@ const ClockNav2 = (props) => {
             return
             } else {
             connectWallet()
-            //this.setState({alert:false})
             setAlert(false)
             return
             }
@@ -67,15 +62,17 @@ const ClockNav2 = (props) => {
         }
   }
 
-    const walletButtonClick = () => {
-        connectWallet();
-        setButtonClicked(true)
-    }
+  const walletButtonClick = () => {
+    connectWallet();
+    setButtonClicked(true)
+  }
 
     return (
         <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
           <Container key="navContainer" className="clockNav">
-            <Navbar.Brand key="navTitle" href="#home">Clocktower</Navbar.Brand>
+            <LinkContainer to="/">
+              <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
+            </LinkContainer>
             <Nav key="subnav">
               <NavDropdown title="Subscriptions" id="nav-sub">
                 <NavDropdown.Item eventKey="4.1">Provider Dashboard</NavDropdown.Item>
@@ -84,10 +81,12 @@ const ClockNav2 = (props) => {
               </NavDropdown>
             </Nav>
             <Nav key="futnav">
-              <Nav.Link href="#futurepayments">Future Payments</Nav.Link>
+              <LinkContainer to="/payments">
+                <Nav.Link>Future Payments</Nav.Link>
+              </LinkContainer>
             </Nav>
             <Nav key="nav" className="topNav">
-              {props.buttonClicked ? (<Navbar.Text>Account: {account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+              {buttonClicked ? (<Navbar.Text>Account: {account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
               {/*
               <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
               */}
@@ -98,4 +97,4 @@ const ClockNav2 = (props) => {
 
 }
 
-export default ClockNav2
+export default ClockNavNew

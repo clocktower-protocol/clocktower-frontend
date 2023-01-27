@@ -6,12 +6,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter,RouterProvider} from "react-router-dom";
 import Root from "./routes/root";
+import ErrorPage from './errorPage';
+import FuturePayments from './routes/futurepayments';
+import FutPaymentRoute from './routes/futurepayments';
 
 const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
-
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "payments/",
+          element: <FutPaymentRoute />,
+        },
+      ]
     },
   ]);
 

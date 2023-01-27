@@ -281,9 +281,9 @@ const FuturePayments = () => {
     }
 
     //listens for token change and adjusts state variables
-    /*
-    useEffect( async () => {
-            
+    //TODO: this needs to be fixed
+    useEffect( () => {
+        const changeAllowance = async () => {
             //controls if checkbox is visible or not
             if(token !== ZERO_ADDRESS) {
             //checks if allowance is infinite. 
@@ -295,8 +295,10 @@ const FuturePayments = () => {
             } else {
                 setIsInfinite(true)
             }
+        }
+        changeAllowance()
      }, [token]);
-     */
+     
 
     const checkboxChange = (event) => {
         setCheckboxChecked(event.target.checked)
@@ -312,16 +314,19 @@ const FuturePayments = () => {
         */
     }
 
-    /*
-    useEffect(async () => {
+    //TODO: this needs to be fixed
+    useEffect(() => {
             
-        if(checkboxChecked){
-            //disables button
-            setCheckboxDisabled(true)
-            await setInfiniteAllowance()
-        }       
+        const changeCheckbox = async () => {
+            if(checkboxChecked){
+                //disables button
+                setCheckboxDisabled(true)
+                await setInfiniteAllowance()
+            }       
+        }   
+        changeCheckbox()
     }, [checkboxChecked]);
-    */
+    
 
     const getABI = (tokenAddress) => {
         TOKEN_LOOKUP.map((token) => {

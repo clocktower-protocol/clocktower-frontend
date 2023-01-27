@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState} from 'react'
+import React, { Component, useEffect, useState, useCallback} from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
@@ -278,12 +278,26 @@ const FuturePayments = () => {
                 }, [tokenABI]);
                 */
             }
+            return true
         })
     }
 
     //listens for token change and adjusts state variables
     useEffect( () => {
-        const changeAllowance = async () => {
+        const changeAllowance = async (account, clocktoken) => {
+            const checkInfiniteAllowance = async (token_address) => {
+
+                //console.log(token_address);
+                let allowance = 0n
+        
+                
+                if(token_address !== ZERO_ADDRESS) {
+                allowance = BigInt(await clocktoken.methods.allowance(account, CLOCKTOWERPAY_ADDRESS).call({from: account}))
+                }
+                
+                return (allowance === INFINITE_APPROVAL) ? true : false
+            }
+        
             //controls if checkbox is visible or not
             if(token !== ZERO_ADDRESS) {
             //checks if allowance is infinite. 
@@ -299,6 +313,62 @@ const FuturePayments = () => {
         changeAllowance()
      }, [token]);
      
+     //FIXME: has weird calls to token that are not recognized as a method.
+    //TODO: check that memoizing this function doesn't cause issues
+    const setInfiniteAllowance = useCallback(async () => {
+        let transactionParameters = {};
+       // let account = account
+       // let token = token
+        const web3 = new Web3(node)
+        const contract = new web3.eth.Contract(tokenABI, token);
+
+        if(token !== ZERO_ADDRESS) {
+        //let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
+        console.log("here");
+        
+        transactionParameters = {
+            to: token, // Required except during contract publications.
+            from: account, // must match user's active address.
+            data: contract.methods.approve(CLOCKTOWERPAY_ADDRESS, INFINITE_APPROVAL).encodeABI()
+        };
+
+            //get metamask to sign transaction 
+            try {
+            await window.ethereum.request({
+                method: "eth_sendTransaction",
+                params: [transactionParameters],
+            })
+            .then (async (txhash) => {
+                console.log(txhash)
+                
+                //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+                setAlertType("warning")
+                setAlert(true)
+                setAlertText("Transaction Pending...")
+                
+                //FIXME: this wont work in callback hook. 
+               // await confirmTransaction(txhash)
+
+                setCheckboxChecked(false)
+                setCheckboxDisabled(false)
+                setIsInfinite(true)
+            })
+
+            return {
+                status: "transaction cancelled!"
+            };
+            
+            } catch (error) {
+            setCheckboxChecked(false)
+            setCheckboxDisabled(false)
+            return {
+                status: error.message
+            }
+            } 
+        
+        }
+    }, [account, node, setAlert, setAlertText, token, tokenABI]
+    )
 
     const checkboxChange = (event) => {
         setCheckboxChecked(event.target.checked)
@@ -324,9 +394,10 @@ const FuturePayments = () => {
             }       
         }   
         changeCheckbox()
-    }, [checkboxChecked]);
+    }, [checkboxChecked, setInfiniteAllowance]);
     
 
+    /*
     const getABI = (tokenAddress) => {
         TOKEN_LOOKUP.map((token) => {
         if(token.address === tokenAddress){
@@ -335,6 +406,7 @@ const FuturePayments = () => {
         }
         })
     }
+    */
 
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
@@ -380,6 +452,7 @@ const FuturePayments = () => {
     };
 
     //Contract functions-----------------------------------------------
+    /*
     const checkInfiniteAllowance = async (token_address) => {
 
         //console.log(token_address);
@@ -392,60 +465,7 @@ const FuturePayments = () => {
         
         return (allowance === INFINITE_APPROVAL) ? true : false
     }
-
-    //FIXME: has weird calls to token that are not recognized as a method
-    const setInfiniteAllowance = async () => {
-        let transactionParameters = {};
-       // let account = account
-       // let token = token
-        const web3 = new Web3(node)
-        const contract = new web3.eth.Contract(tokenABI, token);
-
-        if(token !== ZERO_ADDRESS) {
-        //let contract = new this.state.web3.eth.Contract(CLOCKTOKEN_ABI, token)
-        console.log("here");
-        
-        transactionParameters = {
-            to: token, // Required except during contract publications.
-            from: account, // must match user's active address.
-            data: contract.methods.approve(CLOCKTOWERPAY_ADDRESS, INFINITE_APPROVAL).encodeABI()
-        };
-
-            //get metamask to sign transaction 
-            try {
-            await window.ethereum.request({
-                method: "eth_sendTransaction",
-                params: [transactionParameters],
-            })
-            .then (async (txhash) => {
-                console.log(txhash)
-                
-                //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
-                setAlertType("warning")
-                setAlert(true)
-                setAlertText("Transaction Pending...")
-                
-                await confirmTransaction(txhash)
-
-                setCheckboxChecked(false)
-                setCheckboxDisabled(false)
-                setIsInfinite(true)
-            })
-
-            return {
-                status: "transaction cancelled!"
-            };
-            
-            } catch (error) {
-            setCheckboxChecked(false)
-            setCheckboxDisabled(false)
-            return {
-                status: error.message
-            }
-            } 
-        
-        }
-    }
+    */
 
     //check existing balance of claims per token
     const enoughAllowance = async () => {

@@ -46,6 +46,7 @@ const FuturePayments = () => {
     const [transactions, setTransactions] = useState(0)
     const [alertType, setAlertType] = useState("danger")
 
+
  /*
   componentDidMount() {
     document.title = "Clocktower";
@@ -281,7 +282,6 @@ const FuturePayments = () => {
     }
 
     //listens for token change and adjusts state variables
-    //TODO: this needs to be fixed
     useEffect( () => {
         const changeAllowance = async () => {
             //controls if checkbox is visible or not
@@ -314,7 +314,6 @@ const FuturePayments = () => {
         */
     }
 
-    //TODO: this needs to be fixed
     useEffect(() => {
             
         const changeCheckbox = async () => {
@@ -397,8 +396,8 @@ const FuturePayments = () => {
     //FIXME: has weird calls to token that are not recognized as a method
     const setInfiniteAllowance = async () => {
         let transactionParameters = {};
-        let account = account
-        let token = token
+       // let account = account
+       // let token = token
         const web3 = new Web3(node)
         const contract = new web3.eth.Contract(tokenABI, token);
 
@@ -460,15 +459,15 @@ const FuturePayments = () => {
 
     const addTransaction = async () => {
         let transactionParameters = {};
-        let account = account
+       // let account = account
         //let fee = this.state.fee
         let amount = formAmount;
-        let fee = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
+        let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
         let receiver = formAddress
         //converts to UTC Epoch time
         dayjs.extend(utc)
         let time = dayjs(timeString).utc().unix()    
-        let token = token;
+       // let token = token;
 
 
         //validates data
@@ -479,7 +478,7 @@ const FuturePayments = () => {
         transactionParameters = {
         to: CLOCKTOWERPAY_ADDRESS, // Required except during contract publications.
         from: account, // must match user's active address.
-        value: fee,
+        value: feeHex,
         data: clocktowerpay.methods.addPayment(receiver,time,amount, token).encodeABI(),
         };
 
@@ -503,7 +502,7 @@ const FuturePayments = () => {
         return {status: "Form data incorrect"}
         }
 
-        let account = account
+        //let account = account
         //gets allocation from token
         let allocation = Number(Web3.utils.fromWei(await clocktoken.methods.allowance(account, CLOCKTOWERPAY_ADDRESS).call({from: account})));
     
@@ -515,7 +514,7 @@ const FuturePayments = () => {
         //converts to UTC Epoch time
         dayjs.extend(utc)
         let time = dayjs(timeString).utc().unix()
-        let token = token;
+        //let token = token;
         let tokenFee = Web3.utils.toWei(String(fee))
         tokenFee = Web3.utils.toHex(tokenFee);
         let receiver = formAddress
@@ -581,8 +580,8 @@ const FuturePayments = () => {
         //gets id and timeTrigger from transaction
         let id = transaction.id
         let timeTrigger = transaction.timeTrigger
-        let account = account
-        let token = token;
+        //let account = account
+       // let token = token;
 
         //set up transaction parameters
         const transactionParameters = {

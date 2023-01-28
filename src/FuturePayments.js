@@ -14,12 +14,10 @@ import { useOutletContext } from "react-router-dom";
 //import { send } from 'eth-permit/dist/rpc';
 /* global BigInt */
 
-//class App extends Component {
 const FuturePayments = () => {
 
     const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert] = useOutletContext();
 
-    //TODO: add hooks from former setState this.state variables
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
@@ -248,35 +246,12 @@ const FuturePayments = () => {
 
         //sets token
         setToken(event.target.value)
-
-        /*
-        useEffect(() => {
-            async () => {
-                //controls if checkbox is visible or not
-                if(token !== ZERO_ADDRESS) {
-                //checks if allowance is infinite. 
-                if(await checkInfiniteAllowance(token)) {
-                    setIsInfinite(true)
-                } else {
-                    setIsInfinite(false)
-                }
-                } else {
-                    setIsInfinite(true)
-                }
-            }
-         }, [token]);
-         */
         
         //sets abi
         TOKEN_LOOKUP.map((token) => {
             if(token.address === tokenAddress){
                 console.log(token.address)
                 setTokenABI(token.ABI)
-                /*
-                useEffect(() => {
-                    console.log(tokenABI)
-                }, [tokenABI]);
-                */
             }
             return true
         })
@@ -372,16 +347,6 @@ const FuturePayments = () => {
 
     const checkboxChange = (event) => {
         setCheckboxChecked(event.target.checked)
-        /*
-        useEffect(async () => {
-            
-            if(this.state.checkboxChecked){
-                //disables button
-                this.setState({checkboxDisabled: true})
-                await this.setInfiniteAllowance()
-            }       
-        }, [checkboxChecked]);
-        */
     }
 
     useEffect(() => {

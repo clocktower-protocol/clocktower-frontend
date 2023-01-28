@@ -9,6 +9,7 @@ import Root from "./routes/root";
 import ErrorPage from './errorPage';
 import FuturePayments from './routes/futurepayments';
 import FutPaymentRoute from './routes/futurepayments';
+import Provider from './routes/provider';
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
         {
           path: "payments/",
           element: <FutPaymentRoute />,
+        },
+        {
+          path: "provider/",
+          element: <Provider />,
         },
       ]
     },

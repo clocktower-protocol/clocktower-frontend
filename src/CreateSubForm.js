@@ -15,6 +15,12 @@ const CreateSubForm = (props) => {
         <Form className="mb-3" onSubmit={props.submitForm}>
             <Row>
                 <Col>
+                    <Form.Group className="mb-3" controlId="formAmount" value={props.formAmount} onChange={props.amountChange}>
+                    <Form.Label>Amount:</Form.Label>
+                    <Form.Control type="input" placeholder="amount" />
+                    </Form.Group>
+                </Col>
+                <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={props.tokenChange}>
                     <Form.Label>Token</Form.Label>
                     <Form.Select>

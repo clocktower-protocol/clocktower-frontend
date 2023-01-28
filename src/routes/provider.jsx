@@ -21,8 +21,30 @@ const Provider = () => {
     const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
     const [alertType, setAlertType] = useState("danger")
+    const [hour, setHour] = useState("0")
+    const [token, setToken] = useState(ZERO_ADDRESS)
 
     console.log(account)
+
+    //validates form data
+    const formValidate = () => {
+
+        let isCorrect = true;
+
+        //checks amount
+        if(formAmount <= 0) {
+            console.log (
+                "amount incorrect"
+            )
+            isCorrect = false
+            setAlert(true)
+            setAlertText("Amount invalid")
+            return
+        } else {
+            setAlert(false)
+        }
+    
+    }
 
     //Creates alert
     const alertMaker = () => {

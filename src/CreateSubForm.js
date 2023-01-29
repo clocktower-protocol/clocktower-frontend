@@ -1,8 +1,10 @@
-import React from 'react';
+import {React, userState} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { TOKEN_LOOKUP , FREQUENCY_LOOKUP} from './config';
+import { TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE} from './config';
 
 const CreateSubForm = (props) => {
+
+    let ff = props.formFrequency
 
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
@@ -15,6 +17,19 @@ const CreateSubForm = (props) => {
     const frequencyPulldown = () => {
         return FREQUENCY_LOOKUP.map((frequency) => {
             return <option value={frequency.index} key={frequency.index}>{frequency.name}</option>
+        })
+    }
+
+    //populates day pulldown based on frequency selection
+    const dayPulldown = () => {
+        return DUEDAY_RANGE.map((frequency) => {
+            if(frequency.frequency == ff) {
+                const options = []
+                for(let i = frequency.start; i <= frequency.stop; i++) {
+                    options.push(<option value={i} key={i}>{i}</option>)
+                }
+                return options
+            }
         })
     }
 
@@ -48,11 +63,11 @@ const CreateSubForm = (props) => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={props.dueDayChange}>
+                    <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={props.dueDayChange} >
                     <Form.Label>Day</Form.Label>
                     <Form.Select>
                         <option>Select Day</option>
-            
+                        {dayPulldown()}
                     </Form.Select>
                     </Form.Group>
                 </Col>

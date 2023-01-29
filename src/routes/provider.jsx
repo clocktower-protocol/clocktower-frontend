@@ -23,6 +23,8 @@ const Provider = () => {
     const [alertType, setAlertType] = useState("danger")
     const [hour, setHour] = useState("0")
     const [token, setToken] = useState(ZERO_ADDRESS)
+    const [tokenABI, setTokenABI] = useState({})
+    const [formFrequency, setFormFrequency] = useState(0)
 
     const [formAmount, setFormAmount] = useState(0.00)
 
@@ -48,6 +50,35 @@ const Provider = () => {
     
     }
 
+    const tokenChange = (event) => {
+
+        let tokenAddress = event.target.value
+
+        //sets token
+        setToken(event.target.value)
+        
+        //sets abi
+        TOKEN_LOOKUP.map((token) => {
+            if(token.address === tokenAddress){
+                console.log(token.address)
+                setTokenABI(token.ABI)
+            }
+            return true
+        })
+    }
+    const amountChange = (event) => {
+        if(event.target.value > 0) {
+        let wei = Web3.utils.toWei(event.target.value)
+        setFormAmount(wei)
+        } else {
+            setFormAmount(0)
+        }
+    }
+    const frequencyChange = (event) => {
+       //sets frequency 
+       setFormFrequency(event.target.value)
+    }
+
     //Creates alert
     const alertMaker = () => {
         if(alert) {
@@ -66,7 +97,15 @@ const Provider = () => {
             <div className="clockBody">
                 <div className="clockFormDiv">
                     <div>
-                        <CreateSubForm />
+                        <CreateSubForm 
+                            token = {token}
+                            tokenChange = {tokenChange}
+                            formAmount = {formAmount}
+                            amountChange = {amountChange}
+                            formFrequency = {formFrequency}
+                            frequencyChange = {frequencyChange}
+
+                        />
                     </div>
                 </div>
             </div>

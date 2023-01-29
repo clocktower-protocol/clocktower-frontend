@@ -1,6 +1,7 @@
 import {React, userState} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
 import { TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE} from './config';
+import Web3 from 'web3'
 
 const CreateSubForm = (props) => {
 
@@ -33,11 +34,80 @@ const CreateSubForm = (props) => {
         })
     }
 
+    //event listeners-----------------------------
+
+    const tokenChange = (event) => {
+
+        let tokenAddress = event.target.value
+
+        //sets token
+        props.setToken(event.target.value)
+        
+        //sets abi
+        TOKEN_LOOKUP.map((token) => {
+            if(token.address === tokenAddress){
+                console.log(token.address)
+                props.setTokenABI(token.ABI)
+            }
+            return true
+        })
+    }
+
+    const amountChange = (event) => {
+        if(event.target.value > 0) {
+        let wei = Web3.utils.toWei(event.target.value)
+       props.setFormAmount(wei)
+        } else {
+            props.setFormAmount(0)
+        }
+    }
+    const frequencyChange = (event) => {
+       //sets frequency 
+       props.setFormFrequency(event.target.value)
+    }
+
+    const dueDayChange = (event) => {
+        //sets frequency 
+        props.setDueDay(event.target.value)
+    }
+
+    const descriptionChange = (event) => {
+        //sets description
+        props.setDescription(event.target.value)
+    }
+
+    //Validation
+    //validates form data
+    
+    const formValidate = () => {
+
+        let isCorrect = true;
+
+        //checks amount
+        if(props.formAmount <= 0) {
+            console.log (
+                "amount incorrect"
+            )
+            isCorrect = false
+            props.setAlert(true)
+            props.setAlertText("Amount invalid")
+            props.setIsValidated(false)
+            return
+        } else {
+            props.setAlert(false)
+        }
+    
+    }
+    
+
+
+
+
     return (
         <Form className="mb-3" onSubmit={props.submitForm}>
             <Row>
             <Col>
-                    <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={props.tokenChange}>
+                    <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={tokenChange}>
                     <Form.Label>Token</Form.Label>
                     <Form.Select>
                         <option>Select which token</option>
@@ -46,7 +116,7 @@ const CreateSubForm = (props) => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formAmount" value={props.formAmount} onChange={props.amountChange}>
+                    <Form.Group className="mb-3" controlId="formAmount" value={props.formAmount} onChange={amountChange}>
                     <Form.Label>Amount:</Form.Label>
                     <Form.Control type="input" placeholder="amount" />
                     </Form.Group>
@@ -54,7 +124,7 @@ const CreateSubForm = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="frequencySelect" value={props.frequency} onChange={props.frequencyChange}>
+                    <Form.Group className="mb-3" controlId="frequencySelect" value={props.frequency} onChange={frequencyChange}>
                     <Form.Label>Frequency</Form.Label>
                     <Form.Select>
                         <option>Select frequency</option>
@@ -63,7 +133,7 @@ const CreateSubForm = (props) => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={props.dueDayChange} >
+                    <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={dueDayChange} >
                     <Form.Label>Day</Form.Label>
                     <Form.Select>
                         <option>Select Day</option>
@@ -71,6 +141,17 @@ const CreateSubForm = (props) => {
                     </Form.Select>
                     </Form.Group>
                 </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formDescription" value={props.description} onChange={descriptionChange}>
+                    <Form.Label>Description:</Form.Label>
+                    <Form.Control type="input" placeholder="description" />
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col align="center"><Button type="submit">Submit</Button></Col>
             </Row>
         </Form>
     )

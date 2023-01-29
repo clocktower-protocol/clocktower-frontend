@@ -25,6 +25,9 @@ const Provider = () => {
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [tokenABI, setTokenABI] = useState({})
     const [formFrequency, setFormFrequency] = useState(0)
+    const [dueDay, setDueDay] = useState(1)
+    const [description, setDescription] = useState("")
+    const [isValidated, setIsValidated] = useState(false)
 
     const [formAmount, setFormAmount] = useState(0.00)
 
@@ -50,35 +53,6 @@ const Provider = () => {
     
     }
 
-    const tokenChange = (event) => {
-
-        let tokenAddress = event.target.value
-
-        //sets token
-        setToken(event.target.value)
-        
-        //sets abi
-        TOKEN_LOOKUP.map((token) => {
-            if(token.address === tokenAddress){
-                console.log(token.address)
-                setTokenABI(token.ABI)
-            }
-            return true
-        })
-    }
-    const amountChange = (event) => {
-        if(event.target.value > 0) {
-        let wei = Web3.utils.toWei(event.target.value)
-        setFormAmount(wei)
-        } else {
-            setFormAmount(0)
-        }
-    }
-    const frequencyChange = (event) => {
-       //sets frequency 
-       setFormFrequency(event.target.value)
-    }
-
     //Creates alert
     const alertMaker = () => {
         if(alert) {
@@ -99,12 +73,20 @@ const Provider = () => {
                     <div>
                         <CreateSubForm 
                             token = {token}
-                            tokenChange = {tokenChange}
                             formAmount = {formAmount}
-                            amountChange = {amountChange}
                             formFrequency = {formFrequency}
-                            frequencyChange = {frequencyChange}
+                            dueDay = {dueDay}
+                            description = {description}
 
+                            setToken = {setToken}
+                            setTokenABI = {setTokenABI}
+                            setFormAmount = {setFormAmount}
+                            setFormFrequency = {setFormFrequency}
+                            setDueDay = {setDueDay}
+                            setDescription = {setDescription}
+                            setAlert = {setAlert}
+                            setAlertText = {setAlertText}
+                            setIsValidated = {setIsValidated}
                         />
                     </div>
                 </div>

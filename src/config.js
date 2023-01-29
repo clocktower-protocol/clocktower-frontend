@@ -392,6 +392,50 @@ export const TOKEN_LOOKUP = [
 
 ];
 
+//lookup table for frequency
+export const FREQUENCY_LOOKUP = [
+  {
+    index: 0,
+    name: "Weekly"
+  },
+  {
+    index: 1,
+    name: "Monthly"
+  },
+  {
+    index: 2,
+    name: "Quarterly"
+  },
+  {
+    index: 3,
+    name: "Yearly"
+  }
+]
+
+//lookup table for dueDay
+export const DUEDAY_RANGE = [
+  {
+    frequency: 0,
+    start: 1,
+    stop: 7
+  }, 
+  {
+    frequency: 1,
+    start: 1,
+    stop: 28
+  },
+  {
+    frequency: 2,
+    start: 1,
+    stop: 90
+  },
+  {
+    frequency: 3,
+    start: 1,
+    stop: 365
+  }
+]
+
 export const CLOCKTOKEN_ABI = [
   {
     "inputs": [

@@ -27,11 +27,9 @@ const Provider = () => {
     const [formFrequency, setFormFrequency] = useState(0)
     const [dueDay, setDueDay] = useState(1)
     const [description, setDescription] = useState("")
-    const [isValidated, setIsValidated] = useState(false)
+    //const [isValidated, setIsValidated] = useState(false)
 
     const [formAmount, setFormAmount] = useState(0.00)
-
-    console.log(account)
 
     //validates form data
     const formValidate = () => {
@@ -50,8 +48,51 @@ const Provider = () => {
         } else {
             setAlert(false)
         }
+
+        //checks description
+        isCorrect = true;
+
+        //checks amount
+        if(description.length > 255) {
+            console.log (
+                "Description too long"
+            )
+            isCorrect = false
+            setAlert(true)
+            setAlertText("Description must be under 256 characters")
+            return
+        } else {
+            setAlert(false)
+        }
     
     }
+
+    const submitForm = async (event) => {
+        // const target = event.currentTarget;
+    
+            event.preventDefault();
+            event.stopPropagation();
+
+            if(formValidate) {
+
+            } else {
+                return
+            }
+    
+            /*
+            //checks if allowance increase is needed
+            if(await enoughAllowance()) {
+            console.log("enough")
+            await addTransaction()
+            } else {
+            console.log("not enough")
+            await addTransactionPermit()
+            }
+        
+            await getAccountTransactions();
+            */
+    
+    };
 
     //Creates alert
     const alertMaker = () => {
@@ -84,9 +125,10 @@ const Provider = () => {
                             setFormFrequency = {setFormFrequency}
                             setDueDay = {setDueDay}
                             setDescription = {setDescription}
+                            submitForm = {submitForm}
                             setAlert = {setAlert}
                             setAlertText = {setAlertText}
-                            setIsValidated = {setIsValidated}
+                          //  setIsValidated = {setIsValidated}
                         />
                     </div>
                 </div>

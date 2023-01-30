@@ -76,10 +76,9 @@ const CreateSubForm = (props) => {
         props.setDescription(event.target.value)
     }
 
-    //Validation
-    //validates form data
-    
-    const formValidate = () => {
+    //Form validation and submit
+     //validates form data
+     const formValidate = () => {
 
         let isCorrect = true;
 
@@ -91,20 +90,58 @@ const CreateSubForm = (props) => {
             isCorrect = false
             props.setAlert(true)
             props.setAlertText("Amount invalid")
-            props.setIsValidated(false)
+            return
+        } else {
+            props.setAlert(false)
+        }
+
+        //checks description
+        isCorrect = true;
+
+        //checks amount
+        if(props.description.length > 255) {
+            console.log (
+                "Description too long"
+            )
+            isCorrect = false
+            props.setAlert(true)
+            props.setAlertText("Description must be under 256 characters")
             return
         } else {
             props.setAlert(false)
         }
     
     }
+
+    const submitForm = async (event) => {
+        // const target = event.currentTarget;
     
+            event.preventDefault();
+            event.stopPropagation();
 
+            if(formValidate) {
 
-
+            } else {
+                return
+            }
+    
+            /*
+            //checks if allowance increase is needed
+            if(await enoughAllowance()) {
+            console.log("enough")
+            await addTransaction()
+            } else {
+            console.log("not enough")
+            await addTransactionPermit()
+            }
+        
+            await getAccountTransactions();
+            */
+    
+    };
 
     return (
-        <Form className="mb-3" onSubmit={props.submitForm}>
+        <Form className="mb-3" onSubmit={submitForm}>
             <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={tokenChange}>

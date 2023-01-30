@@ -5,7 +5,7 @@ import Web3 from 'web3'
 
 const CreateSubForm = (props) => {
 
-    let ff = props.formFrequency
+    let ff = props.frequency
 
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
@@ -34,6 +34,7 @@ const CreateSubForm = (props) => {
         })
     }
 
+    
     //event listeners-----------------------------
 
     const tokenChange = (event) => {
@@ -56,11 +57,12 @@ const CreateSubForm = (props) => {
     const amountChange = (event) => {
         if(event.target.value > 0) {
         let wei = Web3.utils.toWei(event.target.value)
-       props.setAmount(wei)
+            props.setAmount(wei)
         } else {
             props.setAmount(0)
         }
     }
+
     const frequencyChange = (event) => {
        //sets frequency 
        props.setFrequency(event.target.value)
@@ -75,6 +77,7 @@ const CreateSubForm = (props) => {
         //sets description
         props.setDescription(event.target.value)
     }
+    
 
     //Form validation and submit
      //validates form data

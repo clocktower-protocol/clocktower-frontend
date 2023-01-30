@@ -68,6 +68,11 @@ const Root = () => {
     setButtonClicked(true)
   }
 
+  //checks if user is logged in 
+  const isLoggedIn = () => {
+    return(account === "-1" ? false : true) 
+  }
+
     return (
         <>
         <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
@@ -98,7 +103,7 @@ const Root = () => {
           </Container>
         </Navbar>
             <div id="detail">
-                <Outlet context={[buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert]}/>
+                <Outlet context={[buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
             </div>
       </>
     )

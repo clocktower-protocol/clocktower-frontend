@@ -24,75 +24,10 @@ const Provider = () => {
     const [hour, setHour] = useState("0")
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [tokenABI, setTokenABI] = useState({})
-    const [formFrequency, setFormFrequency] = useState(0)
+    const [frequency, setFrequency] = useState(0)
     const [dueDay, setDueDay] = useState(1)
     const [description, setDescription] = useState("")
-    //const [isValidated, setIsValidated] = useState(false)
-
-    const [formAmount, setFormAmount] = useState(0.00)
-
-    //validates form data
-    const formValidate = () => {
-
-        let isCorrect = true;
-
-        //checks amount
-        if(formAmount <= 0) {
-            console.log (
-                "amount incorrect"
-            )
-            isCorrect = false
-            setAlert(true)
-            setAlertText("Amount invalid")
-            return
-        } else {
-            setAlert(false)
-        }
-
-        //checks description
-        isCorrect = true;
-
-        //checks amount
-        if(description.length > 255) {
-            console.log (
-                "Description too long"
-            )
-            isCorrect = false
-            setAlert(true)
-            setAlertText("Description must be under 256 characters")
-            return
-        } else {
-            setAlert(false)
-        }
-    
-    }
-
-    const submitForm = async (event) => {
-        // const target = event.currentTarget;
-    
-            event.preventDefault();
-            event.stopPropagation();
-
-            if(formValidate) {
-
-            } else {
-                return
-            }
-    
-            /*
-            //checks if allowance increase is needed
-            if(await enoughAllowance()) {
-            console.log("enough")
-            await addTransaction()
-            } else {
-            console.log("not enough")
-            await addTransactionPermit()
-            }
-        
-            await getAccountTransactions();
-            */
-    
-    };
+    const [amount, setAmount] = useState(0.00)
 
     //Creates alert
     const alertMaker = () => {
@@ -105,6 +40,27 @@ const Provider = () => {
         }
     }
 
+    const createSubscription = async () => {
+        const transactionParameters = {
+            to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
+            from: account, // must match user's active address.
+            data: clocktowersub.methods.createSubscription(amount,token,description, token, frequency, dueDay).encodeABI(),
+        }
+
+        const txhash = await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameters],
+        });
+        
+        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+        setAlertType("warning")
+        setAlert(true)
+        setAlertText("Transaction Pending...")
+
+        //TODO: wait on emit for confirmation or denial
+       
+    }
+
     return (
         <>
         <div className="clockMeta">
@@ -114,21 +70,20 @@ const Provider = () => {
                     <div>
                         <CreateSubForm 
                             token = {token}
-                            formAmount = {formAmount}
-                            formFrequency = {formFrequency}
+                            amount = {amount}
+                            frequency = {frequency}
                             dueDay = {dueDay}
                             description = {description}
 
                             setToken = {setToken}
                             setTokenABI = {setTokenABI}
-                            setFormAmount = {setFormAmount}
-                            setFormFrequency = {setFormFrequency}
+                            setAmount = {setAmount}
+                            setFrequency = {setFrequency}
                             setDueDay = {setDueDay}
                             setDescription = {setDescription}
-                            submitForm = {submitForm}
                             setAlert = {setAlert}
                             setAlertText = {setAlertText}
-                          //  setIsValidated = {setIsValidated}
+                            createSubscription = {createSubscription}
                         />
                     </div>
                 </div>

@@ -56,14 +56,14 @@ const CreateSubForm = (props) => {
     const amountChange = (event) => {
         if(event.target.value > 0) {
         let wei = Web3.utils.toWei(event.target.value)
-       props.setFormAmount(wei)
+       props.setAmount(wei)
         } else {
-            props.setFormAmount(0)
+            props.setAmount(0)
         }
     }
     const frequencyChange = (event) => {
        //sets frequency 
-       props.setFormFrequency(event.target.value)
+       props.setFrequency(event.target.value)
     }
 
     const dueDayChange = (event) => {
@@ -120,7 +120,7 @@ const CreateSubForm = (props) => {
             event.stopPropagation();
 
             if(formValidate) {
-
+                props.createSubscription()
             } else {
                 return
             }
@@ -153,7 +153,7 @@ const CreateSubForm = (props) => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formAmount" value={props.formAmount} onChange={amountChange}>
+                    <Form.Group className="mb-3" controlId="formAmount" value={props.amount} onChange={amountChange}>
                     <Form.Label>Amount:</Form.Label>
                     <Form.Control type="input" placeholder="amount" />
                     </Form.Group>

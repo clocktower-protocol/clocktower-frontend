@@ -38,16 +38,24 @@ const ProviderSubsTable = (props) => {
     //loops through array to create table rows
     for(let i = 0; i < subscriptionArray.length; i++) {
      // console.log(transactionArray[i].cancelled)
+     console.log(subscriptionArray[i].totalSubscribers)
       //doesn't show cancelled transactions
       if(subscriptionArray[i].status != 1) {
         let row = []
-        
+        let totalSubscribers = 0;
+        if(typeof subscriptionArray[i].totalSubscribers !== 'undefined') {
+          totalSubscribers = subscriptionArray[i].totalSubscribers
+        }
+        let subAmount = Web3.utils.fromWei(subscriptionArray[i].subscription.amount)
+
         row.push(
           <td key={String(subscriptionArray[i].subscription.id)+1}>{subscriptionArray[i].subscription.description}</td>,
-          <td key={String(subscriptionArray[i].subscription.id)+2}>{Web3.utils.fromWei(subscriptionArray[i].subscription.amount)}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+          <td key={String(subscriptionArray[i].subscription.id)+2}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
           <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
           <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
-          <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>)
+          <td key={String(subscriptionArray[i].subscription.id)+5}>{totalSubscribers}</td>,
+          <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers * subAmount}</td>,
+          <td key={String(subscriptionArray[i].subscription.id)+7}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>)
         
         
         table.push(<tr align="center" key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)
@@ -62,6 +70,8 @@ const ProviderSubsTable = (props) => {
             <th key="dateHead">Amount</th>
             <th key="amountHead">Frequency</th>
             <th key="statusHead">Due Day</th>
+            <th key="totalSubs">Subscribers</th>
+            <th key="incomeHead">Income per Period</th>
             <th key="detailsHead">Details</th>
           </tr>
         </thead>

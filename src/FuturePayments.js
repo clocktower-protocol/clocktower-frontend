@@ -716,49 +716,56 @@ const FuturePayments = () => {
   
 
   //render() {
-    return (
-      <div className="clockMeta">
-        
-        {/*
-        <div>
-          <ClockNav 
-            buttonClicked = {this.state.buttonClicked}
-            account = {this.state.account}
-            walletButtonClick = {this.walletButtonClick}
-          ></ClockNav>
+    //checks that user has logged in 
+    if(account == "-1") {
+        return (
+            <Alert align="center" variant="info">Please Login</Alert>
+        )
+    } else {
+        return (
+        <div className="clockMeta">
+            
+            {/*
+            <div>
+            <ClockNav 
+                buttonClicked = {this.state.buttonClicked}
+                account = {this.state.account}
+                walletButtonClick = {this.walletButtonClick}
+            ></ClockNav>
+            </div>
+        */}
+            {alertMaker()}
+            <div className="clockBody">
+            <div className="clockFormDiv">
+                <ClockForm 
+                submitForm = {submitForm} 
+                formAddress = {formAddress} 
+                receiverChange = {receiverChange}
+                formAmount = {formAmount}
+                amountChange = {amountChange}
+                formDate = {formDate}
+                dateChange = {dateChange}
+                formSelect = {hour}
+                hourChange = {hourChange}
+                tokenSelect = {token}
+                tokenChange = {tokenChange}
+                isInfinite = {isInfinite}
+                setInfiniteAllowance = {setInfiniteAllowance}
+                checkboxChange = {checkboxChange}
+                checkboxChecked = {checkboxChecked}
+                checkboxDisabled = {checkboxDisabled}
+                tokenPulldown = {tokenPulldown}
+                hoursPulldown = {hoursPulldown}
+                ></ClockForm>
+            
+            </div> 
+            <div className="clockTableDiv">
+                <ClockTable transactionArray={transactionArray} cancelTransaction={cancelTransaction}></ClockTable>
+            </div>
         </div>
-    */}
-        {alertMaker()}
-        <div className="clockBody">
-          <div className="clockFormDiv">
-            <ClockForm 
-            submitForm = {submitForm} 
-            formAddress = {formAddress} 
-            receiverChange = {receiverChange}
-            formAmount = {formAmount}
-            amountChange = {amountChange}
-            formDate = {formDate}
-            dateChange = {dateChange}
-            formSelect = {hour}
-            hourChange = {hourChange}
-            tokenSelect = {token}
-            tokenChange = {tokenChange}
-            isInfinite = {isInfinite}
-            setInfiniteAllowance = {setInfiniteAllowance}
-            checkboxChange = {checkboxChange}
-            checkboxChecked = {checkboxChecked}
-            checkboxDisabled = {checkboxDisabled}
-            tokenPulldown = {tokenPulldown}
-            hoursPulldown = {hoursPulldown}
-            ></ClockForm>
-           
-          </div> 
-          <div className="clockTableDiv">
-            <ClockTable transactionArray={transactionArray} cancelTransaction={cancelTransaction}></ClockTable>
-          </div>
-      </div>
-    </div>
-    );
+        </div>
+        );
+    }
   }
 //}
 

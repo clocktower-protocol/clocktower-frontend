@@ -128,43 +128,47 @@ const Provider = () => {
         await confirmTransaction(txhash)
     }
 
-    return (
-    
-        <div className="clockMeta">
-            {alertMaker()}
-            <div className="clockBody">
-                <div className="clockFormDiv">  
-                        <CreateSubForm
-                            token = {token}
-                            amount = {amount}
-                            frequency = {frequency}
-                            dueDay = {dueDay}
-                            description = {description}
+    //checks that user has logged in 
+    if(account == "-1") {
+        return (
+            <Alert align="center" variant="info">Please Login</Alert>
+        )
+    } else {
+        return (
+        
+            <div className="clockMeta">
+                {alertMaker()}
+                <div className="clockBody">
+                    <div className="clockFormDiv">  
+                            <CreateSubForm
+                                token = {token}
+                                amount = {amount}
+                                frequency = {frequency}
+                                dueDay = {dueDay}
+                                description = {description}
 
-                            
-                            setToken = {setToken}
-                            setTokenABI = {setTokenABI}
-                            setAmount = {setAmount}
-                            setFrequency = {setFrequency}
-                            setDueDay = {setDueDay}
-                            setDescription = {setDescription}
-                            setAlert = {setAlert}
-                            setAlertText = {setAlertText}
-                            createSubscription = {createSubscription}
-                        />
+                                
+                                setToken = {setToken}
+                                setTokenABI = {setTokenABI}
+                                setAmount = {setAmount}
+                                setFrequency = {setFrequency}
+                                setDueDay = {setDueDay}
+                                setDescription = {setDescription}
+                                setAlert = {setAlert}
+                                setAlertText = {setAlertText}
+                                createSubscription = {createSubscription}
+                            />
+                    </div>
+                        <div>
+                            {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
+                        </div>
+                        <div className="clockTableDiv">
+                            <ProviderSubsTable subscriptionArray={subscriptionArray}></ProviderSubsTable>
+                        </div>
                 </div>
-                    <div>
-                        {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
-                    </div>
-                    <div className="clockTableDiv">
-                        <ProviderSubsTable subscriptionArray={subscriptionArray}></ProviderSubsTable>
-                    </div>
             </div>
-        </div>
-    
-    
-    )
-
+        )
+    }
 }
 
 export default Provider

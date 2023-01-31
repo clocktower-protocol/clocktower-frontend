@@ -35,6 +35,11 @@ const Provider = () => {
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [fee, setFee] = useState(0.1)
 
+    
+    //loads provider upon login
+    useEffect(() => {
+        getProviderSubs()
+    }, [account]);
 
     //Creates alert
     const alertMaker = () => {

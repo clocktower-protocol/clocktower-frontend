@@ -10,6 +10,7 @@ import ErrorPage from './errorPage';
 import FuturePayments from './routes/futurepayments';
 import FutPaymentRoute from './routes/futurepayments';
 import Provider from './routes/provider';
+import ProvSubscription from './routes/provsubscription';
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
           path: "provider/",
           element: <Provider />,
         },
+        {
+          path: "provider/subscription/:id",
+          element: <ProvSubscription />
+        }
       ]
     },
   ]);

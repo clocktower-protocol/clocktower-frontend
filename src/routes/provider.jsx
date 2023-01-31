@@ -36,7 +36,7 @@ const Provider = () => {
     const [fee, setFee] = useState(0.1)
 
     
-    //loads provider upon login
+    //loads provider subscription list upon login
     useEffect(() => {
         getProviderSubs()
     }, [account]);
@@ -153,6 +153,9 @@ const Provider = () => {
                             createSubscription = {createSubscription}
                         />
                 </div>
+                    <div>
+                        {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
+                    </div>
                     <div className="clockTableDiv">
                         <ProviderSubsTable subscriptionArray={subscriptionArray}></ProviderSubsTable>
                     </div>

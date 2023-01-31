@@ -7,12 +7,36 @@ const ProviderSubsTable = (props) => {
 
     const subscriptionArray = props.subscriptionArray
 
+    /*
+     <td key={String(subscriptionArray[i].subscription.id)+2}>{Web3.utils.fromWei(subscriptionArray[i].subscription.amount)} {TOKEN_LOOKUP[subscriptionArray[i].subscription.token]}</td>,
+          <td key={String(subscriptionArray[i].subscription.id)+3}>{FREQUENCY_LOOKUP[subscriptionArray[i].subscription.frequency]}</td>, 
+          <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>)
+    */
+
+    //looks up ticker for token
+    const tickerLookup = (tokenAddress) => {
+      return TOKEN_LOOKUP.map((token) => {
+        if(token.address == tokenAddress) {
+          return token.ticker
+        }
+      });
+    }
+
+    //looks up frequency
+    const frequencyLookup = (frequencyIndex) => {
+      return FREQUENCY_LOOKUP.map((frequencyObject) => {
+        if(frequencyIndex == frequencyObject.index) {
+          return frequencyObject.name
+        }
+      })
+    }
+
      //checks for empty array
     if(!Array.isArray(subscriptionArray) || (subscriptionArray.length <= 0)) {
         return
     }
 
-    let table = [];
+    let table = []
     let tableTop = []
 
     //loops through array to create table rows
@@ -21,11 +45,14 @@ const ProviderSubsTable = (props) => {
       //doesn't show cancelled transactions
       if(subscriptionArray[i].status != 1) {
         let row = []
+        
         row.push(
           <td key={String(subscriptionArray[i].subscription.id)+1}>{subscriptionArray[i].subscription.description}</td>,
-          <td key={String(subscriptionArray[i].subscription.id)+2}>{Web3.utils.fromWei(subscriptionArray[i].subscription.amount)} {TOKEN_LOOKUP[subscriptionArray[i].subscription.token]}</td>,
-          <td key={String(subscriptionArray[i].subscription.id)+3}>{FREQUENCY_LOOKUP[subscriptionArray[i].subscription.frequency]}</td>, 
-          <td key={String(subscriptionArray[i].subscription.id)+4}>{(subscriptionArray[i].subscription.dueDay)}</td>)
+          <td key={String(subscriptionArray[i].subscription.id)+2}>{Web3.utils.fromWei(subscriptionArray[i].subscription.amount)}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+          <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
+          <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>)
+        
+        
         table.push(<tr align="center" key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)
       }
     }
@@ -41,11 +68,11 @@ const ProviderSubsTable = (props) => {
           </tr>
         </thead>
         <tbody key="tableBody">
-           {table}
+          {table}
         </tbody>
-        
-
         </Table>)
+    
+    return tableTop
 
 }
 

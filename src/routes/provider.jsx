@@ -33,6 +33,7 @@ const Provider = () => {
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState(0.00)
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
+    const [fee, setFee] = useState(0.1)
 
 
     //Creates alert
@@ -64,7 +65,7 @@ const Provider = () => {
             //turns off alert and loads/reloads table
             setAlert(false)
             setAlertType("danger")
-            getProviderSubs()
+            await getProviderSubs()
             return true
         }
 
@@ -97,12 +98,15 @@ const Provider = () => {
         })
     }
 
-
     const createSubscription = async () => {
+
+        let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
+
         const transactionParameters = {
             to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
             from: account, // must match user's active address.
-            data: clocktowersub.methods.createSubscription(amount,token,description, token, frequency, dueDay).encodeABI(),
+            data: clocktowersub.methods.createSubscription(amount,token,description,frequency, dueDay).encodeABI(),
+            value: feeHex
         }
 
         const txhash = await window.ethereum.request({
@@ -120,12 +124,11 @@ const Provider = () => {
     }
 
     return (
-        <>
+    
         <div className="clockMeta">
             {alertMaker()}
             <div className="clockBody">
-                <div className="clockFormDiv">
-                    <div>
+                <div className="clockFormDiv">  
                         <CreateSubForm
                             token = {token}
                             amount = {amount}
@@ -144,14 +147,14 @@ const Provider = () => {
                             setAlertText = {setAlertText}
                             createSubscription = {createSubscription}
                         />
-                    </div>
+                </div>
                     <div className="clockTableDiv">
                         <ProviderSubsTable subscriptionArray={subscriptionArray}></ProviderSubsTable>
                     </div>
-                </div>
             </div>
         </div>
-        </>
+    
+    
     )
 
 }

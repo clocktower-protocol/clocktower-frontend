@@ -123,8 +123,6 @@ const FuturePayments = () => {
 
         //console.log(txHash)
 
-    // console.log("Yo boyee!");
-
         let isDone = false;
         
         //trys every five seconds to see if transaction is confirmed

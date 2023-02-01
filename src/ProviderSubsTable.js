@@ -9,7 +9,6 @@ const ProviderSubsTable = (props) => {
 
     const subscriptionArray = props.subscriptionArray
 
-    
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
       return TOKEN_LOOKUP.map((token) => {
@@ -27,8 +26,6 @@ const ProviderSubsTable = (props) => {
         }
       })
     }
-    
-    
 
      //checks for empty array
     if(!Array.isArray(subscriptionArray) || (subscriptionArray.length <= 0)) {
@@ -55,7 +52,7 @@ const ProviderSubsTable = (props) => {
           <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
           <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
           <td key={String(subscriptionArray[i].subscription.id)+5}>{totalSubscribers}</td>,
-          <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers * subAmount}</td>,
+          <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
           <td key={String(subscriptionArray[i].subscription.id)+7}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
           <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>)
         

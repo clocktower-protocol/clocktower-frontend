@@ -160,7 +160,7 @@ const Provider = () => {
                             {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
                         </div>
                         <div className="clockTableDiv">
-                            <ProviderSubsTable subscriptionArray={subscriptionArray}></ProviderSubsTable>
+                            <ProviderSubsTable subscriptionArray={subscriptionArray}/>
                         </div>
                 </div>
             </div>

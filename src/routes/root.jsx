@@ -2,6 +2,7 @@ import {React, useState} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
+import {FREQUENCY_LOOKUP, TOKEN_LOOKUP} from "../config"
 
 const Root = () => {
 

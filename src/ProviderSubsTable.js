@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Table} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap'
+//import {LinkContainer} from 'react-router-bootstrap'
 import {Link} from "react-router-dom";
 import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, ZERO_ADDRESS} from "./config";
 import Web3 from 'web3'
@@ -9,6 +9,7 @@ const ProviderSubsTable = (props) => {
 
     const subscriptionArray = props.subscriptionArray
 
+    
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
       return TOKEN_LOOKUP.map((token) => {
@@ -26,6 +27,8 @@ const ProviderSubsTable = (props) => {
         }
       })
     }
+    
+    
 
      //checks for empty array
     if(!Array.isArray(subscriptionArray) || (subscriptionArray.length <= 0)) {
@@ -37,8 +40,6 @@ const ProviderSubsTable = (props) => {
 
     //loops through array to create table rows
     for(let i = 0; i < subscriptionArray.length; i++) {
-     // console.log(transactionArray[i].cancelled)
-     console.log(subscriptionArray[i].totalSubscribers)
       //doesn't show cancelled transactions
       if(subscriptionArray[i].status != 1) {
         let row = []

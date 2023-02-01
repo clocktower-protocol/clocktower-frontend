@@ -93,7 +93,6 @@ const PublicSubscription = () => {
     //gets unlimited approval from user
     const setInfiniteAllowance = useCallback(async () => {
         let transactionParameters = {};
-        console.log(tokenABI)
         //console.log(token)
         //const web3 = new Web3(node)
         const contract = new web3.eth.Contract(tokenABI, token);
@@ -169,19 +168,72 @@ const PublicSubscription = () => {
     //handles subscription button click and navigation
     const subscribe = useCallback(async () => {
 
+        const confirmTransaction = async (txHash) => {
+
+            //gets transaction details
+            const trx = await web3.eth.getTransaction(txHash)
+    
+            let isDone = false;
+            
+            //trys every five seconds to see if transaction is confirmed
+            isDone = setTimeout(async () => {
+    
+            if(trx.blockNumber) {
+                //turns off alert
+                setAlert(false)
+                setAlertType("danger")
+                //getAccountTransactions()
+                return true
+            }
+    
+            //return await this.confirmTransaction(txHash)
+            await confirmTransaction(txHash)
+            return false
+            },5*1000)
+    
+            
+            if(isDone) {
+            return true
+            } 
+        }
+
         //first requires user to approve unlimited allowance
         await setInfiniteAllowance()
 
         //subscribes to subscription
-        /*
         const transactionParameters = {
             to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
             from: account, // must match user's active address.
-            data: clocktowersub.methods.createSubscription(amount,token,description,frequency, dueDay).encodeABI(),
+            data: clocktowersub.methods.subscribe(subscription).encodeABI()
         }
-        */
-        
-    })
+
+         //get metamask to sign transaction 
+         try {
+            await window.ethereum.request({
+                method: "eth_sendTransaction",
+                params: [transactionParameters],
+            })
+            .then (async (txhash) => {
+                console.log(txhash)
+                
+                //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+                setAlertType("warning")
+                setAlert(true)
+                setAlertText("Transaction Pending...")
+                 
+                await confirmTransaction(txhash)
+            })
+
+            return {
+                status: "transaction cancelled!"
+            };
+            
+            } catch (error) {
+            return {
+                status: error.message
+            }
+        } 
+    },[subscription])
 
     //setId(id)
 

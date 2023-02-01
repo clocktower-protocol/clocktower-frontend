@@ -14,8 +14,21 @@ const ProvSubscription = () => {
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
     const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
+    const [subscribers, setSubscribers] = useState()
+
     let {id} = useParams();
-    console.log(id)
+
+    
+    //gets list of subscribers from contract
+    const getSubs = async () => await clocktowersub.methods.getSubscribers(id).call({from: account})
+    .then(function(result) {
+        setSubscribers(result)
+    })
+    
+    
+
+    //TODO: gets subscription history
+    //await clocktowersub.getPastEvents('')
 }
 
 export default ProvSubscription

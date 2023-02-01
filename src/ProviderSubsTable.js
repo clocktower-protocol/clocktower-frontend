@@ -55,7 +55,8 @@ const ProviderSubsTable = (props) => {
           <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
           <td key={String(subscriptionArray[i].subscription.id)+5}>{totalSubscribers}</td>,
           <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers * subAmount}</td>,
-          <td key={String(subscriptionArray[i].subscription.id)+7}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>)
+          <td key={String(subscriptionArray[i].subscription.id)+7}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}`}>Link</Link></td>,
+          <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>)
         
         
         table.push(<tr align="center" key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)
@@ -72,6 +73,7 @@ const ProviderSubsTable = (props) => {
             <th key="statusHead">Due Day</th>
             <th key="totalSubs">Subscribers</th>
             <th key="incomeHead">Income per Period</th>
+            <th key="urlHead">URL</th>
             <th key="detailsHead">Details</th>
           </tr>
         </thead>

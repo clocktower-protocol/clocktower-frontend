@@ -3,9 +3,6 @@ import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "../config"; 
-import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-import utc from 'dayjs/plugin/utc'
 import { useOutletContext } from "react-router-dom";
 import CreateSubForm from '../CreateSubForm';
 import ProviderSubsTable from '../ProviderSubsTable';
@@ -25,7 +22,7 @@ const Provider = () => {
     let emptySubscriptionArray = [];
 
     const [alertType, setAlertType] = useState("danger")
-    const [hour, setHour] = useState("0")
+   // const [hour, setHour] = useState("0")
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [tokenABI, setTokenABI] = useState({})
     const [frequency, setFrequency] = useState(0)
@@ -87,7 +84,7 @@ const Provider = () => {
 
     const getProviderSubs = async () => {
          //checks if user is logged into account
-         if(!isLoggedIn()) {
+        if(!isLoggedIn()) {
             console.log("Not Logged in")
             return
         }
@@ -98,7 +95,7 @@ const Provider = () => {
         //calls contract 
         await clocktowersub.methods.getAccountSubscriptions(false).call({from: account})
         .then(function(result) {
-        accountSubscriptions = result
+            accountSubscriptions = result
             setSubscriptionArray(accountSubscriptions)
         })
     }

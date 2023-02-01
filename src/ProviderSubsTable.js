@@ -55,9 +55,8 @@ const ProviderSubsTable = (props) => {
           <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
           <td key={String(subscriptionArray[i].subscription.id)+5}>{totalSubscribers}</td>,
           <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers * subAmount}</td>,
-          <td key={String(subscriptionArray[i].subscription.id)+7}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}`}>Link</Link></td>,
+          <td key={String(subscriptionArray[i].subscription.id)+7}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
           <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>)
-        
         
         table.push(<tr align="center" key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)
       }
@@ -65,21 +64,21 @@ const ProviderSubsTable = (props) => {
 
     tableTop.push(
         <Table key="table" striped bordered hover size="sm" className="provTable">
-        <thead key="tableHead">
-          <tr key="headRow" align="center">
-            <th key="descriptionHead">Description</th>
-            <th key="dateHead">Amount</th>
-            <th key="amountHead">Frequency</th>
-            <th key="statusHead">Due Day</th>
-            <th key="totalSubs">Subscribers</th>
-            <th key="incomeHead">Income per Period</th>
-            <th key="urlHead">URL</th>
-            <th key="detailsHead">Details</th>
-          </tr>
-        </thead>
-        <tbody key="tableBody">
-          {table}
-        </tbody>
+          <thead key="tableHead">
+            <tr key="headRow" align="center">
+              <th key="descriptionHead">Description</th>
+              <th key="dateHead">Amount</th>
+              <th key="amountHead">Frequency</th>
+              <th key="statusHead">Due Day</th>
+              <th key="totalSubs">Subscribers</th>
+              <th key="incomeHead">Income per Period</th>
+              <th key="urlHead">URL</th>
+              <th key="detailsHead">Details</th>
+            </tr>
+          </thead>
+          <tbody key="tableBody">
+            {table}
+          </tbody>
         </Table>)
     
     return tableTop

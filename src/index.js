@@ -29,11 +29,11 @@ const router = createBrowserRouter([
         },
         {
           path: "provider/subscription/:id",
-          element: <ProvSubscription />
+          element: <ProvSubscription />,
         },
         {
-          path: "public_subscription/:id",
-          element: <PublicSubscription />
+          path: "public_subscription/:id/:f/:d",
+          element: <PublicSubscription />,
         }
       ]
     },

@@ -24,8 +24,6 @@ const ProvSubscription = () => {
     .then(function(result) {
         setSubscribers(result)
     })
-    
-    
 
     //TODO: gets subscription history
     //await clocktowersub.getPastEvents('')

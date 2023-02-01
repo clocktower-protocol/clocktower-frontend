@@ -8,7 +8,34 @@ const PublicSubscription = () => {
 
     const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
-    let {id} = useParams();
+    let {id, f, d} = useParams();
+
+    const [subscription, setSubscription] = useState()
+    const [idSub, setId] = useState(id)
+    const [frequency, setFrequency] = useState(f)
+    const [dueDay, setDueDay] = useState(d)
+
+    //loads provider subscription list upon login
+    useEffect(() => {
+        getSub()
+        console.log(idSub)
+    }, [id]);
+
+    //creates contract variable
+    const web3 = new Web3("http://localhost:8545")
+     
+    //gets contract interface
+    const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
+    const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
+
+    //gets subscription
+    const getSub = async () => {
+        await clocktowersub.methods.getSubByIndex(idSub, frequency, dueDay).call({from: account})
+        .then(function(result) {
+            setSubscription(result)
+        })
+    }    
+
 
     //checks that user has logged in 
     if(account == "-1") {

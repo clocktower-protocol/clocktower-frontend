@@ -75,7 +75,12 @@
   margin-right: 150px;
 }
 
-
+.publicSub {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
 
 @keyframes App-logo-spin {
   from {

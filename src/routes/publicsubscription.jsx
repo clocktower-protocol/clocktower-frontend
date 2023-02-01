@@ -6,7 +6,7 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_A
 
 const PublicSubscription = () => {
 
-    const [account] = useOutletContext();
+    const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     let {id, f, d} = useParams();
 
@@ -47,9 +47,11 @@ const PublicSubscription = () => {
             setTickerName(tickerLookup(result.token))
         })
 
-        getSub()
+        if(account != "-1"){
+            getSub()
+        }
 
-    }, []);
+    }, [account]);
     
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -101,31 +103,34 @@ const PublicSubscription = () => {
     const frequencyName = frequencyLookup(subscription.frequency)
     const tickerName = tickerLookup(subscription.token)
     */
-
+   // console.log(account)
     //checks that user has logged in 
     if(account == "-1") {
-        return (
-            <Alert align="center" variant="info">Please Login to Subscribe</Alert>
+        return ( 
+            <Alert align="center" variant="info">Please Login to Subscribe</Alert>  
         )
     } else {
         return (
+            <div className="publicSub">
             <Card style={{ width: '35rem' }}>
                 <Card.Body>
                     <Card.Title align="center">Subscription</Card.Title>
-                    <Card.Text>
+                    <Card.Text align="center">
                     {subscription.description}
                     </Card.Text>
                 </Card.Body>
                 <ListGroup className="list-group-flush">
-                    <ListGroup.Item>Producer: {subscription.provider}</ListGroup.Item>
-                    <ListGroup.Item>Amount: {amount} {tickerName}</ListGroup.Item>
-                    <ListGroup.Item>Frequency: {frequencyName}</ListGroup.Item>
-                    <ListGroup.Item>Day Due: {subscription.dueDay}</ListGroup.Item>
+                    <ListGroup.Item>Producer:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subscription.provider}</ListGroup.Item>
+                    <ListGroup.Item>Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{amount} {tickerName}</ListGroup.Item>
+                    <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
+                    <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
                 </ListGroup>
                 <Card.Body align="center">
                     <Button>Subscribe</Button>
                 </Card.Body>
             </Card>
+            </div>
+
         )
     }
 }

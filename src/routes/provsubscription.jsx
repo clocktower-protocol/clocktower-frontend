@@ -7,6 +7,11 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRE
 const ProvSubscription = () => {
     const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
+    //creates empty array for table
+    let emptySubscribeArray = [];
+    
+    const [subscribes, setSubscribes] = useState(emptySubscribeArray)
+
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
@@ -15,8 +20,21 @@ const ProvSubscription = () => {
     const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
     const [subscribers, setSubscribers] = useState()
+    const [subPayments, setSubPayments] = useState()
 
     let {id} = useParams();
+
+    //loads once
+    useEffect(() => {
+        //gets subscriber events
+        clocktowersub.getPastEvents('SubscriberLog', {
+            filter: {id:[id]},
+            fromBlock: 0,
+            toBlock: 'latest'
+        }, function(error, events){ 
+            setSubPayments(events)
+         })
+    }, [account]);
 
     
     //gets list of subscribers from contract
@@ -25,8 +43,6 @@ const ProvSubscription = () => {
         setSubscribers(result)
     })
 
-    //TODO: gets subscription history
-    //await clocktowersub.getPastEvents('')
-}
+} 
 
 export default ProvSubscription

@@ -4,6 +4,7 @@ import {Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 //import {SUBEVENT_LOOKUP} from "./config";
 import Web3 from 'web3'
+import { SUBEVENT_LOOKUP } from './config';
 
 const ProvSubDetailTable = (props) => {
 
@@ -18,15 +19,17 @@ const ProvSubDetailTable = (props) => {
         let row = []
        
         let subAmount = Web3.utils.fromWei(historyArray[i].returnValues.amount)
+
+        console.log(subAmount)
   
         row.push(
-            <td key={String(historyArray[i].returnValues.subscriber)+1}>{SUBEVENT_LOOKUP[historyArray[i].returnValues.subEvent]}</td>,
-            <td key={String(historyArray[i].returnValues.subscriber)+2}>{historyArray[i].returnValues.timestamp}</td>,
-            <td key={String(historyArray[i].returnValues.subscriber)+3}>{historyArray[i].returnValues.subscriber}</td>, 
-            <td key={String(historyArray[i].returnValues.subscriber)+4}>{subAmount}&nbsp;&nbsp;</td>,
+            <td key={String(historyArray[i].returnValues.subscriber)+1}>{historyArray[i].returnValues.subscriber}</td>, 
+            <td key={String(historyArray[i].returnValues.subEvent)+2}>{SUBEVENT_LOOKUP[historyArray[i].returnValues.subEvent]}</td>,
+            <td key={String(historyArray[i].returnValues.timestamp)+3}>{historyArray[i].returnValues.timestamp}</td>,
+            <td key={String(subAmount)+4}>{subAmount}&nbsp;&nbsp;</td>,
             )
           
-        table.push(<tr align="center" key={String(historyArray[i].returnValues.subscriber)}>{row}</tr>)
+        table.push(<tr align="center" key={String(historyArray[i].returnValues.subscriber)+i}>{row}</tr>)
     
       }
   
@@ -34,9 +37,9 @@ const ProvSubDetailTable = (props) => {
           <Table key="table" striped bordered hover size="sm" className="provTable">
             <thead key="tableHead">
               <tr key="headRow" align="center">
+                <th key="subHead">Subscriber</th>
                 <th key="eventHead">Event Type</th>
                 <th key="dateHead">Timestamp</th>
-                <th key="subHead">Subscriber</th>
                 <th key="amountHead">Amount</th>
               </tr>
             </thead>

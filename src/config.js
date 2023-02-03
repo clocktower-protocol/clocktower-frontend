@@ -2019,46 +2019,9 @@ export const CLOCKTOWERSUB_ABI = [
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "subscribe",
-        "type": "bool"
-      }
-    ],
-    "name": "SubscribeLog",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "id",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "subscriber",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint40",
-        "name": "timestamp",
-        "type": "uint40"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "success",
-        "type": "bool"
+        "internalType": "enum ClockTowerSubscribe.SubEvent",
+        "name": "subEvent",
+        "type": "uint8"
       }
     ],
     "name": "SubscriberLog",
@@ -2713,6 +2676,5 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
-
 
 export const FEE = 1.1;

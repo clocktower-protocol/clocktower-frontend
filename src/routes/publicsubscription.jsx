@@ -3,6 +3,7 @@ import {Alert, Card, ListGroup, Button} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
+/* global BigInt */
 
 const PublicSubscription = () => {
 
@@ -20,6 +21,7 @@ const PublicSubscription = () => {
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [tokenABI, setTokenABI] = useState(CLOCKTOKEN_ABI)
     const [alertType, setAlertType] = useState("danger")
+    const [isAllowedUnlimited, setIsAllowedUnlimited] = useState(false)
 
     
     //loads provider subscription list upon receiving parameter
@@ -53,6 +55,14 @@ const PublicSubscription = () => {
                     return token.ABI
                 }
             return true
+            })
+        }
+
+        if(account != "-1"){     
+            //checks allowance of user
+            clocktoken.methods.allowance(account, CLOCKTOWERSUB_ADDRESS).call({from:account})
+            .then(function(result) {
+                console.log(result)
             })
         }
 
@@ -95,6 +105,8 @@ const PublicSubscription = () => {
         let transactionParameters = {};
         //console.log(token)
         //const web3 = new Web3(node)
+         //creates contract variable
+        const web3 = new Web3("http://localhost:8545")
         const contract = new web3.eth.Contract(tokenABI, token);
 
         const confirmTransaction = async (txHash) => {
@@ -198,7 +210,7 @@ const PublicSubscription = () => {
         }
 
         //first requires user to approve unlimited allowance
-        await setInfiniteAllowance()
+       // await setInfiniteAllowance()
 
         //subscribes to subscription
         const transactionParameters = {
@@ -303,6 +315,7 @@ const PublicSubscription = () => {
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
                     </ListGroup>
                     <Card.Body align="center">
+                        <Button onClick={setInfiniteAllowance}>Approve</Button>
                         <Button onClick={subscribe}>Subscribe</Button>
                     </Card.Body>
                 </Card>

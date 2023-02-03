@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, Table} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 //import {LinkContainer} from 'react-router-bootstrap'
 import {Link} from "react-router-dom";
-import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, ZERO_ADDRESS} from "./config";
+//import {SUBEVENT_LOOKUP} from "./config";
 import Web3 from 'web3'
 
 const ProvSubDetailTable = (props) => {
@@ -20,13 +20,13 @@ const ProvSubDetailTable = (props) => {
         let subAmount = Web3.utils.fromWei(historyArray[i].returnValues.amount)
   
         row.push(
-            <td key={String(historyArray[i].returnValues.subscriber)+1}>{subscriptionArray[i].subscription.description}</td>,
-            <td key={String(historyArray[i].returnValues.subscriber)+2}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(historyArray[i].returnValues.subscriber)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
-            <td key={String(historyArray[i].returnValues.subscriber)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
+            <td key={String(historyArray[i].returnValues.subscriber)+1}>{SUBEVENT_LOOKUP[historyArray[i].returnValues.subEvent]}</td>,
+            <td key={String(historyArray[i].returnValues.subscriber)+2}>{historyArray[i].returnValues.timestamp}</td>,
+            <td key={String(historyArray[i].returnValues.subscriber)+3}>{historyArray[i].returnValues.subscriber}</td>, 
+            <td key={String(historyArray[i].returnValues.subscriber)+4}>{subAmount}&nbsp;&nbsp;</td>,
             )
           
-        table.push(<tr align="center" key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)
+        table.push(<tr align="center" key={String(historyArray[i].returnValues.subscriber)}>{row}</tr>)
     
       }
   

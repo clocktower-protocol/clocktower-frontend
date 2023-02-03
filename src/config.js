@@ -19,8 +19,6 @@ export const EMPTY_PERMIT = {
 }
 */
 
-
-//TODO: these ABIs need to be checked
 export const TOKEN_LOOKUP = [
   {
     address: "0x0000000000000000000000000000000000000000",
@@ -434,6 +432,11 @@ export const DUEDAY_RANGE = [
     start: 1,
     stop: 365
   }
+]
+
+//lookup for SubEvent
+export const SUBEVENT_LOOKUP = [
+ "Paid", "Failed", "Subscribed", "Unsubscribed", "FeeFill"
 ]
 
 export const CLOCKTOKEN_ABI = [

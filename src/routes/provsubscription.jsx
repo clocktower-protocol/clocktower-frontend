@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
+import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "../config"; 
+import ProvSubDetailTable from '../ProvSubDetailTable';
 
 
 const ProvSubscription = () => {
@@ -20,7 +22,7 @@ const ProvSubscription = () => {
     const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
     const [subscribers, setSubscribers] = useState()
-    const [subPayments, setSubPayments] = useState()
+    const [historyArray, setHistoryArray] = useState()
 
     let {id} = useParams();
 
@@ -32,7 +34,7 @@ const ProvSubscription = () => {
             fromBlock: 0,
             toBlock: 'latest'
         }, function(error, events){ 
-            setSubPayments(events)
+            setHistoryArray(events)
          })
     }, [account]);
 
@@ -42,6 +44,19 @@ const ProvSubscription = () => {
     .then(function(result) {
         setSubscribers(result)
     })
+
+    //checks that user has logged in 
+    if(account == "-1") {
+        return ( 
+            <Alert align="center" variant="info">Please Login</Alert>  
+        )
+    } else {
+        return (
+            <ProvSubDetailTable 
+                historyArray = {historyArray}
+            />
+        )
+    }
 
 } 
 

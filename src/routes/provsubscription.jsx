@@ -32,7 +32,7 @@ const ProvSubscription = () => {
             fromBlock: 0,
             toBlock: 'latest'
         }, function(error, events){ 
-            console.log(events)
+            //console.log(events)
             setHistoryArray(events)
         })
         
@@ -56,7 +56,7 @@ const ProvSubscription = () => {
 
     }, []);
 
-    console.log(historyArray.length)
+    //console.log(historyArray.length)
     
     //gets list of subscribers from contract
     const getSubs = async () => await clocktowersub.methods.getSubscribers(id).call({from: account})

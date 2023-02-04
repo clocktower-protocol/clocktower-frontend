@@ -16,7 +16,7 @@ const SubscriberDash = () => {
     //creates empty array for table
     let emptySubscriptionArray = []
 
-    const [alertType, setAlertType] = useState("danger")
+    const [alertType, setAlertType] = useState("warning")
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
 
     //creates contract variable
@@ -92,25 +92,63 @@ const SubscriberDash = () => {
        })
    }
 
-   return (
-            
-    <div className="clockMeta">
-        {alertMaker()}
-        <div className="clockBody">
-            <div>
-                {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">List of Subscriptions</Alert> : ""}
-            </div>
-                <div className="provHistory">
-                    <SubsTable 
-                        subscriptionArray={subscriptionArray}
-                        // setIsTableEmpty = {setIsTableEmpty}
-                    />
+   const unsubscribe = async (subscription) => {
+        const transactionParameters = {
+            to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
+            from: account, // must match user's active address.
+            data: clocktowersub.methods.unsubscribe(subscription).encodeABI(),
+        // value: feeHex
+        }
+
+        const txhash = await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameters],
+        });
+        
+        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+        setAlertType("warning")
+        setAlert(true)
+        setAlertText("Transaction Pending...")
+
+        //TODO: need to update to emit method
+        await confirmTransaction(txhash)
+   }
+
+   const isTableEmpty = (subscriptionArray) => {
+        let count = 0
+        subscriptionArray.forEach(subscription => {
+            //this checks for unsubscribes AND cancels
+            if(subscription.status == 0) {count += 1}
+        })
+        if(count > 0) { return false } else {return true}
+    }
+
+   
+    if(account == "-1") {
+        return (
+            <Alert align="center" variant="info">Please Login</Alert>
+        )
+    } else {
+        if(!isTableEmpty(subscriptionArray)) {
+            return (
+                  
+        <div className="clockMeta">
+            {alertMaker()}
+            <div className="clockBody">
+                <div>
+                    {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">List of Subscriptions</Alert> : ""}
                 </div>
+                    <div className="provHistory">
+                        <SubsTable 
+                            subscriptionArray={subscriptionArray}
+                            unsubscribe = {unsubscribe}
+                        />
+                    </div>
             </div>
-    </div>
+        </div>
+        )}
 
-   )
-
+    }
 }
 
 export default SubscriberDash

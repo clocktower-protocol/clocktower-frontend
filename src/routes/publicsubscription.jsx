@@ -332,8 +332,6 @@ const PublicSubscription = () => {
                 </Card>
                 </div>
             </div>
-
-
         )
     }
 }

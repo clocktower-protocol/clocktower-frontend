@@ -38,8 +38,8 @@ const SubsTable = (props) => {
     //loops through array to create table rows
     for(let i = 0; i < subscriptionArray.length; i++) {
         console.log(subscriptionArray[i].status)
-        //doesn't show cancelled transactions
-        if(subscriptionArray[i].status != 1) {
+        //doesn't show cancelled or unsubscribed transactions
+        if(subscriptionArray[i].status == 0) {
           let row = []
           let totalSubscribers = 0;
           if(typeof subscriptionArray[i].totalSubscribers !== 'undefined') {

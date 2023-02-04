@@ -237,7 +237,6 @@ const PublicSubscription = () => {
                  
                 await confirmTransaction(txhash)
 
-                //TODO:
                 //send to subscription page
                 sendToSubDash()
 
@@ -254,10 +253,9 @@ const PublicSubscription = () => {
         } 
     },[subscription])
 
-    const sendToSubDash = 
-        useCallback(() => 
+    const sendToSubDash = useCallback(() => 
             navigate('/subscriberdash', {replace: true})
-        ,[navigate])
+    ,[navigate])
     
 
     //setId(id)

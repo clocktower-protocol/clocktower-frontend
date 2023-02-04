@@ -11,6 +11,8 @@ const PublicSubscription = () => {
 
     let {id, f, d} = useParams();
 
+    const navigate = useNavigate()
+
     const [subscription, setSubscription] = useState("")
     const [idSub, setId] = useState(id)
     const [frequency, setFrequency] = useState(f)
@@ -234,6 +236,11 @@ const PublicSubscription = () => {
                 setAlertText("Transaction Pending...")
                  
                 await confirmTransaction(txhash)
+
+                //TODO:
+                //send to subscription page
+                sendToSubDash()
+
             })
 
             return {
@@ -246,6 +253,12 @@ const PublicSubscription = () => {
             }
         } 
     },[subscription])
+
+    const sendToSubDash = 
+        useCallback(() => 
+            navigate('/subscriberdash', {replace: true})
+        ,[navigate])
+    
 
     //setId(id)
 

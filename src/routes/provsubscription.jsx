@@ -54,7 +54,7 @@ const ProvSubscription = () => {
         })
         */
 
-    }, [account]);
+    }, []);
 
     console.log(historyArray.length)
     

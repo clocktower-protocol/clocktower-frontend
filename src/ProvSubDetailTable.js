@@ -13,6 +13,7 @@ const ProvSubDetailTable = (props) => {
     let table = []
     let tableTop = []
 
+  if(historyArray.length > 0 && typeof historyArray[0].returnValues !== "undefined") {
     //loops through array to create table rows
     for(let i = 0; i < historyArray.length; i++) {
         
@@ -49,6 +50,7 @@ const ProvSubDetailTable = (props) => {
           </Table>)
       
       return tableTop
+  }
 }
 
 export default ProvSubDetailTable

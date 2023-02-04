@@ -84,9 +84,11 @@ const Root = () => {
             <Nav key="subnav">
               <NavDropdown title="Subscriptions" id="nav-sub">
                 <LinkContainer to="/provider">
-                    <NavDropdown.Item eventKey="4.1">Provider Dashboard</NavDropdown.Item>
+                  <NavDropdown.Item eventKey="4.1">Provider Dashboard</NavDropdown.Item>
                 </LinkContainer>
-                <NavDropdown.Item eventKey="4.2">Subscriber Dashboard</NavDropdown.Item>
+                <LinkContainer to="/subscriberdash">
+                  <NavDropdown.Item eventKey="4.2">Subscriber Dashboard</NavDropdown.Item>
+                </LinkContainer>
                 <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
               </NavDropdown>
             </Nav>

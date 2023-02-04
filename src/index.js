@@ -12,6 +12,7 @@ import FutPaymentRoute from './routes/futurepayments';
 import Provider from './routes/provider';
 import ProvSubscription from './routes/provsubscription';
 import PublicSubscription from './routes/publicsubscription';
+import SubscriberDash from './routes/subscriberdash';
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
         {
           path: "public_subscription/:id/:f/:d",
           element: <PublicSubscription />,
+        },
+        {
+          path: "subscriberdash/",
+          element: <SubscriberDash />
         }
       ]
     },

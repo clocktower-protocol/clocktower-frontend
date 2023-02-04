@@ -29,7 +29,6 @@ const ProviderSubsTable = (props) => {
 
      //checks for empty array
     if(!Array.isArray(subscriptionArray) || (subscriptionArray.length <= 0)) {
-       // props.setIsTableEmpty(true)
         return
     }
 

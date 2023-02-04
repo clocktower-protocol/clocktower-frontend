@@ -31,6 +31,7 @@ const Provider = () => {
     const [amount, setAmount] = useState(0.00)
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [fee, setFee] = useState(0.1)
+    //const [isTableEmpty, setIsTableEmpty] = useState(true)
 
     
     //loads provider subscription list upon login
@@ -125,46 +126,113 @@ const Provider = () => {
         await confirmTransaction(txhash)
     }
 
+    const cancelSubscription = async (subscription) => {
+        const transactionParameters = {
+            to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
+            from: account, // must match user's active address.
+            data: clocktowersub.methods.cancelSubscription(subscription).encodeABI(),
+           // value: feeHex
+        }
+  
+        const txhash = await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameters],
+        });
+        
+        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
+        setAlertType("warning")
+        setAlert(true)
+        setAlertText("Transaction Pending...")
+  
+        //TODO: need to update to emit method
+        await confirmTransaction(txhash)
+    }
+
+    const isTableEmpty = (subscriptionArray) => {
+        let count = 0
+        console.log("here")
+        subscriptionArray.forEach(subscription => {
+            if(subscription.status != 1) {count += 1}
+            console.log(count)
+        })
+        if(count > 0) { return false } else {return true}
+    }
+
     //checks that user has logged in 
     if(account == "-1") {
         return (
             <Alert align="center" variant="info">Please Login</Alert>
         )
     } else {
-        return (
-        
-            <div className="clockMeta">
-                {alertMaker()}
-                <div className="clockBody">
-                    <div className="clockFormDiv">  
-                            <CreateSubForm
-                                token = {token}
-                                amount = {amount}
-                                frequency = {frequency}
-                                dueDay = {dueDay}
-                                description = {description}
+        if(!isTableEmpty(subscriptionArray)) {
+            return (
+            
+                <div className="clockMeta">
+                    {alertMaker()}
+                    <div className="clockBody">
+                        <div className="clockFormDiv">  
+                                <CreateSubForm
+                                    token = {token}
+                                    amount = {amount}
+                                    frequency = {frequency}
+                                    dueDay = {dueDay}
+                                    description = {description}
 
-                                
-                                setToken = {setToken}
-                                setTokenABI = {setTokenABI}
-                                setAmount = {setAmount}
-                                setFrequency = {setFrequency}
-                                setDueDay = {setDueDay}
-                                setDescription = {setDescription}
-                                setAlert = {setAlert}
-                                setAlertText = {setAlertText}
-                                createSubscription = {createSubscription}
-                            />
+                                    
+                                    setToken = {setToken}
+                                    setTokenABI = {setTokenABI}
+                                    setAmount = {setAmount}
+                                    setFrequency = {setFrequency}
+                                    setDueDay = {setDueDay}
+                                    setDescription = {setDescription}
+                                    setAlert = {setAlert}
+                                    setAlertText = {setAlertText}
+                                    createSubscription = {createSubscription}
+                                />
+                        </div>
+
+                            <div>
+                                {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
+                            </div>
+                            <div className="provHistory">
+                                <ProviderSubsTable 
+                                    subscriptionArray={subscriptionArray}
+                                    cancelSubscription = {cancelSubscription}
+                                   // setIsTableEmpty = {setIsTableEmpty}
+                                />
+                            </div>
                     </div>
-                        <div>
-                            {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
-                        </div>
-                        <div className="provHistory">
-                            <ProviderSubsTable subscriptionArray={subscriptionArray}/>
-                        </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return (
+                <div className="clockMeta">
+                    {alertMaker()}
+                    <div className="clockBody">
+                        <div className="clockFormDiv">  
+                                <CreateSubForm
+                                    token = {token}
+                                    amount = {amount}
+                                    frequency = {frequency}
+                                    dueDay = {dueDay}
+                                    description = {description}
+
+                                    
+                                    setToken = {setToken}
+                                    setTokenABI = {setTokenABI}
+                                    setAmount = {setAmount}
+                                    setFrequency = {setFrequency}
+                                    setDueDay = {setDueDay}
+                                    setDescription = {setDescription}
+                                    setAlert = {setAlert}
+                                    setAlertText = {setAlertText}
+                                    createSubscription = {createSubscription}
+                                />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
     }
 }
 

@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 //import {SUBEVENT_LOOKUP} from "./config";
 import Web3 from 'web3'
 import { SUBEVENT_LOOKUP } from './config';
+import dayjs from 'dayjs'
 
 const ProvSubDetailTable = (props) => {
 
@@ -20,13 +21,14 @@ const ProvSubDetailTable = (props) => {
         let row = []
        
         let subAmount = Web3.utils.fromWei(historyArray[i].returnValues.amount)
+        let formatDate = dayjs.unix(historyArray[i].returnValues.timestamp).format('MM/DD/YYYY h:m:s A')
 
         console.log(subAmount)
   
         row.push(
             <td key={String(historyArray[i].returnValues.subscriber)+1}>{historyArray[i].returnValues.subscriber}</td>, 
             <td key={String(historyArray[i].returnValues.subEvent)+2}>{SUBEVENT_LOOKUP[historyArray[i].returnValues.subEvent]}</td>,
-            <td key={String(historyArray[i].returnValues.timestamp)+3}>{historyArray[i].returnValues.timestamp}</td>,
+            <td key={String(historyArray[i].returnValues.timestamp)+3}>{formatDate}</td>,
             <td key={String(subAmount)+4}>{subAmount}&nbsp;&nbsp;</td>,
             )
           

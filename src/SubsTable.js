@@ -40,7 +40,7 @@ const SubsTable = (props) => {
     for(let i = 0; i < subscriptionArray.length; i++) {
         console.log(subscriptionArray[i].status)
         //doesn't show cancelled or unsubscribed transactions
-        if(subscriptionArray[i].status === 0) {
+        if(subscriptionArray[i].status == 0) {
           let row = []
           /*
           let totalSubscribers = 0;

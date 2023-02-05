@@ -16,6 +16,7 @@ const SubscriberDash = () => {
 
     const [alertType, setAlertType] = useState("warning")
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
+    const [isEmpty, setIsEmpty] = useState(true)
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -116,9 +117,12 @@ const SubscriberDash = () => {
         let count = 0
         subscriptionArray.forEach(subscription => {
             //this checks for unsubscribes AND cancels
-            if(subscription.status === 0) {count += 1}
+            if(Number(subscription.status) === 0) {count += 1}
         })
-        if(count > 0) { return false } else {return true}
+        if(count > 0) { 
+            setIsEmpty(false)
+            return false 
+        } else {return true}
     }
 
    
@@ -127,26 +131,27 @@ const SubscriberDash = () => {
             <Alert align="center" variant="info">Please Login</Alert>
         )
     } else {
-        if(!isTableEmpty(subscriptionArray)) {
+        //if(!isTableEmpty(subscriptionArray)) {
             return (
                   
         <div className="clockMeta">
             {alertMaker()}
             <div className="clockBody">
                 <div>
-                    {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">List of Subscriptions</Alert> : ""}
+                    {subscriptionArray.length > 0 && !isEmpty ? <Alert align="center" variant="dark">List of Subscriptions</Alert> : <Alert align="center" variant="info">No Subscriptions Yet</Alert>}
                 </div>
                     <div className="provHistory">
+                        {subscriptionArray.length > 0 && !isEmpty ?
                         <SubsTable 
                             subscriptionArray={subscriptionArray}
                             unsubscribe = {unsubscribe}
-                        />
+                        /> : ""}
                     </div>
             </div>
         </div>
         )}
 
-    }
+  //  }
 }
 
 export default SubscriberDash

@@ -35,24 +35,6 @@ const ProvSubscription = () => {
             //console.log(events)
             setHistoryArray(events)
         })
-        
-
-        /*
-        clocktowersub.events.SubscriberLog({
-           // filter: {id: [id]},
-            fromBlock: 0
-        }, function(error, events){ 
-            console.log(events)
-            console.log("here")
-            setHistoryArray(events)
-        })
-        */
-        /*
-        clocktowersub.events.allEvents({}, function(error, events){ 
-            console.log(events)
-           // setHistoryArray(events)
-        })
-        */
 
     }, []);
 
@@ -63,14 +45,6 @@ const ProvSubscription = () => {
     .then(function(result) {
         setSubscribers(result)
     })
-
-    /*
-      <div>
-                <ProvSubDetailTable 
-                    historyArray = {historyArray}
-                />
-            </div>
-    */
 
     //checks that user has logged in 
     if(account == "-1") {

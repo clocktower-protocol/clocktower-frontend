@@ -2,21 +2,23 @@ import React, {useEffect, useState} from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import '../App.css';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import CreateSubForm from '../CreateSubForm';
 import ProviderSubsTable from '../ProviderSubsTable';
-/* global BigInt */
+
 
 const Provider = () => {
-    const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+
+    console.log(account)
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
-    const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
+   // const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
     //creates empty array for table
     let emptySubscriptionArray = [];
@@ -30,9 +32,9 @@ const Provider = () => {
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState(0.00)
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
-    const [fee, setFee] = useState(0.1)
+    //const [fee, setFee] = useState(0.1)
     //const [isTableEmpty, setIsTableEmpty] = useState(true)
-
+    const fee = 0.1
     
     //loads provider subscription list upon login
     useEffect(() => {
@@ -55,8 +57,6 @@ const Provider = () => {
 
         //gets transaction details
         const trx = await web3.eth.getTransaction(txHash)
-
-        //console.log(txHash)
 
         let isDone = false;
         
@@ -150,16 +150,14 @@ const Provider = () => {
 
     const isTableEmpty = (subscriptionArray) => {
         let count = 0
-        console.log("here")
         subscriptionArray.forEach(subscription => {
-            if(subscription.status != 1) {count += 1}
-            console.log(count)
+            if(subscription.status !== 1) {count += 1}
         })
         if(count > 0) { return false } else {return true}
     }
 
     //checks that user has logged in 
-    if(account == "-1") {
+    if(account === "-1") {
         return (
             <Alert align="center" variant="info">Please Login</Alert>
         )

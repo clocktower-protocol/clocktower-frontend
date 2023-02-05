@@ -1,8 +1,7 @@
 import React from 'react';
 import {Button, Table} from 'react-bootstrap';
-//import {LinkContainer} from 'react-router-bootstrap'
 import {Link} from "react-router-dom";
-import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, ZERO_ADDRESS, CLOCKTOWERSUB_ADDRESS} from "./config";
+import {TOKEN_LOOKUP, FREQUENCY_LOOKUP} from "./config";
 import Web3 from 'web3'
 
 const SubsTable = (props) => {
@@ -12,18 +11,20 @@ const SubsTable = (props) => {
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
         return TOKEN_LOOKUP.map((token) => {
-          if(token.address == tokenAddress) {
+          if(token.address === tokenAddress) {
             return token.ticker
           }
+          return false
         });
     }
   
     //looks up frequency
     const frequencyLookup = (frequencyIndex) => {
         return FREQUENCY_LOOKUP.map((frequencyObject) => {
-          if(frequencyIndex == frequencyObject.index) {
+          if(frequencyIndex === String(frequencyObject.index)) {
             return frequencyObject.name
           }
+          return false
         })
     }
   
@@ -39,12 +40,14 @@ const SubsTable = (props) => {
     for(let i = 0; i < subscriptionArray.length; i++) {
         console.log(subscriptionArray[i].status)
         //doesn't show cancelled or unsubscribed transactions
-        if(subscriptionArray[i].status == 0) {
+        if(subscriptionArray[i].status === 0) {
           let row = []
+          /*
           let totalSubscribers = 0;
           if(typeof subscriptionArray[i].totalSubscribers !== 'undefined') {
             totalSubscribers = subscriptionArray[i].totalSubscribers
           }
+          */
           let subAmount = Web3.utils.fromWei(subscriptionArray[i].subscription.amount)
   
           row.push(

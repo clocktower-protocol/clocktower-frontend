@@ -2,16 +2,14 @@ import React, {useEffect, useState} from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import '../App.css';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
-import CreateSubForm from '../CreateSubForm';
-import ProviderSubsTable from '../ProviderSubsTable';
 import SubsTable from '../SubsTable';
 /* global BigInt */
 
 const SubscriberDash = () => {
 
-    const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     //creates empty array for table
     let emptySubscriptionArray = []
@@ -118,13 +116,13 @@ const SubscriberDash = () => {
         let count = 0
         subscriptionArray.forEach(subscription => {
             //this checks for unsubscribes AND cancels
-            if(subscription.status == 0) {count += 1}
+            if(subscription.status === 0) {count += 1}
         })
         if(count > 0) { return false } else {return true}
     }
 
    
-    if(account == "-1") {
+    if(account === "-1") {
         return (
             <Alert align="center" variant="info">Please Login</Alert>
         )

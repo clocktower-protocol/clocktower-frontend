@@ -7,7 +7,7 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_A
 
 const PublicSubscription = () => {
 
-    const [buttonClicked, setButtonClicked, account, setAccount, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     let {id, f, d} = useParams();
 
@@ -23,7 +23,11 @@ const PublicSubscription = () => {
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [tokenABI, setTokenABI] = useState(CLOCKTOKEN_ABI)
     const [alertType, setAlertType] = useState("danger")
-    const [isAllowedUnlimited, setIsAllowedUnlimited] = useState(false)
+   // const [isAllowedUnlimited, setIsAllowedUnlimited] = useState(false)
+
+  // const idSub = id
+   //const frequency = f
+  // const dueDay = d
 
     
     //loads provider subscription list upon receiving parameter

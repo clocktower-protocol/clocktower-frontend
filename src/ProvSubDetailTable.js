@@ -1,8 +1,5 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-//import {LinkContainer} from 'react-router-bootstrap'
-import {Link} from "react-router-dom";
-//import {SUBEVENT_LOOKUP} from "./config";
 import Web3 from 'web3'
 import { SUBEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'

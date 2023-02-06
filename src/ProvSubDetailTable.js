@@ -18,7 +18,7 @@ const ProvSubDetailTable = (props) => {
         let row = []
        
         let subAmount = Web3.utils.fromWei(historyArray[i].returnValues.amount)
-        let formatDate = dayjs.unix(historyArray[i].returnValues.timestamp).format('MM/DD/YYYY h:m:s A')
+        let formatDate = dayjs.unix(historyArray[i].returnValues.timestamp).format('MM/DD/YYYY h:mm:s A')
 
         console.log(subAmount)
   

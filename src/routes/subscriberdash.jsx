@@ -16,7 +16,7 @@ const SubscriberDash = () => {
 
     const [alertType, setAlertType] = useState("warning")
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
-    const [isEmpty, setIsEmpty] = useState(true)
+    const [isEmpty, setIsEmpty] = useState(false)
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -26,6 +26,21 @@ const SubscriberDash = () => {
 
      //loads provider subscription list upon login
      useEffect(() => {
+        const isTableEmpty = (subscriptionArray) => {
+            let count = 0
+            subscriptionArray.forEach(subscription => {
+                //this checks for unsubscribes AND cancels
+                if(Number(subscription.status) === 0) {count += 1}
+            })
+            if(count > 0) { 
+                setIsEmpty(false)
+                //return false 
+            } else {
+                setIsEmpty(true)
+            }
+        }
+
+        isTableEmpty(subscriptionArray)
         getSubscriberSubs()
     }, [account]);
 
@@ -113,6 +128,7 @@ const SubscriberDash = () => {
         await confirmTransaction(txhash)
    }
 
+   /*
    const isTableEmpty = (subscriptionArray) => {
         let count = 0
         subscriptionArray.forEach(subscription => {
@@ -124,6 +140,7 @@ const SubscriberDash = () => {
             return false 
         } else {return true}
     }
+    */
 
    
     if(account === "-1") {
@@ -151,7 +168,7 @@ const SubscriberDash = () => {
         </div>
         )}
 
-  //  }
+   // }
 }
 
 export default SubscriberDash

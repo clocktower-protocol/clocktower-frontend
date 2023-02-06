@@ -3,6 +3,7 @@ import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
 import {FREQUENCY_LOOKUP, TOKEN_LOOKUP} from "../config"
+import Web3 from 'web3'
 
 const Root = () => {
 
@@ -10,6 +11,9 @@ const Root = () => {
     const [account, setAccount] = useState("-1")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
+
+    //creates contract variable
+    const web3 = new Web3("http://localhost:8545")
     
     //connects to metamask wallet
     const connectWallet = async () => {
@@ -26,7 +30,7 @@ const Root = () => {
         });
 
         //NOTE doesn't get account transactions like original function
-        setAccount(accounts[0])
+        setAccount(web3.utils.toChecksumAddress(accounts[0]))
 
         console.log("Connected", accounts[0]);
 

@@ -23,6 +23,7 @@ const PublicSubscription = () => {
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [tokenABI, setTokenABI] = useState(CLOCKTOKEN_ABI)
     const [alertType, setAlertType] = useState("danger")
+    const [subscribed, setIsSubscribed] = useState(false)
    // const [isAllowedUnlimited, setIsAllowedUnlimited] = useState(false)
 
   // const idSub = id
@@ -82,8 +83,31 @@ const PublicSubscription = () => {
             setToken(result.token)
         })
 
+
+        const isSubscribed = async () => {
+            let result = await clocktowersub.methods.getSubscribers(id).call({from: account})
+            let isTrue = false
+            result.forEach((element) => {
+                if(element == account) {
+                    //TODO: set alert
+                    setIsSubscribed(true)
+                    isTrue = true
+                    return
+                }
+            })
+
+            if(isTrue) {
+                setAlertType("warning")
+                setAlert(true)
+                setAlertText("Already Subscribed")
+            }
+            //return false
+            setIsSubscribed(isTrue)
+        }
+
         if(account != "-1"){
             getSub()
+            isSubscribed()
         }
 
     }, [account]);
@@ -262,50 +286,7 @@ const PublicSubscription = () => {
     ,[navigate])
     
 
-    //setId(id)
-
-    /*
-    //gets subscription
-    const getSub = async () => {
-        await clocktowersub.methods.getSubByIndex(idSub, frequency, dueDay).call({from: account})
-        .then(function(result) {
-            setSubscription(result)
-            setAmount(Web3.utils.fromWei(result.amount))
-            setFrequencyName(frequencyLookup(result.frequency))
-            setTickerName(tickerLookup(result.token))
-        })
-    }
-    
-
-    //looks up ticker for token
-    const tickerLookup = (tokenAddress) => {
-        return TOKEN_LOOKUP.map((token) => {
-          if(token.address == tokenAddress) {
-            return token.ticker
-          }
-        });
-    }
-  
-    //looks up frequency
-    const frequencyLookup = (frequencyIndex) => {
-        return FREQUENCY_LOOKUP.map((frequencyObject) => {
-          if(frequencyIndex == frequencyObject.index) {
-            return frequencyObject.name
-          }
-        })
-    }
-    */
-
-
-
-    //formats subscription items
-    
-    /*
-    const amount = Web3.utils.fromWei(subscription.amount)
-    const frequencyName = frequencyLookup(subscription.frequency)
-    const tickerName = tickerLookup(subscription.token)
-    */
-   // console.log(account)
+   
     //checks that user has logged in 
     if(account == "-1") {
         return ( 
@@ -329,10 +310,13 @@ const PublicSubscription = () => {
                         <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
                     </ListGroup>
+                    {console.log(subscribed)}
+                    {!subscribed ?
                     <Card.Body align="center">
-                        <Button onClick={setInfiniteAllowance}>Approve</Button>
+                        <Button onClick={setInfiniteAllowance}>Approve</Button> 
                         <Button onClick={subscribe}>Subscribe</Button>
                     </Card.Body>
+                    : ""}
                 </Card>
                 </div>
             </div>

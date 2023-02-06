@@ -10,6 +10,7 @@ import Provider from './routes/provider';
 import ProvSubscription from './routes/provsubscription';
 import PublicSubscription from './routes/publicsubscription';
 import SubscriberDash from './routes/subscriberdash';
+import SubHistory from './routes/subhistory';
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
         {
           path: "subscriberdash/",
           element: <SubscriberDash />
+        },
+        {
+          path: "subscriberdash/subscription/:id/:s",
+          element: <SubHistory />
         }
       ]
     },

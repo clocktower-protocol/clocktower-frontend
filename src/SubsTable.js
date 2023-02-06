@@ -7,6 +7,7 @@ import Web3 from 'web3'
 const SubsTable = (props) => {
 
     const subscriptionArray = props.subscriptionArray
+    const account = props.account
 
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
@@ -55,7 +56,7 @@ const SubsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+2}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
             <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${account}`}>Details</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}><Button type="submit" onClick={() => props.unsubscribe(subscriptionArray[i].subscription)}>Unsubscribe</Button></td>)
           
           table.push(<tr align="center" key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)

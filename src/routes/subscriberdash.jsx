@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import '../App.css';
@@ -26,21 +26,6 @@ const SubscriberDash = () => {
 
      //loads provider subscription list upon login
      useEffect(() => {
-        const isTableEmpty = (subscriptionArray) => {
-            let count = 0
-            subscriptionArray.forEach(subscription => {
-                //this checks for unsubscribes AND cancels
-                if(Number(subscription.status) === 0) {count += 1}
-            })
-            if(count > 0) { 
-                setIsEmpty(false)
-                //return false 
-            } else {
-                setIsEmpty(true)
-            }
-        }
-
-        isTableEmpty(subscriptionArray)
         getSubscriberSubs()
     }, [account]);
 
@@ -128,19 +113,22 @@ const SubscriberDash = () => {
         await confirmTransaction(txhash)
    }
 
-   /*
-   const isTableEmpty = (subscriptionArray) => {
+   
+   const isTableEmpty = () => {
         let count = 0
         subscriptionArray.forEach(subscription => {
             //this checks for unsubscribes AND cancels
             if(Number(subscription.status) === 0) {count += 1}
         })
         if(count > 0) { 
-            setIsEmpty(false)
+            //setIsEmpty(false)
             return false 
-        } else {return true}
+        } else {
+           // setIsEmpty(true)
+            return true
+        }
     }
-    */
+    
 
    
     if(account === "-1") {
@@ -148,27 +136,26 @@ const SubscriberDash = () => {
             <Alert align="center" variant="info">Please Login</Alert>
         )
     } else {
-        //if(!isTableEmpty(subscriptionArray)) {
-            return (
+        
+        return (
                   
         <div className="clockMeta">
             {alertMaker()}
             <div className="clockBody">
                 <div>
-                    {subscriptionArray.length > 0 && !isEmpty ? <Alert align="center" variant="dark">List of Subscriptions</Alert> : <Alert align="center" variant="info">No Subscriptions Yet</Alert>}
+                    {subscriptionArray.length > 0 && !isTableEmpty() ? <Alert align="center" variant="dark">List of Subscriptions</Alert> : <Alert align="center" variant="info">No Subscriptions Yet</Alert>}
                 </div>
                     <div className="provHistory">
-                        {subscriptionArray.length > 0 && !isEmpty ?
+                        {subscriptionArray.length > 0 && !isTableEmpty() ?
                         <SubsTable 
                             subscriptionArray={subscriptionArray}
                             unsubscribe = {unsubscribe}
+                            account = {account}
                         /> : ""}
                     </div>
             </div>
         </div>
         )}
-
-   // }
 }
 
 export default SubscriberDash

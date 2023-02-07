@@ -24,6 +24,7 @@ const PublicSubscription = () => {
     const [tokenABI, setTokenABI] = useState(CLOCKTOKEN_ABI)
     const [alertType, setAlertType] = useState("danger")
     const [subscribed, setIsSubscribed] = useState(false)
+    const [isProvider, setIsProvider] = useState(false)
    // const [isAllowedUnlimited, setIsAllowedUnlimited] = useState(false)
 
   // const idSub = id
@@ -86,28 +87,39 @@ const PublicSubscription = () => {
 
         const isSubscribed = async () => {
             let result = await clocktowersub.methods.getSubscribers(id).call({from: account})
-            let isTrue = false
+            let status = false
             result.forEach((element) => {
                 if(element == account) {
-                    //TODO: set alert
                     setIsSubscribed(true)
-                    isTrue = true
+                    status = true
                     return
                 }
             })
 
-            if(isTrue) {
+            if(status) {
                 setAlertType("warning")
                 setAlert(true)
                 setAlertText("Already Subscribed")
             }
             //return false
-            setIsSubscribed(isTrue)
+            setIsSubscribed(status)
+        }
+
+        const isProviderSame = async () => {
+            let result = await clocktowersub.methods.getSubByIndex(idSub, frequency, dueDay).call({from:account})
+        
+            if(result.provider == account) {
+                setIsProvider(true)
+            } else {
+                setIsProvider(false)
+            }
         }
 
         if(account != "-1"){
             getSub()
             isSubscribed()
+            isProviderSame()
+
         }
 
     }, [account]);
@@ -310,8 +322,7 @@ const PublicSubscription = () => {
                         <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
                     </ListGroup>
-                    {console.log(subscribed)}
-                    {!subscribed ?
+                    {(!subscribed && !isProvider) ?
                     <Card.Body align="center">
                         <Button onClick={setInfiniteAllowance}>Approve</Button> 
                         <Button onClick={subscribe}>Subscribe</Button>

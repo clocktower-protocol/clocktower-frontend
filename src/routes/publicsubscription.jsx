@@ -216,7 +216,7 @@ const PublicSubscription = () => {
             } 
         
         }
-    }, [account, setAlert, setAlertText, token, tokenABI, ZERO_ADDRESS, CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL, web3, setAlertType]
+    }, [account, setAlert, setAlertText, token, tokenABI, setAlertType]
     )
 
     //handles subscription button click and navigation

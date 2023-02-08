@@ -2312,6 +2312,90 @@ export const CLOCKTOWERSUB_ABI = [
   },
   {
     "inputs": [],
+    "name": "getAllAccounts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "accountAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "exists",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint40[]",
+            "name": "timeTriggers",
+            "type": "uint40[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint16",
+                "name": "dueDay",
+                "type": "uint16"
+              },
+              {
+                "internalType": "enum ClockTowerSubscribe.Frequency",
+                "name": "frequency",
+                "type": "uint8"
+              },
+              {
+                "internalType": "enum ClockTowerSubscribe.Status",
+                "name": "status",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct ClockTowerSubscribe.SubIndex[]",
+            "name": "subscriptions",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint16",
+                "name": "dueDay",
+                "type": "uint16"
+              },
+              {
+                "internalType": "enum ClockTowerSubscribe.Frequency",
+                "name": "frequency",
+                "type": "uint8"
+              },
+              {
+                "internalType": "enum ClockTowerSubscribe.Status",
+                "name": "status",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct ClockTowerSubscribe.SubIndex[]",
+            "name": "provSubs",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct ClockTowerSubscribe.Account[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getFee",
     "outputs": [
       {
@@ -2676,5 +2760,6 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+
 
 export const FEE = 1.1;

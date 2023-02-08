@@ -6,6 +6,7 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"
 import { useOutletContext } from "react-router-dom";
 import ProvSubDetailTable from '../ProvSubDetailTable';
 import ProvidersTable from '../ProvidersTable';
+import CallerHistoryTable from '../CallerHistoryTable';
 
 const Admin = () => {
 
@@ -24,10 +25,22 @@ const Admin = () => {
     const [allAccounts, setAllAccounts] = useState(emptyArray)
     const [allProviders, setAllProviders] = useState(emptyArray)
     const [allSubscribers, setAllSubscribers] = useState(emptyArray)
+    const [callerHistory, setCallerHistory] = useState(emptyArray)
     
 
     //loads provider subscription list upon login
     useEffect(() => {
+
+          //gets caller events
+          clocktowersub.getPastEvents('CallerLog', {
+           // filter: {id:[id], subscriber:[s]},
+            fromBlock: 0,
+            toBlock: 'latest'
+        }, function(error, events){ 
+            //console.log(events)
+            setCallerHistory(events)
+        })
+
         getAllAccounts()
     }, [account]);
 
@@ -95,7 +108,9 @@ const Admin = () => {
                 <Col sm={9}>
                     <Tab.Content>
                         <Tab.Pane eventKey="first">
-                        Test
+                            <CallerHistoryTable
+                                callerHistory = {callerHistory}
+                            />
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
                             <ProvidersTable 

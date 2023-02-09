@@ -439,6 +439,11 @@ export const SUBEVENT_LOOKUP = [
  "Paid", "Failed", "Subscribed", "Unsubscribed", "FeeFill"
 ]
 
+//lookup for ProvEvent
+export const PROVEVENT_LOOKUP = [
+  "Create", "Cancel", "Paid", "Fail"
+]
+
 export const CLOCKTOKEN_ABI = [
   {
     "inputs": [

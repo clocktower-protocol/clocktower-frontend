@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Alert} from 'react-bootstrap';
+import {Alert, Accordion} from 'react-bootstrap';
 import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
@@ -169,24 +169,31 @@ const Provider = () => {
                     {alertMaker()}
                     <div className="clockBody">
                         <div className="clockFormDiv">  
-                                <CreateSubForm
-                                    token = {token}
-                                    amount = {amount}
-                                    frequency = {frequency}
-                                    dueDay = {dueDay}
-                                    description = {description}
+                            <Accordion defaultActiveKey="0">
+                                <Accordion.Item eventKey="0">
+                                <Accordion.Header>Create Subscription</Accordion.Header>
+                                <Accordion.Body>
+                                    <CreateSubForm
+                                        token = {token}
+                                        amount = {amount}
+                                        frequency = {frequency}
+                                        dueDay = {dueDay}
+                                        description = {description}
 
-                                    
-                                    setToken = {setToken}
-                                    setTokenABI = {setTokenABI}
-                                    setAmount = {setAmount}
-                                    setFrequency = {setFrequency}
-                                    setDueDay = {setDueDay}
-                                    setDescription = {setDescription}
-                                    setAlert = {setAlert}
-                                    setAlertText = {setAlertText}
-                                    createSubscription = {createSubscription}
-                                />
+                                        
+                                        setToken = {setToken}
+                                        setTokenABI = {setTokenABI}
+                                        setAmount = {setAmount}
+                                        setFrequency = {setFrequency}
+                                        setDueDay = {setDueDay}
+                                        setDescription = {setDescription}
+                                        setAlert = {setAlert}
+                                        setAlertText = {setAlertText}
+                                        createSubscription = {createSubscription}
+                                    />
+                                </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
                         </div>
 
                             <div>
@@ -208,24 +215,31 @@ const Provider = () => {
                     {alertMaker()}
                     <div className="clockBody">
                         <div className="clockFormDiv">  
-                                <CreateSubForm
-                                    token = {token}
-                                    amount = {amount}
-                                    frequency = {frequency}
-                                    dueDay = {dueDay}
-                                    description = {description}
+                            <Accordion defaultActiveKey="0" bgcolor="grey">
+                                <Accordion.Item eventKey="0">
+                                <Accordion.Header>Create Subscription</Accordion.Header>
+                                <Accordion.Body>
+                                    <CreateSubForm
+                                        token = {token}
+                                        amount = {amount}
+                                        frequency = {frequency}
+                                        dueDay = {dueDay}
+                                        description = {description}
 
-                                    
-                                    setToken = {setToken}
-                                    setTokenABI = {setTokenABI}
-                                    setAmount = {setAmount}
-                                    setFrequency = {setFrequency}
-                                    setDueDay = {setDueDay}
-                                    setDescription = {setDescription}
-                                    setAlert = {setAlert}
-                                    setAlertText = {setAlertText}
-                                    createSubscription = {createSubscription}
-                                />
+                                        
+                                        setToken = {setToken}
+                                        setTokenABI = {setTokenABI}
+                                        setAmount = {setAmount}
+                                        setFrequency = {setFrequency}
+                                        setDueDay = {setDueDay}
+                                        setDescription = {setDescription}
+                                        setAlert = {setAlert}
+                                        setAlertText = {setAlertText}
+                                        createSubscription = {createSubscription}
+                                    />
+                                </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
                         </div>
                     </div>
                 </div>

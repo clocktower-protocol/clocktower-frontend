@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Alert, Tab, Tabs, Row, Col, Nav} from 'react-bootstrap';
+import {Alert, Tab, Tabs, Row, Col, Nav, Accordion} from 'react-bootstrap';
 import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
@@ -7,6 +7,7 @@ import { useOutletContext } from "react-router-dom";
 import ProvSubDetailTable from '../ProvSubDetailTable';
 import ProvidersTable from '../ProvidersTable';
 import CallerHistoryTable from '../CallerHistoryTable';
+import ProviderHistoryTable from '../ProviderHistoryTable';
 
 const Admin = () => {
 
@@ -26,13 +27,14 @@ const Admin = () => {
     const [allProviders, setAllProviders] = useState(emptyArray)
     const [allSubscribers, setAllSubscribers] = useState(emptyArray)
     const [callerHistory, setCallerHistory] = useState(emptyArray)
+    const [providerHistory, setProviderHistory] = useState(emptyArray)
     
 
     //loads provider subscription list upon login
     useEffect(() => {
 
-          //gets caller events
-          clocktowersub.getPastEvents('CallerLog', {
+        //gets caller events
+        clocktowersub.getPastEvents('CallerLog', {
            // filter: {id:[id], subscriber:[s]},
             fromBlock: 0,
             toBlock: 'latest'
@@ -40,6 +42,16 @@ const Admin = () => {
             //console.log(events)
             setCallerHistory(events)
         })
+
+        //gets provider events
+        clocktowersub.getPastEvents('ProviderLog', {
+            // filter: {id:[id], subscriber:[s]},
+             fromBlock: 0,
+             toBlock: 'latest'
+         }, function(error, events){ 
+             //console.log(events)
+             setProviderHistory(events)
+         })
 
         getAllAccounts()
     }, [account]);
@@ -113,9 +125,24 @@ const Admin = () => {
                             />
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
-                            <ProvidersTable 
-                                allProviders = {allProviders}
-                            />
+                        <Accordion defaultActiveKey="0">
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header>Provider List</Accordion.Header>
+                                <Accordion.Body>
+                                    <ProvidersTable 
+                                    allProviders = {allProviders}
+                                     />
+                                </Accordion.Body>
+                            </Accordion.Item>
+                            <Accordion.Item eventKey="1">
+                                <Accordion.Header>Provider History</Accordion.Header>
+                                <Accordion.Body>
+                                    <ProviderHistoryTable
+                                    providerHistory = {providerHistory}
+                                    />
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
                         </Tab.Pane>
                         <Tab.Pane eventKey="third">
                         Test

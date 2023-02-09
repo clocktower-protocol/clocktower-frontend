@@ -43,7 +43,7 @@ const ProvidersTable = (props) => {
    // }
 
     tableTop.push(
-        <Table key="table" striped bordered hover size="sm" className="provTable">
+        <Table key="table" striped bordered hover className="provTable">
           <thead key="tableHead">
             <tr key="headRow" align="center">
               <th key="provAddressHead">Provider</th>

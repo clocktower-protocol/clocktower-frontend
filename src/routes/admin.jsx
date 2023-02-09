@@ -104,7 +104,7 @@ const Admin = () => {
             <Alert align="center" variant="secondary">Admin Dashboard</Alert>
             <Tab.Container id="admin-left-tabs" defaultActiveKey="first">
                 <Row>
-                <Col sm={3}>
+                <Col sm={2}>
                     <Nav variant="pills" className="flex-column">
                         <Nav.Item>
                         <Nav.Link eventKey="first">Caller</Nav.Link>

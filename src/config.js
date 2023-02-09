@@ -1990,6 +1990,12 @@ export const CLOCKTOWERSUB_ABI = [
         "internalType": "uint8",
         "name": "errorCode",
         "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum ClockTowerSubscribe.ProvEvent",
+        "name": "provEvent",
+        "type": "uint8"
       }
     ],
     "name": "ProviderLog",
@@ -2765,6 +2771,7 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+
 
 
 export const FEE = 1.1;

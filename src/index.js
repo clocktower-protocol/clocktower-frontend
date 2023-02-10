@@ -12,6 +12,7 @@ import PublicSubscription from './routes/publicsubscription';
 import SubscriberDash from './routes/subscriberdash';
 import SubHistory from './routes/subhistory';
 import Admin from './routes/admin';
+import AdminSubscriptions from './routes/adminsubscriptions';
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
         {
           path: "admin/",
           element: <Admin />
+        },
+        {
+          path: "admin/subscriptions/:t/:s",
+          element: <AdminSubscriptions />
         }
       ]
     },

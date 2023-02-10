@@ -2,7 +2,7 @@ import {React, useState} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT} from "../config"
 import Web3 from 'web3'
 
 const Root = () => {
@@ -15,7 +15,7 @@ const Root = () => {
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
    // const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS)
-    const adminAccount = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+    const adminAccount = ADMIN_ACCOUNT
     
     //connects to metamask wallet
     const connectWallet = async () => {

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Alert, Tab, Tabs, Row, Col, Nav, Accordion} from 'react-bootstrap';
 import Web3 from 'web3'
 import '../App.css';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import ProvSubDetailTable from '../ProvSubDetailTable';
 import ProvidersTable from '../ProvidersTable';
@@ -117,6 +117,11 @@ const Admin = () => {
             <Alert align="center" variant="info">Please Login</Alert>
         )
     } else {
+    if(account != ADMIN_ACCOUNT) {
+        return (
+            <Alert align="center" variant="info">Must be Admin</Alert>
+        )
+    } else {
         return (
             <div>
             <Alert align="center" variant="secondary">Admin Dashboard</Alert>
@@ -188,7 +193,7 @@ const Admin = () => {
             </Tab.Container>
           </div>
         )
-    }
+    }}
 }
 
 export default Admin

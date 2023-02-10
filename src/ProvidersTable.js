@@ -24,7 +24,7 @@ const ProvidersTable = (props) => {
   
         row.push(
           <td key={String(providersArray[i])+1}>{providersArray[i].accountAddress}</td>,
-          <td key={String(providersArray[i])+2}>Subscriptions</td>
+          <td key={String(providersArray[i])+2}><Link to={`subscriptions/${"provider"}/${providersArray[i].accountAddress}`}>Subscriptions</Link></td>
         )     
         table.push(<tr align="center" key={String(providersArray[i])}>{row}</tr>)
       }

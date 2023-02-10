@@ -8,6 +8,7 @@ import ProvSubDetailTable from '../ProvSubDetailTable';
 import ProvidersTable from '../ProvidersTable';
 import CallerHistoryTable from '../CallerHistoryTable';
 import ProviderHistoryTable from '../ProviderHistoryTable';
+import SubscribersTable from '../SubscribersTable';
 
 const Admin = () => {
 
@@ -27,7 +28,8 @@ const Admin = () => {
     const [allProviders, setAllProviders] = useState(emptyArray)
     const [allSubscribers, setAllSubscribers] = useState(emptyArray)
     const [callerHistory, setCallerHistory] = useState(emptyArray)
-    const [providerHistory, setProviderHistory] = useState(emptyArray)
+    const [providersHistory, setProvidersHistory] = useState(emptyArray)
+    const [subscribersHistory, setSubscribersHistory] = useState(emptyArray)
     
 
     //loads provider subscription list upon login
@@ -50,10 +52,22 @@ const Admin = () => {
              toBlock: 'latest'
          }, function(error, events){ 
              //console.log(events)
-             setProviderHistory(events)
+             setProvidersHistory(events)
          })
 
+        //gets provider events
+        clocktowersub.getPastEvents('SubscriberLog', {
+            // filter: {id:[id], subscriber:[s]},
+             fromBlock: 0,
+             toBlock: 'latest'
+        }, function(error, events){ 
+             //console.log(events)
+             setSubscribersHistory(events)
+        })
+
+
         getAllAccounts()
+
     }, [account]);
 
     const getAllAccounts = async () => {
@@ -74,6 +88,8 @@ const Admin = () => {
             let providers = []
             let subscribers = []
 
+           // console.log(accounts.length)
+
             //separates out producers and subscribers
             accounts.forEach((element) => {
                 //if account is a producer
@@ -86,6 +102,8 @@ const Admin = () => {
                     subscribers.push(element)
                 }
             })
+
+           // console.log(subscribers.length)
 
             setAllProviders(providers)
             setAllSubscribers(subscribers)
@@ -138,14 +156,31 @@ const Admin = () => {
                                 <Accordion.Header>Provider History</Accordion.Header>
                                 <Accordion.Body>
                                     <ProviderHistoryTable
-                                    providerHistory = {providerHistory}
+                                    providerHistory = {providersHistory}
                                     />
                                 </Accordion.Body>
                             </Accordion.Item>
                         </Accordion>
                         </Tab.Pane>
                         <Tab.Pane eventKey="third">
-                        Test
+                        <Accordion defaultActiveKey="0">
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header>Subscriber List</Accordion.Header>
+                                <Accordion.Body>
+                                    <SubscribersTable 
+                                    allSubscribers = {allSubscribers}
+                                     />
+                                </Accordion.Body>
+                            </Accordion.Item>
+                            <Accordion.Item eventKey="1">
+                                <Accordion.Header>Subscriber History</Accordion.Header>
+                                <Accordion.Body>
+                                   <ProvSubDetailTable
+                                    historyArray = {subscribersHistory}
+                                   />
+                                </Accordion.Body>
+                            </Accordion.Item>
+                            </Accordion>
                         </Tab.Pane>
                     </Tab.Content>
                 </Col>

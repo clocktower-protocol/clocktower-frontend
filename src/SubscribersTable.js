@@ -3,30 +3,30 @@ import {Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 
 
-const ProvidersTable = (props) => {
+const SubscribersTable = (props) => {
 
-    const providersArray = props.allProviders
+    const subscribersArray = props.allSubscribers
 
-       //checks for empty array
-       if(!Array.isArray(providersArray) || (providersArray.length <= 0)) {
+    //checks for empty array
+    if(!Array.isArray(subscribersArray) || (subscribersArray.length <= 0)) {
         return
     }
+
+    console.log(subscribersArray.length)
 
     let table = []
     let tableTop = []
 
-    //console.log(providersArray.length)
-
     //loops through array to create table rows
-    for(let i = 0; i < providersArray.length; i++) {
+    for(let i = 0; i < subscribersArray.length; i++) {
    
         let row = []
   
         row.push(
-          <td key={String(providersArray[i])+1}>{providersArray[i].accountAddress}</td>,
-          <td key={String(providersArray[i])+2}>Subscriptions</td>
+          <td key={String(subscribersArray[i])+1}>{subscribersArray[i].accountAddress}</td>,
+          <td key={String(subscribersArray[i])+2}>Subscriptions</td>
         )     
-        table.push(<tr align="center" key={String(providersArray[i])}>{row}</tr>)
+        table.push(<tr align="center" key={String(subscribersArray[i])}>{row}</tr>)
       }
    // }
 
@@ -34,7 +34,7 @@ const ProvidersTable = (props) => {
         <Table key="table" striped bordered hover className="provTable">
           <thead key="tableHead">
             <tr key="headRow" align="center">
-              <th key="provAddressHead">Provider</th>
+              <th key="provAddressHead">Subscriber</th>
               <th key="subsHead">Subscriptions</th>
             </tr>
           </thead>
@@ -48,4 +48,4 @@ const ProvidersTable = (props) => {
 
 }
 
-export default ProvidersTable
+export default SubscribersTable

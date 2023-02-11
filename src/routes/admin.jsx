@@ -148,7 +148,7 @@ const Admin = () => {
                             />
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
-                        <Accordion defaultActiveKey="0">
+                        <Accordion>
                             <Accordion.Item eventKey="0">
                                 <Accordion.Header>Provider List</Accordion.Header>
                                 <Accordion.Body>
@@ -168,7 +168,7 @@ const Admin = () => {
                         </Accordion>
                         </Tab.Pane>
                         <Tab.Pane eventKey="third">
-                        <Accordion defaultActiveKey="0">
+                        <Accordion>
                             <Accordion.Item eventKey="0">
                                 <Accordion.Header>Subscriber List</Accordion.Header>
                                 <Accordion.Body>

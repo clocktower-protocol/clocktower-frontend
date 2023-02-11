@@ -12,8 +12,6 @@ const SubscribersTable = (props) => {
         return
     }
 
-    console.log(subscribersArray.length)
-
     let table = []
     let tableTop = []
 

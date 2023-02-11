@@ -3,6 +3,7 @@ import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import SubscribersTable from '../SubscribersTable';
 
 
 const AdminSubscriptions = () => {
@@ -15,7 +16,68 @@ const AdminSubscriptions = () => {
     //gets contract interface
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
 
-    let {s, t} = useParams();
+    let {t,s} = useParams();
+
+    //creates empty array for table
+    let emptySubscriptionArray = [];
+
+    const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
+
+    //loads provider subscription list upon login
+    useEffect(() => {
+        getSubsByAccount(t,s)
+    }, [account, t, s]);
+
+
+    const getSubsByAccount = async (t, s) => {
+        //checks if user is logged into account
+        if(!isLoggedIn()) {
+            console.log("Not Logged in")
+            return
+        }
+            
+        //variable to pass scope so that the state can be set
+        let subscriptions = []
+        let isSubscriber = true
+
+        if(t == "provider") {
+            isSubscriber = false
+        }
+    
+        //calls contract 
+        await clocktowersub.methods.getSubscriptionsByAccount(isSubscriber, s).call({from: account})
+        .then(function(result) {
+            subscriptions = result
+            setSubscriptionArray(subscriptions)
+        })
+    }
+
+    const isTableEmpty = (subscriptionArray) => {
+        let count = 0
+        subscriptionArray.forEach(subscription => {
+            if(subscription.status !== 1) {count += 1}
+        })
+        if(count > 0) { return false } else {return true}
+    }
+
+    //checks that user has logged in 
+    if(account === "-1") {
+        return (
+            <Alert align="center" variant="info">Please Login</Alert>
+        )
+    } else {
+        <div>
+            <div>
+                {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
+            </div>
+            <div className="adminSubsByUser">
+                <SubscribersTable
+                    subscriptionArray = {subscriptionArray}
+                    isAdmin = {true}
+                />
+            </div>
+        </div>
+    }
 
 }
 

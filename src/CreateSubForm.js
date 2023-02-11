@@ -1,6 +1,6 @@
 import {React, userState} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE} from './config';
+import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE} from './config';
 import Web3 from 'web3'
 
 const CreateSubForm = (props) => {
@@ -9,7 +9,7 @@ const CreateSubForm = (props) => {
 
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
-        return TOKEN_LOOKUP.map((token) => {
+        return ERC20TOKEN_LOOKUP.map((token) => {
             return <option value={token.address} key={token.address}>{token.ticker}</option>;
         });
     }
@@ -45,7 +45,7 @@ const CreateSubForm = (props) => {
         props.setToken(event.target.value)
         
         //sets abi
-        TOKEN_LOOKUP.map((token) => {
+        ERC20TOKEN_LOOKUP.map((token) => {
             if(token.address === tokenAddress){
                 console.log(token.address)
                 props.setTokenABI(token.ABI)

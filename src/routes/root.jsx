@@ -2,7 +2,7 @@ import {React, useState} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT} from "../config"
+import {ADMIN_ACCOUNT} from "../config"
 import Web3 from 'web3'
 
 const Root = () => {

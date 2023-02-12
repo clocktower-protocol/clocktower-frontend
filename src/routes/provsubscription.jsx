@@ -5,7 +5,6 @@ import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import ProvSubDetailTable from '../ProvSubDetailTable';
 
-
 const ProvSubscription = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
@@ -57,12 +56,12 @@ const ProvSubscription = () => {
             <div>
                 {historyArray.length > 0 ? <Alert align="center" variant="dark">Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
             </div>
+            
             <div className="clockTableDiv">
                 <ProvSubDetailTable 
                     historyArray = {historyArray}
                 />
             </div>
-         
         </div>
         )
     }

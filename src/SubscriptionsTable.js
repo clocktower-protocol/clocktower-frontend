@@ -59,10 +59,12 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+5}>{totalSubscribers}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>,
         )
         if(!isAdmin) {
-            row.push(<td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>)
+            row.push(
+            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>Details</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>
+            )
         }
         
           
@@ -82,9 +84,11 @@ const SubscriptionsTable = (props) => {
                 <th key="totalSubs">Subscribers</th>
                 <th key="incomeHead">Income per Period</th>
                 <th key="urlHead">URL</th>
-                <th key="detailsHead">Details</th>
                 {!isAdmin  
-                ? <th key="cancelProvHead">Cancel</th> : ""
+                ?  <th key="detailsHead">Details</th> : ""
+                }
+                {!isAdmin  
+                ?   <th key="cancelProvHead">Cancel</th> : ""
                 }   
             </tr>
           </thead>

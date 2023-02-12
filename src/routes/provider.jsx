@@ -5,8 +5,8 @@ import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import CreateSubForm from '../CreateSubForm';
-import ProviderSubsTable from '../ProviderSubsTable';
-
+//import ProviderSubsTable from '../ProviderSubsTable';
+import SubscriptionsTable from '../SubscriptionsTable';
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -200,11 +200,22 @@ const Provider = () => {
                                 {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">Created Subscriptions</Alert> : ""}
                             </div>
                             <div className="provHistory">
+                                {/*
                                 <ProviderSubsTable 
                                     subscriptionArray={subscriptionArray}
                                     cancelSubscription = {cancelSubscription}
                                    // setIsTableEmpty = {setIsTableEmpty}
                                 />
+                                */ }
+                                 
+            
+                                <SubscriptionsTable
+                                    subscriptionArray = {subscriptionArray}
+                                    isAdmin = {false}
+                                    cancelSubscription = {cancelSubscription}
+                                />
+            
+                                
                             </div>
                     </div>
                 </div>

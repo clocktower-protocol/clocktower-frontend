@@ -212,6 +212,7 @@ const Provider = () => {
                                 <SubscriptionsTable
                                     subscriptionArray = {subscriptionArray}
                                     isAdmin = {false}
+                                    role = {1}
                                     cancelSubscription = {cancelSubscription}
                                 />
             

@@ -20,6 +20,8 @@ export const EMPTY_PERMIT = {
 }
 */
 
+export const ROLE = ["Admin", "Provider", "Subscriber"]
+
 export const TOKEN_LOOKUP = [
   {
     address: "0x0000000000000000000000000000000000000000",

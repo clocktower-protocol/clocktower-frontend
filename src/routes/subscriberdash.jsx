@@ -4,7 +4,8 @@ import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
-import SubsTable from '../SubsTable';
+//import SubsTable from '../SubsTable';
+import SubscriptionsTable from '../SubscriptionsTable';
 /* global BigInt */
 
 const SubscriberDash = () => {
@@ -129,6 +130,15 @@ const SubscriberDash = () => {
         }
     }
     
+    /*
+     
+                        <SubsTable 
+                            subscriptionArray={subscriptionArray}
+                            unsubscribe = {unsubscribe}
+                            account = {account}
+                        />
+    
+    */
 
    
     if(account === "-1") {
@@ -147,11 +157,13 @@ const SubscriberDash = () => {
                 </div>
                     <div className="provHistory">
                         {subscriptionArray.length > 0 && !isTableEmpty() ?
-                        <SubsTable 
-                            subscriptionArray={subscriptionArray}
+                        <SubscriptionsTable
+                            subscriptionArray = {subscriptionArray}
                             unsubscribe = {unsubscribe}
                             account = {account}
-                        /> : ""}
+                            role = {2}
+                        />
+                        : ""}
                     </div>
             </div>
         </div>

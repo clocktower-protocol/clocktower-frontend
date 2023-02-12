@@ -78,6 +78,7 @@ const AdminSubscriptions = () => {
                     <SubscriptionsTable
                         subscriptionArray = {subscriptionArray}
                         isAdmin = {true}
+                        role = {0}
                     />
                 </div>
             </div>

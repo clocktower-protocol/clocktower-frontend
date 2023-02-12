@@ -169,7 +169,7 @@ const Provider = () => {
                     {alertMaker()}
                     <div className="clockBody">
                         <div className="clockFormDiv">  
-                            <Accordion defaultActiveKey="0">
+                            <Accordion>
                                 <Accordion.Item eventKey="0">
                                 <Accordion.Header>Create Subscription</Accordion.Header>
                                 <Accordion.Body>
@@ -227,7 +227,7 @@ const Provider = () => {
                     {alertMaker()}
                     <div className="clockBody">
                         <div className="clockFormDiv">  
-                            <Accordion defaultActiveKey="0" bgcolor="grey">
+                            <Accordion bgcolor="grey">
                                 <Accordion.Item eventKey="0">
                                 <Accordion.Header>Create Subscription</Accordion.Header>
                                 <Accordion.Body>

@@ -22,6 +22,9 @@ const AdminSubscriptions = () => {
 
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [titleMessage, setTitleMessage] = useState("Subscribed To:")
+    //feeBalance array indexed to subscription array
+    const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
+
 
     //loads provider subscription list upon login
     useEffect(() => {
@@ -46,13 +49,21 @@ const AdminSubscriptions = () => {
             titleMessage = "Created By:"
         }
     
+        let feeBalances = []
         //calls contract 
-        await clocktowersub.methods.getSubscriptionsByAccount(isSubscriber, s).call({from: account})
-        .then(function(result) {
-            subscriptions = result
-            setTitleMessage(titleMessage)
-            setSubscriptionArray(subscriptions)
-        })
+        subscriptions = await clocktowersub.methods.getSubscriptionsByAccount(isSubscriber, s).call({from: account})
+
+         //gets fee balance
+        for(const element of subscriptions) {
+           // const balance = await clocktowersub.methods.feeBalance(element.subscription.id, account).call({from: account})
+            //console.log(balance)
+            feeBalances.push(await clocktowersub.methods.feeBalance(element.subscription.id, account).call({from: account}))
+        }
+
+        setFeeBalanceArray(feeBalances)
+        setTitleMessage(titleMessage)
+        setSubscriptionArray(subscriptions)
+       
     }
 
     const isTableEmpty = (subscriptionArray) => {
@@ -79,6 +90,7 @@ const AdminSubscriptions = () => {
                         subscriptionArray = {subscriptionArray}
                         isAdmin = {true}
                         role = {0}
+                        feeBalanceArray = {feeBalanceArray}
                     />
                 </div>
             </div>

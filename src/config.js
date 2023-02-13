@@ -2585,6 +2585,11 @@ export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      },
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -2896,6 +2901,37 @@ export const CLOCKTOWERSUB_ABI = [
         "internalType": "address[]",
         "name": "",
         "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getSubscribersById",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "subscriber",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "feeBalance",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ClockTowerSubscribe.SubscriberView[]",
+        "name": "",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
@@ -3247,6 +3283,7 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+
 
 
 

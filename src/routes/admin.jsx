@@ -111,6 +111,17 @@ const Admin = () => {
         })
     }
 
+    /*
+    //get fee balance
+    const getFeeBalance = async (id, account, subscribers) => {
+         //calls contract 
+         await clocktowersub.methods.feeBalance(id, account).call({from: account})
+         .then(function(result) {
+            //subscribers
+         })
+    }
+    */
+
     //checks that user has logged in 
     if(account === "-1") {
         return (

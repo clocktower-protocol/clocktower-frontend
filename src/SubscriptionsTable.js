@@ -77,7 +77,8 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}>{props.feeBalanceArray[i]}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}>{props.feeObjects[i].feeBalance}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+9}>{props.feeObjects[i].remainingCycles}</td>,
           )
         }
         if(role == 1) {
@@ -121,6 +122,9 @@ const SubscriptionsTable = (props) => {
                 }
                 {isAdmin
                 ? <th key="feeBalanceHead">Fee Balance</th> : ""
+                }
+                {isAdmin
+                ? <th key="remainCyclesHead">Remaining Cycles</th> : ""
                 }
                 {!isAdmin  
                 ?  <th key="detailsHead">History</th> : ""

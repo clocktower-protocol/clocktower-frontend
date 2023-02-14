@@ -19,7 +19,7 @@ const SubscriberDash = () => {
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [isEmpty, setIsEmpty] = useState(false)
      //feeBalance array indexed to subscription array
-    const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
+    //const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -85,18 +85,20 @@ const SubscriberDash = () => {
            
        //variable to pass scope so that the state can be set
        let accountSubscriptions = []
-       let feeBalances = []
+       //let feeBalances = []
    
        //calls contract 
        accountSubscriptions = await clocktowersub.methods.getAccountSubscriptions(true).call({from: account})
        setSubscriptionArray(accountSubscriptions)
 
+       /*
        //gets fee balance
        for(const element of accountSubscriptions) {
             feeBalances.push(await clocktowersub.methods.feeBalance(element.subscription.id, account))
        }
 
        setFeeBalanceArray(feeBalances)
+       */
        /*
        .then(function(result) {
            accountSubscriptions = result
@@ -164,7 +166,6 @@ const SubscriberDash = () => {
                             unsubscribe = {unsubscribe}
                             account = {account}
                             role = {2}
-                            feeBalanceArray = {feeBalanceArray}
                         />
                         : ""}
                     </div>

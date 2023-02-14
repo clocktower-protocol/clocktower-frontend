@@ -23,7 +23,8 @@ const AdminSubscriptions = () => {
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [titleMessage, setTitleMessage] = useState("Subscribed To:")
     //feeBalance array indexed to subscription array
-    const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
+   // const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
+    const [feeObjects, setFeeObjects] = useState(emptySubscriptionArray)
 
 
     //loads provider subscription list upon login
@@ -49,18 +50,43 @@ const AdminSubscriptions = () => {
             titleMessage = "Created By:"
         }
     
-        let feeBalances = []
+        let feeObjects = []
+        let feeBalance
+        let remainingCycles
+
+        //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
+        const fee = await clocktowersub.methods.fee().call({from: account})
+        const cycles = Math.round(1 / ((fee / 10000) - 1))
+
         //calls contract 
         subscriptions = await clocktowersub.methods.getSubscriptionsByAccount(isSubscriber, s).call({from: account})
 
-         //gets fee balance
+         //gets fee balance and remaining cycles
         for(const element of subscriptions) {
-           // const balance = await clocktowersub.methods.feeBalance(element.subscription.id, account).call({from: account})
+            const balance = await clocktowersub.methods.feeBalance(element.subscription.id, account).call({from: account})
             //console.log(balance)
-            feeBalances.push(await clocktowersub.methods.feeBalance(element.subscription.id, account).call({from: account}))
+            //feeBalances.push(balance)
+
+            if(balance == 0) {
+                feeBalance = 0
+                remainingCycles = cycles
+            } else {
+                feeBalance = balance
+
+               // const subFee = element.subscription.amount / cycles
+
+                const remainingBalancePercent = (balance / element.subscription.amount)
+
+                remainingCycles = remainingBalancePercent * cycles
+            }
+            
+            let feeObject = {feeBalance: feeBalance, remainingCycles: remainingCycles}
+            feeObjects.push(feeObject)
         }
 
-        setFeeBalanceArray(feeBalances)
+
+       // setFeeBalanceArray(feeBalances)
+        setFeeObjects(feeObjects)
         setTitleMessage(titleMessage)
         setSubscriptionArray(subscriptions)
        
@@ -90,7 +116,7 @@ const AdminSubscriptions = () => {
                         subscriptionArray = {subscriptionArray}
                         isAdmin = {true}
                         role = {0}
-                        feeBalanceArray = {feeBalanceArray}
+                        feeObjects = {feeObjects}
                     />
                 </div>
             </div>

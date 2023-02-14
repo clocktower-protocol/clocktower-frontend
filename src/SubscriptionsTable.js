@@ -21,7 +21,7 @@ const SubscriptionsTable = (props) => {
 
     let isAdmin = false
 
-    role == 0 ? isAdmin = true : isAdmin = false
+    role === 0 ? isAdmin = true : isAdmin = false
     
 
     //looks up ticker for token
@@ -72,7 +72,7 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
             <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
         )
-        if(role == 0) {
+        if(role === 0) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
@@ -81,16 +81,16 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+9}>{props.feeObjects[i].remainingCycles}</td>,
           )
         }
-        if(role == 1) {
+        if(role === 1) {
             row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}`}>{totalSubscribers}</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
         }
-        if(role == 2) {
+        if(role === 2) {
           row.push(
           <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${props.account}`}>History</Link></td>,
           <td key={String(subscriptionArray[i].subscription.id)+7}><Button type="submit" onClick={() => props.unsubscribe(subscriptionArray[i].subscription)}>Unsubscribe</Button></td>
@@ -111,13 +111,13 @@ const SubscriptionsTable = (props) => {
                 <th key="dateHead">Amount</th>
                 <th key="amountHead">Frequency</th>
                 <th key="statusHead">Due Day</th>
-                {role == 1 || role == 0
+                {role === 1 || role === 0
                 ? <th key="urlHead">URL</th> : ""
                 }
-                {role == 1 || role == 0
+                {role === 1 || role === 0
                 ? <th key="totalSubs">Subscribers</th> : ""
                 }
-                {role == 1 || role == 0
+                {role === 1 || role === 0
                 ? <th key="incomeHead">Income per Period</th> : ""
                 }
                 {isAdmin
@@ -129,10 +129,10 @@ const SubscriptionsTable = (props) => {
                 {!isAdmin  
                 ?  <th key="detailsHead">History</th> : ""
                 }
-                {role == 1 
+                {role === 1 
                 ?   <th key="cancelProvHead">Cancel</th> : ""
                 }   
-                {role == 2
+                {role === 2
                 ?   <th key="unsubscribeHead">Unsubscribe</th> : ""
                 } 
             </tr>

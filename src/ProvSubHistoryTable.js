@@ -4,7 +4,7 @@ import Web3 from 'web3'
 import { SUBEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'
 
-const ProvSubDetailTable = (props) => {
+const ProvSubHistoryTable = (props) => {
 
     const historyArray = props.historyArray
 
@@ -52,4 +52,4 @@ const ProvSubDetailTable = (props) => {
   }
 }
 
-export default ProvSubDetailTable
+export default ProvSubHistoryTable

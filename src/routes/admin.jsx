@@ -4,7 +4,7 @@ import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
 import { useOutletContext } from "react-router-dom";
-import ProvSubDetailTable from '../ProvSubDetailTable';
+import ProvSubDetailTable from '../ProvSubHistoryTable';
 import ProvidersTable from '../ProvidersTable';
 import CallerHistoryTable from '../CallerHistoryTable';
 import ProviderHistoryTable from '../ProviderHistoryTable';
@@ -130,7 +130,7 @@ const Admin = () => {
     } else {
     if(account != ADMIN_ACCOUNT) {
         return (
-            <Alert align="center" variant="info">Must be Admin</Alert>
+            <Alert align="center" variant="danger">Must be Admin</Alert>
         )
     } else {
         return (

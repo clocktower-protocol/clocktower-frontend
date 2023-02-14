@@ -3,9 +3,10 @@ import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import ProvSubDetailTable from '../ProvSubDetailTable';
+//import ProvSubDetailTable from '../ProvSubDetailTable';
+import ProvSubHistoryTable from '../ProvSubHistoryTable';
 
-const ProvSubscription = () => {
+const ProvHistory = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     //creates contract variable
@@ -58,7 +59,7 @@ const ProvSubscription = () => {
             </div>
             
             <div className="clockTableDiv">
-                <ProvSubDetailTable 
+                <ProvSubHistoryTable 
                     historyArray = {historyArray}
                 />
             </div>
@@ -68,4 +69,4 @@ const ProvSubscription = () => {
 
 } 
 
-export default ProvSubscription
+export default ProvHistory

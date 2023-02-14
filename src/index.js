@@ -7,7 +7,9 @@ import Root from "./routes/root";
 import ErrorPage from './errorPage';
 import FutPaymentRoute from './routes/futurepayments';
 import Provider from './routes/provider';
-import ProvSubscription from './routes/provsubscription';
+//import ProvSubscription from './routes/provsubscription';
+import ProvHistory from './routes/provhistory';
+import ProvSubscribers from './routes/provsubscribers';
 import PublicSubscription from './routes/publicsubscription';
 import SubscriberDash from './routes/subscriberdash';
 import SubHistory from './routes/subhistory';
@@ -29,8 +31,12 @@ const router = createBrowserRouter([
           element: <Provider />,
         },
         {
-          path: "provider/subscription/:id",
-          element: <ProvSubscription />,
+          path: "provider/history/:id",
+          element: <ProvHistory />,
+        },
+        {
+          path: "provider/subscribers/:id",
+          element: <ProvSubscribers />
         },
         {
           path: "public_subscription/:id/:f/:d",

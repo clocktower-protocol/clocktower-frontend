@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   */
-  width: 100vw;
+  width: 90vw;
 }
 
 .clockFormDiv {
@@ -99,16 +99,27 @@
 .sideNav {
   display: flex;
   flex-direction: row;
+  min-height: 100vh;
 }
 
 .sideNav2 {
   background-color: blue;
+  width: 10%;
 }
 
 .topDiv {
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
+
+.mainDiv {
+  width: 90%;
+}
+
+.navBar {
+  flex-grow: 1;
+}
+
 
 @keyframes App-logo-spin {
   from {

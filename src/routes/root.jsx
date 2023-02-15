@@ -82,46 +82,53 @@ const Root = () => {
 
     return (
         <>
-        <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
-          <Container key="navContainer" className="clockNav">
-            <LinkContainer to="/">
-              <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
-            </LinkContainer>
-            <Nav key="subnav">
-              <NavDropdown title="Subscriptions" id="nav-sub">
-                <LinkContainer to="/provider">
-                  <NavDropdown.Item eventKey="4.1">Provider Dashboard</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to="/subscriberdash">
-                  <NavDropdown.Item eventKey="4.2">Subscriber Dashboard</NavDropdown.Item>
-                </LinkContainer>
-                <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Nav key="futnav">
-              <LinkContainer to="/payments">
-                <Nav.Link>Future Payments</Nav.Link>
+        <div className="topDiv">
+          <div className="navBar">
+          <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
+            <Container key="navContainer" className="clockNav">
+              <LinkContainer to="/">
+                <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
               </LinkContainer>
-            </Nav>
-            {account == adminAccount ?
-            <Nav key="adminnav">
-              <LinkContainer to="/admin">
-                <Nav.Link>Admin</Nav.Link>
-              </LinkContainer>
-            </Nav>
-            : ""
-            }   
-            <Nav key="nav" className="topNav">
-              {buttonClicked ? (<Navbar.Text>Account: {account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
-              {/*
-              <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
-              */}
-            </Nav>
-          </Container>
-        </Navbar>
-            <div id="detail">
+              <Nav key="subnav">
+                <NavDropdown title="Subscriptions" id="nav-sub">
+                  <LinkContainer to="/provider">
+                    <NavDropdown.Item eventKey="4.1">Provider Dashboard</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/subscriberdash">
+                    <NavDropdown.Item eventKey="4.2">Subscriber Dashboard</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+              <Nav key="futnav">
+                <LinkContainer to="/payments">
+                  <Nav.Link>Future Payments</Nav.Link>
+                </LinkContainer>
+              </Nav>
+              {account == adminAccount ?
+              <Nav key="adminnav">
+                <LinkContainer to="/admin">
+                  <Nav.Link>Admin</Nav.Link>
+                </LinkContainer>
+              </Nav>
+              : ""
+              }   
+              <Nav key="nav" className="topNav">
+                {buttonClicked ? (<Navbar.Text>Account: {account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+                {/*
+                <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
+                */}
+              </Nav>
+            </Container>
+          </Navbar>
+          </div>
+          <div className="sideNav">
+            <div className="sideNav2">Test</div>
+            <div id="detail" className="mainDiv">
               <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
             </div>
+          </div>
+        </div>
       </>
     )
 

@@ -85,7 +85,7 @@ const SubscriptionsTable = (props) => {
         if(role === 0 && bySubscriber) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}>{props.feeObjects[i].feeBalance}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}>{Web3.utils.fromWei(props.feeObjects[i].feeBalance)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}>{props.feeObjects[i].remainingCycles}</td>,
           )
         }

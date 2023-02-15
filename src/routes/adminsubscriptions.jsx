@@ -35,7 +35,7 @@ const AdminSubscriptions = () => {
         if(t == "provider") {
             setIsSubscriber(false)
         }
-        
+
         getSubsByAccount(t,s)
     }, [account, t, s]);
 
@@ -70,8 +70,8 @@ const AdminSubscriptions = () => {
 
          //gets fee balance and remaining cycles
         for(const element of subscriptions) {
-            const balance = await clocktowersub.methods.feeBalance(element.subscription.id, account).call({from: account})
-            //console.log(balance)
+            const balance = await clocktowersub.methods.feeBalance(element.subscription.id, s).call({from: account})
+            
             //feeBalances.push(balance)
 
             if(balance == 0) {

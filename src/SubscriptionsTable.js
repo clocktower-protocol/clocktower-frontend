@@ -16,6 +16,7 @@ const SubscriptionsTable = (props) => {
     
 
     const subscriptionArray = props.subscriptionArray
+    let bySubscriber = true
     //const isAdmin = props.isAdmin
     const role = props.role
 
@@ -23,6 +24,10 @@ const SubscriptionsTable = (props) => {
 
     role === 0 ? isAdmin = true : isAdmin = false
     
+    //sets which view for admin
+    if(role == 0) {
+      bySubscriber = props.bySubscriber
+    }
 
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
@@ -65,6 +70,11 @@ const SubscriptionsTable = (props) => {
         let subAmount = Web3.utils.fromWei(subscriptionArray[i].subscription.amount)
 
        // console.log(subscriptionArray[i].subscription.frequency)
+        if(role === 0) {
+          row.push(
+            <td key={String(subscriptionArray[i].subscription.id)+0}>{subscriptionArray[i].subscription.id.slice(0,8) + "..."}</td>
+          )
+        }
 
         row.push(
             <td key={String(subscriptionArray[i].subscription.id)+1}>{subscriptionArray[i].subscription.description}</td>,
@@ -72,16 +82,21 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
             <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
         )
-        if(role === 0) {
+        if(role === 0 && bySubscriber) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+8}>{props.feeObjects[i].feeBalance}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}>{props.feeObjects[i].remainingCycles}</td>,
           )
         }
-        if(role === 1) {
+        if(role === 0 && !bySubscriber) {
+          row.push(
+            <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>
+          )
+        }
+        if(role === 1 && totalSubscribers > 0) {
             row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}`}>{totalSubscribers}</Link></td>,
@@ -90,6 +105,16 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
         }
+        if(role === 1 && totalSubscribers == 0) {
+          row.push(
+            <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>
+            )
+        }
+
         if(role === 2) {
           row.push(
           <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${props.account}`}>History</Link></td>,
@@ -107,6 +132,9 @@ const SubscriptionsTable = (props) => {
         <Table key="table" striped bordered hover size="sm" className="provTable">
           <thead key="tableHead">
             <tr key="headRow" align="center">
+                {isAdmin
+                ? <th key="IdHead">ID</th> : ""
+                }
                 <th key="descriptionHead">Description</th>
                 <th key="dateHead">Amount</th>
                 <th key="amountHead">Frequency</th>
@@ -114,16 +142,16 @@ const SubscriptionsTable = (props) => {
                 {role === 1 || role === 0
                 ? <th key="urlHead">URL</th> : ""
                 }
-                {role === 1 || role === 0
+                {role === 1 || role === 0 && !bySubscriber
                 ? <th key="totalSubs">Subscribers</th> : ""
                 }
-                {role === 1 || role === 0
+                {role === 1 || role === 0 && !bySubscriber
                 ? <th key="incomeHead">Income per Period</th> : ""
                 }
-                {isAdmin
+                {isAdmin && bySubscriber
                 ? <th key="feeBalanceHead">Fee Balance</th> : ""
                 }
-                {isAdmin
+                {isAdmin && bySubscriber
                 ? <th key="remainCyclesHead">Remaining Cycles</th> : ""
                 }
                 {!isAdmin  

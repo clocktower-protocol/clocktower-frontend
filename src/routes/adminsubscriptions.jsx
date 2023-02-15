@@ -25,10 +25,17 @@ const AdminSubscriptions = () => {
     //feeBalance array indexed to subscription array
    // const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
     const [feeObjects, setFeeObjects] = useState(emptySubscriptionArray)
+    const [isSubscriber, setIsSubscriber] = useState(true)
+
+   
 
 
     //loads provider subscription list upon login
     useEffect(() => {
+        if(t == "provider") {
+            setIsSubscriber(false)
+        }
+        
         getSubsByAccount(t,s)
     }, [account, t, s]);
 
@@ -113,12 +120,13 @@ const AdminSubscriptions = () => {
                 <div>
                     {subscriptionArray.length > 0 ? <Alert align="center" variant="dark">{titleMessage}&nbsp;&nbsp;&nbsp;{s}</Alert> : ""}
                 </div>
-                <div>
+                <div className="subTable">
                     <SubscriptionsTable
                         subscriptionArray = {subscriptionArray}
                         isAdmin = {true}
                         role = {0}
                         feeObjects = {feeObjects}
+                        bySubscriber = {isSubscriber}
                     />
                 </div>
             </div>

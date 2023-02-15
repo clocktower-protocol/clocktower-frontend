@@ -203,6 +203,7 @@ const PublicSubscription = () => {
                 setAlertText("Transaction Pending...")
                  
                 await confirmTransaction(txhash)
+
             })
 
             return {
@@ -252,7 +253,7 @@ const PublicSubscription = () => {
         }
 
         //first requires user to approve unlimited allowance
-       // await setInfiniteAllowance()
+        await setInfiniteAllowance()
 
         //subscribes to subscription
         const transactionParameters = {
@@ -324,7 +325,9 @@ const PublicSubscription = () => {
                     </ListGroup>
                     {(!subscribed && !isProvider) ?
                     <Card.Body align="center">
+                        {/*
                         <Button onClick={setInfiniteAllowance}>Approve</Button> 
+                        */}
                         <Button onClick={subscribe}>Subscribe</Button>
                     </Card.Body>
                     : ""}

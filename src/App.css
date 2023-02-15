@@ -96,6 +96,15 @@
   margin-right: 100px;
 }
 
+.sideNav {
+  display: flex;
+  flex-direction: row;
+}
+
+.sideNav2 {
+  background-color: blue;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -120,7 +120,7 @@ const Root = () => {
           </Container>
         </Navbar>
             <div id="detail">
-                <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
+              <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
             </div>
       </>
     )

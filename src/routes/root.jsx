@@ -1,5 +1,5 @@
 import {React, useState} from 'react';
-import { Navbar, Container, Nav, Button, NavDropdown} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, NavDropdown, Accordion, Row} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -89,6 +89,8 @@ const Root = () => {
               <LinkContainer to="/">
                 <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
               </LinkContainer>
+            </Container>
+              {/*
               <Nav key="subnav">
                 <NavDropdown title="Subscriptions" id="nav-sub">
                   <LinkContainer to="/provider">
@@ -113,17 +115,45 @@ const Root = () => {
               </Nav>
               : ""
               }   
-              <Nav key="nav" className="topNav">
+            */}
+              <Container key="navContainer" className="clockNav2">
+                <Row></Row>
+                <Row>
+              <Nav key="nav">
                 {buttonClicked ? (<Navbar.Text>Account: {account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
                 {/*
                 <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
                 */}
               </Nav>
+              </Row>
             </Container>
           </Navbar>
           </div>
           <div className="sideNav">
-            <div className="sideNav2">Test</div>
+            <div className="sideNav2">
+            <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
+            <Nav defaultActiveKey="/home" className="flex-column">
+              <NavDropdown title="Subscriptions" id="nav-sub">
+                <LinkContainer to="/provider">
+                  <NavDropdown.Item eventKey="4.1">Provider Dashboard</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/subscriberdash">
+                  <NavDropdown.Item eventKey="4.2">Subscriber Dashboard</NavDropdown.Item>
+                </LinkContainer>
+                  <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
+              </NavDropdown>
+              <LinkContainer to="/payments">
+                <Nav.Link>Future Payments</Nav.Link>
+              </LinkContainer>
+            {account == adminAccount ?
+            
+              <LinkContainer to="/admin">
+                <Nav.Link>Admin</Nav.Link>
+              </LinkContainer>
+            : ""}   
+            </Nav>
+            </Navbar>
+            </div>
             <div id="detail" className="mainDiv">
               <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
             </div>

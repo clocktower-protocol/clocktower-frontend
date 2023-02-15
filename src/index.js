@@ -35,7 +35,7 @@ const router = createBrowserRouter([
           element: <ProvHistory />,
         },
         {
-          path: "provider/subscribers/:id",
+          path: "provider/subscribers/:id/:a",
           element: <ProvSubscribers />
         },
         {

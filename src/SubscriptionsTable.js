@@ -84,7 +84,7 @@ const SubscriptionsTable = (props) => {
         if(role === 1) {
             row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}`}>{totalSubscribers}</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}`}>{totalSubscribers}</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>

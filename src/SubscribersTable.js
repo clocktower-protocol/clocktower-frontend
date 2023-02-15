@@ -19,6 +19,8 @@ const SubscribersTable = (props) => {
     for(let i = 0; i < subscribersArray.length; i++) {
    
         let row = []
+
+        
   
         row.push(
           <td key={String(subscribersArray[i])+1}>{subscribersArray[i].accountAddress}</td>,

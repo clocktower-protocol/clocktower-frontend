@@ -92,6 +92,7 @@ const AdminSubscriptions = () => {
        
     }
 
+    /*
     const isTableEmpty = (subscriptionArray) => {
         let count = 0
         subscriptionArray.forEach(subscription => {
@@ -99,6 +100,7 @@ const AdminSubscriptions = () => {
         })
         if(count > 0) { return false } else {return true}
     }
+    */
 
     //checks that user has logged in 
     if(account === "-1") {

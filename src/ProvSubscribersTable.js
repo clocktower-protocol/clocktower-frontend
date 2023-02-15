@@ -23,7 +23,8 @@ const ProvSubscribersTable = (props) => {
   
         row.push(
           <td key={String(subscribersArray[i])+1}>{subscribersArray[i].subscriber}</td>,
-          <td key={String(subscribersArray[i])+2}>{feeBalance}</td>
+          <td key={String(subscribersArray[i])+2}>{feeBalance}</td>,
+          <td key={String(subscribersArray[i])+3}>{props.remainingCycles[i]}</td>,
         )     
         table.push(<tr align="center" key={String(subscribersArray[i])}>{row}</tr>)
       }
@@ -36,7 +37,6 @@ const ProvSubscribersTable = (props) => {
               <th key="provAddressHead">Subscriber</th>
               <th key="feeBalanceHead">Fee Balance</th>
               <th key="cyclesLeftHead">Remaining Cycles</th>
-              <th key="statusHead">Status</th>
             </tr>
           </thead>
           <tbody key="tableBody">

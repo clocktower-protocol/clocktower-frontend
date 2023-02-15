@@ -58,7 +58,7 @@ const ProvHistory = () => {
                 {historyArray.length > 0 ? <Alert align="center" variant="dark">Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
             </div>
             
-            <div className="clockTableDiv">
+            <div className="subTable">
                 <ProvSubHistoryTable 
                     historyArray = {historyArray}
                 />

@@ -2361,7 +2361,7 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "uint8"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "enum ClockTowerSubscribe.ProvEvent",
         "name": "provEvent",
         "type": "uint8"
@@ -2398,7 +2398,7 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "enum ClockTowerSubscribe.SubEvent",
         "name": "subEvent",
         "type": "uint8"
@@ -3296,6 +3296,7 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+
 
 
 

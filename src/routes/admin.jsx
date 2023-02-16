@@ -136,6 +136,61 @@ const Admin = () => {
         return (
             <div>
             <Alert align="center" variant="secondary">Admin Dashboard</Alert>
+            <Tabs
+                defaultActiveKey="profile"
+                id="admin-tabs"
+                className="mb-3"
+                justify
+            >
+                <Tab eventKey="home" title="Caller">
+                    <CallerHistoryTable
+                        callerHistory = {callerHistory}
+                    />
+                </Tab>
+                <Tab eventKey="profile" title="Providers">
+                    <Accordion>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Provider List</Accordion.Header>
+                            <Accordion.Body>
+                                <ProvidersTable 
+                                    allProviders = {allProviders}
+                                 />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Provider History</Accordion.Header>
+                            <Accordion.Body>
+                                <ProviderHistoryTable
+                                    providerHistory = {providersHistory}
+                                />
+                            </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
+                </Tab>
+                <Tab eventKey="longer-tab" title="Subscribers">
+                    <Accordion>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Subscriber List</Accordion.Header>
+                            <Accordion.Body>
+                                <SubscribersTable 
+                                    allSubscribers = {allSubscribers}
+                                />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Subscriber History</Accordion.Header>
+                            <Accordion.Body>
+                                <ProvSubDetailTable
+                                    historyArray = {subscribersHistory}
+                                />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+                </Tab>
+     
+            </Tabs>
+                
+            {/*
             <Tab.Container id="admin-left-tabs" defaultActiveKey="first">
                 <Row>
                 <Col sm={2}>
@@ -202,6 +257,7 @@ const Admin = () => {
                 </Col>
                 </Row>
             </Tab.Container>
+            */}
           </div>
         )
     }}

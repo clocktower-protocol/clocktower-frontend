@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #86cecb;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -102,7 +102,7 @@
 }
 
 .sideNav2 {
-  background-color: blue;
+  background-color: #137a7f;
 }
 
 .topDiv {

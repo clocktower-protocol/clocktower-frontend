@@ -2350,15 +2350,9 @@ export const CLOCKTOWERSUB_ABI = [
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "success",
-        "type": "bool"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "errorCode",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       },
       {
         "indexed": true,
@@ -2414,14 +2408,51 @@ export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "accountLookup",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "erc20Contract",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minimum",
+        "type": "uint256"
       }
     ],
     "name": "addERC20Contract",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "callerFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -2487,7 +2518,7 @@ export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "newAddress",
         "type": "address"
       }
@@ -2505,33 +2536,7 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "uint256"
       }
     ],
-    "name": "changeFee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_fixed_fee",
-        "type": "uint256"
-      }
-    ],
-    "name": "changeFixedFee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_maxGas",
-        "type": "uint256"
-      }
-    ],
-    "name": "changeMaxGasPrice",
+    "name": "changeCallerFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2545,6 +2550,26 @@ export const CLOCKTOWERSUB_ABI = [
       }
     ],
     "name": "changeMaxRemits",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_fixed_fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeSystemFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "collectFees",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2580,19 +2605,6 @@ export const CLOCKTOWERSUB_ABI = [
     "name": "createSubscription",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "fee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -2650,6 +2662,11 @@ export const CLOCKTOWERSUB_ABI = [
         "internalType": "bool",
         "name": "bySubscriber",
         "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       }
     ],
     "name": "getAccountSubscriptions",
@@ -2728,198 +2745,6 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getAllAccounts",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "accountAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "exists",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint40[]",
-            "name": "timeTriggers",
-            "type": "uint40[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "bytes32",
-                "name": "id",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "uint16",
-                "name": "dueDay",
-                "type": "uint16"
-              },
-              {
-                "internalType": "enum ClockTowerSubscribe.Frequency",
-                "name": "frequency",
-                "type": "uint8"
-              },
-              {
-                "internalType": "enum ClockTowerSubscribe.Status",
-                "name": "status",
-                "type": "uint8"
-              }
-            ],
-            "internalType": "struct ClockTowerSubscribe.SubIndex[]",
-            "name": "subscriptions",
-            "type": "tuple[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "bytes32",
-                "name": "id",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "uint16",
-                "name": "dueDay",
-                "type": "uint16"
-              },
-              {
-                "internalType": "enum ClockTowerSubscribe.Frequency",
-                "name": "frequency",
-                "type": "uint8"
-              },
-              {
-                "internalType": "enum ClockTowerSubscribe.Status",
-                "name": "status",
-                "type": "uint8"
-              }
-            ],
-            "internalType": "struct ClockTowerSubscribe.SubIndex[]",
-            "name": "provSubs",
-            "type": "tuple[]"
-          }
-        ],
-        "internalType": "struct ClockTowerSubscribe.Account[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getFee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "id",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "enum ClockTowerSubscribe.Frequency",
-        "name": "frequency",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint16",
-        "name": "dueDay",
-        "type": "uint16"
-      }
-    ],
-    "name": "getSubByIndex",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bytes32",
-            "name": "id",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "provider",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "exists",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "cancelled",
-            "type": "bool"
-          },
-          {
-            "internalType": "enum ClockTowerSubscribe.Frequency",
-            "name": "frequency",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint16",
-            "name": "dueDay",
-            "type": "uint16"
-          },
-          {
-            "internalType": "string",
-            "name": "description",
-            "type": "string"
-          }
-        ],
-        "internalType": "struct ClockTowerSubscribe.Subscription",
-        "name": "subscription",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "id",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getSubscribers",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -2951,88 +2776,39 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "bySubscriber",
-        "type": "bool"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "getSubscriptionsByAccount",
+    "inputs": [],
+    "name": "getTotalSubscribers",
     "outputs": [
       {
-        "components": [
-          {
-            "components": [
-              {
-                "internalType": "bytes32",
-                "name": "id",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "provider",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "token",
-                "type": "address"
-              },
-              {
-                "internalType": "bool",
-                "name": "exists",
-                "type": "bool"
-              },
-              {
-                "internalType": "bool",
-                "name": "cancelled",
-                "type": "bool"
-              },
-              {
-                "internalType": "enum ClockTowerSubscribe.Frequency",
-                "name": "frequency",
-                "type": "uint8"
-              },
-              {
-                "internalType": "uint16",
-                "name": "dueDay",
-                "type": "uint16"
-              },
-              {
-                "internalType": "string",
-                "name": "description",
-                "type": "string"
-              }
-            ],
-            "internalType": "struct ClockTowerSubscribe.Subscription",
-            "name": "subscription",
-            "type": "tuple"
-          },
-          {
-            "internalType": "enum ClockTowerSubscribe.Status",
-            "name": "status",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalSubscribers",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct ClockTowerSubscribe.SubView[]",
+        "internalType": "uint256",
         "name": "",
-        "type": "tuple[]"
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxRemits",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextUncheckedDay",
+    "outputs": [
+      {
+        "internalType": "uint40",
+        "name": "",
+        "type": "uint40"
       }
     ],
     "stateMutability": "view",
@@ -3042,7 +2818,7 @@ export const CLOCKTOWERSUB_ABI = [
     "inputs": [],
     "name": "remit",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -3054,6 +2830,19 @@ export const CLOCKTOWERSUB_ABI = [
       }
     ],
     "name": "removeERC20Contract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
+      }
+    ],
+    "name": "setExternalCallers",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -3120,50 +2909,28 @@ export const CLOCKTOWERSUB_ABI = [
   },
   {
     "inputs": [],
-    "name": "toggleContractActive",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "systemFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "unix",
-        "type": "uint256"
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
       }
     ],
-    "name": "unixToTime",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint16",
-            "name": "day",
-            "type": "uint16"
-          },
-          {
-            "internalType": "uint16",
-            "name": "weekDay",
-            "type": "uint16"
-          },
-          {
-            "internalType": "uint16",
-            "name": "quarterDay",
-            "type": "uint16"
-          },
-          {
-            "internalType": "uint16",
-            "name": "yearDay",
-            "type": "uint16"
-          }
-        ],
-        "internalType": "struct ClockTowerSubscribe.Time",
-        "name": "time",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "pure",
+    "name": "systemFeeActivate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -3296,6 +3063,7 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+
 
 
 

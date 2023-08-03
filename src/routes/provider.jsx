@@ -94,7 +94,7 @@ const Provider = () => {
         let accountSubscriptions = []
     
         //calls contract 
-        await clocktowersub.methods.getAccountSubscriptions(false).call({from: account})
+        await clocktowersub.methods.getAccountSubscriptions(false, account).call({from: account})
         .then(function(result) {
             accountSubscriptions = result
             setSubscriptionArray(accountSubscriptions)

@@ -86,10 +86,10 @@ const PublicSubscription = () => {
 
 
         const isSubscribed = async () => {
-            let result = await clocktowersub.methods.getSubscribers(id).call({from: account})
+            let result = await clocktowersub.methods.getSubscribersById(id).call({from: account})
             let status = false
             result.forEach((element) => {
-                if(element == account) {
+                if(element.subscriber == account) {
                     setIsSubscribed(true)
                     status = true
                     return

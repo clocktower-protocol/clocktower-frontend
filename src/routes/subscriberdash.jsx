@@ -88,7 +88,7 @@ const SubscriberDash = () => {
        //let feeBalances = []
    
        //calls contract 
-       accountSubscriptions = await clocktowersub.methods.getAccountSubscriptions(true).call({from: account})
+       accountSubscriptions = await clocktowersub.methods.getAccountSubscriptions(true, account).call({from: account})
        setSubscriptionArray(accountSubscriptions)
 
        /*

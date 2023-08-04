@@ -39,7 +39,7 @@ const ProvSubscribers = () => {
         }    
 
         //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
-        const fee = await clocktowersub.methods.fee().call({from: account})
+        const fee = await clocktowersub.methods.callerFee().call({from: account})
         const cycles = Math.round(1 / ((fee / 10000) - 1))
 
         let subscribers = []

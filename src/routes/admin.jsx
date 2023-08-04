@@ -95,11 +95,9 @@ const Admin = () => {
                 .then( async function(address) {
                     await clocktowersub.methods.getAccount(address).call({from: account})
                     .then(function(mapAccount) {
-                        console.log(mapAccount)
                         //if account is a producer
                         if(mapAccount.provSubs.length > 0) {
                             providers.push(mapAccount)
-                            console.log("here")
                         }
                 
                         //if account is a subscriber
@@ -111,47 +109,11 @@ const Admin = () => {
                     })
                 })
             }
-            console.log(providers.length)
-            console.log(subscribers.length)
-            console.log(accounts.length)
             setAllProviders(providers)
             setAllSubscribers(subscribers)
             setAllAccounts(accounts)
         })
 
-      
-        
-    /*
-        //calls contract 
-        await clocktowersub.methods.getAllAccounts().call({from: account})
-        .then(function(result) {
-            accounts = result
-
-            let providers = []
-            let subscribers = []
-
-           // console.log(accounts.length)
-
-            //separates out producers and subscribers
-            accounts.forEach((element) => {
-                //if account is a producer
-                if(element.provSubs.length > 0) {
-                    providers.push(element)
-                }
-                
-                //if account is a subscriber
-                if(element.subscriptions.length > 0) {
-                    subscribers.push(element)
-                }
-            })
-
-           // console.log(subscribers.length)
-
-            setAllProviders(providers)
-            setAllSubscribers(subscribers)
-            setAllAccounts(accounts)
-        })
-        */
     }
     
 

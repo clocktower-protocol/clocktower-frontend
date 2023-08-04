@@ -79,7 +79,49 @@ const Admin = () => {
         }
         //variable to pass scope so that the state can be set
         let accounts = []
-    
+        let providers = []
+        let subscribers = []
+        
+        //gets all accounts
+        await clocktowersub.methods.getTotalSubscribers().call({from: account})
+        .then(async function(result) {
+            
+            let totalSubscribers = result
+
+            //iterates through each subscriber
+            for (let i = 0; i < totalSubscribers; i++) {
+                
+                await clocktowersub.methods.accountLookup(i).call({from: account})
+                .then( async function(address) {
+                    await clocktowersub.methods.getAccount(address).call({from: account})
+                    .then(function(mapAccount) {
+                        console.log(mapAccount)
+                        //if account is a producer
+                        if(mapAccount.provSubs.length > 0) {
+                            providers.push(mapAccount)
+                            console.log("here")
+                        }
+                
+                        //if account is a subscriber
+                        if(mapAccount.subscriptions.length > 0) {
+                            subscribers.push(mapAccount)
+                        }
+
+                        accounts.push(mapAccount)
+                    })
+                })
+            }
+            console.log(providers.length)
+            console.log(subscribers.length)
+            console.log(accounts.length)
+            setAllProviders(providers)
+            setAllSubscribers(subscribers)
+            setAllAccounts(accounts)
+        })
+
+      
+        
+    /*
         //calls contract 
         await clocktowersub.methods.getAllAccounts().call({from: account})
         .then(function(result) {
@@ -109,7 +151,9 @@ const Admin = () => {
             setAllSubscribers(subscribers)
             setAllAccounts(accounts)
         })
+        */
     }
+    
 
     /*
     //get fee balance

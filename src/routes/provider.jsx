@@ -226,7 +226,6 @@ const Provider = () => {
                                    // setIsTableEmpty = {setIsTableEmpty}
                                 />
                                 */ }
-                                 
             
                                 <SubscriptionsTable
                                     subscriptionArray = {subscriptionArray}

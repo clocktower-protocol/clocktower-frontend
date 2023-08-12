@@ -3,7 +3,7 @@
 export const CLOCKTOWERPAY_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 export const CLOCKTOWERSUB_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-export const CLOCKTOKEN_ADDRESS = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+export const CLOCKTOKEN_ADDRESS = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
@@ -29,7 +29,7 @@ export const TOKEN_LOOKUP = [
     ABI: ""
   },
   {
-    address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
     ticker: "CLOCK",
     ABI: [
       {
@@ -395,7 +395,7 @@ export const TOKEN_LOOKUP = [
 
 export const ERC20TOKEN_LOOKUP = [
   {
-    address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
     ticker: "CLOCK",
     ABI: [
       {
@@ -2343,6 +2343,61 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "address"
       },
       {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "domain",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "url",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "phone",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      }
+    ],
+    "name": "DetailsLog",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "provider",
+        "type": "address"
+      },
+      {
         "indexed": false,
         "internalType": "uint40",
         "name": "timestamp",
@@ -2498,11 +2553,6 @@ export const CLOCKTOWERSUB_ABI = [
             "internalType": "uint16",
             "name": "dueDay",
             "type": "uint16"
-          },
-          {
-            "internalType": "string",
-            "name": "description",
-            "type": "string"
           }
         ],
         "internalType": "struct ClockTowerSubscribe.Subscription",
@@ -2587,9 +2637,36 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "address"
       },
       {
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
+        "components": [
+          {
+            "internalType": "string",
+            "name": "domain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "phone",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct ClockTowerSubscribe.Details",
+        "name": "details",
+        "type": "tuple"
       },
       {
         "internalType": "enum ClockTowerSubscribe.Frequency",
@@ -2605,6 +2682,51 @@ export const CLOCKTOWERSUB_ABI = [
     "name": "createSubscription",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "domain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "phone",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct ClockTowerSubscribe.Details",
+        "name": "details",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "editDetails",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -2677,11 +2799,6 @@ export const CLOCKTOWERSUB_ABI = [
             "internalType": "bool",
             "name": "exists",
             "type": "bool"
-          },
-          {
-            "internalType": "uint40[]",
-            "name": "timeTriggers",
-            "type": "uint40[]"
           },
           {
             "components": [
@@ -2804,11 +2921,6 @@ export const CLOCKTOWERSUB_ABI = [
                 "internalType": "uint16",
                 "name": "dueDay",
                 "type": "uint16"
-              },
-              {
-                "internalType": "string",
-                "name": "description",
-                "type": "string"
               }
             ],
             "internalType": "struct ClockTowerSubscribe.Subscription",
@@ -2895,11 +3007,6 @@ export const CLOCKTOWERSUB_ABI = [
             "internalType": "uint16",
             "name": "dueDay",
             "type": "uint16"
-          },
-          {
-            "internalType": "string",
-            "name": "description",
-            "type": "string"
           }
         ],
         "internalType": "struct ClockTowerSubscribe.Subscription",
@@ -3056,11 +3163,6 @@ export const CLOCKTOWERSUB_ABI = [
             "internalType": "uint16",
             "name": "dueDay",
             "type": "uint16"
-          },
-          {
-            "internalType": "string",
-            "name": "description",
-            "type": "string"
           }
         ],
         "internalType": "struct ClockTowerSubscribe.Subscription",
@@ -3142,11 +3244,6 @@ export const CLOCKTOWERSUB_ABI = [
             "internalType": "uint16",
             "name": "dueDay",
             "type": "uint16"
-          },
-          {
-            "internalType": "string",
-            "name": "description",
-            "type": "string"
           }
         ],
         "internalType": "struct ClockTowerSubscribe.Subscription",
@@ -3202,11 +3299,6 @@ export const CLOCKTOWERSUB_ABI = [
             "internalType": "uint16",
             "name": "dueDay",
             "type": "uint16"
-          },
-          {
-            "internalType": "string",
-            "name": "description",
-            "type": "string"
           }
         ],
         "internalType": "struct ClockTowerSubscribe.Subscription",

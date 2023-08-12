@@ -11,7 +11,7 @@ import SubscriptionsTable from '../SubscriptionsTable';
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
-    console.log(account)
+   // console.log(account)
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -30,6 +30,10 @@ const Provider = () => {
     const [frequency, setFrequency] = useState(0)
     const [dueDay, setDueDay] = useState(1)
     const [description, setDescription] = useState("")
+    const [domain, setDomain] = useState("")
+    const [url, setUrl] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
     const [amount, setAmount] = useState(0.00)
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     //const [fee, setFee] = useState(0.1)
@@ -105,10 +109,18 @@ const Provider = () => {
 
         let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
 
+        const details = {
+            domain: domain,
+            url: url,
+            email: email,
+            phone: phone,
+            description: description
+        }
+
         const transactionParameters = {
             to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
             from: account, // must match user's active address.
-            data: clocktowersub.methods.createSubscription(amount,token,description,frequency, dueDay).encodeABI(),
+            data: clocktowersub.methods.createSubscription(amount,token,details,frequency, dueDay).encodeABI(),
             value: feeHex
         }
 
@@ -179,7 +191,10 @@ const Provider = () => {
                                         frequency = {frequency}
                                         dueDay = {dueDay}
                                         description = {description}
-
+                                        domain = {domain}
+                                        email = {email}
+                                        url = {url}
+                                        phone = {phone}
                                         
                                         setToken = {setToken}
                                         setTokenABI = {setTokenABI}
@@ -187,6 +202,10 @@ const Provider = () => {
                                         setFrequency = {setFrequency}
                                         setDueDay = {setDueDay}
                                         setDescription = {setDescription}
+                                        setDomain = {setDomain}
+                                        setEmail = {setEmail}
+                                        setUrl = {setUrl}
+                                        setPhone = {setPhone}
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}
                                         createSubscription = {createSubscription}
@@ -237,7 +256,10 @@ const Provider = () => {
                                         frequency = {frequency}
                                         dueDay = {dueDay}
                                         description = {description}
-
+                                        domain = {domain}
+                                        email = {email}
+                                        url = {url}
+                                        phone = {phone}
                                         
                                         setToken = {setToken}
                                         setTokenABI = {setTokenABI}
@@ -245,6 +267,10 @@ const Provider = () => {
                                         setFrequency = {setFrequency}
                                         setDueDay = {setDueDay}
                                         setDescription = {setDescription}
+                                        setDomain = {setDomain}
+                                        setEmail = {setEmail}
+                                        setUrl = {setUrl}
+                                        setPhone = {setPhone}
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}
                                         createSubscription = {createSubscription}

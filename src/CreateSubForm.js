@@ -77,7 +77,28 @@ const CreateSubForm = (props) => {
         //sets description
         props.setDescription(event.target.value)
     }
+
+    const domainChange = (event) => {
+        //sets description
+        props.setDomain(event.target.value)
+        console.log(props.domain)
+    }
     
+    const urlChange = (event) => {
+        //sets description
+        props.setUrl(event.target.value)
+    }
+
+    const emailChange = (event) => {
+        //sets description
+        props.setEmail(event.target.value)
+    }
+
+    const phoneChange = (event) => {
+        //sets description
+        props.setPhone(event.target.value)
+    }
+
 
     //Form validation and submit
      //validates form data
@@ -179,6 +200,34 @@ const CreateSubForm = (props) => {
                         <option>Select Day</option>
                         {dayPulldown()}
                     </Form.Select>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formDomain" value={props.domain} onChange={domainChange}>
+                    <Form.Label>Domain</Form.Label>
+                    <Form.Control type="input" placeholder="domain" />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formUrl" value={props.url} onChange={urlChange} >
+                    <Form.Label>URL</Form.Label>
+                    <Form.Control type="input" placeholder="url" />
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formEmail" value={props.email} onChange={emailChange}>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="input" placeholder="email" />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formPhone" value={props.phone} onChange={phoneChange} >
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control type="input" placeholder="phone" />
                     </Form.Group>
                 </Col>
             </Row>

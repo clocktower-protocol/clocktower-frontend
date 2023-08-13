@@ -70,7 +70,7 @@ const SubscriptionsTable = (props) => {
         if(typeof subscriptionArray[i].totalSubscribers !== 'undefined') {
           totalSubscribers = subscriptionArray[i].totalSubscribers
         }
-        let subAmount = Web3.utils.fromWei(subscriptionArray[i].subscription.amount)
+        let subAmount = Web3.utils.fromWei(String(subscriptionArray[i].subscription.amount))
 
        // console.log(subscriptionArray[i].subscription.frequency)
         if(role === 0) {
@@ -88,7 +88,7 @@ const SubscriptionsTable = (props) => {
         if(role === 0 && bySubscriber) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}>{Web3.utils.fromWei(props.feeObjects[i].feeBalance)}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}>{Web3.utils.fromWei(String(props.feeObjects[i].feeBalance))}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}>{props.feeObjects[i].remainingCycles}</td>,
           )
         }

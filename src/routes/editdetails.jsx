@@ -72,7 +72,7 @@ const EditDetails = () => {
         setDetails(tempDetails)
         */
         getDetails()
-    }, []);
+    }, [account]);
     
 
     const getDetails = async () => {
@@ -105,6 +105,11 @@ const EditDetails = () => {
         })
 
         setDetails(tempDetails)
+        setDescription(tempDetails.description)
+        setDomain(tempDetails.domain)
+        setEmail(tempDetails.email)
+        setUrl(tempDetails.url)
+        setPhone(tempDetails.phone)
     }
 
     const editDetails = async () => {
@@ -171,6 +176,17 @@ const EditDetails = () => {
         } 
     }
 
+    //Creates alert
+    const alertMaker = () => {
+        if(alert) {
+            return (
+                <div className="alertDiv">
+                <Alert variant={alertType} align="center" onClose={() => setAlert(false)} dismissible>{alertText}</Alert>
+                </div>
+            )
+        }
+    }
+
     //checks that user has logged in 
     if(account == "-1") {
         return ( 
@@ -179,6 +195,7 @@ const EditDetails = () => {
     } else {
         return (
         <div>
+             {alertMaker()}
             <div>
                 {details.description !== undefined ? <Alert align="center" variant="dark">Edit Details</Alert> : <Alert align="center" variant="info">Unrecognized Subscription</Alert>}
             </div>
@@ -186,6 +203,12 @@ const EditDetails = () => {
             <div className="subTable">
                 <EditDetailsForm
                     details = {details}
+                    description = {description}
+                    domain = {domain}
+                    email = {email}
+                    url = {url}
+                    phone = {phone}
+
                     editDetails = {editDetails}
                     setDescription = {setDescription}
                     setDomain = {setDomain}

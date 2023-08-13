@@ -69,13 +69,13 @@ const EditDetailsForm = (props) => {
         <Form className="mb-3" onSubmit={submitForm}>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formDomain" value={props.details.domain} onChange={domainChange}>
+                    <Form.Group className="mb-3" controlId="formDomain"  defaultValue={props.details.domain} value={props.domain} onChange={domainChange}>
                     <Form.Label>Domain</Form.Label>
                     <Form.Control type="input" defaultValue={props.details.domain} placeholder={props.details.domain} />
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formUrl" value={props.details.url} onChange={urlChange} >
+                    <Form.Group className="mb-3" controlId="formUrl"  defaultValue={props.details.url} value={props.url} onChange={urlChange} >
                     <Form.Label>URL</Form.Label>
                     <Form.Control type="input" defaultValue={props.details.url} placeholder={props.details.url} />
                     </Form.Group>
@@ -83,13 +83,13 @@ const EditDetailsForm = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formEmail" value={props.details.email} onChange={emailChange}>
+                    <Form.Group className="mb-3" controlId="formEmail" defaultValue={props.details.email} value={props.email} onChange={emailChange}>
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="input" defaultValue={props.details.email} placeholder={props.details.email} />
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formPhone" value={props.details.phone} onChange={phoneChange} >
+                    <Form.Group className="mb-3" controlId="formPhone" defaultValue={props.details.phone} value={props.phone} onChange={phoneChange} >
                     <Form.Label>Phone</Form.Label>
                     <Form.Control type="input" defaultValue={props.details.phone} placeholder={props.details.phone} />
                     </Form.Group>
@@ -97,7 +97,7 @@ const EditDetailsForm = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formDescription" value={props.details.description} onChange={descriptionChange}>
+                    <Form.Group className="mb-3" controlId="formDescription" defaultValue={props.details.description} value={props.description} onChange={descriptionChange}>
                     <Form.Label>Description:</Form.Label>
                     <Form.Control type="input" defaultValue={props.details.description} placeholder={props.details.description} />
                     </Form.Group>

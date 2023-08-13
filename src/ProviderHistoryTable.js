@@ -29,7 +29,7 @@ const ProviderHistoryTable = (props) => {
         <td key={String(providerHistory[i])+3}>{PROVEVENT_LOOKUP[providerHistory[i].returnValues.provEvent]}</td>,
         <td key={String(providerHistory[i])+4}>{formatDate}</td>,
         )     
-        table.push(<tr align="center" key={String(providerHistory[i])}>{row}</tr>)
+        table.push(<tr align="center" key={String(providerHistory[i])+formatDate}>{row}</tr>)
     }
 
     tableTop.push(

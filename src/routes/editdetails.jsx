@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import { useOutletContext, useParams} from "react-router-dom";
+import React, {useEffect, useState, useCallback} from 'react'
+import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
@@ -16,6 +16,8 @@ const EditDetails = () => {
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
 
     let {id} = useParams();
+
+    const navigate = useNavigate()
 
     const [details, setDetails] = useState({})
     const [alertType, setAlertType] = useState("danger")
@@ -73,6 +75,10 @@ const EditDetails = () => {
         */
         getDetails()
     }, [account]);
+
+    const sendToProvDash = useCallback(() => 
+    navigate('/provider', {replace: true})
+    ,[navigate])
     
 
     const getDetails = async () => {
@@ -113,6 +119,7 @@ const EditDetails = () => {
     }
 
     const editDetails = async () => {
+    
 
         let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
 
@@ -143,8 +150,11 @@ const EditDetails = () => {
 
         //TODO: need to update to emit method
         await confirmTransaction(txhash)
-    }
 
+       // sendToProvDash()
+
+
+    }
     //confirms transaction by looping until it gets confirmed
     const confirmTransaction = async (txHash) => {
 

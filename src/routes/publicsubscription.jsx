@@ -13,7 +13,10 @@ const PublicSubscription = () => {
 
     const navigate = useNavigate()
 
+    const emptyDetails = {}
+
     const [subscription, setSubscription] = useState("")
+    const [details, setDetails] = useState(emptyDetails)
     const [idSub, setId] = useState(id)
     const [frequency, setFrequency] = useState(f)
     const [dueDay, setDueDay] = useState(d)
@@ -75,7 +78,32 @@ const PublicSubscription = () => {
         }
 
         const getSub = async () => await clocktowersub.methods.getSubByIndex(idSub, frequency, dueDay).call({from: account})
-        .then(function(result) {
+        .then(async function(result) {
+            //gets details from logs
+            await clocktowersub.getPastEvents('DetailsLog', {
+                filter: {id:[result.id]},
+                fromBlock: 0,
+                toBlock: 'latest'
+            }, function(error, events){ 
+                //checks for latest update by getting highest timestamp
+                if(events != undefined) {
+                    let time = 0
+                    let index = 0
+                   
+                    if(events.length > 0)
+                    {
+                        for (var j = 0; j < events.length; j++) {
+                            if(time < events[j].timestamp)
+                            {
+                                time = events[j].timestamp
+                                index = j
+                            }
+                        }
+                       //adds latest details to details array
+                       setDetails(events[index].returnValues)
+                    }    
+                }
+            })
             setSubscription(result)
             setAmount(Web3.utils.fromWei(result.amount))
             setFrequencyName(frequencyLookup(result.frequency))
@@ -314,7 +342,7 @@ const PublicSubscription = () => {
                     <Card.Body>
                         <Card.Title align="center">Subscription</Card.Title>
                         <Card.Text align="center">
-                        {subscription.description}
+                        {details.description}
                         </Card.Text>
                     </Card.Body>
                     <ListGroup className="list-group-flush">
@@ -322,6 +350,10 @@ const PublicSubscription = () => {
                         <ListGroup.Item>Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{amount} {tickerName}</ListGroup.Item>
                         <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
+                        <ListGroup.Item>Domain: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.domain}</ListGroup.Item>
+                        <ListGroup.Item>URL: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.url}</ListGroup.Item>
+                        <ListGroup.Item>Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.email}</ListGroup.Item>
+                        <ListGroup.Item>Phone: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.phone}</ListGroup.Item>
                     </ListGroup>
                     {(!subscribed && !isProvider) ?
                     <Card.Body align="center">

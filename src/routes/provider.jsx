@@ -107,7 +107,6 @@ const Provider = () => {
             for (var i = 0; i < accountSubscriptions.length; i++) {
                //finds the latest details log
                //get description from logs
-               console.log(accountSubscriptions[i].subscription.id)
                 await clocktowersub.getPastEvents('DetailsLog', {
                     filter: {id:[accountSubscriptions[i].subscription.id]},
                     fromBlock: 0,
@@ -118,12 +117,6 @@ const Provider = () => {
                         let time = 0
                         let index = 0
                        
-                        /*
-                        console.log(events)
-                        console.log(typeof events)
-                        console.log(events.length)
-                        */
-                        
                         if(events.length > 0)
                         {
                             for (var j = 0; j < events.length; j++) {
@@ -135,19 +128,12 @@ const Provider = () => {
                             }
                            //adds latest details to details array
                            detailsArray[i] = events[index].returnValues
-                           //console.log(detailsArray[i].description)
-                          // console.log(i)
                         }    
                     }
-                  //  console.log("here")
-                    //setDetailsArray(detailsArray)
                 })
             }
             setSubscriptionArray(accountSubscriptions)
             setDetailsArray(detailsArray)
-            //console.log("here")
-           // setDetailsArray(detailsArray)
-           // setSubscriptionArray(accountSubscriptions)
         })
     }
 

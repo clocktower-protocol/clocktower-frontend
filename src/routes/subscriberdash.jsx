@@ -17,6 +17,7 @@ const SubscriberDash = () => {
 
     const [alertType, setAlertType] = useState("warning")
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
+    const [detailsArray, setDetailsArray] = useState(emptySubscriptionArray)
     const [isEmpty, setIsEmpty] = useState(false)
      //feeBalance array indexed to subscription array
     //const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
@@ -89,7 +90,38 @@ const SubscriberDash = () => {
    
        //calls contract 
        accountSubscriptions = await clocktowersub.methods.getAccountSubscriptions(true, account).call({from: account})
+
+       //gets details array
+       for (var i = 0; i < accountSubscriptions.length; i++) {
+            //finds the latest details log
+            //get description from logs
+            await clocktowersub.getPastEvents('DetailsLog', {
+                filter: {id:[accountSubscriptions[i].subscription.id]},
+                fromBlock: 0,
+                toBlock: 'latest'
+            }, function(error, events){ 
+                //checks for latest update by getting highest timestamp
+                if(events != undefined) {
+                    let time = 0
+                    let index = 0
+                
+                    if(events.length > 0) {
+                        for (var j = 0; j < events.length; j++) {
+                            if(time < events[j].timestamp)
+                            {
+                                time = events[j].timestamp
+                                index = j
+                            }
+                        }
+                        //adds latest details to details array
+                        detailsArray[i] = events[index].returnValues
+                    }    
+                }
+            })
+        }
+
        setSubscriptionArray(accountSubscriptions)
+       setDetailsArray(detailsArray)
 
        /*
        //gets fee balance
@@ -163,6 +195,7 @@ const SubscriberDash = () => {
                         {subscriptionArray.length > 0 && !isTableEmpty() ?
                         <SubscriptionsTable
                             subscriptionArray = {subscriptionArray}
+                            detailsArray = {detailsArray}
                             unsubscribe = {unsubscribe}
                             account = {account}
                             role = {2}

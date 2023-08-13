@@ -16,6 +16,9 @@ const SubscriptionsTable = (props) => {
     
 
     const subscriptionArray = props.subscriptionArray
+
+    const detailsArray = props.detailsArray
+
     let bySubscriber = true
     //const isAdmin = props.isAdmin
     const role = props.role
@@ -77,7 +80,7 @@ const SubscriptionsTable = (props) => {
         }
 
         row.push(
-            <td key={String(subscriptionArray[i].subscription.id)+1}>{subscriptionArray[i].subscription.description}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+1}>{detailsArray[i].description}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+2}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
             <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,

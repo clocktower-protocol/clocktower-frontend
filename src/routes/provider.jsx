@@ -21,8 +21,8 @@ const Provider = () => {
    // const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
     //creates empty array for table
-    let emptySubscriptionArray = [];
-
+    let emptySubscriptionArray = []
+    let emptyDetails = []
     const [alertType, setAlertType] = useState("danger")
    // const [hour, setHour] = useState("0")
     const [token, setToken] = useState(ZERO_ADDRESS)
@@ -36,6 +36,7 @@ const Provider = () => {
     const [phone, setPhone] = useState("")
     const [amount, setAmount] = useState(0.00)
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
+    const [detailsArray, setDetailsArray] = useState(emptyDetails)
     //const [fee, setFee] = useState(0.1)
     //const [isTableEmpty, setIsTableEmpty] = useState(true)
     const fee = 0.1
@@ -99,9 +100,54 @@ const Provider = () => {
     
         //calls contract 
         await clocktowersub.methods.getAccountSubscriptions(false, account).call({from: account})
-        .then(function(result) {
+        .then(async function(result) {
             accountSubscriptions = result
+
+            //loops through each subscription
+            for (var i = 0; i < accountSubscriptions.length; i++) {
+               //finds the latest details log
+               //get description from logs
+               console.log(accountSubscriptions[i].subscription.id)
+                await clocktowersub.getPastEvents('DetailsLog', {
+                    filter: {id:[accountSubscriptions[i].subscription.id]},
+                    fromBlock: 0,
+                    toBlock: 'latest'
+                }, function(error, events){ 
+                    //checks for latest update by getting highest timestamp
+                    if(events != undefined) {
+                        let time = 0
+                        let index = 0
+                       
+                        /*
+                        console.log(events)
+                        console.log(typeof events)
+                        console.log(events.length)
+                        */
+                        
+                        if(events.length > 0)
+                        {
+                            for (var j = 0; j < events.length; j++) {
+                                if(time < events[j].timestamp)
+                                {
+                                    time = events[j].timestamp
+                                    index = j
+                                }
+                            }
+                           //adds latest details to details array
+                           detailsArray[i] = events[index].returnValues
+                           //console.log(detailsArray[i].description)
+                          // console.log(i)
+                        }    
+                    }
+                  //  console.log("here")
+                    //setDetailsArray(detailsArray)
+                })
+            }
             setSubscriptionArray(accountSubscriptions)
+            setDetailsArray(detailsArray)
+            //console.log("here")
+           // setDetailsArray(detailsArray)
+           // setSubscriptionArray(accountSubscriptions)
         })
     }
 
@@ -232,6 +278,7 @@ const Provider = () => {
                                     isAdmin = {false}
                                     role = {1}
                                     cancelSubscription = {cancelSubscription}
+                                    detailsArray = {detailsArray}
                                 />
             
                                 

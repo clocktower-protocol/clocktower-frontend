@@ -93,9 +93,9 @@ const PublicSubscription = () => {
                     if(events.length > 0)
                     {
                         for (var j = 0; j < events.length; j++) {
-                            if(time < events[j].timestamp)
+                            if(time < events[j].returnValues.timestamp)
                             {
-                                time = events[j].timestamp
+                                time = events[j].returnValues.timestamp
                                 index = j
                             }
                         }
@@ -346,7 +346,7 @@ const PublicSubscription = () => {
                         </Card.Text>
                     </Card.Body>
                     <ListGroup className="list-group-flush">
-                        <ListGroup.Item>Producer:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subscription.provider}</ListGroup.Item>
+                        <ListGroup.Item>Provider:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subscription.provider}</ListGroup.Item>
                         <ListGroup.Item>Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{amount} {tickerName}</ListGroup.Item>
                         <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>

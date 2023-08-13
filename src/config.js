@@ -2344,9 +2344,9 @@ export const CLOCKTOWERSUB_ABI = [
       },
       {
         "indexed": true,
-        "internalType": "uint256",
+        "internalType": "uint40",
         "name": "timestamp",
-        "type": "uint256"
+        "type": "uint40"
       },
       {
         "indexed": false,

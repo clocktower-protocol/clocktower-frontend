@@ -120,9 +120,9 @@ const Provider = () => {
                         if(events.length > 0)
                         {
                             for (var j = 0; j < events.length; j++) {
-                                if(time < events[j].timestamp)
+                                if(time < events[j].returnValues.timestamp)
                                 {
-                                    time = events[j].timestamp
+                                    time = events[j].returnValues.timestamp
                                     index = j
                                 }
                             }

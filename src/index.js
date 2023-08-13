@@ -15,6 +15,7 @@ import SubscriberDash from './routes/subscriberdash';
 import SubHistory from './routes/subhistory';
 import Admin from './routes/admin';
 import AdminSubscriptions from './routes/adminsubscriptions';
+import EditDetails from './routes/editdetails';
 
 const router = createBrowserRouter([
     {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
         {
           path: "subscriberdash/subscription/:id/:s",
           element: <SubHistory />
+        },
+        {
+          path: "editdetails/:id",
+          element: <EditDetails />
         },
         {
           path: "admin/",

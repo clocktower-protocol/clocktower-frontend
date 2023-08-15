@@ -94,6 +94,21 @@ const Provider = () => {
             console.log("Not Logged in")
             return
         }
+
+        //checks dns record
+        
+        try {
+        var response = await fetch('https://dns.google/resolve?name=87935956-3f88-11e4-8ad4-7c9b5d934b58._domainkey.haderachllc.com&type=TXT');
+        
+            
+            var json = await response.json();
+            if(json.Answer[0].data !== undefined){
+                console.log(json.Answer[0].data);
+            }
+        }
+         catch(Err) {
+            console.log(Err)
+        }
             
         //variable to pass scope so that the state can be set
         let accountSubscriptions = []

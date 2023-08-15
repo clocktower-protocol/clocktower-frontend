@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import {Alert, Card, ListGroup, Button} from 'react-bootstrap';
+import {Alert, Card, ListGroup, Button, Modal} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
@@ -28,6 +28,10 @@ const PublicSubscription = () => {
     const [alertType, setAlertType] = useState("danger")
     const [subscribed, setIsSubscribed] = useState(false)
     const [isProvider, setIsProvider] = useState(false)
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
    // const [isAllowedUnlimited, setIsAllowedUnlimited] = useState(false)
 
   // const idSub = id
@@ -37,6 +41,7 @@ const PublicSubscription = () => {
     
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
+
         //looks up ticker for token
         const tickerLookup = (tokenAddress) => {
             return TOKEN_LOOKUP.map((token) => {
@@ -248,6 +253,39 @@ const PublicSubscription = () => {
     }, [account, setAlert, setAlertText, token, tokenABI, setAlertType]
     )
 
+    //signs message with provide private key
+    const signMessage = async () => {
+        const msg = "test"
+        //const msg = `0x${Buffer.from(originalMsg, 'utf8').toString('hex')}`;
+        /*
+        const signature = await window.web3.eth.personal.sign(msg, account);
+        */
+        try {
+            const from = account;
+            // For historical reasons, you must submit the message to sign in hex-encoded UTF-8.
+            // This uses a Node.js-style buffer shim in the browser.
+           // const msg = `0x${Buffer.from(exampleMessage, 'utf8').toString('hex')}`;
+            const sign = await window.ethereum.request({
+              method: 'personal_sign',
+              params: [msg, from],
+            });
+            console.log(sign)
+            //verifies signature
+            let signAddress = web3.eth.accounts.recover(msg, sign)
+            console.log(signAddress)
+            if(signAddress == account) {
+                console.log("It works!")
+            }
+
+          //  personalSignResult.innerHTML = sign;
+          //  personalSignVerify.disabled = false;
+          } catch (err) {
+            console.error(err);
+          //  personalSign.innerHTML = `Error: ${err.message}`;
+          }
+       // console.log(sign)
+    }
+
     //handles subscription button click and navigation
     const subscribe = useCallback(async () => {
 
@@ -362,6 +400,27 @@ const PublicSubscription = () => {
                         */}
                         <Button onClick={subscribe}>Subscribe</Button>
                     </Card.Body>
+                    : ""}
+                    {(isProvider) ?
+                    <>
+                    <Card.Body align="center">
+                        {/*
+                        <Button onClick={setInfiniteAllowance}>Approve</Button> 
+                        */}
+                        <Button onClick={signMessage}>Verify</Button>
+                    </Card.Body>
+                    <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Verify Domain</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Create the following domain record</Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleClose}>
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                  </>
                     : ""}
                 </Card>
                 </div>

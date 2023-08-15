@@ -121,8 +121,8 @@ const EditDetails = () => {
     const editDetails = async () => {
     
 
-        let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
-
+        //let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
+        try {
         const details = {
             domain: domain,
             url: url,
@@ -150,6 +150,9 @@ const EditDetails = () => {
 
         //TODO: need to update to emit method
         await confirmTransaction(txhash)
+        } catch (err) {
+            console.error(err);
+        }
 
        // sendToProvDash()
 

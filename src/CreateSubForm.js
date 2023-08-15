@@ -81,7 +81,6 @@ const CreateSubForm = (props) => {
     const domainChange = (event) => {
         //sets description
         props.setDomain(event.target.value)
-        console.log(props.domain)
     }
     
     const urlChange = (event) => {

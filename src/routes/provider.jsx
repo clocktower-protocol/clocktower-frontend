@@ -98,7 +98,7 @@ const Provider = () => {
         //checks dns record
         
         try {
-        var response = await fetch('https://dns.google/resolve?name=87935956-3f88-11e4-8ad4-7c9b5d934b58._domainkey.haderachllc.com&type=TXT');
+        var response = await fetch('https://dns.google/resolve?name=ct.clocktower.finance&type=TXT');
         
             
             var json = await response.json();

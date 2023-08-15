@@ -29,6 +29,8 @@ const PublicSubscription = () => {
     const [subscribed, setIsSubscribed] = useState(false)
     const [isProvider, setIsProvider] = useState(false)
     const [show, setShow] = useState(false);
+    const [signature, setSignature] = useState("-1")
+    const [isDomainVerified, setIsDomainVerified] = useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -106,6 +108,9 @@ const PublicSubscription = () => {
                         }
                        //adds latest details to details array
                        setDetails(events[index].returnValues)
+
+                       //verifies domain
+                       verifyDomain(events[index].returnValues.domain, result.provider)
                     }    
                 }
             })
@@ -255,16 +260,12 @@ const PublicSubscription = () => {
 
     //signs message with provide private key
     const signMessage = async () => {
+        //TODO: change to something else
         const msg = "test"
-        //const msg = `0x${Buffer.from(originalMsg, 'utf8').toString('hex')}`;
-        /*
-        const signature = await window.web3.eth.personal.sign(msg, account);
-        */
         try {
             const from = account;
             // For historical reasons, you must submit the message to sign in hex-encoded UTF-8.
             // This uses a Node.js-style buffer shim in the browser.
-           // const msg = `0x${Buffer.from(exampleMessage, 'utf8').toString('hex')}`;
             const sign = await window.ethereum.request({
               method: 'personal_sign',
               params: [msg, from],
@@ -274,16 +275,41 @@ const PublicSubscription = () => {
             let signAddress = web3.eth.accounts.recover(msg, sign)
             console.log(signAddress)
             if(signAddress == account) {
-                console.log("It works!")
+                setSignature(sign)
+                handleShow()
             }
-
-          //  personalSignResult.innerHTML = sign;
-          //  personalSignVerify.disabled = false;
           } catch (err) {
             console.error(err);
-          //  personalSign.innerHTML = `Error: ${err.message}`;
           }
-       // console.log(sign)
+    }
+
+    const verifyDomain = async (domain, provAddress) => {
+
+        let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
+
+        console.log(url)
+
+        //checks dns record
+         try {
+            var response = await fetch(url);
+            const msg = "test"
+
+                
+                var json = await response.json();
+                if(json.Answer[0].data !== undefined){
+                    console.log(json.Answer[0].data);
+                    //verifies signature
+                    let signAddress = web3.eth.accounts.recover(msg, json.Answer[0].data)
+                    console.log(signAddress)
+                    if(signAddress == provAddress) {
+                        setIsDomainVerified(true)
+                        console.log("TRUE!")
+                    }
+                }
+            }
+             catch(Err) {
+                console.log(Err)
+            }
     }
 
     //handles subscription button click and navigation
@@ -388,7 +414,7 @@ const PublicSubscription = () => {
                         <ListGroup.Item>Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{amount} {tickerName}</ListGroup.Item>
                         <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
-                        <ListGroup.Item>Domain: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.domain}</ListGroup.Item>
+                        <ListGroup.Item>Domain: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.domain}&nbsp;&nbsp;{isDomainVerified ? "VERIFIED" : ""}</ListGroup.Item>
                         <ListGroup.Item>URL: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.url}</ListGroup.Item>
                         <ListGroup.Item>Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.email}</ListGroup.Item>
                         <ListGroup.Item>Phone: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.phone}</ListGroup.Item>
@@ -401,7 +427,7 @@ const PublicSubscription = () => {
                         <Button onClick={subscribe}>Subscribe</Button>
                     </Card.Body>
                     : ""}
-                    {(isProvider) ?
+                    {(isProvider && !isDomainVerified) ?
                     <>
                     <Card.Body align="center">
                         {/*
@@ -409,11 +435,11 @@ const PublicSubscription = () => {
                         */}
                         <Button onClick={signMessage}>Verify</Button>
                     </Card.Body>
-                    <Modal show={show} onHide={handleClose}>
+                    <Modal show={show} size="xl" onHide={handleClose}>
                     <Modal.Header closeButton>
                       <Modal.Title>Verify Domain</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Create the following domain record</Modal.Body>
+                    <Modal.Body>Create the following domain record: {signature}</Modal.Body>
                     <Modal.Footer>
                       <Button variant="secondary" onClick={handleClose}>
                         Close

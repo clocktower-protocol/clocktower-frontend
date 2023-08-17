@@ -8,6 +8,9 @@ import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 
+import EthCrypto from 'eth-crypto';
+import { fromString } from 'uint8arrays/from-string'
+
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
@@ -155,6 +158,18 @@ const Provider = () => {
     const createSubscription = async () => {
 
         let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
+
+        /*
+        const accountArray = fromString(String(account));
+
+        const encryptedURL = await EthCrypto.encryptWithPublicKey(
+            accountArray, 
+            JSON.stringify(url) 
+        );
+        const encryptedURLString = EthCrypto.cipher.stringify(encryptedURL);
+        */
+
+        console.log(encryptedURLString)
 
         const details = {
             domain: domain,

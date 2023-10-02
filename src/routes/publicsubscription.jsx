@@ -427,7 +427,7 @@ const PublicSubscription = () => {
                         <Button onClick={subscribe}>Subscribe</Button>
                     </Card.Body>
                     : ""}
-                    {(isProvider && !isDomainVerified) ?
+                    {(isProvider && !isDomainVerified && details.domain != "") ?
                     <>
                     <Card.Body align="center">
                         {/*

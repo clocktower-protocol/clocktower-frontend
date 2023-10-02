@@ -50,6 +50,38 @@ const EditDetailsForm = (props) => {
         } else {
             props.setAlert(false)
         }
+
+        //validates domain
+        let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
+        if(!regexDomain.test(props.domain)) {
+            console.log(
+                "Not a valid domain"
+            )
+            isCorrect = false
+            props.setAlert(true)
+            props.setAlertText("Domain formatted wrong")
+            return
+        } else {
+            props.setAlert(false)
+        }
+
+        //validates email address
+        if(props.email != ""){
+            let regexEmail = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+            if(!regexEmail.test(props.email)) {
+                console.log(
+                    "Not a valid email"
+                )
+                isCorrect = false
+                props.setAlert(true)
+                props.setAlertText("Email address formatted wrong")
+                return
+            } else {
+                props.setAlert(false)
+            }
+        }
+
+        return isCorrect
     }
 
     const submitForm = async (event) => {
@@ -59,7 +91,7 @@ const EditDetailsForm = (props) => {
         event.stopPropagation();
         
 
-        if(formValidate) {
+        if(formValidate()) {
             props.editDetails()
         } else {
             return

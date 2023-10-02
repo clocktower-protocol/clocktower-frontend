@@ -35,6 +35,7 @@ const EditDetails = () => {
 
     //loads once
     
+    
     useEffect(() => {
         //gets subscriber events
         /*
@@ -83,6 +84,7 @@ const EditDetails = () => {
     navigate('/provider', {replace: true})
     ,[navigate])
 
+    /*
     const testEncryption = async () => {
 
         //TODO:
@@ -130,7 +132,7 @@ const EditDetails = () => {
 
        // console.log(encryptedURLString)
 
-    }
+   // }
     
 
     const getDetails = async () => {
@@ -210,6 +212,7 @@ const EditDetails = () => {
         sendToProvDash()
 
    }
+
     //confirms transaction by looping until it gets confirmed
     const confirmTransaction = async (txHash) => {
 
@@ -275,12 +278,14 @@ const EditDetails = () => {
                     phone = {phone}
 
                     editDetails = {editDetails}
-                    testEncryption = {testEncryption}
+                   // testEncryption = {testEncryption}
                     setDescription = {setDescription}
                     setDomain = {setDomain}
                     setEmail = {setEmail}
                     setUrl = {setUrl}
                     setPhone = {setPhone}
+                    setAlert = {setAlert}
+                    setAlertText = {setAlertText}
                 />
             </div>
         </div>

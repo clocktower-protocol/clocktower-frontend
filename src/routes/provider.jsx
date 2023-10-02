@@ -29,7 +29,7 @@ const Provider = () => {
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [tokenABI, setTokenABI] = useState({})
     const [frequency, setFrequency] = useState(0)
-    const [dueDay, setDueDay] = useState(1)
+    const [dueDay, setDueDay] = useState(0)
     const [description, setDescription] = useState("")
     const [domain, setDomain] = useState("")
     const [url, setUrl] = useState("")

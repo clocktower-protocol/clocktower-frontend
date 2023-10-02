@@ -106,7 +106,7 @@ const CreateSubForm = (props) => {
         let isCorrect = true;
 
         //checks amount
-        if(props.formAmount <= 0) {
+        if(props.amount <= 0) {
             console.log (
                 "amount incorrect"
             )
@@ -135,7 +135,7 @@ const CreateSubForm = (props) => {
         }
 
         //checks required values are selected
-        if(props.token == ZERO_ADDRESS || props.amount == null || props.frequency == null || props.dueDay == null) {
+        if(props.token == ZERO_ADDRESS || props.amount == null || props.frequency == 0 || props.dueDay == 0) {
             console.log (
                 "Missing required fields"
             )
@@ -206,7 +206,7 @@ const CreateSubForm = (props) => {
                     <Form.Group className="mb-3" controlId="frequencySelect" value={props.frequency} onChange={frequencyChange}>
                     <Form.Label>Frequency *</Form.Label>
                     <Form.Select>
-                        <option>Select frequency</option>
+                        <option value={0}>Select frequency</option>
                         {frequencyPulldown()}
                     </Form.Select>
                     </Form.Group>
@@ -215,7 +215,7 @@ const CreateSubForm = (props) => {
                     <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={dueDayChange} >
                     <Form.Label>Day *</Form.Label>
                     <Form.Select>
-                        <option>Select Day</option>
+                        <option value={0}>Select Day</option>
                         {dayPulldown()}
                     </Form.Select>
                     </Form.Group>

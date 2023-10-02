@@ -207,10 +207,9 @@ const EditDetails = () => {
             console.error(err);
         }
 
-       // sendToProvDash()
+        sendToProvDash()
 
-
-    }
+   }
     //confirms transaction by looping until it gets confirmed
     const confirmTransaction = async (txHash) => {
 

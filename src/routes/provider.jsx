@@ -7,9 +7,7 @@ import { useOutletContext } from "react-router-dom";
 import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
-
-import EthCrypto from 'eth-crypto';
-import { fromString } from 'uint8arrays/from-string'
+import { zeroAddress } from '@ethereumjs/util';
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -159,18 +157,6 @@ const Provider = () => {
 
         let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
 
-        /*
-        const accountArray = fromString(String(account));
-
-        const encryptedURL = await EthCrypto.encryptWithPublicKey(
-            accountArray, 
-            JSON.stringify(url) 
-        );
-        const encryptedURLString = EthCrypto.cipher.stringify(encryptedURL);
-        */
-
-        console.log(encryptedURLString)
-
         const details = {
             domain: domain,
             url: url,
@@ -186,19 +172,25 @@ const Provider = () => {
             value: feeHex
         }
 
+        try{
         const txhash = await window.ethereum.request({
             method: "eth_sendTransaction",
             params: [transactionParameters],
         });
-        
+      
         //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
         setAlertType("warning")
         setAlert(true)
         setAlertText("Transaction Pending...")
 
         //TODO: need to update to emit method
+    
         await confirmTransaction(txhash)
+        }catch(e){
+            console.log(e)
+        }
     }
+
 
     const cancelSubscription = async (subscription) => {
         const transactionParameters = {

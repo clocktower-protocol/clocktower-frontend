@@ -54,14 +54,18 @@ const EditDetailsForm = (props) => {
 
     const submitForm = async (event) => {
         
+        
         event.preventDefault();
         event.stopPropagation();
+        
 
         if(formValidate) {
             props.editDetails()
         } else {
             return
         }
+        
+      // props.testEncryption()
     
     };
 

@@ -1,6 +1,6 @@
 import {React, userState} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE} from './config';
+import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS} from './config';
 import Web3 from 'web3'
 
 const CreateSubForm = (props) => {
@@ -133,16 +133,32 @@ const CreateSubForm = (props) => {
         } else {
             props.setAlert(false)
         }
+
+        //checks required values are selected
+        if(props.token == ZERO_ADDRESS || props.amount == null || props.frequency == null || props.dueDay == null) {
+            console.log (
+                "Missing required fields"
+            )
+            isCorrect = false
+            props.setAlert(true)
+            props.setAlertText("Missing required fields")
+            return
+        } else {
+            props.setAlert(false)
+            console.log(props.token)
+        }
     
+        return isCorrect
     }
 
     const submitForm = async (event) => {
         // const target = event.currentTarget;
+
     
             event.preventDefault();
             event.stopPropagation();
 
-            if(formValidate) {
+            if(formValidate()) {
                 props.createSubscription()
             } else {
                 return
@@ -166,18 +182,21 @@ const CreateSubForm = (props) => {
     return (
         <Form className="mb-3" onSubmit={submitForm}>
             <Row>
+                <Col align="center">* Required</Col>
+            </Row>
+            <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={tokenChange}>
-                    <Form.Label>Token</Form.Label>
+                    <Form.Label>Token *</Form.Label>
                     <Form.Select>
-                        <option>Select which token</option>
+                        <option value={ZERO_ADDRESS}>Select which token</option>
                         {tokenPulldown()}
                     </Form.Select>
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formAmount" value={props.amount} onChange={amountChange}>
-                    <Form.Label>Amount:</Form.Label>
+                    <Form.Group  className="mb-3" controlId="formAmount" value={props.amount} onChange={amountChange}>
+                    <Form.Label>Amount *</Form.Label>
                     <Form.Control type="input" placeholder="amount" />
                     </Form.Group>
                 </Col>
@@ -185,7 +204,7 @@ const CreateSubForm = (props) => {
             <Row>
                 <Col>
                     <Form.Group className="mb-3" controlId="frequencySelect" value={props.frequency} onChange={frequencyChange}>
-                    <Form.Label>Frequency</Form.Label>
+                    <Form.Label>Frequency *</Form.Label>
                     <Form.Select>
                         <option>Select frequency</option>
                         {frequencyPulldown()}
@@ -194,7 +213,7 @@ const CreateSubForm = (props) => {
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={dueDayChange} >
-                    <Form.Label>Day</Form.Label>
+                    <Form.Label>Day *</Form.Label>
                     <Form.Select>
                         <option>Select Day</option>
                         {dayPulldown()}

@@ -197,6 +197,8 @@ const EditDetails = () => {
             method: "eth_sendTransaction",
             params: [transactionParameters],
         });
+
+        sendToProvDash()
         
         //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
         setAlertType("warning")
@@ -209,7 +211,7 @@ const EditDetails = () => {
             console.error(err);
         }
 
-        sendToProvDash()
+       // sendToProvDash()
 
    }
 

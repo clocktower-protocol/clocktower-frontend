@@ -52,17 +52,19 @@ const EditDetailsForm = (props) => {
         }
 
         //validates domain
-        let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
-        if(!regexDomain.test(props.domain)) {
-            console.log(
-                "Not a valid domain"
-            )
-            isCorrect = false
-            props.setAlert(true)
-            props.setAlertText("Domain formatted wrong")
-            return
-        } else {
-            props.setAlert(false)
+        if(props.email != ""){
+            let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
+            if(!regexDomain.test(props.domain)) {
+                console.log(
+                    "Not a valid domain"
+                )
+                isCorrect = false
+                props.setAlert(true)
+                props.setAlertText("Domain formatted wrong")
+                return
+            } else {
+                props.setAlert(false)
+            }
         }
 
         //validates email address

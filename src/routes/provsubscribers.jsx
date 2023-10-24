@@ -9,7 +9,7 @@ const ProvSubscribers = () => {
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
-    let {id, a} = useParams();
+    let {id, a, t} = useParams();
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -99,6 +99,7 @@ const ProvSubscribers = () => {
                     <ProvSubscribersTable 
                         subscribersArray = {subscribersArray}
                         remainingCycles = {remainingCycles}
+                        ticker = {t}
                     />
                 </div>
             

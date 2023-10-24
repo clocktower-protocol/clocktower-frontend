@@ -4,7 +4,7 @@ import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
 import { useOutletContext } from "react-router-dom";
-import ProvSubDetailTable from '../ProvSubHistoryTable';
+import ProvSubHistoryTable from '../ProvSubHistoryTable';
 import ProvidersTable from '../ProvidersTable';
 import CallerHistoryTable from '../CallerHistoryTable';
 import ProviderHistoryTable from '../ProviderHistoryTable';
@@ -197,7 +197,7 @@ const Admin = () => {
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header>Subscriber History</Accordion.Header>
                                 <Accordion.Body>
-                                   <ProvSubDetailTable
+                                   <ProvSubHistoryTable
                                     historyArray = {subscribersHistory}
                                    />
                                 </Accordion.Body>

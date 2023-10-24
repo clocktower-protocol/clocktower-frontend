@@ -32,7 +32,7 @@ const router = createBrowserRouter([
           element: <Provider />,
         },
         {
-          path: "provider/history/:id",
+          path: "provider/history/:id/:t",
           element: <ProvHistory />,
         },
         {

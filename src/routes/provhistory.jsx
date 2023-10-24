@@ -21,7 +21,7 @@ const ProvHistory = () => {
     const [historyArray, setHistoryArray] = useState([emptySubscriptionArray])
     const [subscribers, setSubscribers] = useState([emptySubscriptionArray])
 
-    let {id} = useParams();
+    let {id, t} = useParams();
 
     //loads once
     useEffect(() => {
@@ -61,6 +61,7 @@ const ProvHistory = () => {
             <div className="subTable">
                 <ProvSubHistoryTable 
                     historyArray = {historyArray}
+                    ticker = {t}
                 />
             </div>
         </div>

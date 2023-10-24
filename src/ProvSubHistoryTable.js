@@ -26,7 +26,7 @@ const ProvSubHistoryTable = (props) => {
             <td key={String(historyArray[i].returnValues.subscriber)+1}>{historyArray[i].returnValues.subscriber}</td>, 
             <td key={String(historyArray[i].returnValues.subEvent)+2}>{SUBEVENT_LOOKUP[historyArray[i].returnValues.subEvent]}</td>,
             <td key={String(historyArray[i].returnValues.timestamp)+3}>{formatDate}</td>,
-            <td key={String(subAmount)+4}>{subAmount}&nbsp;&nbsp;</td>,
+            <td key={String(subAmount)+4}>{subAmount}&nbsp;&nbsp;{props.ticker}</td>,
             )
           
         table.push(<tr align="center" key={String(historyArray[i].returnValues.subscriber)+i}>{row}</tr>)

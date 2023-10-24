@@ -34,12 +34,19 @@ const SubscriptionsTable = (props) => {
 
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
-      return TOKEN_LOOKUP.map((token) => {
+      //return TOKEN_LOOKUP.map((token) => {
+      let tokenArray =  TOKEN_LOOKUP.map((token) => {
         if(token.address === tokenAddress) {
           return token.ticker
-        }
+        } 
         return false
       });
+
+      for(const ticker of tokenArray) {
+        if(ticker != false) {
+          return ticker
+        }
+      }
     }
 
     //looks up frequency
@@ -122,7 +129,7 @@ const SubscriptionsTable = (props) => {
 
         if(role === 2) {
           row.push(
-          <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${props.account}`}>History</Link></td>,
+          <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${props.account}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>History</Link></td>,
           <td key={String(subscriptionArray[i].subscription.id)+7}><Button type="submit" onClick={() => props.unsubscribe(subscriptionArray[i].subscription)}>Unsubscribe</Button></td>
           )
       }

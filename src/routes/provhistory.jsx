@@ -4,7 +4,7 @@ import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 //import ProvSubDetailTable from '../ProvSubDetailTable';
-import ProvSubHistoryTable from '../ProvSubHistoryTable';
+import SubHistoryTable from '../SubHistoryTable';
 
 const ProvHistory = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -59,7 +59,7 @@ const ProvHistory = () => {
             </div>
             
             <div className="subTable">
-                <ProvSubHistoryTable 
+                <SubHistoryTable 
                     historyArray = {historyArray}
                     ticker = {t}
                 />

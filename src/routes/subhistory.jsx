@@ -3,7 +3,7 @@ import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import ProvSubHistoryTable from '../ProvSubHistoryTable';
+import SubHistoryTable from '../SubHistoryTable';
 
 const SubHistory = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -48,7 +48,7 @@ const SubHistory = () => {
                 {historyArray.length > 0 ? <Alert align="center" variant="dark">Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
             </div>
             <div className="subTable">
-                <ProvSubHistoryTable 
+                <SubHistoryTable 
                     historyArray = {historyArray}
                     ticker = {t}
                 />

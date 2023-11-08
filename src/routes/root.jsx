@@ -98,11 +98,13 @@ const Root = () => {
                 <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
               </NavDropdown>
             </Nav>
+            {/*
             <Nav key="futnav">
               <LinkContainer to="/payments">
                 <Nav.Link>Future Payments</Nav.Link>
               </LinkContainer>
             </Nav>
+            */}
             {account == adminAccount ?
             <Nav key="adminnav">
               <LinkContainer to="/admin">

@@ -5,7 +5,7 @@ import { SUBEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'
 import {TOKEN_LOOKUP} from "./config";
 
-const ProvSubHistoryTable = (props) => {
+const SubHistoryTable = (props) => {
 
     const historyArray = props.historyArray
 
@@ -45,7 +45,7 @@ const ProvSubHistoryTable = (props) => {
             <td key={String(historyArray[i].returnValues.subscriber)+1}>{historyArray[i].returnValues.subscriber}</td>, 
             <td key={String(historyArray[i].returnValues.subEvent)+2}>{SUBEVENT_LOOKUP[historyArray[i].returnValues.subEvent]}</td>,
             <td key={String(historyArray[i].returnValues.timestamp)+3}>{formatDate}</td>,
-            <td key={String(subAmount)+4}>{subAmount}&nbsp;&nbsp;{ticker}</td>,
+            <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
             )
           
         table.push(<tr align="center" key={String(historyArray[i].returnValues.subscriber)+i}>{row}</tr>)
@@ -71,4 +71,4 @@ const ProvSubHistoryTable = (props) => {
   }
 }
 
-export default ProvSubHistoryTable
+export default SubHistoryTable

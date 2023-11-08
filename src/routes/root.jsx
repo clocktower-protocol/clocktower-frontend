@@ -80,7 +80,7 @@ const Root = () => {
     return(account === "-1" ? false : true) 
   }
 
-  /*
+  
    return (
         <>
         <div className="topDiv">
@@ -116,7 +116,7 @@ const Root = () => {
               </Nav>
               : ""
               }   
-            *//*}
+            */}
 
             <Container key="navContainer" className="clockNav2">
             <Row></Row>
@@ -125,7 +125,7 @@ const Root = () => {
             {buttonClicked ? (<Navbar.Text>Account: {account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
             {/*
             <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
-            *//*}
+            */}
           </Nav>
           </Row>
         </Container>
@@ -142,11 +142,15 @@ const Root = () => {
             <LinkContainer to="/subscriberdash">
               <NavDropdown.Item eventKey="4.2">Subscriber Dashboard</NavDropdown.Item>
             </LinkContainer>
+            {/*
               <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
+          */}
           </NavDropdown>
+          {/*
           <LinkContainer to="/payments">
             <Nav.Link>Future Payments</Nav.Link>
           </LinkContainer>
+          */}
         {account == adminAccount ?
         
           <LinkContainer to="/admin">
@@ -163,7 +167,7 @@ const Root = () => {
     </div>
   </>
 )
-*/
+
 
     return (
         <>

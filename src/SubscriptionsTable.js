@@ -111,7 +111,7 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>{totalSubscribers}</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>History</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}><Link to={`../editdetails/${subscriptionArray[i].subscription.id}`}>Edit</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+10}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
@@ -121,7 +121,7 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>History</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}><Link to={`../editdetails/${subscriptionArray[i].subscription.id}`}>Edit</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+10}><Button type="submit" onClick={() => props.cancelSubscription(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
@@ -129,7 +129,7 @@ const SubscriptionsTable = (props) => {
 
         if(role === 2) {
           row.push(
-          <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${props.account}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>History</Link></td>,
+          <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${props.account}`}>History</Link></td>,
           <td key={String(subscriptionArray[i].subscription.id)+7}><Button type="submit" onClick={() => props.unsubscribe(subscriptionArray[i].subscription)}>Unsubscribe</Button></td>
           )
       }

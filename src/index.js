@@ -32,7 +32,7 @@ const router = createBrowserRouter([
           element: <Provider />,
         },
         {
-          path: "provider/history/:id/:t",
+          path: "provider/history/:id",
           element: <ProvHistory />,
         },
         {
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
           element: <SubscriberDash />
         },
         {
-          path: "subscriberdash/subscription/:id/:s/:t",
+          path: "subscriberdash/subscription/:id/:s",
           element: <SubHistory />
         },
         {

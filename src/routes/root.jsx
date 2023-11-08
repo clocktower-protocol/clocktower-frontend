@@ -95,7 +95,9 @@ const Root = () => {
                 <LinkContainer to="/subscriberdash">
                   <NavDropdown.Item eventKey="4.2">Subscriber Dashboard</NavDropdown.Item>
                 </LinkContainer>
+                {/*
                 <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
+                */}
               </NavDropdown>
             </Nav>
             {/*

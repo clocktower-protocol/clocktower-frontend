@@ -21,6 +21,10 @@ import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
 import { WagmiConfig, createConfig, configureChains } from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 
 //connects to hardhat
@@ -37,6 +41,22 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 
 const config = createConfig({
   autoConnect: false,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new CoinbaseWalletConnector({
+      chains,
+      options: {
+        appName: 'wagmi',
+      },
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: 'Injected',
+        shimDisconnect: true,
+      },
+    }),
+  ],
   publicClient,
   webSocketPublicClient,
 })
@@ -97,9 +117,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   
   <React.StrictMode>
-    <WagmiConfig config={config}>
-      <RouterProvider router={router} />
-    </WagmiConfig>
+      <WagmiConfig config={config}>
+        <RouterProvider router={router}>
+        </RouterProvider>
+      </WagmiConfig>
   </React.StrictMode>
 );
 

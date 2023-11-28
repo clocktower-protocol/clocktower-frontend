@@ -5,12 +5,21 @@ import { Outlet} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import Web3 from 'web3'
 
+import { useAccount, useConnect } from 'wagmi'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+
 const Root = () => {
 
     const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("-1")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
+
+    //WAGMI
+    const { connector: activeConnector, address, isConnected } = useAccount()
+    const { connect, connectors } = useConnect({
+      connector: new InjectedConnector(),
+    })
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -71,7 +80,15 @@ const Root = () => {
   }
 
   const walletButtonClick = () => {
-    connectWallet();
+   // connectWallet();
+    connect({   
+      onSuccess(data) {
+        console.log('Connect', data.account)
+      },
+      onError(error) {
+        console.log('Error', error)
+      },
+    })
     setButtonClicked(true)
   }
 
@@ -86,7 +103,7 @@ const Root = () => {
         <div className="topDiv">
           <div className="navBar">
           <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
-            <Container key="navContainer" className="clockNav">
+            <Container key="navContainer1" className="clockNav">
               <LinkContainer to="/">
                 <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
               </LinkContainer>
@@ -122,7 +139,7 @@ const Root = () => {
             <Row></Row>
             <Row>
           <Nav key="nav">
-            {buttonClicked ? (<Navbar.Text>Account: {account}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+            {isConnected ? (<Navbar.Text>Account: {address}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
             {/*
             <Button variant="outline-success" onClick={this.connectWallet}>Sign in Wallet</Button>
             */}

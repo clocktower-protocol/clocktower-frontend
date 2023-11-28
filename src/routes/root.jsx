@@ -19,6 +19,12 @@ const Root = () => {
     const { connector: activeConnector, address, isConnected } = useAccount()
     const { connect, connectors } = useConnect({
       connector: new InjectedConnector(),
+      onSuccess(data) {
+        console.log('Connect', data.account)
+      },
+      onError(error) {
+        console.log('Error', error)
+      },
     })
 
     //creates contract variable
@@ -81,14 +87,9 @@ const Root = () => {
 
   const walletButtonClick = () => {
    // connectWallet();
-    connect({   
-      onSuccess(data) {
-        console.log('Connect', data.account)
-      },
-      onError(error) {
-        console.log('Error', error)
-      },
-    })
+   
+    connect()
+    
     setButtonClicked(true)
   }
 

@@ -8,14 +8,12 @@ import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 import { zeroAddress } from '@ethereumjs/util';
-import { useAccount } from 'wagmi'
+import { useAccount, useConnect, usePrepareContractWrite, useContractWrite } from 'wagmi'
+import { useDebounce } from 'usehooks-ts'
+import { prepareWriteContract, writeContract } from 'wagmi/actions'
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
-
-    const {address, isConnected } = useAccount()
-
-   // console.log(account)
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -49,6 +47,24 @@ const Provider = () => {
     useEffect(() => {
         getProviderSubs()
     }, [account]);
+
+    /*
+    //WAGMI
+    const details = {
+        domain: domain,
+        url: url,
+        email: email,
+        phone: phone,
+        description: description
+    }
+    
+    const { config } = usePrepareContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'createSubscription',
+        args: [amount, token, details, frequency, dueDay]
+    }, [])
+    */
 
     //Creates alert
     const alertMaker = () => {
@@ -158,6 +174,40 @@ const Provider = () => {
         })
     }
 
+    const createSubscription2 = async () => {
+
+        console.log("Ughhhhh")
+
+        const details = {
+            domain: domain,
+            url: url,
+            email: email,
+            phone: phone,
+            description: description
+        }
+
+        try{
+        const { config } = await prepareWriteContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'createSubscription',
+            chainId: 31337,
+            args: [amount, token, details, frequency, dueDay]
+        })
+
+        const { hash } = await writeContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'createSubscription',
+            chainId: 31337,
+            args: [amount, token, details, frequency, dueDay]
+        })
+
+        } catch (e) {   
+            console.log(e)
+        }
+    }
+
     const createSubscription = async () => {
 
         let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
@@ -195,7 +245,6 @@ const Provider = () => {
             console.log(e)
         }
     }
-
 
     const cancelSubscription = async (subscription) => {
         const transactionParameters = {
@@ -268,6 +317,7 @@ const Provider = () => {
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}
                                         createSubscription = {createSubscription}
+                                        createSubscription2 = {createSubscription2}
                                     />
                                 </Accordion.Body>
                                 </Accordion.Item>
@@ -333,6 +383,7 @@ const Provider = () => {
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}
                                         createSubscription = {createSubscription}
+                                        createSubscription2 = {createSubscription2}
                                     />
                                 </Accordion.Body>
                                 </Accordion.Item>

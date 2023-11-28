@@ -159,7 +159,8 @@ const CreateSubForm = (props) => {
             event.stopPropagation();
 
             if(formValidate()) {
-                props.createSubscription()
+                //props.createSubscription()
+                props.createSubscription2()
             } else {
                 return
             }

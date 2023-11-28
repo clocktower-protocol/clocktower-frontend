@@ -8,9 +8,12 @@ import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 import { zeroAddress } from '@ethereumjs/util';
+import { useAccount } from 'wagmi'
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+
+    const {address, isConnected } = useAccount()
 
    // console.log(account)
 
@@ -91,10 +94,12 @@ const Provider = () => {
 
     const getProviderSubs = async () => {
          //checks if user is logged into account
+        
         if(!isLoggedIn()) {
             console.log("Not Logged in")
             return
         }
+        
 
         //checks dns record
         

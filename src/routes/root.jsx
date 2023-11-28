@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown, Row} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
@@ -16,7 +16,12 @@ const Root = () => {
     const [alert, setAlert] = useState(false)
 
     //WAGMI
-    const { connector: activeConnector, address, isConnected } = useAccount()
+    const {connector: activeConnector, address, isConnected } = useAccount({
+      onConnect({ address, connector, isReconnected }) {
+        console.log('Connected', { address, connector, isReconnected })
+      },
+    })
+
     const { connect, connectors } = useConnect({
       connector: new InjectedConnector(),
       onSuccess(data) {
@@ -26,6 +31,14 @@ const Root = () => {
         console.log('Error', error)
       },
     })
+
+    //checks for account change
+    useEffect(() => {
+      
+      setAccount(address)
+    
+    }, [address])
+
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")

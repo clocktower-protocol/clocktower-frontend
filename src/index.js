@@ -17,6 +17,31 @@ import Admin from './routes/admin';
 import AdminSubscriptions from './routes/adminsubscriptions';
 import EditDetails from './routes/editdetails';
 
+import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
+import { WagmiConfig, createConfig, configureChains } from 'wagmi'
+import { hardhat } from 'wagmi/chains'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+
+
+//connects to hardhat
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+[hardhat],
+[
+  jsonRpcProvider({
+    rpc: () => ({
+      http: `http://localhost:8545`,
+    }),
+  }),
+],
+)
+
+const config = createConfig({
+  autoConnect: false,
+  publicClient,
+  webSocketPublicClient,
+})
+
+
 const router = createBrowserRouter([
     {
       path: "/",
@@ -68,9 +93,13 @@ const router = createBrowserRouter([
   ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
+  
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <WagmiConfig config={config}>
+      <RouterProvider router={router} />
+    </WagmiConfig>
   </React.StrictMode>
 );
 

@@ -8,6 +8,20 @@ export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 
+/*This variable determines how public your frontend is. Currently there are three options
+
+LOCAL = Front end is completely client side. You MUST provide your own node whose address must be provided
+below in NODE_ADDRESS. 
+
+PUBLIC_NODE_ONLY = Client side except for connection to our ABI to provide credentials to connect to a public node
+
+BACKEND = Client fully connects to our backend including databases. 
+*/
+
+export const CLIENT_LOCALITY = "LOCAL"
+
+export const NODE_ADDRESS = ""
+
 /*
 export const EMPTY_PERMIT = {
   owner: "0x0000000000000000000000000000000000000000",

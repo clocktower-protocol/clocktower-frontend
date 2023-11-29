@@ -8,9 +8,9 @@ import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 import { zeroAddress } from '@ethereumjs/util';
-import { useAccount, useConnect, usePrepareContractWrite, useContractWrite } from 'wagmi'
+import { useAccount, useConnect, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
 import { useDebounce } from 'usehooks-ts'
-import { prepareWriteContract, writeContract } from 'wagmi/actions'
+import { prepareWriteContract, writeContract, waitForTransaction } from 'wagmi/actions'
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -39,6 +39,7 @@ const Provider = () => {
     const [amount, setAmount] = useState(0.00)
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [detailsArray, setDetailsArray] = useState(emptyDetails)
+    const [details, setDetails] = useState({})
     //const [fee, setFee] = useState(0.1)
     //const [isTableEmpty, setIsTableEmpty] = useState(true)
     const fee = 0.1
@@ -48,6 +49,46 @@ const Provider = () => {
         getProviderSubs()
     }, [account]);
 
+    const createSubscription3 = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'createSubscription',
+        args: [amount, token, details, frequency, dueDay]
+    })
+    
+    const { isError, isLoading, isSuccess, data } = useWaitForTransaction({
+        confirmations: 1,
+        hash: createSubscription3.data?.hash,
+    })
+    
+
+    useEffect(() => {
+
+        if(isLoading) {
+            setAlertType("warning")
+            setAlert(true)
+            setAlertText("Transaction Pending...")
+            console.log("pending")
+        }
+
+        if(isSuccess) {
+
+            console.log(data.status)
+            
+            if(data.status == "success") {
+                //turns off alert
+                setAlert(false)
+                setAlertType("danger")
+                console.log("done")
+
+                getProviderSubs()
+            }
+            
+        }
+    },[isLoading, isSuccess])
+
+    
+   
     /*
     //WAGMI
     const details = {
@@ -174,9 +215,8 @@ const Provider = () => {
         })
     }
 
+    /*
     const createSubscription2 = async () => {
-
-        console.log("Ughhhhh")
 
         const details = {
             domain: domain,
@@ -187,6 +227,7 @@ const Provider = () => {
         }
 
         try{
+        /*
         const { config } = await prepareWriteContract({
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
@@ -194,18 +235,26 @@ const Provider = () => {
             chainId: 31337,
             args: [amount, token, details, frequency, dueDay]
         })
+        */
 
+        /*
         const { hash } = await writeContract({
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'createSubscription',
-            chainId: 31337,
             args: [amount, token, details, frequency, dueDay]
         })
+
+        
+        const {data, isLoading, isSuccess } = await waitForTransaction({
+            hash,
+        })
+        
 
         } catch (e) {   
             console.log(e)
         }
+        
     }
 
     const createSubscription = async () => {
@@ -245,6 +294,7 @@ const Provider = () => {
             console.log(e)
         }
     }
+    */
 
     const cancelSubscription = async (subscription) => {
         const transactionParameters = {
@@ -303,7 +353,8 @@ const Provider = () => {
                                         email = {email}
                                         url = {url}
                                         phone = {phone}
-                                        
+                                       // details = {details}
+
                                         setToken = {setToken}
                                         setTokenABI = {setTokenABI}
                                         setAmount = {setAmount}
@@ -314,10 +365,12 @@ const Provider = () => {
                                         setEmail = {setEmail}
                                         setUrl = {setUrl}
                                         setPhone = {setPhone}
+                                        setDetails = {setDetails}
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}
-                                        createSubscription = {createSubscription}
-                                        createSubscription2 = {createSubscription2}
+                                        //createSubscription = {createSubscription}
+                                        //createSubscription2 = {createSubscription2}
+                                        createSubscription3 = {createSubscription3.write}
                                     />
                                 </Accordion.Body>
                                 </Accordion.Item>
@@ -369,6 +422,7 @@ const Provider = () => {
                                         email = {email}
                                         url = {url}
                                         phone = {phone}
+                                       // details = {details}
                                         
                                         setToken = {setToken}
                                         setTokenABI = {setTokenABI}
@@ -380,10 +434,12 @@ const Provider = () => {
                                         setEmail = {setEmail}
                                         setUrl = {setUrl}
                                         setPhone = {setPhone}
+                                        setDetails = {setDetails}
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}
-                                        createSubscription = {createSubscription}
-                                        createSubscription2 = {createSubscription2}
+                                       // createSubscription = {createSubscription}
+                                       // createSubscription2 = {createSubscription2}
+                                        createSubscription3 = {createSubscription3.write}
                                     />
                                 </Accordion.Body>
                                 </Accordion.Item>

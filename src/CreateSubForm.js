@@ -158,9 +158,21 @@ const CreateSubForm = (props) => {
             event.preventDefault();
             event.stopPropagation();
 
+            const formDetails = {
+                domain: props.domain,
+                url: props.url,
+                email: props.email,
+                phone: props.phone,
+                description: props.description
+            }
+
+            props.setDetails(formDetails)
+
             if(formValidate()) {
                 //props.createSubscription()
-                props.createSubscription2()
+                //props.createSubscription2()
+                
+                props.createSubscription3()
             } else {
                 return
             }

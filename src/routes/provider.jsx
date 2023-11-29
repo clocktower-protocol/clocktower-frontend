@@ -12,6 +12,8 @@ import { useAccount, useConnect, usePrepareContractWrite, useContractWrite, useW
 import { useDebounce } from 'usehooks-ts'
 import { prepareWriteContract, writeContract, waitForTransaction } from 'wagmi/actions'
 
+//TODO: Prepare hooks, fix no login bug, wagmi the table read, wagmi cancel subscription and fix redundant tables
+
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
@@ -40,6 +42,7 @@ const Provider = () => {
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [detailsArray, setDetailsArray] = useState(emptyDetails)
     const [details, setDetails] = useState({})
+    const [cancelledSub, setCancelledSub] = useState({})
     //const [fee, setFee] = useState(0.1)
     //const [isTableEmpty, setIsTableEmpty] = useState(true)
     const fee = 0.1
@@ -49,6 +52,7 @@ const Provider = () => {
         getProviderSubs()
     }, [account]);
 
+    //create subscription
     const createSubscription3 = useContractWrite({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
@@ -56,26 +60,50 @@ const Provider = () => {
         args: [amount, token, details, frequency, dueDay]
     })
     
-    const { isError, isLoading, isSuccess, data } = useWaitForTransaction({
+    const createWait = useWaitForTransaction({
         confirmations: 1,
         hash: createSubscription3.data?.hash,
     })
-    
+
+    //cancel subscription
+    const cancelSubscription2 = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'cancelSubscription',
+        args: [cancelledSub]
+    })
+
+    const cancelWait = useWaitForTransaction({
+        confirmations: 1,
+        hash: cancelSubscription2.data?.hash,
+    })
 
     useEffect(() => {
+        cancelSubscription2.write()
+    },[cancelledSub])
+    
+    //shows alert when waiting for transaction to finish
+    useEffect(() => {
 
-        if(isLoading) {
+        if(createWait.isLoading || cancelWait.isLoading) {
             setAlertType("warning")
             setAlert(true)
             setAlertText("Transaction Pending...")
             console.log("pending")
         }
 
-        if(isSuccess) {
+        if(createWait.isSuccess || cancelWait.isSuccess) {
 
-            console.log(data.status)
+           // console.log(data.status)
+            //turns off alert
+            setAlert(false)
+            setAlertType("danger")
+            console.log("done")
+
+            getProviderSubs()
             
-            if(data.status == "success") {
+            /*
+            if(createWait.data.status == 1 || cancelWait.data.status == 1) {
                 //turns off alert
                 setAlert(false)
                 setAlertType("danger")
@@ -83,9 +111,10 @@ const Provider = () => {
 
                 getProviderSubs()
             }
+            */
             
         }
-    },[isLoading, isSuccess])
+    },[createWait.isLoading, createWait.isSuccess, cancelWait.isLoading, cancelWait.isSuccess])
 
     
    
@@ -395,6 +424,7 @@ const Provider = () => {
                                     role = {1}
                                     cancelSubscription = {cancelSubscription}
                                     detailsArray = {detailsArray}
+                                    setCancelledSub = {setCancelledSub}
                                 />
             
                                 

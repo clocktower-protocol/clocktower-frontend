@@ -8,13 +8,13 @@ import { useOutletContext } from "react-router-dom";
 import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
-import { zeroAddress } from '@ethereumjs/util';
-import { useAccount, useConnect, usePrepareContractWrite, useContractWrite, useWaitForTransaction, usePublicClient } from 'wagmi'
-import { useDebounce } from 'usehooks-ts'
-import { prepareWriteContract, writeContract, waitForTransaction, readContract } from 'wagmi/actions'
+//import { zeroAddress } from '@ethereumjs/util';
+import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite } from 'wagmi'
+//import { useDebounce } from 'usehooks-ts'
+import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 
-//TODO: Prepare hooks, fix no login bug, wagmi the table read, wagmi cancel subscription and fix redundant tables
+//TODO: Prepare hooks, fix no login bug, cancel call being too sensitive and fix redundant tables
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -58,12 +58,22 @@ const Provider = () => {
     }, [account]);
 
     //create subscription
+    const createConfig = usePrepareContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'createSubscription',
+        args: [amount, token, details, frequency, dueDay]
+    })
+
+    /*
     const createSubscription3 = useContractWrite({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'createSubscription',
         args: [amount, token, details, frequency, dueDay]
     })
+    */
+    const createSubscription3 = useContractWrite(createConfig.config)
     
     const createWait = useWaitForTransaction({
         confirmations: 1,
@@ -122,26 +132,6 @@ const Provider = () => {
         }
     },[createWait.isLoading, createWait.isSuccess, cancelWait.isLoading, cancelWait.isSuccess])
 
-    
-   
-    /*
-    //WAGMI
-    const details = {
-        domain: domain,
-        url: url,
-        email: email,
-        phone: phone,
-        description: description
-    }
-    
-    const { config } = usePrepareContractWrite({
-        address: CLOCKTOWERSUB_ADDRESS,
-        abi: CLOCKTOWERSUB_ABI,
-        functionName: 'createSubscription',
-        args: [amount, token, details, frequency, dueDay]
-    }, [])
-    */
-
     //Creates alert
     const alertMaker = () => {
         if(alert) {
@@ -152,6 +142,8 @@ const Provider = () => {
             )
         }
     }
+
+    /*
 
      //confirms transaction by looping until it gets confirmed
      const confirmTransaction = async (txHash) => {
@@ -169,7 +161,7 @@ const Provider = () => {
             //turns off alert and loads/reloads table
             setAlert(false)
             setAlertType("danger")
-            await getProviderSubs()
+            await getProviderSubsWAGMI()
             return true
         }
 
@@ -183,6 +175,7 @@ const Provider = () => {
         return true
         } 
     }
+    */
 
     const getProviderSubsWAGMI = async () => {
          //checks if user is logged into account
@@ -260,6 +253,7 @@ const Provider = () => {
         })
     }
 
+    /*
     const getProviderSubs = async () => {
          //checks if user is logged into account
         
@@ -325,6 +319,7 @@ const Provider = () => {
             setDetailsArray(detailsArray)
         })
     }
+    */
 
     /*
     const createSubscription2 = async () => {

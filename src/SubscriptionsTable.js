@@ -116,7 +116,6 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+10}><Button type="submit" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
         }
-        console.log(totalSubscribers)
         if(role === 1 && Number(totalSubscribers) == 0) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,

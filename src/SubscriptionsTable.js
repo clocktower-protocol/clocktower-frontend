@@ -52,7 +52,7 @@ const SubscriptionsTable = (props) => {
     //looks up frequency
     const frequencyLookup = (frequencyIndex) => {
       return FREQUENCY_LOOKUP.map((frequencyObject) => {
-        if(frequencyIndex === String(frequencyObject.index)) {
+        if(frequencyIndex === frequencyObject.index) {
           return frequencyObject.name
         }
         return false
@@ -106,21 +106,22 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>
           )
         }
-        if(role === 1 && totalSubscribers > 0) {
+        if(role === 1 && Number(totalSubscribers) > 0) {
             row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>{totalSubscribers}</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>{Number(totalSubscribers)}</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}><Link to={`../editdetails/${subscriptionArray[i].subscription.id}`}>Edit</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+10}><Button type="submit" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
         }
-        if(role === 1 && totalSubscribers == 0) {
+        console.log(totalSubscribers)
+        if(role === 1 && Number(totalSubscribers) == 0) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}>{Number(totalSubscribers)}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}><Link to={`../editdetails/${subscriptionArray[i].subscription.id}`}>Edit</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+10}><Button type="submit" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button></td>

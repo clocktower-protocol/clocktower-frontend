@@ -1,3 +1,4 @@
+/* global BigInt */
 import React, {useEffect, useState} from 'react'
 import {Alert, Accordion} from 'react-bootstrap';
 import Web3 from 'web3'
@@ -8,9 +9,10 @@ import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 import { zeroAddress } from '@ethereumjs/util';
-import { useAccount, useConnect, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
+import { useAccount, useConnect, usePrepareContractWrite, useContractWrite, useWaitForTransaction, usePublicClient } from 'wagmi'
 import { useDebounce } from 'usehooks-ts'
-import { prepareWriteContract, writeContract, waitForTransaction } from 'wagmi/actions'
+import { prepareWriteContract, writeContract, waitForTransaction, readContract } from 'wagmi/actions'
+import { parseAbiItem } from 'viem'
 
 //TODO: Prepare hooks, fix no login bug, wagmi the table read, wagmi cancel subscription and fix redundant tables
 
@@ -46,10 +48,13 @@ const Provider = () => {
     //const [fee, setFee] = useState(0.1)
     //const [isTableEmpty, setIsTableEmpty] = useState(true)
     const fee = 0.1
+
+    //gets public client for log lookup
+    const publicClient = usePublicClient()
     
     //loads provider subscription list upon login
     useEffect(() => {
-        getProviderSubs()
+        getProviderSubsWAGMI()
     }, [account]);
 
     //create subscription
@@ -79,6 +84,7 @@ const Provider = () => {
     })
 
     useEffect(() => {
+        //calls wallet
         cancelSubscription2.write()
     },[cancelledSub])
     
@@ -100,7 +106,7 @@ const Provider = () => {
             setAlertType("danger")
             console.log("done")
 
-            getProviderSubs()
+            getProviderSubsWAGMI()
             
             /*
             if(createWait.data.status == 1 || cancelWait.data.status == 1) {
@@ -176,6 +182,82 @@ const Provider = () => {
         if(isDone) {
         return true
         } 
+    }
+
+    const getProviderSubsWAGMI = async () => {
+         //checks if user is logged into account
+        
+         if(!isLoggedIn()) {
+            console.log("Not Logged in")
+            return
+        }
+        
+        //checks dns record
+        try {
+        var response = await fetch('https://dns.google/resolve?name=ct.clocktower.finance&type=TXT');
+        
+            
+            var json = await response.json();
+            if(json.Answer[0].data !== undefined){
+                console.log(json.Answer[0].data);
+            }
+        }
+         catch(Err) {
+            console.log(Err)
+        }
+
+        //variable to pass scope so that the state can be set
+        let accountSubscriptions = []
+
+        await readContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'getAccountSubscriptions',
+            args: [false, account]
+        })
+        .then(async function(result) {
+            accountSubscriptions = result
+
+            console.log(accountSubscriptions)
+
+            //loops through each subscription
+            for (var i = 0; i < accountSubscriptions.length; i++) {
+                let events = await publicClient.getLogs({
+                    address: CLOCKTOWERSUB_ADDRESS,
+                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+                    fromBlock: 0n,
+                    toBlock: 'latest',
+                    args: {id:[accountSubscriptions[i].subscription.id]}
+                }) 
+                     
+                //checks for latest update by getting highest timestamp
+                if(events != undefined) {
+                    console.log(events)
+                    
+                    let time = 0
+                    let index = 0
+                       
+                    if(events.length > 0)
+                    {
+                        for (var j = 0; j < events.length; j++) {
+                                if(time < events[j].args.timestamp)
+                                {
+                                    time = events[j].args.timestamp
+                                    index = j
+                                }
+                        }
+                        //adds latest details to details array
+                        detailsArray[i] = events[index].args
+                    }    
+                    
+                }
+
+                console.log(detailsArray)
+                
+            }
+            setSubscriptionArray(accountSubscriptions)
+            setDetailsArray(detailsArray)
+        })
     }
 
     const getProviderSubs = async () => {
@@ -325,6 +407,7 @@ const Provider = () => {
     }
     */
 
+    /*
     const cancelSubscription = async (subscription) => {
         const transactionParameters = {
             to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
@@ -346,6 +429,7 @@ const Provider = () => {
         //TODO: need to update to emit method
         await confirmTransaction(txhash)
     }
+    */
 
     const isTableEmpty = (subscriptionArray) => {
         let count = 0
@@ -422,7 +506,7 @@ const Provider = () => {
                                     subscriptionArray = {subscriptionArray}
                                     isAdmin = {false}
                                     role = {1}
-                                    cancelSubscription = {cancelSubscription}
+                                   // cancelSubscription = {cancelSubscription}
                                     detailsArray = {detailsArray}
                                     setCancelledSub = {setCancelledSub}
                                 />

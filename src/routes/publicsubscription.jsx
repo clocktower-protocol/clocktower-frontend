@@ -3,12 +3,15 @@ import {Alert, Card, ListGroup, Button, Modal} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
-import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite } from 'wagmi'
-import { readContract } from 'wagmi/actions'
+import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite, erc20ABI, useAccount} from 'wagmi'
+import { readContract, writeContract } from 'wagmi/actions'
 import { parseAbiItem, formatEther } from 'viem'
+//import { read } from 'fs';
 /* global BigInt */
 
 const PublicSubscription = () => {
+
+    const { address } = useAccount()
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -45,6 +48,20 @@ const PublicSubscription = () => {
   // const idSub = id
    //const frequency = f
   // const dueDay = d
+
+    //hook for token approval
+    const infiniteAllowance = useContractWrite({
+        address: token,
+        abi: erc20ABI,
+        functionName: 'approve',
+        args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
+    })
+    
+    const infiniteAllowanceWait = useWaitForTransaction({
+        confirmations: 1,
+        hash: infiniteAllowance.data?.hash,
+    })
+
 
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
@@ -137,6 +154,7 @@ const PublicSubscription = () => {
             })
         }
 
+        /*
         const getSub = async () => await clocktowersub.methods.getSubByIndex(idSub, frequency, dueDay).call({from: account})
         .then(async function(result) {
             //gets details from logs
@@ -174,6 +192,35 @@ const PublicSubscription = () => {
             setTokenABI(abiLookup(result.token)[1])
             setToken(result.token)
         })
+        */
+
+        const isSubscribed2 = async () => {
+            let result = await readContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'getSubscribersById',
+                args: [id]
+            })
+            let status = false
+            
+            result.forEach((element) => {
+                if(element.subscriber == account) {
+                    setIsSubscribed(true)
+                    status = true
+                    return
+                }
+            })
+
+            if(status) {
+                setAlertType("warning")
+                setAlert(true)
+                setAlertText("Already Subscribed")
+            }
+            //return false
+            setIsSubscribed(status)
+            
+        }
+        /*
 
 
         const isSubscribed = async () => {
@@ -205,12 +252,29 @@ const PublicSubscription = () => {
                 setIsProvider(false)
             }
         }
+        */
+
+        const isProviderSame2 = async () => {
+            let result = await readContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'getSubByIndex',
+                args: [idSub, frequency, dueDay]
+            })
+
+            if(result.provider == account) {
+                setIsProvider(true)
+            } else {
+                setIsProvider(false)
+            }
+        }
 
         if(account != "-1"){
            // getSub()
             getSub2()
-            isSubscribed()
-            isProviderSame()
+            //isSubscribed()
+            isSubscribed2()
+            isProviderSame2()
 
         }
 
@@ -399,8 +463,30 @@ const PublicSubscription = () => {
         }
 
         //first requires user to approve unlimited allowance
-        await setInfiniteAllowance()
 
+        
+        //checks if user already has allowance
+        const allowanceBalance = await readContract({
+            address: token,
+            abi: erc20ABI,
+            functionName: 'allowance',
+            args: [address, CLOCKTOWERSUB_ADDRESS]
+        })
+
+        console.log(allowanceBalance)
+        
+        if(BigInt(allowanceBalance) < 100000000000000000000000n) {
+            //if allowance has dropped below 100,000 site requests infinite approval again
+            await writeContract({
+                address: token,
+                abi: erc20ABI,
+                functionName: 'approve',
+                args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
+            })
+        }
+    
+
+        /*
         //subscribes to subscription
         const transactionParameters = {
             to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
@@ -438,6 +524,7 @@ const PublicSubscription = () => {
                 status: error.message
             }
         } 
+        */
     },[subscription])
 
     const sendToSubDash = useCallback(() => 

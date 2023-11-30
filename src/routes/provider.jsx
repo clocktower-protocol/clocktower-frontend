@@ -9,7 +9,7 @@ import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 //import { zeroAddress } from '@ethereumjs/util';
-import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite } from 'wagmi'
+import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite, useAccount } from 'wagmi'
 //import { useDebounce } from 'usehooks-ts'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
@@ -18,6 +18,8 @@ import { parseAbiItem } from 'viem'
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+
+    const { address } = useAccount()
 
     //creates contract variable
    // const web3 = new Web3("http://localhost:8545")

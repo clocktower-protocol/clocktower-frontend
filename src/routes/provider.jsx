@@ -14,7 +14,7 @@ import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareCon
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 
-//TODO: Prepare hooks, fix no login bug, cancel call being too sensitive and fix redundant tables
+//TODO: Prepare hooks, fix no login bug and cancel call being too sensitive
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -456,7 +456,7 @@ const Provider = () => {
             <Alert align="center" variant="info">Please Login</Alert>
         )
     } else {
-        if(!isTableEmpty(subscriptionArray)) {
+       // if(!isTableEmpty(subscriptionArray)) {
             return (
             
                 <div className="clockMeta">
@@ -512,7 +512,7 @@ const Provider = () => {
                                    // setIsTableEmpty = {setIsTableEmpty}
                                 />
                                 */ }
-            
+                                {!isTableEmpty(subscriptionArray) ?
                                 <SubscriptionsTable
                                     subscriptionArray = {subscriptionArray}
                                     isAdmin = {false}
@@ -521,13 +521,13 @@ const Provider = () => {
                                     detailsArray = {detailsArray}
                                     setCancelledSub = {setCancelledSub}
                                 />
-            
+                                :""}
                                 
                             </div>
                     </div>
                 </div>
             )
-        } else {
+       // } else {
             return (
                 <div className="clockMeta">
                     {alertMaker()}
@@ -573,7 +573,7 @@ const Provider = () => {
                     </div>
                 </div>
             )
-        }
+       // }
     }
 }
 

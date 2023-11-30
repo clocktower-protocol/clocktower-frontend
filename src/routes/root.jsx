@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal, Col} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -7,6 +7,7 @@ import Web3 from 'web3'
 
 import { useAccount, useConnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 
 const Root = () => {
 
@@ -27,8 +28,8 @@ const Root = () => {
       },
     })
 
-    const { connect, connectors } = useConnect({
-      connector: new InjectedConnector(),
+    const { connect, connectors, isLoading, pendingConnector } = useConnect({
+      //connector: new InjectedConnector(),
       onSuccess(data) {
         console.log('Connect', data.account)
       },
@@ -110,7 +111,7 @@ const Root = () => {
     handleShow()
   }
 
-  const metamaskButtonClick = () => {
+  const injectedButtonClick = () => {
     connect()
     setButtonClicked(true)
     handleClose()
@@ -131,9 +132,23 @@ const Root = () => {
           </Modal.Header>
           <Modal.Body>
             <Container>
-              <Row>
-                <Button onClick={metamaskButtonClick}>Metamask</Button>
+              {connectors.map((connector) => (
+              <Row key={connector.id+1}>
+                  <Button
+                    disabled={!connector.ready}
+                    key={connector.id}
+                    onClick={() => {connect({ connector })
+                    handleClose()
+                    }}
+                  >
+                    {connector.name}
+                    {!connector.ready && ' (unsupported)'}
+                    {isLoading &&
+                      connector.id === pendingConnector?.id &&
+                      ' (connecting)'}
+                  </Button>
               </Row>
+              ))}
             </Container>
           </Modal.Body>
           <Modal.Footer>

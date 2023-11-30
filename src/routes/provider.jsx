@@ -1,7 +1,7 @@
 /* global BigInt */
 import React, {useEffect, useState} from 'react'
 import {Alert, Accordion} from 'react-bootstrap';
-import Web3 from 'web3'
+//import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
@@ -20,10 +20,10 @@ const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     //creates contract variable
-    const web3 = new Web3("http://localhost:8545")
+   // const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
-    const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
+   // const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
    // const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
 
     //creates empty array for table
@@ -58,12 +58,14 @@ const Provider = () => {
     }, [account]);
 
     //create subscription
+    /*
     const createConfig = usePrepareContractWrite({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'createSubscription',
         args: [amount, token, details, frequency, dueDay]
     })
+    */
 
     /*
     const createSubscription3 = useContractWrite({
@@ -73,12 +75,22 @@ const Provider = () => {
         args: [amount, token, details, frequency, dueDay]
     })
     */
-    const createSubscription3 = useContractWrite(createConfig.config)
+    const createSubscription3 = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'createSubscription',
+        args: [amount, token, details, frequency, dueDay]
+    })
     
     const createWait = useWaitForTransaction({
         confirmations: 1,
         hash: createSubscription3.data?.hash,
     })
+
+    useEffect(() => {
+        //calls wallet
+        createSubscription3.write()
+    },[details])
 
     //cancel subscription
     const cancelSubscription2 = useContractWrite({
@@ -215,35 +227,39 @@ const Provider = () => {
 
             //loops through each subscription
             for (var i = 0; i < accountSubscriptions.length; i++) {
-                let events = await publicClient.getLogs({
+                await publicClient.getLogs({
                     address: CLOCKTOWERSUB_ADDRESS,
                     event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
                     fromBlock: 0n,
                     toBlock: 'latest',
                     args: {id:[accountSubscriptions[i].subscription.id]}
                 }) 
+                .then(async function(events){
+                
                      
-                //checks for latest update by getting highest timestamp
-                if(events != undefined) {
-                    console.log(events)
+                    //checks for latest update by getting highest timestamp
+                    if(events != undefined) {
+                        console.log(events)
+                        
+                        let time = 0
+                        let index = 0
+                        
+                        if(events.length > 0)
+                        {
+                            for (var j = 0; j < events.length; j++) {
+                                    if(time < events[j].args.timestamp)
+                                    {
+                                        time = events[j].args.timestamp
+                                        index = j
+                                    }
+                            }
+                            //adds latest details to details array
+                            detailsArray[i] = events[index].args
+                        }    
+                        
+                    }
                     
-                    let time = 0
-                    let index = 0
-                       
-                    if(events.length > 0)
-                    {
-                        for (var j = 0; j < events.length; j++) {
-                                if(time < events[j].args.timestamp)
-                                {
-                                    time = events[j].args.timestamp
-                                    index = j
-                                }
-                        }
-                        //adds latest details to details array
-                        detailsArray[i] = events[index].args
-                    }    
-                    
-                }
+                })
 
                 console.log(detailsArray)
                 
@@ -478,7 +494,7 @@ const Provider = () => {
                                         setAlertText = {setAlertText}
                                         //createSubscription = {createSubscription}
                                         //createSubscription2 = {createSubscription2}
-                                        createSubscription3 = {createSubscription3.write}
+                                       // createSubscription3 = {createSubscription3.write}
                                     />
                                 </Accordion.Body>
                                 </Accordion.Item>
@@ -548,7 +564,7 @@ const Provider = () => {
                                         setAlertText = {setAlertText}
                                        // createSubscription = {createSubscription}
                                        // createSubscription2 = {createSubscription2}
-                                        createSubscription3 = {createSubscription3.write}
+                                     //   createSubscription3 = {createSubscription3.write}
                                     />
                                 </Accordion.Body>
                                 </Accordion.Item>

@@ -1,4 +1,4 @@
-import {React, userState} from 'react';
+import {React, userState, useEffect} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
 import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS} from './config';
 import Web3 from 'web3'
@@ -158,21 +158,20 @@ const CreateSubForm = (props) => {
             event.preventDefault();
             event.stopPropagation();
 
-            const formDetails = {
-                domain: props.domain,
-                url: props.url,
-                email: props.email,
-                phone: props.phone,
-                description: props.description
-            }
-
-            props.setDetails(formDetails)
-
             if(formValidate()) {
                 //props.createSubscription()
                 //props.createSubscription2()
+                const formDetails = {
+                    domain: props.domain,
+                    url: props.url,
+                    email: props.email,
+                    phone: props.phone,
+                    description: props.description
+                }
+    
+                props.setDetails(formDetails)
                 
-                props.createSubscription3()
+               // props.createSubscription3()
             } else {
                 return
             }

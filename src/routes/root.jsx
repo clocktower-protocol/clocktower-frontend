@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import { Navbar, Container, Nav, Button, NavDropdown, Row} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -14,6 +14,11 @@ const Root = () => {
     const [account, setAccount] = useState("-1")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
+
+    const [showWalletChoice, setShowWalletChoice] = useState(false);
+
+    const handleClose = () => setShowWalletChoice(false);
+    const handleShow = () => setShowWalletChoice(true);
 
     //WAGMI
     const {connector: activeConnector, address, isConnected } = useAccount({
@@ -102,11 +107,13 @@ const Root = () => {
   */
 
   const walletButtonClick = () => {
-   // connectWallet();
-   
+    handleShow()
+  }
+
+  const metamaskButtonClick = () => {
     connect()
-    
     setButtonClicked(true)
+    handleClose()
   }
 
   //checks if user is logged in 
@@ -117,6 +124,28 @@ const Root = () => {
   
    return (
         <>
+        <div>
+          <Modal show={showWalletChoice} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Choose a Wallet</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container>
+              <Row>
+                <Button onClick={metamaskButtonClick}>Metamask</Button>
+              </Row>
+            </Container>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        </div>
         <div className="topDiv">
           <div className="navBar">
           <Navbar key="navBar" bg="dark" variant="dark" expand="lg">

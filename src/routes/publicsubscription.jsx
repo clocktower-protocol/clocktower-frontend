@@ -50,18 +50,39 @@ const PublicSubscription = () => {
   // const dueDay = d
 
     //hook for token approval
-    const infiniteAllowance = useContractWrite({
-        address: token,
-        abi: erc20ABI,
-        functionName: 'approve',
-        args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
+    const subscribeWrite = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'subscribe',
+        args: [subscription]
     })
     
-    const infiniteAllowanceWait = useWaitForTransaction({
+    const subscribeWait = useWaitForTransaction({
         confirmations: 1,
-        hash: infiniteAllowance.data?.hash,
+        hash: subscribeWrite.data?.hash,
     })
 
+     //shows alert when waiting for transaction to finish
+     useEffect(() => {
+
+        if(subscribeWait.isLoading) {
+            setAlertType("warning")
+            setAlert(true)
+            setAlertText("Transaction Pending...")
+            console.log("pending")
+        }
+
+        if(subscribeWait.isSuccess) {
+
+           // console.log(data.status)
+            //turns off alert
+            setAlert(false)
+            setAlertType("danger")
+            console.log("done")
+
+            sendToSubDash()
+        }
+    },[subscribeWait.isLoading, subscribeWait.isSuccess])
 
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
@@ -433,6 +454,7 @@ const PublicSubscription = () => {
     //handles subscription button click and navigation
     const subscribe = useCallback(async () => {
 
+        /*
         const confirmTransaction = async (txHash) => {
 
             //gets transaction details
@@ -461,6 +483,7 @@ const PublicSubscription = () => {
             return true
             } 
         }
+        */
 
         //first requires user to approve unlimited allowance
 
@@ -484,8 +507,10 @@ const PublicSubscription = () => {
                 args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
             })
         }
-    
 
+        //subscribes
+        subscribeWrite.write()
+    
         /*
         //subscribes to subscription
         const transactionParameters = {

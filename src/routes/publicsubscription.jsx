@@ -3,9 +3,15 @@ import {Alert, Card, ListGroup, Button, Modal} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
+import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite } from 'wagmi'
+import { readContract } from 'wagmi/actions'
+import { parseAbiItem, formatEther } from 'viem'
 /* global BigInt */
 
 const PublicSubscription = () => {
+
+    //gets public client for log lookup
+    const publicClient = usePublicClient()
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
@@ -40,7 +46,6 @@ const PublicSubscription = () => {
    //const frequency = f
   // const dueDay = d
 
-    
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
 
@@ -81,6 +86,54 @@ const PublicSubscription = () => {
             clocktoken.methods.allowance(account, CLOCKTOWERSUB_ADDRESS).call({from:account})
             .then(function(result) {
                 console.log(result)
+            })
+        }
+
+        const getSub2 = async () => {
+            await readContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'getSubByIndex',
+                args: [idSub, frequency, dueDay]
+            })
+            .then(async function(result) {
+                await publicClient.getLogs({
+                    address: CLOCKTOWERSUB_ADDRESS,
+                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+                    fromBlock: 0n,
+                    toBlock: 'latest',
+                    args: {id:[result.id]}
+                }) 
+                .then(async function(events){
+                    //checks for latest update by getting highest timestamp
+                    if(events != undefined) {
+                        console.log(events)
+                        
+                        let time = 0
+                        let index = 0
+                        
+                        if(events.length > 0)
+                        {
+                            for (var j = 0; j < events.length; j++) {
+                                    if(time < events[j].args.timestamp)
+                                    {
+                                        time = events[j].args.timestamp
+                                        index = j
+                                    }
+                            }
+                            //adds latest details to details array
+                            setDetails(events[index].args)
+                            //verifies domain
+                            verifyDomain(events[index].args.domain, result.provider)
+                        }       
+                    }    
+                })
+                setSubscription(result)
+                setAmount(formatEther(result.amount))
+                setFrequencyName(frequencyLookup(result.frequency))
+                setTickerName(tickerLookup(result.token))
+                setTokenABI(abiLookup(result.token)[1])
+                setToken(result.token)
             })
         }
 
@@ -154,7 +207,8 @@ const PublicSubscription = () => {
         }
 
         if(account != "-1"){
-            getSub()
+           // getSub()
+            getSub2()
             isSubscribed()
             isProviderSame()
 

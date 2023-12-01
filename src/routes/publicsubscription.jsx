@@ -2,10 +2,10 @@ import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Card, ListGroup, Button, Modal} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import Web3 from 'web3'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
-import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite, erc20ABI, useAccount} from 'wagmi'
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS} from "../config"; 
+import { useContractWrite, useWaitForTransaction, usePublicClient, useSignMessage, erc20ABI, useAccount} from 'wagmi'
 import { readContract, writeContract } from 'wagmi/actions'
-import { parseAbiItem, formatEther } from 'viem'
+import { parseAbiItem, formatEther, recoverMessageAddress } from 'viem'
 //import { read } from 'fs';
 /* global BigInt */
 
@@ -48,6 +48,9 @@ const PublicSubscription = () => {
   // const idSub = id
    //const frequency = f
   // const dueDay = d
+
+    //hook for signing messages
+    const { data: signMessageData, error, isLoading, signMessage, variables } = useSignMessage()
 
     //hook for token approval
     const subscribeWrite = useContractWrite({
@@ -119,6 +122,7 @@ const PublicSubscription = () => {
             })
         }
 
+        /*
         if(account != "-1"){     
             //checks allowance of user
             clocktoken.methods.allowance(account, CLOCKTOWERSUB_ADDRESS).call({from:account})
@@ -126,6 +130,7 @@ const PublicSubscription = () => {
                 console.log(result)
             })
         }
+        */
 
         const getSub2 = async () => {
             await readContract({
@@ -301,12 +306,14 @@ const PublicSubscription = () => {
 
     }, [account]);
     
+    
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
     const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
+    
 
      //Creates alert
      const alertMaker = () => {
@@ -319,6 +326,7 @@ const PublicSubscription = () => {
         }
     }
 
+    /*
     //gets unlimited approval from user
     const setInfiniteAllowance = useCallback(async () => {
         let transactionParameters = {};
@@ -396,9 +404,11 @@ const PublicSubscription = () => {
         }
     }, [account, setAlert, setAlertText, token, tokenABI, setAlertType]
     )
+    */
+
 
     //signs message with provide private key
-    const signMessage = async () => {
+    const signMessage2 = async () => {
         //TODO: change to something else
         const msg = "test"
         try {
@@ -496,7 +506,7 @@ const PublicSubscription = () => {
             args: [address, CLOCKTOWERSUB_ADDRESS]
         })
 
-        console.log(allowanceBalance)
+        //console.log(allowanceBalance)
         
         if(BigInt(allowanceBalance) < 100000000000000000000000n) {
             //if allowance has dropped below 100,000 site requests infinite approval again
@@ -598,8 +608,9 @@ const PublicSubscription = () => {
                     <Card.Body align="center">
                         {/*
                         <Button onClick={setInfiniteAllowance}>Approve</Button> 
+                         <Button onClick={signMessage}>Verify</Button>
                         */}
-                        <Button onClick={signMessage}>Verify</Button>
+                        <Button onClick={handleShow}>Verify</Button>
                     </Card.Body>
                     <Modal show={show} size="xl" onHide={handleClose}>
                     <Modal.Header closeButton>

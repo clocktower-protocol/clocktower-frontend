@@ -135,7 +135,7 @@ const CreateSubForm = (props) => {
         }
 
         //checks required values are selected
-        if(props.token == ZERO_ADDRESS || props.amount == null || props.frequency == 0 || props.dueDay == 0) {
+        if(props.token == ZERO_ADDRESS || props.amount == null || props.dueDay == 0) {
             console.log (
                 "Missing required fields"
             )

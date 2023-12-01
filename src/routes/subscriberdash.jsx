@@ -6,9 +6,15 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import { useOutletContext } from "react-router-dom";
 //import SubsTable from '../SubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
+import { usePublicClient } from 'wagmi'
+import { readContract } from 'wagmi/actions'
+import { parseAbiItem } from 'viem'
 /* global BigInt */
 
 const SubscriberDash = () => {
+
+    //gets public client for log lookup
+    const publicClient = usePublicClient()
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
@@ -18,7 +24,7 @@ const SubscriberDash = () => {
     const [alertType, setAlertType] = useState("warning")
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [detailsArray, setDetailsArray] = useState(emptySubscriptionArray)
-    const [isEmpty, setIsEmpty] = useState(false)
+    //const [isEmpty, setIsEmpty] = useState(false)
      //feeBalance array indexed to subscription array
     //const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
 
@@ -76,6 +82,72 @@ const SubscriberDash = () => {
         return true
         } 
     }
+
+    const getProviderSubsWAGMI = async () => {
+        //checks if user is logged into account
+       
+        if(!isLoggedIn()) {
+           console.log("Not Logged in")
+           return
+       }
+       
+       //variable to pass scope so that the state can be set
+       let accountSubscriptions = []
+
+       await readContract({
+           address: CLOCKTOWERSUB_ADDRESS,
+           abi: CLOCKTOWERSUB_ABI,
+           functionName: 'getAccountSubscriptions',
+           args: [false, account]
+       })
+       .then(async function(result) {
+           accountSubscriptions = result
+
+           console.log(accountSubscriptions)
+
+           //loops through each subscription
+           for (var i = 0; i < accountSubscriptions.length; i++) {
+               await publicClient.getLogs({
+                   address: CLOCKTOWERSUB_ADDRESS,
+                   event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+                   fromBlock: 0n,
+                   toBlock: 'latest',
+                   args: {id:[accountSubscriptions[i].subscription.id]}
+               }) 
+               .then(async function(events){
+               
+                    
+                   //checks for latest update by getting highest timestamp
+                   if(events != undefined) {
+                       console.log(events)
+                       
+                       let time = 0
+                       let index = 0
+                       
+                       if(events.length > 0)
+                       {
+                           for (var j = 0; j < events.length; j++) {
+                                   if(time < events[j].args.timestamp)
+                                   {
+                                       time = events[j].args.timestamp
+                                       index = j
+                                   }
+                           }
+                           //adds latest details to details array
+                           detailsArray[i] = events[index].args
+                       }    
+                       
+                   }
+                   
+               })
+
+               console.log(detailsArray)
+               
+           }
+           setSubscriptionArray(accountSubscriptions)
+           setDetailsArray(detailsArray)
+       })
+   }
 
     const getSubscriberSubs = async () => {
         //checks if user is logged into account

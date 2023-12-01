@@ -94,6 +94,7 @@ const SubscriberDash = () => {
         }
     }
 
+    /*
      //confirms transaction by looping until it gets confirmed
      const confirmTransaction = async (txHash) => {
 
@@ -126,6 +127,7 @@ const SubscriberDash = () => {
         return true
         } 
     }
+    */
 
     const getSubscriberSubsWAGMI = async () => {
         //checks if user is logged into account

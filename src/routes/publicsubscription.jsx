@@ -69,6 +69,8 @@ const PublicSubscription = () => {
               })
               if(recoveredAddress == address){
                 console.log("here")
+                setCopyTitle("Copy")
+                setIsDisabled(false)
                 handleShow()
               }
              // setRecoveredAddress(recoveredAddress)
@@ -646,7 +648,7 @@ const PublicSubscription = () => {
                     <Modal.Header closeButton>
                       <Modal.Title>Verify Domain</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Create the following domain record: {signMessageData}</Modal.Body>
+                    <Modal.Body>Create the following domain record: <p></p> {String(signMessageData).slice(0,85)}<p></p>{String(signMessageData).slice(86,170)}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" 
                         onClick={() => {

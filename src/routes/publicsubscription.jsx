@@ -648,7 +648,12 @@ const PublicSubscription = () => {
                     <Modal.Header closeButton>
                       <Modal.Title>Verify Domain</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Create the following domain record: <p></p> {String(signMessageData).slice(0,85)}<p></p>{String(signMessageData).slice(86,170)}</Modal.Body>
+                    <Modal.Body>Create the following domain record: 
+                        <p></p> Step 1: Use the copy button below to copy the hash 
+                        <p></p> {String(signMessageData).slice(0,85)}<br></br>{String(signMessageData).slice(86,170)}
+                        <p></p> Step 2: Create a new txt record at your domain registrar name "ct"
+                        <p></p> Step 3: Past hash into data field of new record
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" 
                         onClick={() => {

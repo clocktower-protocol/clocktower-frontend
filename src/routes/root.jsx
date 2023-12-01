@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal, Stack} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -130,9 +130,11 @@ const Root = () => {
           </Modal.Header>
           <Modal.Body>
             <Container>
+              <Stack gap={3}>
               {connectors.map((connector) => (
               <Row key={connector.id+1}>
-                  <Button
+                  <Button 
+                    variant="info"
                     disabled={!connector.ready}
                     key={connector.id}
                     onClick={() => {connect({ connector })
@@ -147,6 +149,7 @@ const Root = () => {
                   </Button>
               </Row>
               ))}
+              </Stack>
             </Container>
           </Modal.Body>
          

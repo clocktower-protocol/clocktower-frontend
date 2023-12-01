@@ -40,6 +40,8 @@ const PublicSubscription = () => {
     const [show, setShow] = useState(false);
     const [signature, setSignature] = useState("-1")
     const [isDomainVerified, setIsDomainVerified] = useState(false)
+    //const [recoveredAddress, setRecoveredAddress] = useState("")
+    const msg = 'test'
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -50,7 +52,29 @@ const PublicSubscription = () => {
   // const dueDay = d
 
     //hook for signing messages
-    const { data: signMessageData, error, isLoading, signMessage, variables } = useSignMessage()
+    //const { data: signMessageData, error, isLoading, signMessage, variables } = useSignMessage()
+    const {data: signMessageData, error, isLoading, signMessage, variables}  = useSignMessage({
+        message: 'test'
+    })
+
+    //gets signed message
+    useEffect(() => {
+        ;(async () => {
+            if (signMessageData) {
+              const recoveredAddress = await recoverMessageAddress({
+                message: variables?.message,
+                signature: signMessageData,
+              })
+              if(recoveredAddress == address){
+                console.log("here")
+                handleShow()
+              }
+             // setRecoveredAddress(recoveredAddress)
+              
+            }
+        })()
+
+    },[signMessageData])
 
     //hook for token approval
     const subscribeWrite = useContractWrite({
@@ -432,6 +456,7 @@ const PublicSubscription = () => {
           }
     }
 
+
     const verifyDomain = async (domain, provAddress) => {
 
         let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
@@ -610,13 +635,16 @@ const PublicSubscription = () => {
                         <Button onClick={setInfiniteAllowance}>Approve</Button> 
                          <Button onClick={signMessage}>Verify</Button>
                         */}
-                        <Button onClick={handleShow}>Verify</Button>
+                        <Button onClick={async () => {
+                            signMessage()
+                           // handleShow()
+                            }}>Verify</Button>
                     </Card.Body>
                     <Modal show={show} size="xl" onHide={handleClose}>
                     <Modal.Header closeButton>
                       <Modal.Title>Verify Domain</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Create the following domain record: {signature}</Modal.Body>
+                    <Modal.Body>Create the following domain record: {signMessageData}</Modal.Body>
                     <Modal.Footer>
                       <Button variant="secondary" onClick={handleClose}>
                         Close

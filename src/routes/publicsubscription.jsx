@@ -56,7 +56,7 @@ const PublicSubscription = () => {
     //hook for signing messages
     //const { data: signMessageData, error, isLoading, signMessage, variables } = useSignMessage()
     const {data: signMessageData, error, isLoading, signMessage, variables}  = useSignMessage({
-        message: 'test'
+        message: msg
     })
 
     //gets signed message
@@ -160,7 +160,7 @@ const PublicSubscription = () => {
         }
         */
 
-        const getSub2 = async () => {
+        const getSub = async () => {
             await readContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -248,7 +248,7 @@ const PublicSubscription = () => {
         })
         */
 
-        const isSubscribed2 = async () => {
+        const isSubscribed = async () => {
             let result = await readContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -308,7 +308,7 @@ const PublicSubscription = () => {
         }
         */
 
-        const isProviderSame2 = async () => {
+        const isProviderSame = async () => {
             let result = await readContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -325,22 +325,23 @@ const PublicSubscription = () => {
 
         if(account != "-1"){
            // getSub()
-            getSub2()
+            getSub()
             //isSubscribed()
-            isSubscribed2()
-            isProviderSame2()
+            isSubscribed()
+            isProviderSame()
 
         }
 
     }, [account]);
     
-    
+    /*
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
     const clocktoken = new web3.eth.Contract(CLOCKTOKEN_ABI, CLOCKTOKEN_ADDRESS);
+    */
     
 
      //Creates alert
@@ -434,7 +435,7 @@ const PublicSubscription = () => {
     )
     */
 
-
+/*
     //signs message with provide private key
     const signMessage2 = async () => {
         //TODO: change to something else
@@ -459,6 +460,7 @@ const PublicSubscription = () => {
             console.error(err);
           }
     }
+    */
 
 
     const verifyDomain = async (domain, provAddress) => {
@@ -470,16 +472,20 @@ const PublicSubscription = () => {
         //checks dns record
          try {
             var response = await fetch(url);
-            const msg = "test"
+           // const msg = "test"
 
                 
                 var json = await response.json();
                 if(json.Answer[0].data !== undefined){
                     console.log(json.Answer[0].data);
                     //verifies signature
-                    let signAddress = web3.eth.accounts.recover(msg, json.Answer[0].data)
-                    console.log(signAddress)
-                    if(signAddress == provAddress) {
+                    //let signAddress = web3.eth.accounts.recover(msg, json.Answer[0].data)
+                    const dnsRecoveredAddress = await recoverMessageAddress({
+                        message: msg,
+                        signature: json.Answer[0].data,
+                      })
+                    console.log(dnsRecoveredAddress)
+                    if(dnsRecoveredAddress == provAddress) {
                         setIsDomainVerified(true)
                         console.log("TRUE!")
                     }

@@ -1,12 +1,12 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert} from 'react-bootstrap';
-import Web3 from 'web3'
+//import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 //import SubsTable from '../SubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
-import { usePublicClient } from 'wagmi'
+import { useContractWrite, useWaitForTransaction, usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 /* global BigInt */
@@ -24,20 +24,64 @@ const SubscriberDash = () => {
     const [alertType, setAlertType] = useState("warning")
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [detailsArray, setDetailsArray] = useState(emptySubscriptionArray)
+    const [unsubscribedSub, setUnsubscribedSub] = useState({})
     //const [isEmpty, setIsEmpty] = useState(false)
      //feeBalance array indexed to subscription array
     //const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
 
+    /*
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
+    */
 
      //loads provider subscription list upon login
      useEffect(() => {
-        getSubscriberSubs()
+        getSubscriberSubsWAGMI()
     }, [account]);
+
+    //unsubscribe hooks
+    const unsubscribeWrite = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'unsubscribe',
+        args: [unsubscribedSub]
+    })
+
+    const unsubscribeWait = useWaitForTransaction({
+        confirmations: 1,
+        hash: unsubscribeWrite.data?.hash,
+    })
+
+    useEffect(() => {
+        //calls wallet
+        unsubscribeWrite.write()
+    },[unsubscribedSub])
+
+     //shows alert when waiting for transaction to finish
+     useEffect(() => {
+
+        if(unsubscribeWait.isLoading) {
+            setAlertType("warning")
+            setAlert(true)
+            setAlertText("Transaction Pending...")
+            console.log("pending")
+        }
+
+        if(unsubscribeWait.isSuccess) {
+
+           // console.log(data.status)
+            //turns off alert
+            setAlert(false)
+            setAlertType("danger")
+            console.log("done")
+
+            getSubscriberSubsWAGMI()
+            
+        }
+    },[unsubscribeWait.isLoading, unsubscribeWait.isSuccess])
 
     //Creates alert
     const alertMaker = () => {
@@ -68,7 +112,7 @@ const SubscriberDash = () => {
             //turns off alert and loads/reloads table
             setAlert(false)
             setAlertType("danger")
-            await getSubscriberSubs()
+            await getSubscriberSubsWAGMI()
             return true
         }
 
@@ -83,7 +127,7 @@ const SubscriberDash = () => {
         } 
     }
 
-    const getProviderSubsWAGMI = async () => {
+    const getSubscriberSubsWAGMI = async () => {
         //checks if user is logged into account
        
         if(!isLoggedIn()) {
@@ -98,7 +142,7 @@ const SubscriberDash = () => {
            address: CLOCKTOWERSUB_ADDRESS,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',
-           args: [false, account]
+           args: [true, account]
        })
        .then(async function(result) {
            accountSubscriptions = result
@@ -149,6 +193,7 @@ const SubscriberDash = () => {
        })
    }
 
+   /*
     const getSubscriberSubs = async () => {
         //checks if user is logged into account
        if(!isLoggedIn()) {
@@ -209,8 +254,9 @@ const SubscriberDash = () => {
            setSubscriptionArray(accountSubscriptions)
        })
        */
-   }
-
+  // }
+   
+/*
    const unsubscribe = async (subscription) => {
         const transactionParameters = {
             to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
@@ -232,7 +278,7 @@ const SubscriberDash = () => {
         //TODO: need to update to emit method
         await confirmTransaction(txhash)
    }
-
+*/
    
    const isTableEmpty = () => {
         let count = 0
@@ -268,9 +314,10 @@ const SubscriberDash = () => {
                         <SubscriptionsTable
                             subscriptionArray = {subscriptionArray}
                             detailsArray = {detailsArray}
-                            unsubscribe = {unsubscribe}
+                           // unsubscribe = {unsubscribe}
                             account = {account}
                             role = {2}
+                            setUnsubscribedSub = {setUnsubscribedSub}
                         />
                         : ""}
                     </div>

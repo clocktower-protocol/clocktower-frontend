@@ -41,6 +41,8 @@ const PublicSubscription = () => {
     const [signature, setSignature] = useState("-1")
     const [isDomainVerified, setIsDomainVerified] = useState(false)
     //const [recoveredAddress, setRecoveredAddress] = useState("")
+    const [isDisabled, setIsDisabled] = useState(false)
+    const [copyTitle, setCopyTitle] = useState("Copy")
     const msg = 'test'
 
     const handleClose = () => setShow(false);
@@ -638,7 +640,7 @@ const PublicSubscription = () => {
                         <Button onClick={async () => {
                             signMessage()
                            // handleShow()
-                            }}>Verify</Button>
+                            }}>Verify Domain</Button>
                     </Card.Body>
                     <Modal show={show} size="xl" onHide={handleClose}>
                     <Modal.Header closeButton>
@@ -646,9 +648,19 @@ const PublicSubscription = () => {
                     </Modal.Header>
                     <Modal.Body>Create the following domain record: {signMessageData}</Modal.Body>
                     <Modal.Footer>
-                      <Button variant="secondary" onClick={handleClose}>
-                        Close
-                      </Button>
+                        <Button variant="primary" 
+                        onClick={() => {
+                            navigator.clipboard.writeText(signMessageData)
+                            setIsDisabled(true)
+                            setCopyTitle("Copied")
+                        }}
+                        disabled = {isDisabled}
+                        >
+                            {copyTitle}
+                        </Button>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
                     </Modal.Footer>
                   </Modal>
                   </>

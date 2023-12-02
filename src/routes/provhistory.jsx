@@ -1,21 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import Web3 from 'web3'
+//import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 //import ProvSubDetailTable from '../ProvSubDetailTable';
 import SubHistoryTable from '../SubHistoryTable';
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
+//import {ethers} from 'ethers'
 
 const ProvHistory = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
+    /*
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
+    */
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -43,23 +46,29 @@ const ProvHistory = () => {
         })
         */
         
-        //getLogs()
+        getLogs()
 
     }, []);
 
     const getLogs = async () => {
 
+        
         const logs = await publicClient.getLogs({
             address: CLOCKTOWERSUB_ADDRESS,
-            event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, uint40 timestamp, uint amount, address token, enum ClockTowerSubscribe.SubEvent indexed subevent)'),
+            event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
             fromBlock: 0n,
             toBlock: 'latest',
             args: {id: id}
         })
 
+        console.log(logs)
+
         setHistoryArray(logs)
-
-
+        
+        /*
+        const iface = new ethers.Interface(CLOCKTOWERSUB_ABI);
+        console.log(iface.format('full'));
+        */
     }
 
     //console.log(historyArray.length)

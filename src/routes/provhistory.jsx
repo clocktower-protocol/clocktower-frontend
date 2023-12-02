@@ -27,7 +27,7 @@ const ProvHistory = () => {
     let emptySubscriptionArray = [];
    
     const [historyArray, setHistoryArray] = useState([emptySubscriptionArray])
-    const [subscribers, setSubscribers] = useState([emptySubscriptionArray])
+    //const [subscribers, setSubscribers] = useState([emptySubscriptionArray])
 
     let {id, t} = useParams();
 
@@ -61,7 +61,7 @@ const ProvHistory = () => {
             args: {id: id}
         })
 
-        console.log(logs)
+        //console.log(logs)
 
         setHistoryArray(logs)
         

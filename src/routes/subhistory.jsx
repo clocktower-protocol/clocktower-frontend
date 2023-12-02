@@ -4,6 +4,8 @@ import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import SubHistoryTable from '../SubHistoryTable';
+import { usePublicClient } from 'wagmi'
+import { parseAbiItem } from 'viem'
 
 const SubHistory = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();

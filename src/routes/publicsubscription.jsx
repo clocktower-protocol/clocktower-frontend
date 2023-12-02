@@ -658,7 +658,7 @@ const PublicSubscription = () => {
                         <p></p> Step 1: Use the copy button below to copy the hash 
                         <p></p> {String(signMessageData).slice(0,85)}<br></br>{String(signMessageData).slice(86,170)}
                         <p></p> Step 2: Create a new txt record at your domain registrar name "ct"
-                        <p></p> Step 3: Past hash into data field of new record
+                        <p></p> Step 3: Paste hash into data field of new record
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" 

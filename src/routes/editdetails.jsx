@@ -4,13 +4,19 @@ import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import EditDetailsForm from '../EditDetailsForm';
-import EthCrypto from 'eth-crypto';
-import { fromString } from 'uint8arrays/from-string'
-import {ecrecover, ecsign, privateToPublic} from '@ethereumjs/util'
+//import EthCrypto from 'eth-crypto';
+//import { fromString } from 'uint8arrays/from-string'
+//import {ecrecover, ecsign, privateToPublic} from '@ethereumjs/util'
+import { useContractWrite, useWaitForTransaction, usePublicClient, useSignMessage, erc20ABI, useAccount} from 'wagmi'
+import { readContract, writeContract } from 'wagmi/actions'
+import { parseAbiItem, formatEther, recoverMessageAddress } from 'viem'
 
 const EditDetails = () => {
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+
+    //gets public client for log lookup
+    const publicClient = usePublicClient()
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -29,8 +35,8 @@ const EditDetails = () => {
     const [url, setUrl] = useState("")
     const [email, setEmail] = useState("")
     const [phone, setPhone] = useState("")
+    const [submittedDetails, setSubmittedDetails] = useState({})
    
-
     const fee = 0.1
 
     //loads once
@@ -134,7 +140,7 @@ const EditDetails = () => {
 
    // }
     
-
+/*
     const getDetails = async () => {
         let tempDetails = {}
         await clocktowersub.getPastEvents('DetailsLog', {
@@ -173,6 +179,95 @@ const EditDetails = () => {
         setUrl(tempDetails.url)
         setPhone(tempDetails.phone)
     }
+*/
+
+
+const editDetailsWrite = useContractWrite({
+    address: CLOCKTOWERSUB_ADDRESS,
+    abi: CLOCKTOWERSUB_ABI,
+    functionName: 'editDetails',
+    args: [submittedDetails, id]
+})
+
+const editDetailsWait = useWaitForTransaction({
+    confirmations: 1,
+    hash: editDetailsWrite.data?.hash,
+})
+
+useEffect(() => {
+    //calls wallet
+    if(Object.keys(submittedDetails).length !== 0) {
+        editDetailsWrite.write()
+    } 
+},[submittedDetails])
+
+ //shows alert when waiting for transaction to finish
+ useEffect(() => {
+
+    if(editDetailsWait.isLoading) {
+        setAlertType("warning")
+        setAlert(true)
+        setAlertText("Transaction Pending...")
+        console.log("pending")
+    }
+
+    if(editDetailsWait.isSuccess) {
+
+       // console.log(data.status)
+        //turns off alert
+        setAlert(false)
+        setAlertType("danger")
+        console.log("done")
+
+        getDetails()
+        
+    }
+},[editDetailsWait.isLoading, editDetailsWait.isSuccess])
+
+
+const getDetails = async () => {
+    let tempDetails = {}
+    await publicClient.getLogs({
+        address: CLOCKTOWERSUB_ADDRESS,
+        event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+        fromBlock: 0n,
+        toBlock: 'latest',
+        args: {id:id}
+    }) 
+    .then(async function(events){
+        //checks for latest update by getting highest timestamp
+        if(events != undefined) {
+            let time = 0
+            let index = 0
+
+           
+            if(events.length > 0)
+            {
+                for (var j = 0; j < events.length; j++) {
+                    if(time < events[j].args.timestamp)
+                    {
+                        time = events[j].args.timestamp
+                        index = j
+                    }
+                    console.log(events[j].args.timestamp)
+                }
+               //adds latest details to details array
+               tempDetails = events[index].args
+            }    
+        }
+    })
+
+   // testEncryption()
+
+   console.log(tempDetails.domain)
+
+    setDetails(tempDetails)
+    setDescription(tempDetails.description)
+    setDomain(tempDetails.domain)
+    setEmail(tempDetails.email)
+    setUrl(tempDetails.url)
+    setPhone(tempDetails.phone)
+}
 
     const editDetails = async () => {
 
@@ -279,15 +374,20 @@ const EditDetails = () => {
                     url = {url}
                     phone = {phone}
 
-                    editDetails = {editDetails}
+
+                    //editDetails = {editDetails}
                    // testEncryption = {testEncryption}
+                   /*
                     setDescription = {setDescription}
                     setDomain = {setDomain}
                     setEmail = {setEmail}
                     setUrl = {setUrl}
                     setPhone = {setPhone}
+                   */
                     setAlert = {setAlert}
                     setAlertText = {setAlertText}
+                   
+                    setSubmittedDetails = {setSubmittedDetails}
                 />
             </div>
         </div>

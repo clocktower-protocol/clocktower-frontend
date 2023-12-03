@@ -126,10 +126,9 @@ const Provider = () => {
     useEffect(() => {
        // console.log(JSON.stringify(cancelledSub))
         //calls wallet
-        if(!isMounting.current) {
+        if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
             console.log(cancelledSub)
-            console.log("not mounting!")
-            //FIXME: triggered too much
+            console.log("cancel triggered!")
             cancelSubscription2.write()
         } else {
             console.log("mounting!")

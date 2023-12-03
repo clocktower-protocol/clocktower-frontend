@@ -219,7 +219,8 @@ useEffect(() => {
         setAlertType("danger")
         console.log("done")
 
-        getDetails()
+        //getDetails()
+        sendToProvDash()
         
     }
 },[editDetailsWait.isLoading, editDetailsWait.isSuccess])
@@ -269,6 +270,7 @@ const getDetails = async () => {
     setPhone(tempDetails.phone)
 }
 
+/*
     const editDetails = async () => {
 
         //let feeHex = Web3.utils.toHex(Web3.utils.toWei(String(fee)))
@@ -309,6 +311,7 @@ const getDetails = async () => {
        // sendToProvDash()
 
    }
+   
 
     //confirms transaction by looping until it gets confirmed
     const confirmTransaction = async (txHash) => {
@@ -340,6 +343,8 @@ const getDetails = async () => {
         return true
         } 
     }
+
+    */
 
     //Creates alert
     const alertMaker = () => {
@@ -377,13 +382,13 @@ const getDetails = async () => {
 
                     //editDetails = {editDetails}
                    // testEncryption = {testEncryption}
-                   /*
+                   
                     setDescription = {setDescription}
                     setDomain = {setDomain}
                     setEmail = {setEmail}
                     setUrl = {setUrl}
                     setPhone = {setPhone}
-                   */
+                   
                     setAlert = {setAlert}
                     setAlertText = {setAlertText}
                    

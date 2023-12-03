@@ -1,5 +1,5 @@
 /* global BigInt */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import {Alert, Accordion} from 'react-bootstrap';
 //import Web3 from 'web3'
 import '../App.css';
@@ -20,6 +20,8 @@ const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     const { address } = useAccount()
+
+    let isMounting = useRef(true)
 
     //creates contract variable
    // const web3 = new Web3("http://localhost:8545")
@@ -53,10 +55,18 @@ const Provider = () => {
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
+
+    //sets mounting bool to not mounting after initial load
+    useEffect(() => {
+        isMounting.current = true
+        console.log("HERE")
+    },[])
     
     //loads provider subscription list upon login
     useEffect(() => {
+
         getProviderSubsWAGMI()
+       
     }, [account]);
 
     //create subscription
@@ -91,7 +101,13 @@ const Provider = () => {
 
     useEffect(() => {
         //calls wallet
-        createSubscription3.write()
+        if(!isMounting.current) {
+            console.log("not mounting it")
+            createSubscription3.write()
+        } else {
+            console.log("mounting...")
+            isMounting.current = false
+        }
     },[details])
 
     //cancel subscription
@@ -108,8 +124,17 @@ const Provider = () => {
     })
 
     useEffect(() => {
+       // console.log(JSON.stringify(cancelledSub))
         //calls wallet
-        cancelSubscription2.write()
+        if(!isMounting.current) {
+            console.log(cancelledSub)
+            console.log("not mounting!")
+            //FIXME: triggered too much
+            cancelSubscription2.write()
+        } else {
+            console.log("mounting!")
+            isMounting.current = false
+        }
     },[cancelledSub])
     
     //shows alert when waiting for transaction to finish
@@ -131,17 +156,6 @@ const Provider = () => {
             console.log("done")
 
             getProviderSubsWAGMI()
-            
-            /*
-            if(createWait.data.status == 1 || cancelWait.data.status == 1) {
-                //turns off alert
-                setAlert(false)
-                setAlertType("danger")
-                console.log("done")
-
-                getProviderSubs()
-            }
-            */
             
         }
     },[createWait.isLoading, createWait.isSuccess, cancelWait.isLoading, cancelWait.isSuccess])
@@ -216,6 +230,7 @@ const Provider = () => {
         //variable to pass scope so that the state can be set
         let accountSubscriptions = []
 
+        try{
         await readContract({
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
@@ -225,7 +240,7 @@ const Provider = () => {
         .then(async function(result) {
             accountSubscriptions = result
 
-            console.log(accountSubscriptions)
+           // console.log(accountSubscriptions)
 
             //loops through each subscription
             for (var i = 0; i < accountSubscriptions.length; i++) {
@@ -241,7 +256,7 @@ const Provider = () => {
                      
                     //checks for latest update by getting highest timestamp
                     if(events != undefined) {
-                        console.log(events)
+                      //  console.log(events)
                         
                         let time = 0
                         let index = 0
@@ -263,12 +278,16 @@ const Provider = () => {
                     
                 })
 
-                console.log(detailsArray)
+               // console.log(detailsArray)
                 
             }
             setSubscriptionArray(accountSubscriptions)
             setDetailsArray(detailsArray)
         })
+    } catch(Err) {
+        console.log(Err)
+    }
+         
     }
 
     /*
@@ -445,11 +464,14 @@ const Provider = () => {
     */
 
     const isTableEmpty = (subscriptionArray) => {
+        
+        //console.log(subscriptionArray.length)
         let count = 0
         subscriptionArray.forEach(subscription => {
             if(subscription.status !== 1) {count += 1}
         })
         if(count > 0) { return false } else {return true}
+        
     }
 
     //checks that user has logged in 
@@ -513,7 +535,8 @@ const Provider = () => {
                                     cancelSubscription = {cancelSubscription}
                                    // setIsTableEmpty = {setIsTableEmpty}
                                 />
-                                */ }
+                                */ 
+                            }
                                 {!isTableEmpty(subscriptionArray) ?
                                 <SubscriptionsTable
                                     subscriptionArray = {subscriptionArray}
@@ -523,7 +546,7 @@ const Provider = () => {
                                     detailsArray = {detailsArray}
                                     setCancelledSub = {setCancelledSub}
                                 />
-                                :""}
+                                : <div></div>}
                                 
                             </div>
                     </div>

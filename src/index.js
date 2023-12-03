@@ -8,7 +8,7 @@ import ErrorPage from './errorPage';
 import FutPaymentRoute from './routes/futurepayments';
 import Provider from './routes/provider';
 //import ProvSubscription from './routes/provsubscription';
-import ProvHistory from './routes/provhistory';
+import ProvSubHistory from './routes/provsubhistory';
 import ProvSubscribers from './routes/provsubscribers';
 import PublicSubscription from './routes/publicsubscription';
 import SubscriberDash from './routes/subscriberdash';
@@ -16,6 +16,7 @@ import SubHistory from './routes/subhistory';
 import Admin from './routes/admin';
 import AdminSubscriptions from './routes/adminsubscriptions';
 import EditDetails from './routes/editdetails';
+import ProviderHistory from './routes/providerhistory';
 
 import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
 import { WagmiConfig, createConfig, configureChains } from 'wagmi'
@@ -77,7 +78,7 @@ const router = createBrowserRouter([
         },
         {
           path: "provider/history/:id",
-          element: <ProvHistory />,
+          element: <ProvSubHistory />,
         },
         {
           path: "provider/subscribers/:id/:a/:t",
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
         {
           path: "admin/subscriptions/:t/:s",
           element: <AdminSubscriptions />
+        },
+        {
+          path: "admin/provider/history/:a",
+          element: <ProviderHistory />
         }
       ]
     },

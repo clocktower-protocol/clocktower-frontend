@@ -9,10 +9,16 @@ import ProvidersTable from '../ProvidersTable';
 import CallerHistoryTable from '../CallerHistoryTable';
 import ProviderHistoryTable from '../ProviderHistoryTable';
 import SubscribersTable from '../SubscribersTable';
+import { usePublicClient } from 'wagmi'
+import { readContract } from 'wagmi/actions'
+import { parseAbiItem } from 'viem'
 
 const Admin = () => {
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+
+    //gets public client for log lookup
+    const publicClient = usePublicClient()
 
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
@@ -35,6 +41,7 @@ const Admin = () => {
     //loads provider subscription list upon login
     useEffect(() => {
 
+        /*
         //gets caller events
         clocktowersub.getPastEvents('CallerLog', {
            // filter: {id:[id], subscriber:[s]},
@@ -64,12 +71,43 @@ const Admin = () => {
              //console.log(events)
              setSubscribersHistory(events)
         })
+        */
+       //gets caller events
+       clocktowersub.getPastEvents('CallerLog', {
+        // filter: {id:[id], subscriber:[s]},
+         fromBlock: 0,
+         toBlock: 'latest'
+     }, function(error, events){ 
+         //console.log(events)
+         setCallerHistory(events)
+     })
+
+     //gets provider events
+     clocktowersub.getPastEvents('ProviderLog', {
+         // filter: {id:[id], subscriber:[s]},
+          fromBlock: 0,
+          toBlock: 'latest'
+      }, function(error, events){ 
+          //console.log(events)
+          setProvidersHistory(events)
+      })
+
+     //gets provider events
+     clocktowersub.getPastEvents('SubscriberLog', {
+         // filter: {id:[id], subscriber:[s]},
+          fromBlock: 0,
+          toBlock: 'latest'
+     }, function(error, events){ 
+          //console.log(events)
+          setSubscribersHistory(events)
+     })
 
 
         getAllAccounts()
 
     }, [account]);
 
+    /*
     const getAllAccounts = async () => {
         
         //checks if user is logged into account
@@ -115,7 +153,99 @@ const Admin = () => {
         })
 
     }
-    
+    */
+    const getAllEvents = async () => {
+        //gets caller events
+        await clocktowersub.getPastEvents('CallerLog', {
+            // filter: {id:[id], subscriber:[s]},
+            fromBlock: 0,
+            toBlock: 'latest'
+        }, function(error, events){ 
+            //console.log(events)
+            setCallerHistory(events)
+        })
+
+        //gets provider events
+        await clocktowersub.getPastEvents('ProviderLog', {
+            // filter: {id:[id], subscriber:[s]},
+            fromBlock: 0,
+            toBlock: 'latest'
+        }, function(error, events){ 
+            //console.log(events)
+            setProvidersHistory(events)
+        })
+
+        //gets provider events
+        await publicClient.getLogs({
+            address: CLOCKTOWERSUB_ADDRESS,
+            event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
+            fromBlock: 0n,
+            toBlock: 'latest',
+        })
+        .then(function(error, events){ 
+            //console.log(events)
+            setSubscribersHistory(events)
+        })
+    }
+    const getAllAccounts = async () => {
+        
+        //checks if user is logged into account
+        if(!isLoggedIn()) {
+            console.log("Not Logged in")
+            return
+        }
+        //variable to pass scope so that the state can be set
+        let accounts = []
+        let providers = []
+        let subscribers = []
+        
+        //gets all accounts
+        await readContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'getTotalSubscribers'
+        })
+        .then(async function(result) {
+            
+            let totalSubscribers = result
+
+            //iterates through each subscriber
+            for (let i = 0; i < totalSubscribers; i++) {
+                
+                await readContract({
+                    address: CLOCKTOWERSUB_ADDRESS,
+                    abi: CLOCKTOWERSUB_ABI,
+                    functionName: 'accountLookup',
+                    args: [i]
+                })
+                .then(async function(address) {
+                    await readContract({
+                        address: CLOCKTOWERSUB_ADDRESS,
+                        abi: CLOCKTOWERSUB_ABI,
+                        functionName: 'getAccount',
+                        args: [address]
+                    })
+                    .then(async function(mapAccount) {
+                        //if account is a producer
+                        if(mapAccount.provSubs.length > 0) {
+                            providers.push(mapAccount)
+                        }
+                
+                        //if account is a subscriber
+                        if(mapAccount.subscriptions.length > 0) {
+                            subscribers.push(mapAccount)
+                        }
+
+                        accounts.push(mapAccount)
+                    })
+                })
+            }
+            setAllProviders(providers)
+            setAllSubscribers(subscribers)
+            setAllAccounts(accounts)
+        })
+
+    }
 
     /*
     //get fee balance

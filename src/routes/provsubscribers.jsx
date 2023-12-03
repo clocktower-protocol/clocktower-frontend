@@ -48,8 +48,9 @@ const ProvSubscribers = () => {
         })
         //converts from BigInt
         //console.log(fee%10000n)
-        fee = Number(fee)
-        const cycles = Math.round(1 / ((fee / 10000) - 1))
+        //fee = Number(fee)
+        //const cycles = Math.round(1n / ((fee / 10000n) - 1n))
+        const cycles = 100n / ((fee % 10000n) / 100n)
         console.log(cycles)
 
         let subscribers = []
@@ -71,23 +72,28 @@ const ProvSubscribers = () => {
         for(const element of subscribers) {
 
             //gets cycles
-            const balance = element.feeBalance
+            let balance = element.feeBalance
+            balance = Number(balance)
+
 
             if(balance == 0) {
                 feeBalance = 0
-                remainingCycles = cycles
+                remainingCycles = Number(cycles)
                 remainingCyclesArray.push(remainingCycles)
             } else {
                 feeBalance = balance
                 
                 //balance = Number(balance)
-                const numberBalance = Number(balance)
+                //const numberBalance = Number(balance)
 
-               // const subFee = element.subscription.amount / cycles
+                // const subFee = element.subscription.amount / cycles
+                //a = BigInt(a)
 
-                const remainingBalancePercent = (numberBalance / a)
+                const remainingBalancePercent = (balance / a)
+                console.log(remainingBalancePercent)
 
-                remainingCycles = remainingBalancePercent * cycles
+                remainingCycles = remainingBalancePercent * String(cycles)
+                console.log(remainingCycles)
                 remainingCyclesArray.push(remainingCycles)
             }
 

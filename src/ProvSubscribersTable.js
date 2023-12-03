@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
 import Web3 from 'web3'
+import {formatEther} from 'viem'
 
 const ProvSubscribersTable = (props) => {
 
@@ -19,12 +20,13 @@ const ProvSubscribersTable = (props) => {
    
         let row = []
 
-        let feeBalance = Web3.utils.fromWei(subscribersArray[i].feeBalance)
+        //let feeBalance = Web3.utils.fromWei(subscribersArray[i].feeBalance)
+        let feeBalance = formatEther(subscribersArray[i].feeBalance)
   
         row.push(
           <td key={String(subscribersArray[i])+1}>{subscribersArray[i].subscriber}</td>,
-          <td key={String(subscribersArray[i])+2}>{feeBalance}&nbsp;&nbsp;{props.ticker}</td>,
-          <td key={String(subscribersArray[i])+3}>{props.remainingCycles[i]}</td>,
+          <td key={String(subscribersArray[i])+2}>{String(feeBalance)}&nbsp;&nbsp;{props.ticker}</td>,
+          <td key={String(subscribersArray[i])+3}>{String(props.remainingCycles[i])}</td>,
         )     
         table.push(<tr align="center" key={String(subscribersArray[i])}>{row}</tr>)
       }

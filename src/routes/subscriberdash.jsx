@@ -57,7 +57,9 @@ const SubscriberDash = () => {
 
     useEffect(() => {
         //calls wallet
-        unsubscribeWrite.write()
+        if(Object.keys(unsubscribedSub).length !== 0) {
+            unsubscribeWrite.write()
+        }
     },[unsubscribedSub])
 
      //shows alert when waiting for transaction to finish

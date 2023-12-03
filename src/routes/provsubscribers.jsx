@@ -4,7 +4,8 @@ import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import ProvSubscribersTable from '../ProvSubscribersTable';
-
+import { readContract } from 'wagmi/actions'
+/* global BigInt */
 const ProvSubscribers = () => {
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -39,12 +40,27 @@ const ProvSubscribers = () => {
         }    
 
         //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
-        const fee = await clocktowersub.methods.callerFee().call({from: account})
+        //const fee = await clocktowersub.methods.callerFee().call({from: account})
+        let fee =  await readContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'callerFee',
+        })
+        //converts from BigInt
+        //console.log(fee%10000n)
+        fee = Number(fee)
         const cycles = Math.round(1 / ((fee / 10000) - 1))
+        console.log(cycles)
 
         let subscribers = []
 
-        subscribers = await clocktowersub.methods.getSubscribersById(id).call({from: account})
+        //subscribers = await clocktowersub.methods.getSubscribersById(id).call({from: account})
+        subscribers = await readContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'getSubscribersById',
+            args: [id]
+        })
 
         let feeBalance
         let remainingCycles
@@ -63,10 +79,13 @@ const ProvSubscribers = () => {
                 remainingCyclesArray.push(remainingCycles)
             } else {
                 feeBalance = balance
+                
+                //balance = Number(balance)
+                const numberBalance = Number(balance)
 
                // const subFee = element.subscription.amount / cycles
 
-                const remainingBalancePercent = (balance / a)
+                const remainingBalancePercent = (numberBalance / a)
 
                 remainingCycles = remainingBalancePercent * cycles
                 remainingCyclesArray.push(remainingCycles)

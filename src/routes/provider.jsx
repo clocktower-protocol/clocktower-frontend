@@ -101,7 +101,7 @@ const Provider = () => {
 
     useEffect(() => {
         //calls wallet
-        if(!isMounting.current) {
+        if(!isMounting.current && Object.keys(details).length !== 0) {
             console.log("not mounting it")
             createSubscription3.write()
         } else {

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import {Alert, Tab, Tabs, Row, Col, Nav, Accordion} from 'react-bootstrap';
-import Web3 from 'web3'
+//import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
 import { useOutletContext } from "react-router-dom";
-import SubHistoryTable from '../SubHistoryTable';
+//import SubHistoryTable from '../SubHistoryTable';
 import ProvidersTable from '../ProvidersTable';
 import CallerHistoryTable from '../CallerHistoryTable';
-import ProviderHistoryTable from '../AdminHistoryTable';
+//import ProviderHistoryTable from '../AdminHistoryTable';
 import SubscribersTable from '../SubscribersTable';
 import { usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'
@@ -20,11 +20,13 @@ const Admin = () => {
     //gets public client for log lookup
     const publicClient = usePublicClient()
 
+    /*
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
      
     //gets contract interface
     const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
+    */
 
     //creates empty array for table
     let emptyArray = [];
@@ -34,8 +36,8 @@ const Admin = () => {
     const [allProviders, setAllProviders] = useState(emptyArray)
     const [allSubscribers, setAllSubscribers] = useState(emptyArray)
     const [callerHistory, setCallerHistory] = useState(emptyArray)
-    const [providersHistory, setProvidersHistory] = useState(emptyArray)
-    const [subscribersHistory, setSubscribersHistory] = useState(emptyArray)
+   // const [providersHistory, setProvidersHistory] = useState(emptyArray)
+   // const [subscribersHistory, setSubscribersHistory] = useState(emptyArray)
     
 
     //loads provider subscription list upon login
@@ -73,6 +75,7 @@ const Admin = () => {
         })
         */
        //gets caller events
+       /*
        clocktowersub.getPastEvents('CallerLog', {
         // filter: {id:[id], subscriber:[s]},
          fromBlock: 0,
@@ -81,7 +84,18 @@ const Admin = () => {
          //console.log(events)
          setCallerHistory(events)
      })
+     */
+    publicClient.getLogs({
+        address: CLOCKTOWERSUB_ADDRESS,
+        event: parseAbiItem('event CallerLog(uint40 timestamp, uint40 checkeday, address indexed caller, bool isfinished)'),
+        fromBlock: 0n,
+        toBlock: 'latest',
+    },function(error, events){ 
+        //console.log(events)
+        setCallerHistory(events)
+    })
 
+     /*
      //gets provider events
      clocktowersub.getPastEvents('ProviderLog', {
          // filter: {id:[id], subscriber:[s]},
@@ -101,6 +115,7 @@ const Admin = () => {
           //console.log(events)
           setSubscribersHistory(events)
      })
+     */
 
 
         getAllAccounts()
@@ -154,6 +169,7 @@ const Admin = () => {
 
     }
     */
+   /*
     const getAllEvents = async () => {
         //gets caller events
         await clocktowersub.getPastEvents('CallerLog', {
@@ -187,6 +203,7 @@ const Admin = () => {
             setSubscribersHistory(events)
         })
     }
+    */
     const getAllAccounts = async () => {
         
         //checks if user is logged into account

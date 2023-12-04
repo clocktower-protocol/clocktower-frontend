@@ -7,12 +7,12 @@ const CallerHistoryTable = (props) => {
 const callerHistory = props.callerHistory
 
     //checks for empty array
-    if(!Array.isArray(callerHistory) || (callerHistory.length <= 0)) {
+    if(!Array.isArray(callerHistory) || (callerHistory.length <= 0) || typeof callerHistory[0].args === "undefined") {
      return
  }
 
  let table = []
- let tableTop = []
+ let tableTop = [] 
 
  //loops through array to create table rows
  for(let i = 0; i < callerHistory.length; i++) {
@@ -23,9 +23,9 @@ const callerHistory = props.callerHistory
 
 
      row.push(
-       <td key={String(callerHistory[i])+1}>{callerHistory[i].returnValues.caller}</td>,
+       <td key={String(callerHistory[i])+1}>{callerHistory[i].args.caller}</td>,
        <td key={String(callerHistory[i])+2}>{formatDate}</td>,
-       <td key={String(callerHistory[i])+3}>{callerHistory[i].returnValues.checkedDay}</td>
+       <td key={String(callerHistory[i])+3}>{callerHistory[i].args.checkedDay}</td>
      )     
      table.push(<tr align="center" key={String(callerHistory[i])}>{row}</tr>)
    }

@@ -356,15 +356,13 @@ const Admin = () => {
                 />
             </Tab>
             <Tab eventKey="profile" title="Providers">
-                <Accordion>
-                    <Accordion.Item eventKey="0">
-                        <Accordion.Header>Provider List</Accordion.Header>
-                        <Accordion.Body>
+                
+               
                             <ProvidersTable 
                                 allProviders = {allProviders}
                              />
-                        </Accordion.Body>
-                    </Accordion.Item>
+                    
+                    { /*
                     <Accordion.Item eventKey="1">
                         <Accordion.Header>Provider History</Accordion.Header>
                         <Accordion.Body>
@@ -373,7 +371,8 @@ const Admin = () => {
                             />
                         </Accordion.Body>
                         </Accordion.Item>
-                    </Accordion>
+                    */}
+                  
             </Tab>
             <Tab eventKey="longer-tab" title="Subscribers">
                 <Accordion>

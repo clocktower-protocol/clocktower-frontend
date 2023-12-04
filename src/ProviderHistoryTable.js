@@ -8,7 +8,7 @@ const ProviderHistoryTable = (props) => {
     const providerHistory = props.providerHistory
 
     //checks for empty array
-    if(!Array.isArray(providerHistory) || (providerHistory.length <= 0)) {
+    if(!Array.isArray(providerHistory) || (providerHistory.length <= 0 || typeof providerHistory[0].args === "undefined")) {
      return
     }
 
@@ -20,13 +20,12 @@ const ProviderHistoryTable = (props) => {
 
         let row = []
 
-        let formatDate = dayjs.unix(providerHistory[i].returnValues.timestamp).format('MM/DD/YYYY h:mm:s A')
+        let formatDate = dayjs.unix(Number(providerHistory[i].args.timestamp)).format('MM/DD/YYYY h:mm:s A')
 
 
         row.push(
-        <td key={String(providerHistory[i])+1}>{providerHistory[i].returnValues.provider.slice(0,10) + "..."}</td>,
-        <td key={String(providerHistory[i])+2}>{providerHistory[i].returnValues.id.slice(0,10) + "..."}</td>,
-        <td key={String(providerHistory[i])+3}>{PROVEVENT_LOOKUP[providerHistory[i].returnValues.provEvent]}</td>,
+        <td key={String(providerHistory[i])+2}>{providerHistory[i].args.id.slice(0,10) + "..."}</td>,
+        <td key={String(providerHistory[i])+3}>{PROVEVENT_LOOKUP[providerHistory[i].args.provevent]}</td>,
         <td key={String(providerHistory[i])+4}>{formatDate}</td>,
         )     
         table.push(<tr align="center" key={String(providerHistory[i])+formatDate}>{row}</tr>)
@@ -36,7 +35,6 @@ const ProviderHistoryTable = (props) => {
         <Table key="table" striped bordered hover size="sm" className="provTable">
         <thead key="tableHead">
             <tr key="headRow" align="center">
-            <th key="provAddressHead">Provider</th>
             <th key="provSubscription">Subscription</th>
             <th key="provEventType">Event Type</th>
             <th key="subsHead">Timestamp</th>

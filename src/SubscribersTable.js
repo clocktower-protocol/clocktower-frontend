@@ -19,9 +19,7 @@ const SubscribersTable = (props) => {
     for(let i = 0; i < subscribersArray.length; i++) {
    
         let row = []
-
         
-  
         row.push(
           <td key={String(subscribersArray[i])+1}>{subscribersArray[i].accountAddress}</td>,
           <td key={String(subscribersArray[i])+2}><Link to={`subscriptions/${"subscriber"}/${subscribersArray[i].accountAddress}`}>Subscriptions</Link></td>

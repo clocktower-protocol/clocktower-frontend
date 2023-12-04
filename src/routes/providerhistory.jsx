@@ -1,12 +1,15 @@
 import {React, useState, useEffect} from 'react';
-import {Table} from 'react-bootstrap';
-import {Link, useParams} from "react-router-dom";
-import { CLOCKTOWERSUB_ADDRESS } from "../config"; 
+import {Table, Alert} from 'react-bootstrap';
+import {Link, useParams, useOutletContext } from "react-router-dom"
+import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT } from "../config"; 
 import { usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
+import ProviderHistoryTable from '../ProviderHistoryTable';
 
 const ProviderHistory = (props) => {
+
+    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     let {a} = useParams();
 
@@ -16,7 +19,7 @@ const ProviderHistory = (props) => {
     //creates empty array for table
     let emptyArray = []
 
-    const [historyArray, setHistoryArray] = useState([emptyArray])
+    const [providerHistory, setProviderHistory] = useState([emptyArray])
 
     //loads once
     useEffect( () => {
@@ -36,9 +39,9 @@ const ProviderHistory = (props) => {
             args: {provider: a}
         })
 
-        //console.log(logs)
+        console.log(logs[0].args.provevent)
 
-        setHistoryArray(logs)
+        setProviderHistory(logs)
         
         /*
         const iface = new ethers.Interface(CLOCKTOWERSUB_ABI);
@@ -47,7 +50,35 @@ const ProviderHistory = (props) => {
     }
 
 
-
+    //checks that user has logged in 
+    if(account === "-1") {
+        return (
+            <Alert align="center" variant="info">Please Login</Alert>
+        )
+    } else {
+    if(account != ADMIN_ACCOUNT) {
+        return (
+            <Alert align="center" variant="danger">Must be Admin</Alert>
+        )
+    } else {
+        
+        return (
+            <div>
+                <div>
+                    {providerHistory.length > 0 ? <Alert align="center" variant="dark">{"Provider: "}&nbsp;&nbsp;&nbsp;{a}</Alert> : ""}
+                </div>
+                <div>
+                    <ProviderHistoryTable
+                        providerHistory = {providerHistory}
+                    />
+                </div>
+            </div>
+            
+        )
+        
+        
+    }
+    }   
 
 }
 

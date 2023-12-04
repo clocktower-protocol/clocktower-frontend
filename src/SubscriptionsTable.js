@@ -98,15 +98,15 @@ const SubscriptionsTable = (props) => {
         if(role === 0 && bySubscriber) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}>{formatEther(String(props.feeObjects[i].feeBalance))}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+9}>{props.feeObjects[i].remainingCycles}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+8}>{Number(formatEther(String(props.feeObjects[i].feeBalance))).toFixed(4)}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+9}>{Math.floor(props.feeObjects[i].remainingCycles)}</td>,
           )
         }
         if(role === 0 && !bySubscriber) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}>{totalSubscribers}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+7}>{totalSubscribers * subAmount}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>
+            <td key={String(subscriptionArray[i].subscription.id)+6}>{Number(totalSubscribers)}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>
           )
         }
         if(role === 1 && Number(totalSubscribers) > 0) {

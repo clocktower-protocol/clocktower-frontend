@@ -19,10 +19,11 @@ const SubscribersTable = (props) => {
     for(let i = 0; i < subscribersArray.length; i++) {
    
         let row = []
-        
+
         row.push(
           <td key={String(subscribersArray[i])+1}>{subscribersArray[i].accountAddress}</td>,
-          <td key={String(subscribersArray[i])+2}><Link to={`subscriptions/${"subscriber"}/${subscribersArray[i].accountAddress}`}>Subscriptions</Link></td>
+          <td key={String(subscribersArray[i])+2}><Link to={`history/${subscribersArray[i].accountAddress}/${false}`}>History</Link></td>,
+          <td key={String(subscribersArray[i])+3}><Link to={`subscriptions/${"subscriber"}/${subscribersArray[i].accountAddress}`}>Subscriptions</Link></td>
         )     
         table.push(<tr align="center" key={String(subscribersArray[i])}>{row}</tr>)
       }
@@ -33,6 +34,7 @@ const SubscribersTable = (props) => {
           <thead key="tableHead">
             <tr key="headRow" align="center">
               <th key="provAddressHead">Subscriber</th>
+              <th key="subsHistory">History</th>
               <th key="subsHead">Subscriptions</th>
             </tr>
           </thead>

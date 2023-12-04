@@ -375,15 +375,21 @@ const Admin = () => {
                   
             </Tab>
             <Tab eventKey="longer-tab" title="Subscribers">
+            { /*
                 <Accordion>
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>Subscriber List</Accordion.Header>
                         <Accordion.Body>
+                            */}
                             <SubscribersTable 
+                            
                                 allSubscribers = {allSubscribers}
+                            
                             />
+                            { /*
                         </Accordion.Body>
                     </Accordion.Item>
+                    { /*
                     <Accordion.Item eventKey="1">
                         <Accordion.Header>Subscriber History</Accordion.Header>
                         <Accordion.Body>
@@ -393,6 +399,7 @@ const Admin = () => {
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
+                */}
             </Tab>
  
         </Tabs>

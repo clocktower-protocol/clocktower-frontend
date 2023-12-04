@@ -16,7 +16,7 @@ import SubHistory from './routes/subhistory';
 import Admin from './routes/admin';
 import AdminSubscriptions from './routes/adminsubscriptions';
 import EditDetails from './routes/editdetails';
-import ProviderHistory from './routes/providerhistory';
+import AdminHistory from './routes/adminhistory';
 
 import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
 import { WagmiConfig, createConfig, configureChains } from 'wagmi'
@@ -109,8 +109,8 @@ const router = createBrowserRouter([
           element: <AdminSubscriptions />
         },
         {
-          path: "admin/provider/history/:a",
-          element: <ProviderHistory />
+          path: "admin/history/:a/:isp",
+          element: <AdminHistory />
         }
       ]
     },

@@ -9,7 +9,7 @@ import CreateSubForm from '../CreateSubForm';
 //import ProviderSubsTable from '../ProviderSubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 //import { zeroAddress } from '@ethereumjs/util';
-import { useContractWrite, useWaitForTransaction, usePublicClient, usePrepareContractWrite, useAccount } from 'wagmi'
+import { useContractWrite, useWaitForTransaction, usePublicClient, useAccount } from 'wagmi'
 //import { useDebounce } from 'usehooks-ts'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'

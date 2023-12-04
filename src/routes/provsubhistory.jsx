@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 //import Web3 from 'web3'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import { CLOCKTOWERSUB_ADDRESS} from "../config"; 
 //import ProvSubDetailTable from '../ProvSubDetailTable';
 import SubHistoryTable from '../SubHistoryTable';
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
 //import {ethers} from 'ethers'
 
-const ProvHistory = () => {
+const ProvSubHistory = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     /*
@@ -105,4 +105,4 @@ const ProvHistory = () => {
 
 } 
 
-export default ProvHistory
+export default ProvSubHistory

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react'
+import React, {useEffect, useState } from 'react'
 import {Alert} from 'react-bootstrap';
 //import Web3 from 'web3'
 import '../App.css';

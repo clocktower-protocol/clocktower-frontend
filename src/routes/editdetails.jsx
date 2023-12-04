@@ -8,8 +8,8 @@ import EditDetailsForm from '../EditDetailsForm';
 //import { fromString } from 'uint8arrays/from-string'
 //import {ecrecover, ecsign, privateToPublic} from '@ethereumjs/util'
 import { useContractWrite, useWaitForTransaction, usePublicClient, useSignMessage, erc20ABI, useAccount} from 'wagmi'
-import { readContract, writeContract } from 'wagmi/actions'
-import { parseAbiItem, formatEther, recoverMessageAddress } from 'viem'
+//import { readContract, writeContract } from 'wagmi/actions'
+import { parseAbiItem } from 'viem'
 
 const EditDetails = () => {
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Card, ListGroup, Button, Modal} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
-import Web3 from 'web3'
+//import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS} from "../config"; 
 import { useContractWrite, useWaitForTransaction, usePublicClient, useSignMessage, erc20ABI, useAccount} from 'wagmi'
 import { readContract, writeContract } from 'wagmi/actions'

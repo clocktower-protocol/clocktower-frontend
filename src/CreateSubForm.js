@@ -1,4 +1,4 @@
-import {React, userState, useEffect} from 'react';
+import {React } from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
 import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS} from './config';
 import Web3 from 'web3'

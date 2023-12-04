@@ -7,7 +7,7 @@ import SubscriptionsTable from '../SubscriptionsTable';
 import {usePublicClient} from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
-import AdminHistoryTable from '../AdminHistoryTable';
+//import AdminHistoryTable from '../AdminHistoryTable';
 
 const AdminSubscriptions = () => {
 

@@ -7,7 +7,7 @@ import { useOutletContext } from "react-router-dom";
 import SubHistoryTable from '../SubHistoryTable';
 import ProvidersTable from '../ProvidersTable';
 import CallerHistoryTable from '../CallerHistoryTable';
-import ProviderHistoryTable from '../ProviderHistoryTable';
+import ProviderHistoryTable from '../AdminHistoryTable';
 import SubscribersTable from '../SubscribersTable';
 import { usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'

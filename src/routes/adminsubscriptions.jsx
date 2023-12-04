@@ -4,6 +4,9 @@ import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import SubscriptionsTable from '../SubscriptionsTable';
+import { readContract } from 'wagmi/actions'
+import { parseAbiItem } from 'viem'
+import AdminHistoryTable from '../AdminHistoryTable';
 
 const AdminSubscriptions = () => {
 

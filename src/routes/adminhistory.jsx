@@ -5,7 +5,7 @@ import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT } from "../config";
 import { usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
-import ProviderHistoryTable from '../ProviderHistoryTable';
+import AdminHistoryTable from '../AdminHistoryTable';
 
 const AdminHistory = () => {
 
@@ -85,7 +85,7 @@ const AdminHistory = () => {
                     {history.length > 0 ? <Alert align="center" variant="dark">{title}&nbsp;&nbsp;&nbsp;{a}</Alert> : ""}
                 </div>
                 <div>
-                    <ProviderHistoryTable
+                    <AdminHistoryTable
                         providerHistory = {history}
                         isp = {isp}
                     />

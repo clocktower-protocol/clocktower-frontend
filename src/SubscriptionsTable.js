@@ -132,7 +132,7 @@ const SubscriptionsTable = (props) => {
 
         if(role === 2) {
           row.push(
-          <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}/${props.account}`}>History</Link></td>,
+          <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscription/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
           <td key={String(subscriptionArray[i].subscription.id)+7}><Button type="submit" onClick={() => props.setUnsubscribedSub(subscriptionArray[i].subscription)}>Unsubscribe</Button></td>
           )
       }

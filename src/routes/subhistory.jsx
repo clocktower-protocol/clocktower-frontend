@@ -27,7 +27,7 @@ const SubHistory = () => {
     const [historyArray, setHistoryArray] = useState([emptySubscriptionArray])
     //const [subscribers, setSubscribers] = useState([emptySubscriptionArray])
 
-    let {id, s, t} = useParams();
+    let {id, t} = useParams();
 
     useEffect(() => {
         //gets subscriber events

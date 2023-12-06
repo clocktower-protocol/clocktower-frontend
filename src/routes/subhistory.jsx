@@ -44,7 +44,7 @@ const SubHistory = () => {
         */
        getLogs()
 
-    }, []);
+    }, [account]);
 
     const getLogs = async () => {
 
@@ -53,10 +53,10 @@ const SubHistory = () => {
             event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
             fromBlock: 0n,
             toBlock: 'latest',
-            args: {id: id, subscriber:s}
+            args: {id: id, subscriber: account}
         })
 
-        //console.log(logs)
+        console.log(logs.length)
 
         setHistoryArray(logs)
     }
@@ -67,6 +67,11 @@ const SubHistory = () => {
             <Alert align="center" variant="info">Please Login</Alert>  
         )
     } else {
+        if(historyArray.length === 0) {
+            return(
+                <Alert align="center" variant="info">Switch Back to Subscriber</Alert>
+            )
+        } else {
         return (
         <div>
             <div>
@@ -81,6 +86,7 @@ const SubHistory = () => {
          
         </div>
         )
+        }
     }
 
 }

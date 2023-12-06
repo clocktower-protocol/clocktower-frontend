@@ -6,7 +6,7 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import { useOutletContext } from "react-router-dom";
 //import SubsTable from '../SubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
-import { useContractWrite, useWaitForTransaction, usePublicClient } from 'wagmi'
+import { useContractWrite, useWaitForTransaction, usePublicClient, useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 /* global BigInt */
@@ -15,6 +15,8 @@ const SubscriberDash = () => {
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
+
+    const { address } = useAccount()
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
@@ -133,8 +135,10 @@ const SubscriberDash = () => {
 
     const getSubscriberSubsWAGMI = async () => {
         //checks if user is logged into account
+
+        console.log(address)
        
-        if(!isLoggedIn()) {
+        if(!isLoggedIn() || account === "-1" || typeof address === "undefined") {
            console.log("Not Logged in")
            return
        }

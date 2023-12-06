@@ -3,7 +3,7 @@ import {Table} from 'react-bootstrap';
 import { PROVEVENT_LOOKUP, SUBEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'
 
-const ProviderHistoryTable = (props) => {
+const AdminHistoryTable = (props) => {
 
     const providerHistory = props.providerHistory
     const isp = props.isp
@@ -59,4 +59,4 @@ const ProviderHistoryTable = (props) => {
 
 }
 
-export default ProviderHistoryTable
+export default AdminHistoryTable

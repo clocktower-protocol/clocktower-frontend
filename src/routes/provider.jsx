@@ -19,7 +19,7 @@ import { parseAbiItem } from 'viem'
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
-    const { address } = useAccount()
+    const { address, connector: activeConnector } = useAccount()
 
     let isMounting = useRef(true)
 
@@ -207,7 +207,7 @@ const Provider = () => {
     const getProviderSubsWAGMI = async () => {
          //checks if user is logged into account
         
-         if(!isLoggedIn()) {
+         if(!isLoggedIn() || typeof address === "undefined") {
             console.log("Not Logged in")
             return
         }

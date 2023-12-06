@@ -363,41 +363,49 @@ const getDetails = async () => {
             <Alert align="center" variant="info">Please Login</Alert>  
         )
     } else {
-        return (
-        <div>
-             {alertMaker()}
+        if(account != details.provider) {
+            return (
+                <Alert align="center" variant="info">Unrecognized Subscription</Alert>
+            )
+
+        } else {
+            return (
             <div>
-                {details.description !== undefined ? <Alert align="center" variant="dark">Edit Details</Alert> : <Alert align="center" variant="info">Unrecognized Subscription</Alert>}
-            </div>
-            
-            <div className="subTable">
-                <EditDetailsForm
-                    details = {details}
-                    description = {description}
-                    domain = {domain}
-                    email = {email}
-                    url = {url}
-                    phone = {phone}
+                {alertMaker()}
+                
+                <div>
+                    {<Alert align="center" variant="dark">Edit Details</Alert>}
+                </div>
+                
+                <div className="subTable">
+                    <EditDetailsForm
+                        details = {details}
+                        description = {description}
+                        domain = {domain}
+                        email = {email}
+                        url = {url}
+                        phone = {phone}
 
 
-                    //editDetails = {editDetails}
-                   // testEncryption = {testEncryption}
-                   
-                    setDescription = {setDescription}
-                    setDomain = {setDomain}
-                    setEmail = {setEmail}
-                    setUrl = {setUrl}
-                    setPhone = {setPhone}
-                   
-                    setAlert = {setAlert}
-                    setAlertText = {setAlertText}
-                   
-                    setSubmittedDetails = {setSubmittedDetails}
-                />
+                        //editDetails = {editDetails}
+                    // testEncryption = {testEncryption}
+                    
+                        setDescription = {setDescription}
+                        setDomain = {setDomain}
+                        setEmail = {setEmail}
+                        setUrl = {setUrl}
+                        setPhone = {setPhone}
+                    
+                        setAlert = {setAlert}
+                        setAlertText = {setAlertText}
+                    
+                        setSubmittedDetails = {setSubmittedDetails}
+                    />
+                </div>
             </div>
-        </div>
-        )
-    }
+        
+            )
+    }   }
 }
 
 export default EditDetails 

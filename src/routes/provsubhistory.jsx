@@ -91,18 +91,21 @@ const ProvSubHistory = () => {
         setSubscribers(result)
     })
     */
-
+    console.log(historyArray[0].args)
+    if(typeof historyArray[0].args !== "undefined") {
     //checks that user has logged in 
     if(account == "-1") {
         return ( 
             <Alert align="center" variant="info">Please Login</Alert>  
         )
     } else {
+        
         if(historyArray[0].args.provider != account) {
                 return(
                     <Alert align="center" variant="info">Switch Back to Provider Account</Alert>
                 )
         } else {
+        
             return (
             <div>
                 <div>
@@ -118,6 +121,7 @@ const ProvSubHistory = () => {
             </div>
             )
         }
+    }
     }
 
 } 

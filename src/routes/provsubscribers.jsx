@@ -10,7 +10,7 @@ const ProvSubscribers = () => {
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
-    let {id, a, t} = useParams();
+    let {id, a, t, p} = useParams();
 
     /*
     //creates contract variable
@@ -119,19 +119,24 @@ const ProvSubscribers = () => {
             <Alert align="center" variant="info">Please Login</Alert>
         )
     } else {
-        
-        return (
-            <div>
-                <div className="subTable">
-                    <ProvSubscribersTable 
-                        subscribersArray = {subscribersArray}
-                        remainingCycles = {remainingCycles}
-                        ticker = {t}
-                    />
+        if(p != account) {
+            return(
+                <Alert align="center" variant="info">Must be Provider Account to View</Alert>
+            )
+        } else {
+            return (
+                <div>
+                    <div className="subTable">
+                        <ProvSubscribersTable 
+                            subscribersArray = {subscribersArray}
+                            remainingCycles = {remainingCycles}
+                            ticker = {t}
+                        />
+                    </div>
+                
                 </div>
-            
-            </div>
-        )
+            )
+        }
     }
 
 }

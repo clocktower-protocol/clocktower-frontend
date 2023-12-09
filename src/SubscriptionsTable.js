@@ -112,7 +112,7 @@ const SubscriptionsTable = (props) => {
         if(role === 1 && Number(totalSubscribers) > 0) {
             row.push(
             <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}`}>{Number(totalSubscribers)}</Link></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+9}><Link to={`../editdetails/${subscriptionArray[i].subscription.id}`}>Edit</Link></td>,

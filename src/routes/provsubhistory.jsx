@@ -52,18 +52,29 @@ const ProvSubHistory = () => {
 
     const getLogs = async () => {
 
-        
-        const logs = await publicClient.getLogs({
+        //looks up provider from contract
+        /*
+        await readContract({
             address: CLOCKTOWERSUB_ADDRESS,
-            event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
-            fromBlock: 0n,
-            toBlock: 'latest',
-            args: {id: id}
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'getAccountSubscriptions',
+            args: [false, account]
         })
+        .then(async function(result) {
+        */
+        
+            const logs = await publicClient.getLogs({
+                address: CLOCKTOWERSUB_ADDRESS,
+                event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, address provider, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
+                fromBlock: 0n,
+                toBlock: 'latest',
+                args: {id: id}
+            })
 
-        //console.log(logs)
+            //console.log(logs)
 
-        setHistoryArray(logs)
+            setHistoryArray(logs)
+      //  })
         
         /*
         const iface = new ethers.Interface(CLOCKTOWERSUB_ABI);
@@ -87,20 +98,26 @@ const ProvSubHistory = () => {
             <Alert align="center" variant="info">Please Login</Alert>  
         )
     } else {
-        return (
-        <div>
+        if(historyArray[0].args.provider != account) {
+                return(
+                    <Alert align="center" variant="info">Switch Back to Provider Account</Alert>
+                )
+        } else {
+            return (
             <div>
-                {historyArray.length > 0 ? <Alert align="center" variant="dark">Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
+                <div>
+                    {historyArray.length > 0 ? <Alert align="center" variant="dark">Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
+                </div>
+                
+                <div className="subTable">
+                    <SubHistoryTable 
+                        historyArray = {historyArray}
+                        ticker = {t}
+                    />
+                </div>
             </div>
-            
-            <div className="subTable">
-                <SubHistoryTable 
-                    historyArray = {historyArray}
-                    ticker = {t}
-                />
-            </div>
-        </div>
-        )
+            )
+        }
     }
 
 } 

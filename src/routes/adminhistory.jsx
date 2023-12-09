@@ -48,7 +48,7 @@ const AdminHistory = () => {
         } else {
             logs = await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
-                event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
+                event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, address provider, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
                 fromBlock: 0n,
                 toBlock: 'latest',
                 args: {subscriber: a}

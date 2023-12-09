@@ -3,7 +3,7 @@ import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal, Stack} from 'r
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
-import Web3 from 'web3'
+//import Web3 from 'web3'
 
 import { useAccount, useConnect } from 'wagmi'
 
@@ -43,11 +43,12 @@ const Root = () => {
     
     }, [address])
 
-
+    /*
     //creates contract variable
     const web3 = new Web3("http://localhost:8545")
    // const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS)
     const adminAccount = ADMIN_ACCOUNT
+    */
     
     /*
     //connects to metamask wallet

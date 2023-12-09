@@ -43,12 +43,11 @@ const Root = () => {
     
     }, [address])
 
-    /*
+    
     //creates contract variable
-    const web3 = new Web3("http://localhost:8545")
+   // const web3 = new Web3("http://localhost:8545")
    // const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS)
     const adminAccount = ADMIN_ACCOUNT
-    */
     
     /*
     //connects to metamask wallet

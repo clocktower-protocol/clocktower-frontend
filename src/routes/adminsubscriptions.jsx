@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-//import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import SubscriptionsTable from '../SubscriptionsTable';
 import {usePublicClient} from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
-//import AdminHistoryTable from '../AdminHistoryTable';
 
 const AdminSubscriptions = () => {
 
@@ -15,15 +13,6 @@ const AdminSubscriptions = () => {
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
-
-    /*
-    //creates contract variable
-    const web3 = new Web3("http://localhost:8545")
-     
-    //gets contract interface
-    const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
-    */
-    
 
     let {t,s} = useParams();
 
@@ -33,8 +22,6 @@ const AdminSubscriptions = () => {
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [detailsArray, setDetailsArray] = useState(emptySubscriptionArray)
     const [titleMessage, setTitleMessage] = useState("Subscribed To:")
-    //feeBalance array indexed to subscription array
-   // const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
     const [feeObjects, setFeeObjects] = useState(emptySubscriptionArray)
     const [isSubscriber, setIsSubscriber] = useState(true)
 
@@ -68,10 +55,7 @@ const AdminSubscriptions = () => {
         let feeObjects = []
         let feeBalance
         let remainingCycles
-        //let counter
 
-        //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
-        //const fee = await clocktowersub.methods.callerFee().call({from: account})
         //const cycles = Math.round(1 / ((fee / 10000) - 1))
         let fee =  await readContract({
             address: CLOCKTOWERSUB_ADDRESS,
@@ -84,8 +68,6 @@ const AdminSubscriptions = () => {
 
 
         //calls contract 
-        //subscriptions = await clocktowersub.methods.getSubscriptionsByAccount(isSubscriber, s).call({from: account})
-        //subscriptions = await clocktowersub.methods.getAccountSubscriptions(isSubscriber, s).call({from: account})
         subscriptions =  await readContract({
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
@@ -94,22 +76,13 @@ const AdminSubscriptions = () => {
         })
 
          //gets fee balance and remaining cycles
-        //for(const element of subscriptions) {
         for (var i = 0; i < subscriptions.length; i++) {
-            //const balance = await clocktowersub.methods.feeBalance(subscriptions[i].subscription.id, s).call({from: account})
             let balance =  await readContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'feeBalance',
                 args: [subscriptions[i].subscription.id, s]
             })
-            
-            
-            //converts from BigInt
-            //console.log(fee%10000n)
-            //fee = Number(fee)
-            //const cycles = Math.round(1n / ((fee / 10000n) - 1n))
-            //feeBalances.push(balance)
 
             balance = Number(balance)
 
@@ -118,8 +91,6 @@ const AdminSubscriptions = () => {
                 remainingCycles = Number(cycles)
             } else {
                 feeBalance = balance
-
-               // const subFee = element.subscription.amount / cycles
 
                 const remainingBalancePercent = (balance / Number(subscriptions[i].subscription.amount))
 
@@ -130,13 +101,7 @@ const AdminSubscriptions = () => {
             feeObjects.push(feeObject)
 
             //get description from logs
-            /*
-            await clocktowersub.getPastEvents('DetailsLog', {
-                filter: {id:[subscriptions[i].subscription.id]},
-                fromBlock: 0,
-                toBlock: 'latest'
-            }, function(error, events){ 
-            */
+          
             let filter = {provider: subscriptions[i].subscription.provider}
             //changes filter based on if its provider or subscriber
             if(isSubscriber) {
@@ -180,16 +145,6 @@ const AdminSubscriptions = () => {
         setDetailsArray(detailsArray)
        
     }
-
-    /*
-    const isTableEmpty = (subscriptionArray) => {
-        let count = 0
-        subscriptionArray.forEach(subscription => {
-            if(subscription.status !== 1) {count += 1}
-        })
-        if(count > 0) { return false } else {return true}
-    }
-    */
 
     //checks that user has logged in 
     if(account === "-1") {

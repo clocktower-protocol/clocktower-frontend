@@ -152,15 +152,11 @@ const CreateSubForm = (props) => {
     }
 
     const submitForm = async (event) => {
-        // const target = event.currentTarget;
 
-    
             event.preventDefault();
             event.stopPropagation();
 
             if(formValidate()) {
-                //props.createSubscription()
-                //props.createSubscription2()
                 const formDetails = {
                     domain: props.domain,
                     url: props.url,
@@ -171,23 +167,9 @@ const CreateSubForm = (props) => {
     
                 props.setDetails(formDetails)
                 
-               // props.createSubscription3()
             } else {
                 return
             }
-    
-            /*
-            //checks if allowance increase is needed
-            if(await enoughAllowance()) {
-            console.log("enough")
-            await addTransaction()
-            } else {
-            console.log("not enough")
-            await addTransactionPermit()
-            }
-        
-            await getAccountTransactions();
-            */
     
     };
 

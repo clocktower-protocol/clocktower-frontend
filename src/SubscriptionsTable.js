@@ -21,7 +21,6 @@ const SubscriptionsTable = (props) => {
     const detailsArray = props.detailsArray
 
     let bySubscriber = true
-    //const isAdmin = props.isAdmin
     const role = props.role
 
     let isAdmin = false
@@ -35,7 +34,6 @@ const SubscriptionsTable = (props) => {
 
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
-      //return TOKEN_LOOKUP.map((token) => {
       let tokenArray =  TOKEN_LOOKUP.map((token) => {
         if(token.address === tokenAddress) {
           return token.ticker
@@ -79,10 +77,8 @@ const SubscriptionsTable = (props) => {
           totalSubscribers = subscriptionArray[i].totalSubscribers
         }
 
-        //let subAmount = Web3.utils.fromWei(String(subscriptionArray[i].subscription.amount))
         let subAmount = formatEther(String(subscriptionArray[i].subscription.amount))
 
-       // console.log(subscriptionArray[i].subscription.frequency)
         if(role === 0) {
           row.push(
             <td key={String(subscriptionArray[i].subscription.id)+0}>{subscriptionArray[i].subscription.id.slice(0,8) + "..."}</td>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-//import Web3 from 'web3'
 import {formatEther} from 'viem'
 
 const ProvSubscribersTable = (props) => {

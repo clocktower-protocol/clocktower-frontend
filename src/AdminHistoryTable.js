@@ -37,7 +37,7 @@ const AdminHistoryTable = (props) => {
         <td key={String(event)}>{event}</td>,
         <td key={String(formatDate)}>{formatDate}</td>,
         )     
-        //table.push(<tr align="center" key={"asdfsadfsdfsdfsdf"+isp}>{row}</tr>)
+        
         table.push(<tr align="center" key={String(providerHistory[i].args.timestamp)+i}>{row}</tr>)
     }
 

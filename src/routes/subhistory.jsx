@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-//import Web3 from 'web3'
 import { CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import SubHistoryTable from '../SubHistoryTable';
 import { usePublicClient } from 'wagmi'
@@ -13,35 +12,16 @@ const SubHistory = () => {
     //gets public client for log lookup
     const publicClient = usePublicClient()
 
-    /*
-    //creates contract variable
-    const web3 = new Web3("http://localhost:8545")
-     
-    //gets contract interface
-    const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
-    */
-
     //creates empty array for table
     let emptySubscriptionArray = [];
    
     const [historyArray, setHistoryArray] = useState([emptySubscriptionArray])
-    //const [subscribers, setSubscribers] = useState([emptySubscriptionArray])
 
     let {id, t} = useParams();
 
     useEffect(() => {
         //gets subscriber events
         
-        /*
-        clocktowersub.getPastEvents('SubscriberLog', {
-            filter: {id:[id], subscriber:[s]},
-            fromBlock: 0,
-            toBlock: 'latest'
-        }, function(error, events){ 
-            //console.log(events)
-            setHistoryArray(events)
-        })
-        */
        getLogs()
 
     }, [account]);
@@ -55,8 +35,6 @@ const SubHistory = () => {
             toBlock: 'latest',
             args: {id: id, subscriber: account}
         })
-
-        console.log(logs.length)
 
         setHistoryArray(logs)
     }

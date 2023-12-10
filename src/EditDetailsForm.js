@@ -1,58 +1,32 @@
 import {React } from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-//import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE} from './config';
-//import Web3 from 'web3'
 
 const EditDetailsForm = (props) => {
 
-    /*
-    const [formDescription, setFormDescription] = useState(props.description)
-    const [formDomain, setFormDomain] = useState(props.domain)
-    const [formUrl, setFormUrl] = useState(props.url)
-    const [formEmail, setFormEmail] = useState(props.email)
-    const [formPhone, setFormPhone] = useState(props.phone)
-
-    //const details = props.details
-    useEffect(() => {
-        setFormDescription(props.description)
-        setFormDomain(props.domain)
-        setFormUrl(props.url)
-        setFormEmail(props.email)
-        setFormPhone(props.phone)
-    },[])
-
-    console.log(props.domain)
-    */
-    //console.log(formDomain)
     //Event listeners-----------------------------
     const descriptionChange = (event) => {
         //sets description
         props.setDescription(event.target.value)
-        //setFormDescription(event.target.value)
     }
 
     const domainChange = (event) => {
         //sets description
         props.setDomain(event.target.value)
-        //setFormDomain(event.target.value)
     }
     
     const urlChange = (event) => {
         //sets description
         props.setUrl(event.target.value)
-        //setFormUrl(event.target.value)
     }
 
     const emailChange = (event) => {
         //sets description
         props.setEmail(event.target.value)
-        //setFormEmail(event.target.value)
     }
 
     const phoneChange = (event) => {
         //sets description
         props.setPhone(event.target.value)
-        //setFormPhone(event.target.value)
     }
 
     //Form Validation
@@ -62,7 +36,6 @@ const EditDetailsForm = (props) => {
 
         //checks amount
         if(props.description.length > 255) {
-        //if(formDescription.length > 255) {
             console.log (
                 "Description too long"
             )
@@ -96,7 +69,6 @@ const EditDetailsForm = (props) => {
 
         //validates email address
         if(props.email != ""){
-       // if(formEmail != ""){
             let regexEmail = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
             if(!regexEmail.test(props.email)) {
                 console.log("Not a valid email")
@@ -120,16 +92,7 @@ const EditDetailsForm = (props) => {
         
 
         if(formValidate()) {
-            //props.editDetails()
-            /*
-            const formDetails = {
-                domain: formDomain,
-                url: formUrl,
-                email: formEmail,
-                phone: formPhone,
-                description: formDescription
-            }
-            */
+          
             const formDetails = {
                 domain: props.domain,
                 url: props.url,
@@ -138,18 +101,11 @@ const EditDetailsForm = (props) => {
                 description: props.description
             }
 
-           // console.log(formDetails.domain)
-            //console.log(formDomain)
-           // console.log(formDetails.url)
-           // console.log(formDetails.email)
-
             props.setSubmittedDetails(formDetails)
 
         } else {
             return
         }
-        
-      // props.testEncryption()
     
     };
 

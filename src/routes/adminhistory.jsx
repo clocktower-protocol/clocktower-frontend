@@ -3,7 +3,6 @@ import {Alert} from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router-dom"
 import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT } from "../config"; 
 import { usePublicClient } from 'wagmi'
-//import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import AdminHistoryTable from '../AdminHistoryTable';
 
@@ -56,14 +55,8 @@ const AdminHistory = () => {
             setTitle("Subscriber: ")
         }
 
-        //console.log(logs[0].args.provevent)
-
         setHistory(logs)
         
-        /*
-        const iface = new ethers.Interface(CLOCKTOWERSUB_ABI);
-        console.log(iface.format('full'));
-        */
     }
 
 

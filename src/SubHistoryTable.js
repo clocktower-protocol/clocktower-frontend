@@ -1,6 +1,5 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-//import Web3 from 'web3'
 import { SUBEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'
 import {TOKEN_LOOKUP} from "./config";
@@ -12,7 +11,6 @@ const SubHistoryTable = (props) => {
 
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
-      //return TOKEN_LOOKUP.map((token) => {
       let tokenArray =  TOKEN_LOOKUP.map((token) => {
         if(token.address === tokenAddress) {
           return token.ticker

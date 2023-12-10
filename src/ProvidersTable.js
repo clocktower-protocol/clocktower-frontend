@@ -15,8 +15,6 @@ const ProvidersTable = (props) => {
     let table = []
     let tableTop = []
 
-    //console.log(providersArray.length)
-
     //loops through array to create table rows
     for(let i = 0; i < providersArray.length; i++) {
    

@@ -1,10 +1,8 @@
 import React, {useEffect, useState } from 'react'
 import {Alert} from 'react-bootstrap';
-//import Web3 from 'web3'
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
-//import SubsTable from '../SubsTable';
 import SubscriptionsTable from '../SubscriptionsTable';
 import { useContractWrite, useWaitForTransaction, usePublicClient, useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
@@ -27,18 +25,7 @@ const SubscriberDash = () => {
     const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
     const [detailsArray, setDetailsArray] = useState(emptySubscriptionArray)
     const [unsubscribedSub, setUnsubscribedSub] = useState({})
-    //const [isEmpty, setIsEmpty] = useState(false)
-     //feeBalance array indexed to subscription array
-    //const [feeBalanceArray, setFeeBalanceArray] = useState(emptySubscriptionArray)
-
-    /*
-    //creates contract variable
-    const web3 = new Web3("http://localhost:8545")
-     
-    //gets contract interface
-    const clocktowersub = new web3.eth.Contract(CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS);
-    */
-
+   
      //loads provider subscription list upon login
      useEffect(() => {
         getSubscriberSubsWAGMI()
@@ -76,7 +63,6 @@ const SubscriberDash = () => {
 
         if(unsubscribeWait.isSuccess) {
 
-           // console.log(data.status)
             //turns off alert
             setAlert(false)
             setAlertType("danger")
@@ -98,40 +84,6 @@ const SubscriberDash = () => {
         }
     }
 
-    /*
-     //confirms transaction by looping until it gets confirmed
-     const confirmTransaction = async (txHash) => {
-
-        //gets transaction details
-        const trx = await web3.eth.getTransaction(txHash)
-
-        //console.log(txHash)
-
-        let isDone = false;
-        
-        //trys every five seconds to see if transaction is confirmed
-        isDone = setTimeout(async () => {
-
-        // console.log(trx.blockNumber)
-        if(trx.blockNumber) {
-            //turns off alert and loads/reloads table
-            setAlert(false)
-            setAlertType("danger")
-            await getSubscriberSubsWAGMI()
-            return true
-        }
-
-        //return await this.confirmTransaction(txHash)
-        await confirmTransaction(txHash)
-        return false
-        },5*1000)
-
-        
-        if(isDone) {
-        return true
-        } 
-    }
-    */
 
     const getSubscriberSubsWAGMI = async () => {
         //checks if user is logged into account
@@ -154,8 +106,6 @@ const SubscriberDash = () => {
        })
        .then(async function(result) {
            accountSubscriptions = result
-
-           console.log(accountSubscriptions)
 
            //loops through each subscription
            for (var i = 0; i < accountSubscriptions.length; i++) {
@@ -192,101 +142,12 @@ const SubscriberDash = () => {
                    }
                    
                })
-
-               console.log(detailsArray)
                
            }
            setSubscriptionArray(accountSubscriptions)
            setDetailsArray(detailsArray)
        })
    }
-
-   /*
-    const getSubscriberSubs = async () => {
-        //checks if user is logged into account
-       if(!isLoggedIn()) {
-           console.log("Not Logged in")
-           return
-       }
-           
-       //variable to pass scope so that the state can be set
-       let accountSubscriptions = []
-       //let feeBalances = []
-   
-       //calls contract 
-       accountSubscriptions = await clocktowersub.methods.getAccountSubscriptions(true, account).call({from: account})
-
-       //gets details array
-       for (var i = 0; i < accountSubscriptions.length; i++) {
-            //finds the latest details log
-            //get description from logs
-            await clocktowersub.getPastEvents('DetailsLog', {
-                filter: {id:[accountSubscriptions[i].subscription.id]},
-                fromBlock: 0,
-                toBlock: 'latest'
-            }, function(error, events){ 
-                //checks for latest update by getting highest timestamp
-                if(events != undefined) {
-                    let time = 0
-                    let index = 0
-                
-                    if(events.length > 0) {
-                        for (var j = 0; j < events.length; j++) {
-                            if(time < events[j].timestamp)
-                            {
-                                time = events[j].timestamp
-                                index = j
-                            }
-                        }
-                        //adds latest details to details array
-                        detailsArray[i] = events[index].returnValues
-                    }    
-                }
-            })
-        }
-
-       setSubscriptionArray(accountSubscriptions)
-       setDetailsArray(detailsArray)
-
-       /*
-       //gets fee balance
-       for(const element of accountSubscriptions) {
-            feeBalances.push(await clocktowersub.methods.feeBalance(element.subscription.id, account))
-       }
-
-       setFeeBalanceArray(feeBalances)
-       */
-       /*
-       .then(function(result) {
-           accountSubscriptions = result
-           setSubscriptionArray(accountSubscriptions)
-       })
-       */
-  // }
-   
-/*
-   const unsubscribe = async (subscription) => {
-        const transactionParameters = {
-            to: CLOCKTOWERSUB_ADDRESS, // Required except during contract publications.
-            from: account, // must match user's active address.
-            data: clocktowersub.methods.unsubscribe(subscription).encodeABI(),
-        // value: feeHex
-        }
-
-        const txhash = await window.ethereum.request({
-            method: "eth_sendTransaction",
-            params: [transactionParameters],
-        });
-        
-        //turns on alert ahead of confirmation check loop so user doesn't see screen refresh
-        setAlertType("warning")
-        setAlert(true)
-        setAlertText("Transaction Pending...")
-
-        //TODO: need to update to emit method
-        await confirmTransaction(txhash)
-   }
-*/
    
    const isTableEmpty = () => {
         let count = 0

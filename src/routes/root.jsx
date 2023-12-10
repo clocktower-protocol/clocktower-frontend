@@ -1,7 +1,7 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState, useEffect, useCallback} from 'react';
 import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal, Stack} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
-import { Outlet} from "react-router-dom";
+import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 //import Web3 from 'web3'
 
@@ -18,6 +18,12 @@ const Root = () => {
 
     const handleClose = () => setShowWalletChoice(false);
     const handleShow = () => setShowWalletChoice(true);
+
+    //functions for links
+    const navigate = useNavigate();
+    const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
+    const handleOnClickSub = useCallback(() => navigate('/subscriberdash', {replace: true}), [navigate])
+    const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
 
     //WAGMI
     const {connector: activeConnector, address, isConnected } = useAccount({
@@ -207,6 +213,17 @@ const Root = () => {
         <div className="sideNav2">
         <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
         <Nav defaultActiveKey="/home" className="flex-column">
+          
+          <div className='sideButtons'>
+          <Stack gap={3}>
+            <Button variant="outline-info" onClick={handleOnClickProv}>Provider</Button>{' '}
+            <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber</Button>{' '}
+            {account === adminAccount ?
+            <Button variant="outline-info" onClick={handleOnClickAdmin}>Admin</Button>
+            : ""}
+          </Stack>
+          </div>
+          {/*
           <NavDropdown title="Subscriptions" id="nav-sub">
             <LinkContainer to="/provider">
               <NavDropdown.Item eventKey="4.1">Provider Dashboard</NavDropdown.Item>
@@ -216,19 +233,19 @@ const Root = () => {
             </LinkContainer>
             {/*
               <NavDropdown.Item eventKey="4.3">Subscriptions</NavDropdown.Item>
-          */}
+          }
           </NavDropdown>
+        */}
           {/*
           <LinkContainer to="/payments">
             <Nav.Link>Future Payments</Nav.Link>
           </LinkContainer>
-          */}
-        {account == adminAccount ?
-        
+      */}
+        {/*account == adminAccount ?
           <LinkContainer to="/admin">
             <Nav.Link>Admin</Nav.Link>
           </LinkContainer>
-        : ""}   
+    : ""*/}   
         </Nav>
         </Navbar>
         </div>

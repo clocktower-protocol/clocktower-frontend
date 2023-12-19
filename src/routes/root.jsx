@@ -23,6 +23,7 @@ const Root = () => {
     const navigate = useNavigate();
     const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
     const handleOnClickSub = useCallback(() => navigate('/subscriberdash', {replace: true}), [navigate])
+    const handleOnClickAccount = useCallback(() => navigate('/account', {replace: true}), [navigate])
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
 
     //WAGMI
@@ -128,6 +129,7 @@ const Root = () => {
           
           <div className='sideButtons'>
           <Stack gap={3}>
+            <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickProv}>Provider Dash</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber Dash</Button>{' '}
             {account === adminAccount ?

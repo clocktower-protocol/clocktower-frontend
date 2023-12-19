@@ -17,6 +17,7 @@ import Admin from './routes/admin';
 import AdminSubscriptions from './routes/adminsubscriptions';
 import EditDetails from './routes/editdetails';
 import AdminHistory from './routes/adminhistory';
+import Account from './routes/account';
 
 import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
 import { WagmiConfig, createConfig, configureChains } from 'wagmi'
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
         {
           path: "provider/",
           element: <Provider />,
+        },
+        {
+          path: "account/",
+          element: <Account />,
         },
         {
           path: "provider/history/:id",

@@ -38,7 +38,7 @@ const AdminHistory = () => {
         if(isp === "true"){
             logs = await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
-                event: parseAbiItem('event ProviderLog(bytes32 indexed id, address indexed provider, uint40 timestamp, uint256 amount, address token, uint8 indexed provevent)'),
+                event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
                 fromBlock: 0n,
                 toBlock: 'latest',
                 args: {provider: a}
@@ -47,7 +47,7 @@ const AdminHistory = () => {
         } else {
             logs = await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
-                event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, address provider, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
+                event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
                 fromBlock: 0n,
                 toBlock: 'latest',
                 args: {subscriber: a}

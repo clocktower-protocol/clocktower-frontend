@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-import { PROVEVENT_LOOKUP, SUBEVENT_LOOKUP } from './config';
+import { PROVEVENT_LOOKUP, SUBEVENT_LOOKUP, SUBSCRIPTEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'
 
 const AdminHistoryTable = (props) => {
@@ -24,12 +24,16 @@ const AdminHistoryTable = (props) => {
         let row = []
 
         let formatDate = dayjs.unix(Number(providerHistory[i].args.timestamp)).format('MM/DD/YYYY h:mm:s A')
+        
+        const event = SUBSCRIPTEVENT_LOOKUP[providerHistory[i].args.subscriptevent]
+        /*
         let event = ""
         if(isp === "true"){
             event = PROVEVENT_LOOKUP[providerHistory[i].args.provevent]
         } else {
             event = SUBEVENT_LOOKUP[providerHistory[i].args.subevent]
         }
+        */
 
 
         row.push(

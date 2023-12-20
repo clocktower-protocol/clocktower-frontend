@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router-dom";
 import React, {useEffect, useState, useAccount} from 'react'
-import {Alert, Row, Col, Container} from 'react-bootstrap';
+import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 
 
@@ -43,21 +43,50 @@ const Account = () => {
                     <div className="clockBody">
                         <div>  
                             <div>
-                                <Container>
-                                    <Row>
-                                        <Col>
-                                        <Avatar
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title> <Avatar
                                             size={75}
                                             name={account}
-                                            variant="ring"
+                                            variant="pixel"
                                             colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
-                                        />
-                                        </Col>
+                                    />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{account}
+                                    </Card.Title>
+                                    <Row>
                                         <Col>
-                                            {account}
+                                            <Stack gap={3}>
+                                            <ListGroup horizontal={'lg'}>
+                                                <ListGroup.Item variant="primary">Description</ListGroup.Item>
+                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                            </ListGroup>
+                                            <ListGroup horizontal={'lg'}>
+                                                <ListGroup.Item variant="primary">Company</ListGroup.Item>
+                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                            </ListGroup>
+                                            <ListGroup horizontal={'lg'}>
+                                                <ListGroup.Item variant="primary">Domain</ListGroup.Item>
+                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                            </ListGroup>
+                                            <ListGroup horizontal={'lg'}>
+                                                <Button variant="outline-info">Verify Domain</Button>
+                                            </ListGroup>
+                                            <ListGroup horizontal={'lg'}>
+                                                <ListGroup.Item variant="primary">URL</ListGroup.Item>
+                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                            </ListGroup>
+                                            <ListGroup horizontal={'lg'}>
+                                                <ListGroup.Item variant="primary">Status</ListGroup.Item>
+                                                <ListGroup.Item variant="success">Domain Verified</ListGroup.Item>
+                                            </ListGroup>
+                                            <ListGroup horizontal={'lg'}>
+                                                <Button variant="outline-info">Edit Details</Button>
+                                            </ListGroup>
+                                            </Stack>
+                                           
                                         </Col>
                                     </Row>
-                                </Container>
+                                </Card.Body>
+                            </Card>
                             </div>
                         </div>
                     </div>

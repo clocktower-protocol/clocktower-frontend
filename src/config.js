@@ -827,6 +827,10 @@ export const PROVEVENT_LOOKUP = [
   "Create", "Cancel", "Paid", "Fail"
 ]
 
+export const SUBSCRIPTEVENT_LOOKUP = [
+  "Create", "Cancel", "ProvPaid", "Fail", "ProvRefund", "SubPaid", "Subscribed", "Unsubscribed", "Feefill", "SubRefund"
+]
+
 export const CLOCKTOKEN_ABI = [
   {
     "inputs": [
@@ -2304,8 +2308,7 @@ export const CLOCKTOWERPAY_ABI = [
 ]
 
 
-export const CLOCKTOWERSUB_ABI = 
-[
+export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [],
     "stateMutability": "payable",
@@ -2438,6 +2441,55 @@ export const CLOCKTOWERSUB_ABI =
       }
     ],
     "name": "ProviderLog",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "provider",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "subscriber",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint40",
+        "name": "timestamp",
+        "type": "uint40"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum ClockTowerSubscribe.SubscriptEvent",
+        "name": "subScriptEvent",
+        "type": "uint8"
+      }
+    ],
+    "name": "SubLog",
     "type": "event"
   },
   {

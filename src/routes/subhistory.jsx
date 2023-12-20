@@ -30,7 +30,7 @@ const SubHistory = () => {
 
         const logs = await publicClient.getLogs({
             address: CLOCKTOWERSUB_ADDRESS,
-            event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, address provider, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
+            event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
             fromBlock: 0n,
             toBlock: 'latest',
             args: {id: id, subscriber: account}

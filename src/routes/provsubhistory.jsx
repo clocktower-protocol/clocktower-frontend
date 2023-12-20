@@ -32,17 +32,20 @@ const ProvSubHistory = () => {
         //looks up provider from contract
             const logs = await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
-                event: parseAbiItem('event SubscriberLog(bytes32 indexed id, address indexed subscriber, address provider, uint40 timestamp, uint256 amount, address token, uint8 indexed subevent)'),
+                event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
                 fromBlock: 0n,
                 toBlock: 'latest',
                 args: {id: id}
             })
 
+            console.log(logs)
+
             setHistoryArray(logs)
     }
 
-    console.log(historyArray[0].args)
-    if(typeof historyArray[0].args !== "undefined") {
+    //console.log(historyArray[0].args)
+    //if(typeof historyArray[0].args !== "undefined") {
+    if(historyArray.length > 0 && typeof historyArray[0].args !== "undefined") {
     //checks that user has logged in 
     if(account == "-1") {
         return ( 
@@ -66,13 +69,14 @@ const ProvSubHistory = () => {
                     <SubHistoryTable 
                         historyArray = {historyArray}
                         ticker = {t}
+                        isProvider = {true}
                     />
                 </div>
             </div>
             )
         }
     }
-    }
+    } 
 
 } 
 

@@ -1,23 +1,93 @@
 import { useOutletContext } from "react-router-dom";
-import React, {useEffect, useState, useAccount} from 'react'
+import React, {useEffect, useState } from 'react'
 import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal} from 'react-bootstrap';
 import Avatar from "boring-avatars"
-
+import { useSignMessage, useAccount} from "wagmi";
+import {recoverMessageAddress } from 'viem'
 
 const Account = () => {
 
     //const { address, connector: activeConnector } = useAccount()
+    const { address } = useAccount()
 
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     const [alertType, setAlertType] = useState("danger")
     const [showEditWarn, setShowEditWarn] = useState(false);
+    const [verifyShow, setVerifyShow] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false)
+    const [copyTitle, setCopyTitle] = useState("Copy")
+    const [isDomainVerified, setIsDomainVerified] = useState(false)
+    const msg = 'test'
 
+    //hook for signing messages
+    const {data: signMessageData, error, isLoading, signMessage, variables}  = useSignMessage({
+        message: msg
+    })
+
+    //gets signed message
+    useEffect(() => {
+        ;(async () => {
+            if (signMessageData) {
+              const recoveredAddress = await recoverMessageAddress({
+                message: variables?.message,
+                signature: signMessageData,
+              })
+              if(recoveredAddress == address){
+                console.log("here")
+                setCopyTitle("Copy")
+                setIsDisabled(false)
+                verifyHandleShow()
+              }
+            }
+        })()
+
+    },[signMessageData])
+
+    const verifyDomain = async (domain, provAddress) => {
+
+        let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
+
+        console.log(url)
+
+        //checks dns record
+         try {
+            var response = await fetch(url);
+                
+                var json = await response.json();
+                if(json.Answer[0].data !== undefined){
+                    console.log(json.Answer[0].data);
+                    //verifies signature
+                    const dnsRecoveredAddress = await recoverMessageAddress({
+                        message: msg,
+                        signature: json.Answer[0].data,
+                      })
+                    console.log(dnsRecoveredAddress)
+                    if(dnsRecoveredAddress == provAddress) {
+                        setIsDomainVerified(true)
+                        console.log("TRUE!")
+                    }
+                }
+            }
+             catch(Err) {
+                console.log(Err)
+            }
+    }
+
+    //turns on and off edit warning modal
     const editHandleClose = () => setShowEditWarn(false);
     const editHandleShow = () => setShowEditWarn(true);
 
+    //turns on and off verify domain modal 
+    const verifyHandleClose = () => setVerifyShow(false);
+    const verifyHandleShow = () => setVerifyShow(true);
+
     const editButtonClick = () => {
         editHandleShow()
+    }
+
+    const verifyButtonClick = () => {
+        verifyHandleShow()
     }
 
     //Creates alert
@@ -43,23 +113,51 @@ const Account = () => {
                     {alertMaker()}
                     <div className="clockBody">
                         <div>
-                        <Modal show={showEditWarn} onHide={editHandleClose} centered>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Warning</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <p>
-                                    All information saved to the account will be stored publically on the blockchain. 
-                                </p>
-                                <p>
-                                    While this will help subscribers to verify your information your account will no longer be anonymous.
-                                </p>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={editHandleClose}>Close</Button>
-                                <Button variant="primary">Continue</Button>
-                            </Modal.Footer>
-                        </Modal>
+                            <Modal show={showEditWarn} onHide={editHandleClose} centered>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Warning</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <p>
+                                        All information saved to the account will be stored publically on the blockchain. 
+                                    </p>
+                                    <p>
+                                        This will help subscribers verify your information but your account will no longer be anonymous.
+                                    </p>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={editHandleClose}>Close</Button>
+                                    <Button variant="primary">Continue</Button>
+                                </Modal.Footer>
+                            </Modal>
+                        </div>
+                        <div>
+                            <Modal show={verifyShow} size="xl" onHide={verifyHandleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Verify Domain</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>Create the following domain record: 
+                                    <p></p> Step 1: Use the copy button below to copy the hash 
+                                    <p></p> {String(signMessageData).slice(0,85)}<br></br>{String(signMessageData).slice(86,170)}
+                                    <p></p> Step 2: Create a new txt record at your domain registrar name "ct"
+                                    <p></p> Step 3: Paste hash into data field of new record
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="primary" 
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(signMessageData)
+                                        setIsDisabled(true)
+                                        setCopyTitle("Copied")
+                                    }}
+                                    disabled = {isDisabled}
+                                    >
+                                        {copyTitle}
+                                    </Button>
+                                    <Button variant="secondary" onClick={verifyHandleClose}>
+                                        Close
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
                         </div>
                         <div>  
                             <div>
@@ -111,7 +209,9 @@ const Account = () => {
                                         </Col>
                                         <Col>
                                             <ListGroup horizontal={'lg'}>
-                                                <Button variant="outline-info">Verify Domain</Button>
+                                                <Button variant="outline-info" onClick={async () => {
+                                                    signMessage()
+                                                }}>Verify Domain</Button>
                                             </ListGroup>
                                         </Col>
                                     </Row>

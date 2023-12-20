@@ -52,39 +52,50 @@ const Account = () => {
                                             colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
                                     />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{account}
                                     </Card.Title>
+                                    <Stack gap={3}>
                                     <Row>
                                         <Col>
                                             <Stack gap={3}>
-                                            <ListGroup horizontal={'lg'}>
-                                                <ListGroup.Item variant="primary">Description</ListGroup.Item>
-                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
-                                            </ListGroup>
-                                            <ListGroup horizontal={'lg'}>
-                                                <ListGroup.Item variant="primary">Company</ListGroup.Item>
-                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
-                                            </ListGroup>
-                                            <ListGroup horizontal={'lg'}>
-                                                <ListGroup.Item variant="primary">Domain</ListGroup.Item>
-                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
-                                            </ListGroup>
-                                            <ListGroup horizontal={'lg'}>
-                                                <Button variant="outline-info">Verify Domain</Button>
-                                            </ListGroup>
-                                            <ListGroup horizontal={'lg'}>
-                                                <ListGroup.Item variant="primary">URL</ListGroup.Item>
-                                                <ListGroup.Item>Blah Blah</ListGroup.Item>
-                                            </ListGroup>
-                                            <ListGroup horizontal={'lg'}>
-                                                <ListGroup.Item variant="primary">Status</ListGroup.Item>
-                                                <ListGroup.Item variant="success">Domain Verified</ListGroup.Item>
-                                            </ListGroup>
+                                                <ListGroup horizontal={'lg'}>
+                                                    <ListGroup.Item variant="primary">Status</ListGroup.Item>
+                                                    <ListGroup.Item variant="warning">Domain Unverified</ListGroup.Item>
+                                                </ListGroup>
+                                                <ListGroup horizontal={'lg'}>
+                                                    <ListGroup.Item variant="primary">Description</ListGroup.Item>
+                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                </ListGroup>
+                                                <ListGroup horizontal={'lg'}>
+                                                    <ListGroup.Item variant="primary">Company</ListGroup.Item>
+                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                </ListGroup>
+                                            </Stack>  
+                                        </Col>
+                                        <Col>
+                                            <Stack gap={3}>     
+                                                <ListGroup horizontal={'lg'}>
+                                                    <ListGroup.Item variant="primary">URL</ListGroup.Item>
+                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                </ListGroup>
+                                                <ListGroup horizontal={'lg'}>
+                                                    <ListGroup.Item variant="primary">Domain</ListGroup.Item>
+                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                </ListGroup>
+                                            </Stack>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
                                             <ListGroup horizontal={'lg'}>
                                                 <Button variant="outline-info">Edit Details</Button>
                                             </ListGroup>
-                                            </Stack>
-                                           
+                                        </Col>
+                                        <Col>
+                                            <ListGroup horizontal={'lg'}>
+                                                <Button variant="outline-info">Verify Domain</Button>
+                                            </ListGroup>
                                         </Col>
                                     </Row>
+                                    </Stack>
                                 </Card.Body>
                             </Card>
                             </div>

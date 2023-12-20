@@ -2416,49 +2416,6 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "address"
       },
       {
-        "indexed": false,
-        "internalType": "uint40",
-        "name": "timestamp",
-        "type": "uint40"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "enum ClockTowerSubscribe.ProvEvent",
-        "name": "provEvent",
-        "type": "uint8"
-      }
-    ],
-    "name": "ProviderLog",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "id",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "provider",
-        "type": "address"
-      },
-      {
         "indexed": true,
         "internalType": "address",
         "name": "subscriber",
@@ -2490,55 +2447,6 @@ export const CLOCKTOWERSUB_ABI = [
       }
     ],
     "name": "SubLog",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "id",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "subscriber",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "provider",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint40",
-        "name": "timestamp",
-        "type": "uint40"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "enum ClockTowerSubscribe.SubEvent",
-        "name": "subEvent",
-        "type": "uint8"
-      }
-    ],
-    "name": "SubscriberLog",
     "type": "event"
   },
   {
@@ -3406,6 +3314,7 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+
 
 
 export const FEE = 1.1;

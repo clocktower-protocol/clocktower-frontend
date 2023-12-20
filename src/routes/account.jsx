@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router-dom";
 import React, {useEffect, useState, useAccount} from 'react'
-import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack} from 'react-bootstrap';
+import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 
 
@@ -11,13 +11,14 @@ const Account = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     const [alertType, setAlertType] = useState("danger")
-    const [avatarText, setAvatarText] = useState("")
+    const [showEditWarn, setShowEditWarn] = useState(false);
 
-    useEffect(() => {
+    const editHandleClose = () => setShowEditWarn(false);
+    const editHandleShow = () => setShowEditWarn(true);
 
-        setAvatarText(account)
-        
-    },[account])
+    const editButtonClick = () => {
+        editHandleShow()
+    }
 
     //Creates alert
     const alertMaker = () => {
@@ -41,6 +42,25 @@ const Account = () => {
                 <div className="clockMeta">
                     {alertMaker()}
                     <div className="clockBody">
+                        <div>
+                        <Modal show={showEditWarn} onHide={editHandleClose} centered>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Warning</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p>
+                                    All information saved to the account will be stored publically on the blockchain. 
+                                </p>
+                                <p>
+                                    While this will help subscribers to verify your information your account will no longer be anonymous.
+                                </p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={editHandleClose}>Close</Button>
+                                <Button variant="primary">Continue</Button>
+                            </Modal.Footer>
+                        </Modal>
+                        </div>
                         <div>  
                             <div>
                             <Card>
@@ -86,7 +106,7 @@ const Account = () => {
                                     <Row>
                                         <Col>
                                             <ListGroup horizontal={'lg'}>
-                                                <Button variant="outline-info">Edit Details</Button>
+                                                <Button variant="outline-info" onClick = {() => editButtonClick()}>Edit Details</Button>
                                             </ListGroup>
                                         </Col>
                                         <Col>

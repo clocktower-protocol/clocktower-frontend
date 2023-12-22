@@ -3,13 +3,16 @@ import React, {useEffect, useState , useRef} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal} from 'react-bootstrap';
 import Avatar from "boring-avatars"
-import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction} from "wagmi";
-import {recoverMessageAddress } from 'viem'
+import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction, usePublicClient} from "wagmi";
+import {recoverMessageAddress, parseAbiItem } from 'viem'
 import EditAccountForm from "../EditAccountForm";
 
 const Account = () => {
 
     let isMounting = useRef(true)
+
+    //gets public client for log lookup
+    const publicClient = usePublicClient()
 
     //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
@@ -28,12 +31,16 @@ const Account = () => {
     const [company, setCompany] = useState("")
     const [url, setUrl] = useState("")
     const [domain, setDomain] = useState("")
+    const [changedAccountDetails, setChangedAccountDetails] = useState({})
     const [accountDetails, setAccountDetails] = useState({})
+
     const msg = 'test'
 
      //sets mounting bool to not mounting after initial load
     useEffect(() => {
         isMounting.current = true
+
+        getAccount()
     },[])
 
     //function for editing account
@@ -41,7 +48,7 @@ const Account = () => {
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'editProvDetails',
-        args: [accountDetails]
+        args: [changedAccountDetails]
     })
 
     const editAccountWait = useWaitForTransaction({
@@ -76,12 +83,12 @@ const Account = () => {
     //hook for account form changes
     useEffect(() => {
           //calls wallet
-          if(!isMounting.current && Object.keys(accountDetails).length !== 0) {
+          if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
             editAccount.write()
         } else {
             isMounting.current = false
         }
-    },[accountDetails])
+    },[changedAccountDetails])
 
     //shows alert when waiting for transaction to finish
     useEffect(() => {
@@ -100,7 +107,8 @@ const Account = () => {
             setAlertType("danger")
             console.log("done")
             
-            //!!
+            editFormHandleClose()
+            getAccount()
         }
     },[editAccountWait.isLoading, editAccountWait.isSuccess])
 
@@ -155,6 +163,67 @@ const Account = () => {
 
     const verifyButtonClick = () => {
         verifyHandleShow()
+    }
+
+    //gets account info
+    const getAccount = async () => {
+
+        //checks if user is logged into account
+        if(!isLoggedIn() || typeof address === "undefined") {
+            console.log("Not Logged in")
+            return
+        }
+
+        //checks dns record
+        try {
+            var response = await fetch('https://dns.google/resolve?name=ct.clocktower.finance&type=TXT');
+                
+            var json = await response.json();
+             if(json.Answer[0].data !== undefined){
+                console.log(json.Answer[0].data);
+            }
+        }
+        catch(Err) {
+            console.log(Err)
+        }
+
+        //variable to pass scope so that the state can be set
+        let accountDetails = {}
+
+        try{
+            await publicClient.getLogs({
+                address: CLOCKTOWERSUB_ADDRESS,
+                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain)'),
+                fromBlock: 0n,
+                toBlock: 'latest',
+                args: {provider: account}
+            }) 
+            .then(async function(events){
+                 //checks for latest update by getting highest timestamp
+                 if(events != undefined) {
+                        
+                    let time = 0
+                    let index = 0
+                    
+                    if(events.length > 0)
+                    {
+                        for (var j = 0; j < events.length; j++) {
+                                if(time < events[j].args.timestamp)
+                                {
+                                    time = events[j].args.timestamp
+                                    index = j
+                                }
+                        }
+                        //adds latest details to details array
+                        accountDetails = events[index].args
+                    }    
+                    
+                }
+                setAccountDetails(accountDetails)
+            })
+        } catch(Err) {
+            console.log(Err)
+        }
     }
 
     //Creates alert
@@ -242,7 +311,7 @@ const Account = () => {
                                         setDomain = {setDomain}
                                         setUrl = {setUrl}
                                         setCompany = {setCompany}
-                                        setAccountDetails = {setAccountDetails}
+                                        setChangedAccountDetails = {setChangedAccountDetails}
 
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}
@@ -276,11 +345,11 @@ const Account = () => {
                                             <Stack gap={3}>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Description</ListGroup.Item>
-                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                    <ListGroup.Item>{accountDetails.description}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Company</ListGroup.Item>
-                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                    <ListGroup.Item>{accountDetails.company}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
                                         </Col>
@@ -288,11 +357,11 @@ const Account = () => {
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">URL</ListGroup.Item>
-                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                    <ListGroup.Item>{accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Domain</ListGroup.Item>
-                                                    <ListGroup.Item>Blah Blah</ListGroup.Item>
+                                                    <ListGroup.Item>{accountDetails.domain}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>
                                         </Col>

@@ -4,6 +4,7 @@ import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal} from 
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount} from "wagmi";
 import {recoverMessageAddress } from 'viem'
+import EditAccountForm from "../EditAccountForm";
 
 const Account = () => {
 
@@ -15,9 +16,15 @@ const Account = () => {
     const [alertType, setAlertType] = useState("danger")
     const [showEditWarn, setShowEditWarn] = useState(false);
     const [verifyShow, setVerifyShow] = useState(false);
+    const [showEditForm, setShowEditForm] = useState(false)
+
     const [isDisabled, setIsDisabled] = useState(false)
     const [copyTitle, setCopyTitle] = useState("Copy")
     const [isDomainVerified, setIsDomainVerified] = useState(false)
+    const [description, setDescription] = useState("")
+    const [company, setCompany] = useState("")
+    const [url, setUrl] = useState("")
+    const [domain, setDomain] = useState("")
     const msg = 'test'
 
     //hook for signing messages
@@ -82,6 +89,13 @@ const Account = () => {
     const verifyHandleClose = () => setVerifyShow(false);
     const verifyHandleShow = () => setVerifyShow(true);
 
+    //turns on and off form modal
+    const editFormHandleClose = () => setShowEditForm(false)
+    const editFormHandleShow = () => {
+        setShowEditWarn(false)
+        setShowEditForm(true)
+    }
+
     const editButtonClick = () => {
         editHandleShow()
     }
@@ -127,7 +141,7 @@ const Account = () => {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={editHandleClose}>Close</Button>
-                                    <Button variant="primary">Continue</Button>
+                                    <Button variant="primary" onClick={editFormHandleShow}>Continue</Button>
                                 </Modal.Footer>
                             </Modal>
                         </div>
@@ -159,6 +173,29 @@ const Account = () => {
                                 </Modal.Footer>
                             </Modal>
                         </div>
+                        <div>
+                            <Modal show={showEditForm} size="xl" onHide={editFormHandleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Edit Account</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <EditAccountForm
+                                        description = {description}
+                                        domain = {domain}
+                                        url = {url}
+                                        company = {company}
+
+                                        setDescription = {setDescription}
+                                        setDomain = {setDomain}
+                                        setUrl = {setUrl}
+                                        setCompany = {setCompany}
+
+                                        setAlert = {setAlert}
+                                        setAlertText = {setAlertText}
+                                    />
+                                </Modal.Body>
+                            </Modal>
+                        </div>
                         <div>  
                             <div>
                             <Card>
@@ -172,12 +209,17 @@ const Account = () => {
                                     </Card.Title>
                                     <Stack gap={3}>
                                     <Row>
+
+                                    </Row>
+                                        <Col>
+                                            <ListGroup horizontal={'lg'}>
+                                                <ListGroup.Item variant="primary">Status</ListGroup.Item>
+                                                <ListGroup.Item variant="warning">Domain Unverified</ListGroup.Item>
+                                            </ListGroup>
+                                        </Col>
+                                    <Row>
                                         <Col>
                                             <Stack gap={3}>
-                                                <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">Status</ListGroup.Item>
-                                                    <ListGroup.Item variant="warning">Domain Unverified</ListGroup.Item>
-                                                </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Description</ListGroup.Item>
                                                     <ListGroup.Item>Blah Blah</ListGroup.Item>

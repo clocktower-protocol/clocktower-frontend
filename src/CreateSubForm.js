@@ -121,7 +121,6 @@ const CreateSubForm = (props) => {
         //checks description
         isCorrect = true;
 
-        //checks amount
         if(props.description.length > 255) {
             console.log (
                 "Description too long"

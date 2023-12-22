@@ -70,7 +70,6 @@ const Account = () => {
                 signature: signMessageData,
               })
               if(recoveredAddress == address){
-                console.log("here")
                 setCopyTitle("Copy")
                 setIsDisabled(false)
                 verifyHandleShow()
@@ -174,6 +173,7 @@ const Account = () => {
             return
         }
 
+        //TODO: how is this different than verify function?
         //checks dns record
         try {
             var response = await fetch('https://dns.google/resolve?name=ct.clocktower.finance&type=TXT');
@@ -219,6 +219,7 @@ const Account = () => {
                     }    
                     
                 }
+                verifyDomain(accountDetails.domain)
                 setAccountDetails(accountDetails)
             })
         } catch(Err) {
@@ -306,6 +307,7 @@ const Account = () => {
                                         domain = {domain}
                                         url = {url}
                                         company = {company}
+                                        accountDetails = {accountDetails}
 
                                         setDescription = {setDescription}
                                         setDomain = {setDomain}
@@ -337,7 +339,9 @@ const Account = () => {
                                         <Col>
                                             <ListGroup horizontal={'lg'}>
                                                 <ListGroup.Item variant="primary">Status</ListGroup.Item>
+                                                {!isDomainVerified ?
                                                 <ListGroup.Item variant="warning">Domain Unverified</ListGroup.Item>
+                                                : <ListGroup.Item variant="success">Domain Verified</ListGroup.Item>}
                                             </ListGroup>
                                         </Col>
                                     <Row>

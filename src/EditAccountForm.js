@@ -91,29 +91,29 @@ const EditAccountForm = (props) => {
         <Form className="mb-3" onSubmit={submitForm}>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formDescription" value={props.description} onChange={descriptionChange}>
+                    <Form.Group className="mb-3" controlId="formAccountDescription" defaultValue={props.accountDetails.description} value={props.description} onChange={descriptionChange}>
                         <Form.Label>Description:</Form.Label>
-                        <Form.Control type="input" placeholder="description" />
+                        <Form.Control type="input" defaultValue={props.accountDetails.description} placeholder={props.accountDetails.description} />
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formCompany" value={props.company} onChange={companyChange}>
+                    <Form.Group className="mb-3" controlId="formAccountCompany" defaultValue={props.accountDetails.company} value={props.company} onChange={companyChange}>
                         <Form.Label>Company:</Form.Label>
-                        <Form.Control type="input" placeholder="company" />
+                        <Form.Control type="input" defaultValue={props.accountDetails.company} placeholder={props.accountDetails.company}  />
                     </Form.Group>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formCompany" value={props.url} onChange={urlChange}>
+                    <Form.Group className="mb-3" controlId="formAccountCompany" defaultValue={props.accountDetails.url} value={props.url} onChange={urlChange}>
                         <Form.Label>URL:</Form.Label>
-                        <Form.Control type="input" placeholder="url" />
+                        <Form.Control type="input" defaultValue={props.accountDetails.url} placeholder={props.accountDetails.url} />
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formDomain" value={props.domain} onChange={domainChange}>
+                    <Form.Group className="mb-3" controlId="formAccountDomain" defaultValue={props.accountDetails.domain} value={props.domain} onChange={domainChange}>
                         <Form.Label>Domain:</Form.Label>
-                        <Form.Control type="input" placeholder="domain" />
+                        <Form.Control type="input" defaultValue={props.accountDetails.domain} placeholder={props.accountDetails.domain} />
                     </Form.Group>
                 </Col>
             </Row>

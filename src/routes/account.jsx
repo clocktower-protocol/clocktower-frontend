@@ -1,12 +1,15 @@
 import { useOutletContext } from "react-router-dom";
-import React, {useEffect, useState } from 'react'
+import React, {useEffect, useState , useRef} from 'react'
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal} from 'react-bootstrap';
 import Avatar from "boring-avatars"
-import { useSignMessage, useAccount} from "wagmi";
+import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction} from "wagmi";
 import {recoverMessageAddress } from 'viem'
 import EditAccountForm from "../EditAccountForm";
 
 const Account = () => {
+
+    let isMounting = useRef(true)
 
     //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
@@ -25,7 +28,26 @@ const Account = () => {
     const [company, setCompany] = useState("")
     const [url, setUrl] = useState("")
     const [domain, setDomain] = useState("")
+    const [accountDetails, setAccountDetails] = useState({})
     const msg = 'test'
+
+     //sets mounting bool to not mounting after initial load
+    useEffect(() => {
+        isMounting.current = true
+    },[])
+
+    //function for editing account
+    const editAccount = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'editProvDetails',
+        args: [accountDetails]
+    })
+
+    const editAccountWait = useWaitForTransaction({
+        confirmations: 1,
+        hash: editAccount.data?.hash,
+    })
 
     //hook for signing messages
     const {data: signMessageData, error, isLoading, signMessage, variables}  = useSignMessage({
@@ -50,6 +72,37 @@ const Account = () => {
         })()
 
     },[signMessageData])
+
+    //hook for account form changes
+    useEffect(() => {
+          //calls wallet
+          if(!isMounting.current && Object.keys(accountDetails).length !== 0) {
+            editAccount.write()
+        } else {
+            isMounting.current = false
+        }
+    },[accountDetails])
+
+    //shows alert when waiting for transaction to finish
+    useEffect(() => {
+
+        if(editAccountWait.isLoading) {
+            setAlertType("warning")
+            setAlert(true)
+            setAlertText("Transaction Pending...")
+            console.log("pending")
+        }
+
+        if(editAccountWait.isSuccess) {
+
+            //turns off alert
+            setAlert(false)
+            setAlertType("danger")
+            console.log("done")
+            
+            //!!
+        }
+    },[editAccountWait.isLoading, editAccountWait.isSuccess])
 
     const verifyDomain = async (domain, provAddress) => {
 
@@ -189,6 +242,7 @@ const Account = () => {
                                         setDomain = {setDomain}
                                         setUrl = {setUrl}
                                         setCompany = {setCompany}
+                                        setAccountDetails = {setAccountDetails}
 
                                         setAlert = {setAlert}
                                         setAlertText = {setAlertText}

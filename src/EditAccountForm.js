@@ -79,7 +79,7 @@ const EditAccountForm = (props) => {
                 description: props.description
             }
 
-            props.setDetails(formAccountDetails)
+            props.setAccountDetails(formAccountDetails)
             
         } else {
             return

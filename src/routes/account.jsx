@@ -43,6 +43,11 @@ const Account = () => {
         getAccount()
     },[])
 
+    //changes data when account is switched
+    useEffect(() => {
+        getAccount()
+    },[account])
+
     //function for editing account
     const editAccount = useContractWrite({
         address: CLOCKTOWERSUB_ADDRESS,

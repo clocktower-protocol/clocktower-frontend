@@ -23,7 +23,7 @@ const Root = () => {
     const navigate = useNavigate();
     const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
     const handleOnClickSub = useCallback(() => navigate('/subscriberdash', {replace: true}), [navigate])
-    const handleOnClickAccount = useCallback(() => navigate('/account', {replace: true}), [navigate])
+    const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
 
     //WAGMI

@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal} from 'react-bootstrap';
@@ -13,6 +13,9 @@ const Account = () => {
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
+
+    //gets passed url variables
+    let {a} = useParams();
 
     //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
@@ -43,11 +46,19 @@ const Account = () => {
         getAccount()
     },[])
 
+    /*
     //changes data when account is switched
     useEffect(() => {
         getAccount()
         setIsDomainVerified(false)
     },[account])
+    */
+
+    //changes data when passed account is switched
+    useEffect(() => {
+        getAccount()
+        setIsDomainVerified(false)
+    },[a])
 
     //function for editing account
     const editAccount = useContractWrite({
@@ -205,7 +216,7 @@ const Account = () => {
                 event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain)'),
                 fromBlock: 0n,
                 toBlock: 'latest',
-                args: {provider: account}
+                args: {provider: a}
             }) 
             .then(async function(events){
                  //checks for latest update by getting highest timestamp
@@ -228,7 +239,7 @@ const Account = () => {
                     }    
                     
                 }
-                verifyDomain(accountDetails.domain, account)
+                verifyDomain(accountDetails.domain, a)
                 setAccountDetails(accountDetails)
             })
         } catch(Err) {
@@ -336,10 +347,10 @@ const Account = () => {
                                 <Card.Body>
                                     <Card.Title> <Avatar
                                             size={75}
-                                            name={account}
+                                            name={a}
                                             variant="pixel"
                                             colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
-                                    />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{account}
+                                    />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{a}
                                     </Card.Title>
                                     <Stack gap={3}>
                                     <Row>
@@ -379,6 +390,7 @@ const Account = () => {
                                             </Stack>
                                         </Col>
                                     </Row>
+                                    {a === account ?
                                     <Row>
                                         <Col>
                                             <ListGroup horizontal={'lg'}>
@@ -393,6 +405,7 @@ const Account = () => {
                                             </ListGroup>
                                         </Col>
                                     </Row>
+                                    : ""}
                                     </Stack>
                                 </Card.Body>
                             </Card>

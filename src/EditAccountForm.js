@@ -55,8 +55,6 @@ const EditAccountForm = (props) => {
             props.setUrl(event.target.value)
         }
 
-        //sets description
-        //props.setUrl(event.target.value)
     }
 
     const domainChange = (event) => {
@@ -64,9 +62,9 @@ const EditAccountForm = (props) => {
         if(event.target.value != ""){
 
             //(formDomain != ""){
-                let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
+                //let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
                 //let regexDomain = new RegExp(/^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]{1,1}\.)*(xn--)?([a-z0-9][a-z0-9\-]{0,60}|[a-z0-9-]{1,30}\.[a-z]{2,})$/)
-                
+                let regexDomain = new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/)
                 if(!regexDomain.test(event.target.value)) {
                     setInvalidDomain(true)
                 } else {
@@ -80,6 +78,7 @@ const EditAccountForm = (props) => {
     }
 
     //Form Validation
+    /*
     const formValidate = () => {
 
         let isCorrect = true;
@@ -122,6 +121,7 @@ const EditAccountForm = (props) => {
 
         return isCorrect
     }
+    */
 
     const submitForm = async (event) => {
 

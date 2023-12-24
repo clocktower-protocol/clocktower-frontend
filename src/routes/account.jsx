@@ -46,6 +46,7 @@ const Account = () => {
     //changes data when account is switched
     useEffect(() => {
         getAccount()
+        setIsDomainVerified(false)
     },[account])
 
     //function for editing account
@@ -179,6 +180,7 @@ const Account = () => {
             return
         }
 
+        /*
         //TODO: how is this different than verify function?
         //checks dns record
         try {
@@ -192,6 +194,7 @@ const Account = () => {
         catch(Err) {
             console.log(Err)
         }
+        */
 
         //variable to pass scope so that the state can be set
         let accountDetails = {}
@@ -225,7 +228,7 @@ const Account = () => {
                     }    
                     
                 }
-                verifyDomain(accountDetails.domain)
+                verifyDomain(accountDetails.domain, account)
                 setAccountDetails(accountDetails)
             })
         } catch(Err) {

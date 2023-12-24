@@ -6,47 +6,77 @@ const EditAccountForm = (props) => {
     //variable to tell if forms are validated or not
     const [validated, setValidated] = useState(false);
     const [invalidDomain, setInvalidDomain] = useState(false)
+    const [invalidUrl, setInvalidUrl] = useState(false)
+    const [invalidCompany, setInvalidCompany] = useState(false)
+    const [invalidDescription, setInvalidDescription] = useState(false)
 
     //Event listeners-----------------------------
     const descriptionChange = (event) => {
-        //sets description
-        props.setDescription(event.target.value)
+        if(event.target.value != ""){
+            if(event.target.value.length > 255) {
+                setInvalidDescription(true)
+            } else {
+                console.log(event.target.value.length)
+                setInvalidDescription(false)
+                props.setDescription(event.target.value)
+            }
+        } else {
+            props.setDescription(event.target.value)
+        }
     }
 
     const companyChange = (event) => {
-        //sets description
-        props.setCompany(event.target.value)
+
+        if(event.target.value != ""){
+            if(event.target.value.length > 255) {
+                setInvalidCompany(true)
+            } else {
+                console.log(event.target.value.length)
+                setInvalidCompany(false)
+                props.setCompany(event.target.value)
+            }
+        } else {
+            props.setCompany(event.target.value)
+        }
     }
 
     const urlChange = (event) => {
+
+        if(event.target.value != ""){
+            let regexUrl = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)
+            if(!regexUrl.test(event.target.value)) {
+                setInvalidUrl(true)
+            } else {
+                setInvalidUrl(false)
+                props.setUrl(event.target.value)
+            }
+        } else {
+            setInvalidUrl(false)
+            props.setUrl(event.target.value)
+        }
+
         //sets description
-        props.setUrl(event.target.value)
+        //props.setUrl(event.target.value)
     }
 
     const domainChange = (event) => {
 
-        if(props.domain != ""){
+        if(event.target.value != ""){
 
             //(formDomain != ""){
                 let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
                 //let regexDomain = new RegExp(/^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]{1,1}\.)*(xn--)?([a-z0-9][a-z0-9\-]{0,60}|[a-z0-9-]{1,30}\.[a-z]{2,})$/)
                 
                 if(!regexDomain.test(event.target.value)) {
-                    console.log(
-                        "Not a valid domain"
-                    )
                     setInvalidDomain(true)
-                   // isCorrect = false
-                    //props.setAlert(true)
-                   // props.setAlertText("Domain formatted wrong")
-                    return
                 } else {
                     setInvalidDomain(false)
-                   // props.setAlert(false)
+                    props.setDomain(event.target.value)
                 }
-            }
-        //sets description
-        props.setDomain(event.target.value)
+        } else {
+            setInvalidDomain(false)
+            props.setDomain(event.target.value)
+        }
     }
 
     //Form Validation
@@ -120,7 +150,7 @@ const EditAccountForm = (props) => {
         //console.log(formValidate())
 
         
-        if(form.checkValidity() === true && !invalidDomain) {
+        if(form.checkValidity() === true && !invalidDomain && !invalidUrl && !invalidCompany && !invalidDescription) {
             const formAccountDetails = {
                 domain: props.domain,
                 url: props.url,
@@ -144,15 +174,25 @@ const EditAccountForm = (props) => {
                 <Col>
                     <Form.Group className="mb-3" controlId="formAccountDescription" defaultValue={props.accountDetails.description} value={props.description} onChange={descriptionChange}>
                         <Form.Label>Description:</Form.Label>
-                        <Form.Control type="input" defaultValue={props.accountDetails.description}  />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        {invalidDescription ? 
+                        <Form.Control type="input" defaultValue={props.accountDetails.description}  isInvalid/>
+                        : 
+                        <Form.Control type="input" defaultValue={props.accountDetails.description} isValid />}
+                        <Form.Control.Feedback type="invalid">
+                            Description must be under 255 characters
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="formAccountCompany" defaultValue={props.accountDetails.company} value={props.company} onChange={companyChange}>
                         <Form.Label>Company:</Form.Label>
-                        <Form.Control type="input" defaultValue={props.accountDetails.company} />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        {invalidCompany ? 
+                        <Form.Control type="input" defaultValue={props.accountDetails.company}  isInvalid/>
+                        : 
+                        <Form.Control type="input" defaultValue={props.accountDetails.company} isValid />}
+                        <Form.Control.Feedback type="invalid">
+                            Company name must be under 255 characters
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>
@@ -160,8 +200,13 @@ const EditAccountForm = (props) => {
                 <Col>
                     <Form.Group className="mb-3" controlId="formAccountCompany" defaultValue={props.accountDetails.url} value={props.url} onChange={urlChange}>
                         <Form.Label>URL:</Form.Label>
-                        <Form.Control type="input" defaultValue={props.accountDetails.url} />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        {invalidUrl ? 
+                        <Form.Control type="input" defaultValue={props.accountDetails.url}  isInvalid/>
+                        : 
+                        <Form.Control type="input" defaultValue={props.accountDetails.url} isValid />}
+                        <Form.Control.Feedback type="invalid">
+                            Please provide a valid URL.
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>

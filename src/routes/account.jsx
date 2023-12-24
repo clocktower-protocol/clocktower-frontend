@@ -172,6 +172,7 @@ const Account = () => {
     //gets account info
     const getAccount = async () => {
 
+
         //checks if user is logged into account
         if(!isLoggedIn() || typeof address === "undefined") {
             console.log("Not Logged in")
@@ -354,11 +355,11 @@ const Account = () => {
                                             <Stack gap={3}>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Description</ListGroup.Item>
-                                                    <ListGroup.Item>{accountDetails.description}</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.description === undefined || accountDetails.description === "") ? "N/A" : accountDetails.description}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Company</ListGroup.Item>
-                                                    <ListGroup.Item>{accountDetails.company}</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.company === undefined || accountDetails.company === "") ? "N/A" : accountDetails.company}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
                                         </Col>
@@ -366,11 +367,11 @@ const Account = () => {
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">URL</ListGroup.Item>
-                                                    <ListGroup.Item>{accountDetails.url}</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.url === undefined || accountDetails.url === "") ? "N/A" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Domain</ListGroup.Item>
-                                                    <ListGroup.Item>{accountDetails.domain}</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "N/A" : accountDetails.domain }</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>
                                         </Col>

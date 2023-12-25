@@ -15,7 +15,15 @@ const CreateSubForm2 = (props) => {
     const [invalidUrl, setInvalidUrl] = useState(false)
     const [selectedTokenMinimum, setSelectedTokenMinimum] = useState(parseEther("1"))
 
-    let ff = props.frequency
+    const [token, setToken] = useState("-1")
+    const [frequency, setFrequency] = useState("-1")
+    const [dueDay, setDueDay] = useState(0)
+    const [amount, setAmount] = useState(1)
+    const [subDescription, setSubDescription] = useState("")
+    const [subUrl, setSubUrl] = useState("")
+
+   // let ff = props.frequency
+    let ff = frequency
 
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
@@ -69,7 +77,8 @@ const CreateSubForm2 = (props) => {
         let tokenAddress = event.target.value
 
         //sets token
-        props.setToken(event.target.value)
+        //props.setToken(event.target.value)
+        setToken(event.target.value)
 
         if(event.target.value === "-1"){
             setInvalidToken(true)
@@ -91,7 +100,8 @@ const CreateSubForm2 = (props) => {
         if(event.target.value > 0 && event.target.value > formatEther(selectedTokenMinimum)) {
             let wei = parseEther(event.target.value)
             setInvalidAmount(false)
-            props.setAmount(wei)
+            //props.setAmount(wei)
+            setAmount(wei)
         } else {
             setInvalidAmount(true)
           //  props.setAmount(0)
@@ -104,7 +114,8 @@ const CreateSubForm2 = (props) => {
         setInvalidDay(true)
 
         //sets frequency 
-        props.setFrequency(event.target.value)
+        //props.setFrequency(event.target.value)
+        setFrequency(event.target.value)
 
         if(event.target.value == -1) {
             setInvalidFrequency(true)
@@ -115,7 +126,8 @@ const CreateSubForm2 = (props) => {
  
      const dueDayChange = (event) => {
          //sets frequency 
-         props.setDueDay(event.target.value)
+         //props.setDueDay(event.target.value)
+        setDueDay(event.target.value)
 
         if(event.target.value === 0) {
             setInvalidDay(true)
@@ -133,12 +145,14 @@ const CreateSubForm2 = (props) => {
             } else {
                 setInvalidDescription(false)
                  //sets description
-                props.setSubDescription(event.target.value)
+                //props.setSubDescription(event.target.value)
+                setSubDescription(event.target.value)
             }
         } else {
             setInvalidDescription(false)
             //sets description
-            props.setSubDescription(event.target.value)
+            //props.setSubDescription(event.target.value)
+            setSubDescription(event.target.value)
         }
      }
  
@@ -151,12 +165,14 @@ const CreateSubForm2 = (props) => {
             } else {
                 setInvalidUrl(false)
                  //sets url
-                props.setSubUrl(event.target.value)
+                //props.setSubUrl(event.target.value)
+                setSubUrl(event.target.value)
             }
         } else {
             setInvalidUrl(false)
             //sets description
-            props.setSubUrl(event.target.value)
+            //props.setSubUrl(event.target.value)
+            setSubUrl(event.target.value)
         }
      }
 
@@ -173,17 +189,23 @@ const CreateSubForm2 = (props) => {
         if(form.checkValidity() === true && !invalidAmount && !invalidUrl && !invalidDescription && !invalidToken && !invalidFrequency && !invalidDay) {
             const formCreateDetails = {
                 domain: "",
-                url: props.url,
+                url: subUrl,
                 email: "",
                 phone: "",
-                description: props.description
+                description: subDescription
             }
 
-            console.log("good")
-            props.setChangedCreateSub(formCreateDetails)
+            const formCreateObject = {
+                amount: amount, 
+                token: token,
+                details: formCreateDetails,
+                frequency: frequency,
+                dueDay: dueDay
+            }
+
+            props.setChangedCreateSub(formCreateObject)
             
         } else {
-            console.log("notgood")
             return
         }
     }
@@ -195,7 +217,7 @@ const CreateSubForm2 = (props) => {
             </Row>
             <Row>
             <Col>
-                    <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={tokenChange}>
+                    <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>
                         <Form.Label>Token *</Form.Label>
                         <Form.Select isValid={!invalidToken} isInvalid={invalidToken}>
                             <option value={"-1"}>Select which token</option>
@@ -207,7 +229,7 @@ const CreateSubForm2 = (props) => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group  className="mb-3" controlId="formAmount" value={props.amount} onChange={amountChange}>
+                    <Form.Group  className="mb-3" controlId="formAmount" value={amount} onChange={amountChange}>
                         <Form.Label>Amount *</Form.Label>
                         <Form.Control required type="input" placeholder="amount" isInvalid={invalidAmount} isValid={!invalidAmount}/>
                         <Form.Control.Feedback type="invalid">
@@ -218,7 +240,7 @@ const CreateSubForm2 = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="frequencySelect" value={props.frequency} onChange={frequencyChange}>
+                    <Form.Group className="mb-3" controlId="frequencySelect" value={frequency} onChange={frequencyChange}>
                         <Form.Label>Frequency *</Form.Label>
                         <Form.Select required isInvalid={invalidFrequency} isValid={!invalidFrequency}>
                             <option value={-1}>Select frequency</option>
@@ -230,7 +252,7 @@ const CreateSubForm2 = (props) => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={dueDayChange} >
+                    <Form.Group className="mb-3" controlId="daySelect" value={dueDay} onChange={dueDayChange} >
                     <Form.Label>Day *</Form.Label>
                     <Form.Select required isInvalid={invalidDay} isValid={!invalidDay}>
                         <option value={0}>Select Day</option>
@@ -241,7 +263,7 @@ const CreateSubForm2 = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formDescription" value={props.description} onChange={descriptionChange}>
+                    <Form.Group className="mb-3" controlId="formDescription" value={subDescription} onChange={descriptionChange}>
                         <Form.Label>Description:</Form.Label>
                         <Form.Control type="input" placeholder="description" isInvalid={invalidDescription} isValid={!invalidDescription}/>
                         <Form.Control.Feedback type="invalid">
@@ -250,7 +272,7 @@ const CreateSubForm2 = (props) => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Form.Group className="mb-3" controlId="formUrl" value={props.url} onChange={urlChange} >
+                    <Form.Group className="mb-3" controlId="formUrl" value={subUrl} onChange={urlChange} >
                         <Form.Label>URL</Form.Label>
                         <Form.Control type="input" placeholder="url" isInvalid={invalidUrl} isValid={!invalidUrl}/>
                         <Form.Control.Feedback type="invalid">

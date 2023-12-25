@@ -39,12 +39,14 @@ const Account = () => {
     const [changedAccountDetails, setChangedAccountDetails] = useState({})
     const [accountDetails, setAccountDetails] = useState({})
 
+    /*
     const [token, setToken] = useState("-1")
     const [frequency, setFrequency] = useState("-1")
     const [dueDay, setDueDay] = useState(0)
     const [amount, setAmount] = useState(1)
     const [subDescription, setSubDescription] = useState("")
     const [subUrl, setSubUrl] = useState("")
+    */
     const [changedCreateSub, setChangedCreateSub] = useState({})
 
     const msg = 'test'
@@ -83,6 +85,19 @@ const Account = () => {
         hash: editAccount.data?.hash,
     })
 
+    //function for creating subscription
+    const createSub = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'createSubscription',
+        args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
+    })
+
+    const createSubWait = useWaitForTransaction({
+        confirmations: 1,
+        hash: createSub.data?.hash
+    })
+
     //hook for signing messages
     const {data: signMessageData, error, isLoading, signMessage, variables}  = useSignMessage({
         message: msg
@@ -108,25 +123,35 @@ const Account = () => {
 
     //hook for account form changes
     useEffect(() => {
-          //calls wallet
-          if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
+        //calls wallet
+        if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
             editAccount.write()
         } else {
             isMounting.current = false
         }
     },[changedAccountDetails])
 
+    useEffect(() => {
+        //calls wallet
+        if(!isMounting.current && Object.keys(changedCreateSub).length !== 0) {
+            createSub.write()
+            console.log(changedCreateSub)
+        } else {
+            isMounting.current = false
+        }
+    },[changedCreateSub])
+
     //shows alert when waiting for transaction to finish
     useEffect(() => {
 
-        if(editAccountWait.isLoading) {
+        if(editAccountWait.isLoading || createSubWait.isLoading) {
             setAlertType("warning")
             setAlert(true)
             setAlertText("Transaction Pending...")
             console.log("pending")
         }
 
-        if(editAccountWait.isSuccess) {
+        if(editAccountWait.isSuccess || createSubWait.isSuccess) {
 
             //turns off alert
             setAlert(false)
@@ -136,7 +161,7 @@ const Account = () => {
             editFormHandleClose()
             getAccount()
         }
-    },[editAccountWait.isLoading, editAccountWait.isSuccess])
+    },[editAccountWait.isLoading, createSubWait.isLoading, createSubWait.isSuccess, editAccountWait.isSuccess])
 
     const verifyDomain = async (domain, provAddress) => {
 
@@ -350,18 +375,6 @@ const Account = () => {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <CreateSubForm2
-                                        token = {token}
-                                        frequency = {frequency}
-                                        dueDay = {dueDay}
-                                        subDescription = {subDescription}
-                                        subUrl = {subUrl}
-
-                                        setToken = {setToken}
-                                        setFrequency = {setFrequency}
-                                        setDueDay = {setDueDay}
-                                        setAmount = {setAmount}
-                                        setSubDescription = {setSubDescription}
-                                        setSubUrl = {setSubUrl}
                                         setChangedCreateSub = {setChangedCreateSub}
                                     />
                                 </Modal.Body>

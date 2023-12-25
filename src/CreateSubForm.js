@@ -1,7 +1,8 @@
 import {React } from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
 import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS} from './config';
-import Web3 from 'web3'
+//import Web3 from 'web3'
+import {parseEther} from 'viem'
 
 const CreateSubForm = (props) => {
 
@@ -56,7 +57,8 @@ const CreateSubForm = (props) => {
 
     const amountChange = (event) => {
         if(event.target.value > 0) {
-        let wei = Web3.utils.toWei(event.target.value)
+       // let wei = Web3.utils.toWei(event.target.value)
+       let wei = parseEther(event.target.value)
             props.setAmount(wei)
         } else {
             props.setAmount(0)

@@ -1,7 +1,7 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef} from 'react'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal} from 'react-bootstrap';
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
+import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal, Tabs, Tab} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction, usePublicClient} from "wagmi";
 import {recoverMessageAddress, parseAbiItem } from 'viem'
@@ -26,6 +26,7 @@ const Account = () => {
     const [showEditWarn, setShowEditWarn] = useState(false);
     const [verifyShow, setVerifyShow] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false)
+    const [showCreateSub, setShowCreateSub] = useState(false)
 
     const [isDisabled, setIsDisabled] = useState(false)
     const [copyTitle, setCopyTitle] = useState("Copy")
@@ -173,6 +174,10 @@ const Account = () => {
         setShowEditForm(true)
     }
 
+    //turns on and off create susbcription modal
+    const createSubHandleClose = () => setShowCreateSub(false)
+    const createSubHandleShow = () => setShowCreateSub(true)
+
     const editButtonClick = () => {
         editHandleShow()
     }
@@ -190,22 +195,6 @@ const Account = () => {
             console.log("Not Logged in")
             return
         }
-
-        /*
-        //TODO: how is this different than verify function?
-        //checks dns record
-        try {
-            var response = await fetch('https://dns.google/resolve?name=ct.clocktower.finance&type=TXT');
-                
-            var json = await response.json();
-             if(json.Answer[0].data !== undefined){
-                console.log(json.Answer[0].data);
-            }
-        }
-        catch(Err) {
-            console.log(Err)
-        }
-        */
 
         //variable to pass scope so that the state can be set
         let accountDetails = {}
@@ -341,6 +330,17 @@ const Account = () => {
                                 </Modal.Body>
                             </Modal>
                         </div>
+                        <div>
+                            <Modal show={showCreateSub} size="xl" onHide={createSubHandleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Create Subscription</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                  
+                                </Modal.Body>
+                            </Modal>
+                        </div>
+                        <Stack gap={3}>
                         <div>  
                             <div>
                             <Card>
@@ -369,11 +369,11 @@ const Account = () => {
                                             <Stack gap={3}>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Description</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.description === undefined || accountDetails.description === "") ? "N/A" : accountDetails.description}</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Company</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.company === undefined || accountDetails.company === "") ? "N/A" : accountDetails.company}</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
                                         </Col>
@@ -381,11 +381,11 @@ const Account = () => {
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">URL</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.url === undefined || accountDetails.url === "") ? "N/A" : accountDetails.url}</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Domain</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "N/A" : accountDetails.domain }</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "---" : accountDetails.domain }</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>
                                         </Col>
@@ -411,6 +411,35 @@ const Account = () => {
                             </Card>
                             </div>
                         </div>
+                        {a === account ?
+                        <div>
+                            <Row>
+                                
+                                <Col fluid>
+                                    <Button variant="outline-info">Create Subscription</Button>
+                                </Col>
+                                
+                            </Row>
+                        </div>
+                         : ""}
+                        {a === account ?
+                        <div>    
+                            <Tabs
+                                defaultActiveKey="provider"
+                                id="account-tabs"
+                                className="mb-3"
+                                justify
+                            >
+                                <Tab eventKey="provider" title="Created">
+
+                                </Tab>
+                                <Tab eventKey="subscriber" title="Subscribed To">
+
+                                </Tab>
+                            </Tabs>
+                        </div>
+                        : ""}
+                        </Stack>
                     </div>
                 </div>
             )

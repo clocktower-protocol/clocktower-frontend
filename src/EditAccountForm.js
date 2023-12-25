@@ -31,7 +31,6 @@ const EditAccountForm = (props) => {
             if(event.target.value.length > 255) {
                 setInvalidCompany(true)
             } else {
-                console.log(event.target.value.length)
                 setInvalidCompany(false)
                 props.setCompany(event.target.value)
             }

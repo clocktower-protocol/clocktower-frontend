@@ -817,6 +817,38 @@ export const DUEDAY_RANGE = [
   }
 ]
 
+//lookup for day of week
+export const DAY_OF_WEEK_LOOKUP = [
+  {
+    index: 1,
+    name: "Sunday"
+  },
+  {
+    index: 2,
+    name: "Monday"
+  },
+  {
+    index: 3,
+    name: "Tuesday"
+  },
+  {
+    index: 4,
+    name: "Wednesday"
+  },
+  {
+    index: 5,
+    name: "Thursday"
+  },
+  {
+    index: 6,
+    name: "Friday"
+  },
+  {
+    index: 7,
+    name: "Saturday"
+  },
+]
+
 //lookup for SubEvent
 export const SUBEVENT_LOOKUP = [
  "Paid", "Failed", "Subscribed", "Unsubscribed", "FeeFill"

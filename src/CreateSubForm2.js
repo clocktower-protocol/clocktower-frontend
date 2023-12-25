@@ -1,11 +1,19 @@
 import {React, useState} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS} from './config';
-import {parseEther} from 'viem'
+import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from './config';
+import {parseEther, formatEther} from 'viem'
+import { readContract } from 'wagmi/actions'
 
 const CreateSubForm2 = (props) => {
 
-    const [invalidAmount, setInvalidAmount] = useState(false)
+    const [validated, setValidated] = useState(false)
+    const [invalidToken, setInvalidToken] = useState(true)
+    const [invalidFrequency, setInvalidFrequency] = useState(true)
+    const [invalidDay, setInvalidDay] = useState(true)
+    const [invalidAmount, setInvalidAmount] = useState(true)
+    const [invalidDescription, setInvalidDescription] = useState(false)
+    const [invalidUrl, setInvalidUrl] = useState(false)
+    const [selectedTokenMinimum, setSelectedTokenMinimum] = useState(parseEther("1"))
 
     let ff = props.frequency
 
@@ -27,12 +35,31 @@ const CreateSubForm2 = (props) => {
     const dayPulldown = () => {
         return DUEDAY_RANGE.map((dayRange) => {
             if(dayRange.frequency == ff) {
+                //sets weekname for weekly
                 const options = []
                 for(let i = dayRange.start; i <= dayRange.stop; i++) {
-                    options.push(<option value={i} key={i}>{i}</option>)
+                    if(dayRange.frequency === 0){
+                        options.push(<option value={i} key={DAY_OF_WEEK_LOOKUP[(i-1)].name}>{DAY_OF_WEEK_LOOKUP[(i-1)].name}</option>)
+                    } else {
+                        options.push(<option value={i} key={i}>{i}</option>)
+                    }
                 }
                 return options
             }
+        })
+    }
+
+    //gets token minimum from contract
+    const setTokenMinimum = async (tokenAddress) => {
+        await readContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'approvedERC20',
+            args: [tokenAddress]
+        })
+        .then(async function(result) {
+            //gets token minimum
+            setSelectedTokenMinimum(result[1])
         })
     }
 
@@ -43,27 +70,201 @@ const CreateSubForm2 = (props) => {
 
         //sets token
         props.setToken(event.target.value)
-        
-        //sets abi
-        ERC20TOKEN_LOOKUP.map((token) => {
-            if(token.address === tokenAddress){
-                console.log(token.address)
-                props.setTokenABI(token.ABI)
-            }
-            return true
-        })
-    }
 
-    //TODO: set minimum
-    const amountChange = (event) => {
-        if(event.target.value > 0) {
-            let wei = parseEther(event.target.value)
-            props.setAmount(wei)
+        if(event.target.value === "-1"){
+            setInvalidToken(true)
         } else {
-            props.setAmount(0)
+            //sets abi and token minimum
+            ERC20TOKEN_LOOKUP.map((token) => {
+                if(token.address === tokenAddress){
+                    setTokenMinimum(token.address)
+                    setInvalidToken(false)
+                // props.setTokenABI(token.ABI)
+                }
+                return true
+            })
         }
     }
 
+    const amountChange = (event) => {
+
+        if(event.target.value > 0 && event.target.value > formatEther(selectedTokenMinimum)) {
+            let wei = parseEther(event.target.value)
+            setInvalidAmount(false)
+            props.setAmount(wei)
+        } else {
+            setInvalidAmount(true)
+          //  props.setAmount(0)
+        }
+    }
+
+    const frequencyChange = (event) => {
+
+        //resets day 
+        setInvalidDay(true)
+
+        //sets frequency 
+        props.setFrequency(event.target.value)
+
+        if(event.target.value == -1) {
+            setInvalidFrequency(true)
+        } else {
+            setInvalidFrequency(false)
+        }
+     }
+ 
+     const dueDayChange = (event) => {
+         //sets frequency 
+         props.setDueDay(event.target.value)
+
+        if(event.target.value === 0) {
+            setInvalidDay(true)
+        } else {
+            setInvalidDay(false)
+        }
+
+         console.log(event.target.value)
+     }
+ 
+     const descriptionChange = (event) => {
+        if(event.target.value != ""){
+            if(event.target.value.length > 255) {
+                setInvalidDescription(true)
+            } else {
+                setInvalidDescription(false)
+                 //sets description
+                props.setSubDescription(event.target.value)
+            }
+        } else {
+            setInvalidDescription(false)
+            //sets description
+            props.setSubDescription(event.target.value)
+        }
+     }
+ 
+     const urlChange = (event) => {
+
+        if(event.target.value != ""){
+            let regexUrl = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)
+            if(!regexUrl.test(event.target.value)) {
+                setInvalidUrl(true)
+            } else {
+                setInvalidUrl(false)
+                 //sets url
+                props.setSubUrl(event.target.value)
+            }
+        } else {
+            setInvalidUrl(false)
+            //sets description
+            props.setSubUrl(event.target.value)
+        }
+     }
+
+
+    const submitForm = async (event) => {
+
+        const form = event.currentTarget
+  
+        event.preventDefault();
+        event.stopPropagation();
+
+        //TODO: need to remove phone, email and domain once contract is updated
+        
+        if(form.checkValidity() === true && !invalidAmount && !invalidUrl && !invalidDescription && !invalidToken && !invalidFrequency && !invalidDay) {
+            const formCreateDetails = {
+                domain: "",
+                url: props.url,
+                email: "",
+                phone: "",
+                description: props.description
+            }
+
+            console.log("good")
+            props.setChangedCreateSub(formCreateDetails)
+            
+        } else {
+            console.log("notgood")
+            return
+        }
+    }
+
+    return (
+        <Form className="mb-3" noValidate validated={validated}  onSubmit={submitForm}>
+            <Row>
+                <Col align="center">* Required</Col>
+            </Row>
+            <Row>
+            <Col>
+                    <Form.Group className="mb-3" controlId="tokenSelect" value={props.token} onChange={tokenChange}>
+                        <Form.Label>Token *</Form.Label>
+                        <Form.Select isValid={!invalidToken} isInvalid={invalidToken}>
+                            <option value={"-1"}>Select which token</option>
+                            {tokenPulldown()}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Please select a token
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group  className="mb-3" controlId="formAmount" value={props.amount} onChange={amountChange}>
+                        <Form.Label>Amount *</Form.Label>
+                        <Form.Control required type="input" placeholder="amount" isInvalid={invalidAmount} isValid={!invalidAmount}/>
+                        <Form.Control.Feedback type="invalid">
+                            Must be greater than token minimum of {formatEther(String(selectedTokenMinimum))}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group className="mb-3" controlId="frequencySelect" value={props.frequency} onChange={frequencyChange}>
+                        <Form.Label>Frequency *</Form.Label>
+                        <Form.Select required isInvalid={invalidFrequency} isValid={!invalidFrequency}>
+                            <option value={-1}>Select frequency</option>
+                            {frequencyPulldown()}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Please select a payment frequency
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="daySelect" value={props.dueDay} onChange={dueDayChange} >
+                    <Form.Label>Day *</Form.Label>
+                    <Form.Select required isInvalid={invalidDay} isValid={!invalidDay}>
+                        <option value={0}>Select Day</option>
+                        {dayPulldown()}
+                    </Form.Select>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formDescription" value={props.description} onChange={descriptionChange}>
+                        <Form.Label>Description:</Form.Label>
+                        <Form.Control type="input" placeholder="description" isInvalid={invalidDescription} isValid={!invalidDescription}/>
+                        <Form.Control.Feedback type="invalid">
+                            Description must be under 255 characters
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formUrl" value={props.url} onChange={urlChange} >
+                        <Form.Label>URL</Form.Label>
+                        <Form.Control type="input" placeholder="url" isInvalid={invalidUrl} isValid={!invalidUrl}/>
+                        <Form.Control.Feedback type="invalid">
+                            Please provide a valid URL.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col align="center"><Button type="submit">Submit</Button></Col>
+            </Row>
+        </Form>
+    )
+ 
 }
 
 export default CreateSubForm2

@@ -6,6 +6,7 @@ import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction, usePublicClient} from "wagmi";
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import EditAccountForm from "../EditAccountForm";
+import CreateSubForm2 from "../CreateSubForm2";
 
 const Account = () => {
 
@@ -37,6 +38,14 @@ const Account = () => {
     const [domain, setDomain] = useState("")
     const [changedAccountDetails, setChangedAccountDetails] = useState({})
     const [accountDetails, setAccountDetails] = useState({})
+
+    const [token, setToken] = useState("-1")
+    const [frequency, setFrequency] = useState("-1")
+    const [dueDay, setDueDay] = useState(0)
+    const [amount, setAmount] = useState(1)
+    const [subDescription, setSubDescription] = useState("")
+    const [subUrl, setSubUrl] = useState("")
+    const [changedCreateSub, setChangedCreateSub] = useState({})
 
     const msg = 'test'
 
@@ -184,6 +193,10 @@ const Account = () => {
 
     const verifyButtonClick = () => {
         verifyHandleShow()
+    }
+
+    const createButtonClick = () => {
+        createSubHandleShow()
     }
 
     //gets account info
@@ -336,7 +349,21 @@ const Account = () => {
                                     <Modal.Title>Create Subscription</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                  
+                                    <CreateSubForm2
+                                        token = {token}
+                                        frequency = {frequency}
+                                        dueDay = {dueDay}
+                                        subDescription = {subDescription}
+                                        subUrl = {subUrl}
+
+                                        setToken = {setToken}
+                                        setFrequency = {setFrequency}
+                                        setDueDay = {setDueDay}
+                                        setAmount = {setAmount}
+                                        setSubDescription = {setSubDescription}
+                                        setSubUrl = {setSubUrl}
+                                        setChangedCreateSub = {setChangedCreateSub}
+                                    />
                                 </Modal.Body>
                             </Modal>
                         </div>
@@ -415,8 +442,8 @@ const Account = () => {
                         <div>
                             <Row>
                                 
-                                <Col fluid>
-                                    <Button variant="outline-info">Create Subscription</Button>
+                                <Col fluid align="center">
+                                    <Button variant="outline-info" onClick = {() => createButtonClick()}>Create Subscription</Button>
                                 </Col>
                                 
                             </Row>

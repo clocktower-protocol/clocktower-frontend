@@ -222,6 +222,20 @@ const EditAccountForm = (props) => {
                 </Col>
             </Row>
             <Row>
+                <Col align="center">
+                <Form.Group className="mb-3">
+                    <Form.Check
+                        required
+                        name="terms"
+                        label="I understand that this information will be permanently and publicly associated with this account"
+                        feedback={"Required"}
+                        feedbackType="invalid"
+                        id="accountDetailsWarning"
+                    />
+                </Form.Group>
+                </Col>
+            </Row>
+            <Row>
                 <Col align="center"><Button type="submit">Submit</Button></Col>
             </Row>
         </Form>

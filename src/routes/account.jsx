@@ -159,6 +159,7 @@ const Account = () => {
             console.log("done")
             
             editFormHandleClose()
+            createSubHandleClose()
             getAccount()
         }
     },[editAccountWait.isLoading, createSubWait.isLoading, createSubWait.isSuccess, editAccountWait.isSuccess])

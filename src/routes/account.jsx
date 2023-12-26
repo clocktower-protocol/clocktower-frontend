@@ -686,9 +686,6 @@ const alertMaker = () => {
                             >
                                 <Tab eventKey="provider" title="Created">
                                     <div className="provHistory">
-                                       <div><h1> {String(isTableEmpty2(provSubscriptionArray))
-                                       
-                                       }</h1></div>
                                         
                                         {!isTableEmpty1(provSubscriptionArray) ?
                                         <SubscriptionsTable
@@ -705,7 +702,7 @@ const alertMaker = () => {
                                
                                 <Tab eventKey="subscriber" title="Subscribed To">
                                     <div className="provHistory">
-                                    <div><h1> {String(isTableEmpty2(subscribedSubsArray))}</h1></div>
+                                   
                                         
                                         {!isTableEmpty2(subscribedSubsArray) ?
                                         <SubscriptionsTable

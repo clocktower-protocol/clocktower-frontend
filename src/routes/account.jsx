@@ -58,7 +58,7 @@ const Account = () => {
 
         getAccount()
         getProviderSubs()
-        //getSubscriberSubs()
+        getSubscriberSubs()
     },[])
 
     /*
@@ -74,7 +74,7 @@ const Account = () => {
         getAccount()
         setIsDomainVerified(false)
         getProviderSubs()
-       // getSubscriberSubs()
+        getSubscriberSubs()
     },[a])
 
     //functions for editing account
@@ -215,7 +215,7 @@ const Account = () => {
             createSubHandleClose()
             getAccount()
             getProviderSubs()
-         //   getSubscriberSubs()
+            getSubscriberSubs()
         }
     },[editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
 

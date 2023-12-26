@@ -102,7 +102,7 @@ const router = createBrowserRouter([
           element: <SubscriberDash />
         },
         {
-          path: "subscriberdash/subscription/:id",
+          path: "subscription/:id",
           element: <SubHistory />
         },
         {

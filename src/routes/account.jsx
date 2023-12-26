@@ -73,6 +73,8 @@ const Account = () => {
     useEffect(() => {
         getAccount()
         setIsDomainVerified(false)
+        getProviderSubs()
+        getSubscriberSubs()
     },[a])
 
     //functions for editing account
@@ -114,6 +116,20 @@ const Account = () => {
         confirmations: 1,
         hash: cancelSubscription.data?.hash,
     })
+
+    //unsubscribe hooks
+    const unsubscribeWrite = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'unsubscribe',
+        args: [unsubscribedSub]
+    })
+
+    const unsubscribeWait = useWaitForTransaction({
+        confirmations: 1,
+        hash: unsubscribeWrite.data?.hash,
+    })
+
 
 
     //hook for signing messages
@@ -169,18 +185,26 @@ const Account = () => {
         }
     },[cancelledSub])
 
+    //hook for calling wallet to unsubscribe
+    useEffect(() => {
+        //calls wallet
+        if(Object.keys(unsubscribedSub).length !== 0) {
+            unsubscribeWrite.write()
+        }
+    },[unsubscribedSub])
+
 
     //shows alert when waiting for transaction to finish
     useEffect(() => {
 
-        if(editAccountWait.isLoading || createSubWait.isLoading || cancelWait.isLoading) {
+        if(editAccountWait.isLoading || createSubWait.isLoading || cancelWait.isLoading || unsubscribeWait.isLoading) {
             setAlertType("warning")
             setAlert(true)
             setAlertText("Transaction Pending...")
             console.log("pending")
         }
 
-        if(editAccountWait.isSuccess || createSubWait.isSuccess || cancelWait.isSuccess) {
+        if(editAccountWait.isSuccess || createSubWait.isSuccess || cancelWait.isSuccess || unsubscribeWait.isSuccess) {
 
             //turns off alert
             setAlert(false)
@@ -193,7 +217,7 @@ const Account = () => {
             getProviderSubs()
             getSubscriberSubs()
         }
-    },[editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
+    },[editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
 
     const verifyDomain = async (domain, provAddress) => {
 

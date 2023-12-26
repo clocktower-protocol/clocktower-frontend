@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
 import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from './config';
 import {parseEther, formatEther} from 'viem'
@@ -13,6 +13,7 @@ const CreateSubForm2 = (props) => {
     const [invalidAmount, setInvalidAmount] = useState(true)
     const [invalidDescription, setInvalidDescription] = useState(false)
     const [invalidUrl, setInvalidUrl] = useState(false)
+    const [allValidated, setAllValidated] = useState(false)
     const [selectedTokenMinimum, setSelectedTokenMinimum] = useState(parseEther("1"))
 
     const [token, setToken] = useState("-1")
@@ -21,6 +22,15 @@ const CreateSubForm2 = (props) => {
     const [amount, setAmount] = useState(1)
     const [subDescription, setSubDescription] = useState("")
     const [subUrl, setSubUrl] = useState("")
+
+    
+    //disables submit button if all fields are not validated
+    useEffect(() => {
+        if(!invalidAmount && !invalidUrl && !invalidDescription && !invalidToken && !invalidFrequency && !invalidDay) {
+            setAllValidated(true)
+        }
+    },[invalidAmount, invalidUrl, invalidDay, invalidDescription, invalidDay, invalidFrequency])
+    
 
    // let ff = props.frequency
     let ff = frequency
@@ -282,7 +292,7 @@ const CreateSubForm2 = (props) => {
                 </Col>
             </Row>
             <Row>
-                <Col align="center"><Button type="submit">Submit</Button></Col>
+                <Col align="center"><Button type="submit" disabled={!allValidated}>Submit</Button></Col>
             </Row>
         </Form>
     )

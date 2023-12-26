@@ -1,6 +1,6 @@
 import {React, useState, useEffect} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, ZERO_ADDRESS, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from './config';
+import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from './config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
 
@@ -222,9 +222,6 @@ const CreateSubForm2 = (props) => {
 
     return (
         <Form className="mb-3" noValidate validated={validated}  onSubmit={submitForm}>
-            <Row>
-                <Col align="center">* Required</Col>
-            </Row>
             <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>

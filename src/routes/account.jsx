@@ -351,16 +351,8 @@ const Account = () => {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <EditAccountForm
-                                        description = {description}
-                                        domain = {domain}
-                                        url = {url}
-                                        company = {company}
-                                        accountDetails = {accountDetails}
 
-                                        setDescription = {setDescription}
-                                        setDomain = {setDomain}
-                                        setUrl = {setUrl}
-                                        setCompany = {setCompany}
+                                        accountDetails = {accountDetails}
                                         setChangedAccountDetails = {setChangedAccountDetails}
 
                                         setAlert = {setAlert}

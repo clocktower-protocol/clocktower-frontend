@@ -4,9 +4,11 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"
 import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal, Tabs, Tab} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction, usePublicClient} from "wagmi";
+import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import EditAccountForm from "../EditAccountForm";
 import CreateSubForm2 from "../CreateSubForm2";
+import SubscriptionsTable from "../SubscriptionsTable";
 
 const Account = () => {
 
@@ -32,21 +34,15 @@ const Account = () => {
     const [isDisabled, setIsDisabled] = useState(false)
     const [copyTitle, setCopyTitle] = useState("Copy")
     const [isDomainVerified, setIsDomainVerified] = useState(false)
-    const [description, setDescription] = useState("")
-    const [company, setCompany] = useState("")
-    const [url, setUrl] = useState("")
-    const [domain, setDomain] = useState("")
     const [changedAccountDetails, setChangedAccountDetails] = useState({})
     const [accountDetails, setAccountDetails] = useState({})
 
-    /*
-    const [token, setToken] = useState("-1")
-    const [frequency, setFrequency] = useState("-1")
-    const [dueDay, setDueDay] = useState(0)
-    const [amount, setAmount] = useState(1)
-    const [subDescription, setSubDescription] = useState("")
-    const [subUrl, setSubUrl] = useState("")
-    */
+    let emptySubscriptionArray = []
+    let emptyDetails = []
+    const [detailsArray, setDetailsArray] = useState(emptyDetails)
+    const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
+    const [cancelledSub, setCancelledSub] = useState({})
+
     const [changedCreateSub, setChangedCreateSub] = useState({})
 
     const msg = 'test'
@@ -56,6 +52,7 @@ const Account = () => {
         isMounting.current = true
 
         getAccount()
+        getProviderSubs()
     },[])
 
     /*
@@ -72,7 +69,7 @@ const Account = () => {
         setIsDomainVerified(false)
     },[a])
 
-    //function for editing account
+    //functions for editing account
     const editAccount = useContractWrite({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
@@ -85,7 +82,7 @@ const Account = () => {
         hash: editAccount.data?.hash,
     })
 
-    //function for creating subscription
+    //functions for creating subscription
     const createSub = useContractWrite({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
@@ -97,6 +94,21 @@ const Account = () => {
         confirmations: 1,
         hash: createSub.data?.hash
     })
+
+    //functions for cancelling subscription
+    //cancel subscription
+    const cancelSubscription = useContractWrite({
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'cancelSubscription',
+        args: [cancelledSub]
+    })
+
+    const cancelWait = useWaitForTransaction({
+        confirmations: 1,
+        hash: cancelSubscription.data?.hash,
+    })
+
 
     //hook for signing messages
     const {data: signMessageData, error, isLoading, signMessage, variables}  = useSignMessage({
@@ -131,27 +143,38 @@ const Account = () => {
         }
     },[changedAccountDetails])
 
+    //hook for calling wallet to create sub
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedCreateSub).length !== 0) {
             createSub.write()
-            console.log(changedCreateSub)
         } else {
             isMounting.current = false
         }
     },[changedCreateSub])
 
+    //hook for calling wallet to cancel sub
+    useEffect(() => {
+        //calls wallet
+        if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
+            cancelSubscription.write()
+        } else {
+            isMounting.current = false
+        }
+    },[cancelledSub])
+
+
     //shows alert when waiting for transaction to finish
     useEffect(() => {
 
-        if(editAccountWait.isLoading || createSubWait.isLoading) {
+        if(editAccountWait.isLoading || createSubWait.isLoading || cancelWait.isLoading) {
             setAlertType("warning")
             setAlert(true)
             setAlertText("Transaction Pending...")
             console.log("pending")
         }
 
-        if(editAccountWait.isSuccess || createSubWait.isSuccess) {
+        if(editAccountWait.isSuccess || createSubWait.isSuccess || cancelWait.isSuccess) {
 
             //turns off alert
             setAlert(false)
@@ -161,8 +184,9 @@ const Account = () => {
             editFormHandleClose()
             createSubHandleClose()
             getAccount()
+            getProviderSubs()
         }
-    },[editAccountWait.isLoading, createSubWait.isLoading, createSubWait.isSuccess, editAccountWait.isSuccess])
+    },[editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
 
     const verifyDomain = async (domain, provAddress) => {
 
@@ -274,6 +298,82 @@ const Account = () => {
             console.log(Err)
         }
     }
+
+    const getProviderSubs = async () => {
+        //checks if user is logged into account
+       
+        if(!isLoggedIn() || typeof address === "undefined") {
+           console.log("Not Logged in")
+           return
+       }
+
+       //variable to pass scope so that the state can be set
+       let accountSubscriptions = []
+
+       try{
+       await readContract({
+           address: CLOCKTOWERSUB_ADDRESS,
+           abi: CLOCKTOWERSUB_ABI,
+           functionName: 'getAccountSubscriptions',
+           args: [false, account]
+       })
+       .then(async function(result) {
+           accountSubscriptions = result
+
+           //loops through each subscription
+           for (var i = 0; i < accountSubscriptions.length; i++) {
+               await publicClient.getLogs({
+                   address: CLOCKTOWERSUB_ADDRESS,
+                   event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+                   fromBlock: 0n,
+                   toBlock: 'latest',
+                   args: {id:[accountSubscriptions[i].subscription.id]}
+               }) 
+               .then(async function(events){
+               
+                    
+                   //checks for latest update by getting highest timestamp
+                   if(events != undefined) {
+                       
+                       let time = 0
+                       let index = 0
+                       
+                       if(events.length > 0)
+                       {
+                           for (var j = 0; j < events.length; j++) {
+                                   if(time < events[j].args.timestamp)
+                                   {
+                                       time = events[j].args.timestamp
+                                       index = j
+                                   }
+                           }
+                           //adds latest details to details array
+                           detailsArray[i] = events[index].args
+                       }    
+                       
+                   }
+                   
+               })
+               
+           }
+           setSubscriptionArray(accountSubscriptions)
+           setDetailsArray(detailsArray)
+       })
+   } catch(Err) {
+       console.log(Err)
+   }
+        
+   }
+
+   const isTableEmpty = (subscriptionArray) => {
+       
+       let count = 0
+       subscriptionArray.forEach(subscription => {
+           if(subscription.status !== 1) {count += 1}
+       })
+       if(count > 0) { return false } else {return true}
+       
+   }
 
     //Creates alert
     const alertMaker = () => {
@@ -464,6 +564,18 @@ const Account = () => {
                                 justify
                             >
                                 <Tab eventKey="provider" title="Created">
+                                    <div className="provHistory">
+                                    {!isTableEmpty(subscriptionArray) ?
+                                    <SubscriptionsTable
+                                        subscriptionArray = {subscriptionArray}
+                                        isAdmin = {false}
+                                        role = {1}
+                                        detailsArray = {detailsArray}
+                                        setCancelledSub = {setCancelledSub}
+                                    />
+                                    : <div></div>}
+                                
+                                    </div>
 
                                 </Tab>
                                 <Tab eventKey="subscriber" title="Subscribed To">

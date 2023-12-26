@@ -66,6 +66,8 @@ const SubscriptionsTable = (props) => {
     let table = []
     let tableTop = []
 
+    console.log(subscriptionArray.length)
+
     //loops through array to create table rows
     for(let i = 0; i < subscriptionArray.length; i++) {
      
@@ -76,6 +78,8 @@ const SubscriptionsTable = (props) => {
         if(typeof subscriptionArray[i].totalSubscribers !== 'undefined') {
           totalSubscribers = subscriptionArray[i].totalSubscribers
         }
+
+       // console.log(subscriptionArray[i].subscription.amount)
 
         let subAmount = formatEther(String(subscriptionArray[i].subscription.amount))
 

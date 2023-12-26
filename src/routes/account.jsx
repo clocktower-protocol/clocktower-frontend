@@ -58,7 +58,7 @@ const Account = () => {
 
         getAccount()
         getProviderSubs()
-        getSubscriberSubs()
+        //getSubscriberSubs()
     },[])
 
     /*
@@ -74,7 +74,7 @@ const Account = () => {
         getAccount()
         setIsDomainVerified(false)
         getProviderSubs()
-        getSubscriberSubs()
+       // getSubscriberSubs()
     },[a])
 
     //functions for editing account
@@ -215,7 +215,7 @@ const Account = () => {
             createSubHandleClose()
             getAccount()
             getProviderSubs()
-            getSubscriberSubs()
+         //   getSubscriberSubs()
         }
     },[editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
 
@@ -453,6 +453,7 @@ const getSubscriberSubs = async () => {
            })
            
        }
+       console.log(accountSubscriptions)
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(subscribedDetailsArray)
    })
@@ -463,6 +464,7 @@ const getSubscriberSubs = async () => {
 
 const isTableEmpty1 = (subscriptionArray) => {
        
+    console.log(subscriptionArray)
     let count = 0
     if(subscriptionArray.length === 0){
         return true
@@ -475,12 +477,12 @@ const isTableEmpty1 = (subscriptionArray) => {
        
 }
 
-const isTableEmpty2 = () => {
+const isTableEmpty2 = (subscriptionArray2) => {
     let count = 0
-    if(subscribedSubsArray.length === 0){
+    if(subscriptionArray2.length === 0){
         return true
     } else {
-        subscribedSubsArray.forEach(subscription => {
+        subscriptionArray2.forEach(subscription => {
             //this checks for unsubscribes AND cancels
             if(Number(subscription.status) === 0) {count += 1}
         })
@@ -684,22 +686,28 @@ const alertMaker = () => {
                             >
                                 <Tab eventKey="provider" title="Created">
                                     <div className="provHistory">
-                                    {!isTableEmpty1(provSubscriptionArray) ?
-                                    <SubscriptionsTable
-                                        subscriptionArray = {provSubscriptionArray}
-                                        isAdmin = {false}
-                                        role = {1}
-                                        detailsArray = {provDetailsArray}
-                                        setCancelledSub = {setCancelledSub}
-                                    />
-                                    : <div></div>}
-                                    
+                                       <div><h1> {String(isTableEmpty2(provSubscriptionArray))
+                                       
+                                       }</h1></div>
+                                        
+                                        {!isTableEmpty1(provSubscriptionArray) ?
+                                        <SubscriptionsTable
+                                            subscriptionArray = {provSubscriptionArray}
+                                            isAdmin = {false}
+                                            role = {1}
+                                            detailsArray = {provDetailsArray}
+                                            setCancelledSub = {setCancelledSub}
+                                        />
+                                        : <div></div>}
+                                        
                                     </div>
                                 </Tab>
                                
                                 <Tab eventKey="subscriber" title="Subscribed To">
                                     <div className="provHistory">
-                                        {subscribedSubsArray.length > 0 && !isTableEmpty2() ?
+                                    <div><h1> {String(isTableEmpty2(subscribedSubsArray))}</h1></div>
+                                        
+                                        {!isTableEmpty2(subscribedSubsArray) ?
                                         <SubscriptionsTable
                                             subscriptionArray = {subscribedSubsArray}
                                             detailsArray = {subscribedDetailsArray}
@@ -708,7 +716,8 @@ const alertMaker = () => {
                                             role = {2}
                                             setUnsubscribedSub = {setUnsubscribedSub}
                                         />
-                                        : ""}
+                                        : <div></div>}
+                                        
                                     </div>
                                 </Tab>        
                             </Tabs>

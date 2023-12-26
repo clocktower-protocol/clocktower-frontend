@@ -463,26 +463,34 @@ const getSubscriberSubs = async () => {
 
 const isTableEmpty1 = (subscriptionArray) => {
        
-       let count = 0
+    let count = 0
+    if(subscriptionArray.length === 0){
+        return true
+    } else {
        subscriptionArray.forEach(subscription => {
            if(subscription.status !== 1) {count += 1}
        })
        if(count > 0) { return false } else {return true}
+    }
        
 }
 
 const isTableEmpty2 = () => {
     let count = 0
-    subscribedSubsArray.forEach(subscription => {
-        //this checks for unsubscribes AND cancels
-        if(Number(subscription.status) === 0) {count += 1}
-    })
-    if(count > 0) { 
-        //setIsEmpty(false)
-        return false 
-    } else {
-       // setIsEmpty(true)
+    if(subscribedSubsArray.length === 0){
         return true
+    } else {
+        subscribedSubsArray.forEach(subscription => {
+            //this checks for unsubscribes AND cancels
+            if(Number(subscription.status) === 0) {count += 1}
+        })
+        if(count > 0) { 
+            //setIsEmpty(false)
+            return false 
+        } else {
+        // setIsEmpty(true)
+            return true
+        }
     }
 }
 
@@ -685,9 +693,8 @@ const alertMaker = () => {
                                         setCancelledSub = {setCancelledSub}
                                     />
                                     : <div></div>}
-                                
+                                    
                                     </div>
-
                                 </Tab>
                                
                                 <Tab eventKey="subscriber" title="Subscribed To">

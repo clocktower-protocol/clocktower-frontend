@@ -39,8 +39,8 @@ const Account = () => {
 
     let emptySubscriptionArray = []
     let emptyDetails = []
-    const [detailsArray, setDetailsArray] = useState(emptyDetails)
-    const [subscriptionArray, setSubscriptionArray] = useState(emptySubscriptionArray)
+    const [provDetailsArray, setProvDetailsArray] = useState(emptyDetails)
+    const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptySubscriptionArray)
     const [cancelledSub, setCancelledSub] = useState({})
 
     const [changedCreateSub, setChangedCreateSub] = useState({})
@@ -348,7 +348,7 @@ const Account = () => {
                                    }
                            }
                            //adds latest details to details array
-                           detailsArray[i] = events[index].args
+                           provDetailsArray[i] = events[index].args
                        }    
                        
                    }
@@ -356,8 +356,8 @@ const Account = () => {
                })
                
            }
-           setSubscriptionArray(accountSubscriptions)
-           setDetailsArray(detailsArray)
+           setProvSubscriptionArray(accountSubscriptions)
+           setProvDetailsArray(provDetailsArray)
        })
    } catch(Err) {
        console.log(Err)
@@ -548,7 +548,7 @@ const Account = () => {
                         <div>
                             <Row>
                                 
-                                <Col fluid align="center">
+                                <Col align="center">
                                     <Button variant="outline-info" onClick = {() => createButtonClick()}>Create Subscription</Button>
                                 </Col>
                                 
@@ -565,12 +565,12 @@ const Account = () => {
                             >
                                 <Tab eventKey="provider" title="Created">
                                     <div className="provHistory">
-                                    {!isTableEmpty(subscriptionArray) ?
+                                    {!isTableEmpty(provSubscriptionArray) ?
                                     <SubscriptionsTable
-                                        subscriptionArray = {subscriptionArray}
+                                        subscriptionArray = {provSubscriptionArray}
                                         isAdmin = {false}
                                         role = {1}
-                                        detailsArray = {detailsArray}
+                                        detailsArray = {provDetailsArray}
                                         setCancelledSub = {setCancelledSub}
                                     />
                                     : <div></div>}

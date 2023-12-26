@@ -90,7 +90,7 @@ const router = createBrowserRouter([
           element: <ProvSubHistory />,
         },
         {
-          path: "provider/subscribers/:id/:a/:t/:p",
+          path: "subscribers/:id/:a/:t/:p",
           element: <ProvSubscribers />
         },
         {

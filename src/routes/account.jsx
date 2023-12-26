@@ -26,6 +26,8 @@ const Account = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
 
     const [alertType, setAlertType] = useState("danger")
+
+    //modal triggers
     const [showEditWarn, setShowEditWarn] = useState(false);
     const [verifyShow, setVerifyShow] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false)
@@ -33,17 +35,20 @@ const Account = () => {
 
     const [isDisabled, setIsDisabled] = useState(false)
     const [copyTitle, setCopyTitle] = useState("Copy")
+    //account variables
     const [isDomainVerified, setIsDomainVerified] = useState(false)
     const [changedAccountDetails, setChangedAccountDetails] = useState({})
     const [accountDetails, setAccountDetails] = useState({})
-
-    let emptySubscriptionArray = []
-    let emptyDetails = []
-    const [provDetailsArray, setProvDetailsArray] = useState(emptyDetails)
-    const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptySubscriptionArray)
+    //table variables
+    let emptyArray = []
+    const [provDetailsArray, setProvDetailsArray] = useState(emptyArray)
+    const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
+    const [subscribedDetailsArray, setSubscribedDetailsArray] = useState(emptyArray)
+    const [subscribedSubsArray, setSubscribedSubsArray] = useState(emptyArray)
+    //passed back objects when calling wallet
     const [cancelledSub, setCancelledSub] = useState({})
-
     const [changedCreateSub, setChangedCreateSub] = useState({})
+    const [unsubscribedSub, setUnsubscribedSub] = useState({})
 
     const msg = 'test'
 
@@ -53,6 +58,7 @@ const Account = () => {
 
         getAccount()
         getProviderSubs()
+        getSubscriberSubs()
     },[])
 
     /*
@@ -185,6 +191,7 @@ const Account = () => {
             createSubHandleClose()
             getAccount()
             getProviderSubs()
+            getSubscriberSubs()
         }
     },[editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
 
@@ -299,7 +306,7 @@ const Account = () => {
         }
     }
 
-    const getProviderSubs = async () => {
+const getProviderSubs = async () => {
         //checks if user is logged into account
        
         if(!isLoggedIn() || typeof address === "undefined") {
@@ -362,10 +369,75 @@ const Account = () => {
    } catch(Err) {
        console.log(Err)
    }
-        
-   }
+}
 
-   const isTableEmpty = (subscriptionArray) => {
+const getSubscriberSubs = async () => {
+    //checks if user is logged into account
+   
+    if(!isLoggedIn() || account === "-1" || typeof address === "undefined") {
+       console.log("Not Logged in")
+       return
+   }
+   
+   //variable to pass scope so that the state can be set
+   let accountSubscriptions = []
+
+   try{
+   await readContract({
+       address: CLOCKTOWERSUB_ADDRESS,
+       abi: CLOCKTOWERSUB_ABI,
+       functionName: 'getAccountSubscriptions',
+       args: [true, account]
+   })
+   .then(async function(result) {
+       accountSubscriptions = result
+
+       //loops through each subscription
+       for (var i = 0; i < accountSubscriptions.length; i++) {
+           await publicClient.getLogs({
+               address: CLOCKTOWERSUB_ADDRESS,
+               event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+               fromBlock: 0n,
+               toBlock: 'latest',
+               args: {id:[accountSubscriptions[i].subscription.id]}
+           }) 
+           .then(async function(events){
+           
+                
+               //checks for latest update by getting highest timestamp
+               if(events != undefined) {
+                   console.log(events)
+                   
+                   let time = 0
+                   let index = 0
+                   
+                   if(events.length > 0)
+                   {
+                       for (var j = 0; j < events.length; j++) {
+                               if(time < events[j].args.timestamp)
+                               {
+                                   time = events[j].args.timestamp
+                                   index = j
+                               }
+                       }
+                       //adds latest details to details array
+                       subscribedDetailsArray[i] = events[index].args
+                   }    
+                   
+               }
+               
+           })
+           
+       }
+       setSubscribedSubsArray(accountSubscriptions)
+       setSubscribedDetailsArray(subscribedDetailsArray)
+   })
+    } catch(Err) {
+        console.log(Err)
+    }
+}
+
+const isTableEmpty1 = (subscriptionArray) => {
        
        let count = 0
        subscriptionArray.forEach(subscription => {
@@ -373,18 +445,33 @@ const Account = () => {
        })
        if(count > 0) { return false } else {return true}
        
-   }
+}
 
-    //Creates alert
-    const alertMaker = () => {
-        if(alert) {
-            return (
-                <div className="alertDiv">
-                <Alert variant={alertType} align="center" onClose={() => setAlert(false)} dismissible>{alertText}</Alert>
-                </div>
-            )
-        }
+const isTableEmpty2 = () => {
+    let count = 0
+    subscribedSubsArray.forEach(subscription => {
+        //this checks for unsubscribes AND cancels
+        if(Number(subscription.status) === 0) {count += 1}
+    })
+    if(count > 0) { 
+        //setIsEmpty(false)
+        return false 
+    } else {
+       // setIsEmpty(true)
+        return true
     }
+}
+
+ //Creates alert
+const alertMaker = () => {
+    if(alert) {
+        return (
+            <div className="alertDiv">
+                <Alert variant={alertType} align="center" onClose={() => setAlert(false)} dismissible>{alertText}</Alert>
+            </div>
+        )
+    }
+}
 
     //checks that user has logged in 
     if(account === "-1") {
@@ -565,7 +652,7 @@ const Account = () => {
                             >
                                 <Tab eventKey="provider" title="Created">
                                     <div className="provHistory">
-                                    {!isTableEmpty(provSubscriptionArray) ?
+                                    {!isTableEmpty1(provSubscriptionArray) ?
                                     <SubscriptionsTable
                                         subscriptionArray = {provSubscriptionArray}
                                         isAdmin = {false}
@@ -578,9 +665,21 @@ const Account = () => {
                                     </div>
 
                                 </Tab>
+                               
                                 <Tab eventKey="subscriber" title="Subscribed To">
-
-                                </Tab>
+                                    <div className="provHistory">
+                                        {subscribedSubsArray.length > 0 && !isTableEmpty2() ?
+                                        <SubscriptionsTable
+                                            subscriptionArray = {subscribedSubsArray}
+                                            detailsArray = {subscribedDetailsArray}
+                                        // unsubscribe = {unsubscribe}
+                                            account = {account}
+                                            role = {2}
+                                            setUnsubscribedSub = {setUnsubscribedSub}
+                                        />
+                                        : ""}
+                                    </div>
+                                </Tab>        
                             </Tabs>
                         </div>
                         : ""}

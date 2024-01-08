@@ -32,6 +32,7 @@ const Account = () => {
     const [verifyShow, setVerifyShow] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false)
     const [showCreateSub, setShowCreateSub] = useState(false)
+    const [showSubEditForm, setShowSubEditForm] = useState(false)
 
     const [isDisabled, setIsDisabled] = useState(false)
     const [copyTitle, setCopyTitle] = useState("Copy")
@@ -257,7 +258,7 @@ const Account = () => {
     const verifyHandleClose = () => setVerifyShow(false);
     const verifyHandleShow = () => setVerifyShow(true);
 
-    //turns on and off form modal
+    //turns on and off edit account form modal
     const editFormHandleClose = () => setShowEditForm(false)
     const editFormHandleShow = () => {
         setShowEditWarn(false)
@@ -267,6 +268,10 @@ const Account = () => {
     //turns on and off create susbcription modal
     const createSubHandleClose = () => setShowCreateSub(false)
     const createSubHandleShow = () => setShowCreateSub(true)
+
+    //turns on and off subscription details edit modal
+    const subEditDetailsHandleClose = () => setShowSubEditForm(false)
+    const subEditDetailsHandleShow = () => setShowSubEditForm(true)
 
     const editButtonClick = () => {
         editHandleShow()
@@ -591,6 +596,15 @@ const alertMaker = () => {
                                     <CreateSubForm2
                                         setChangedCreateSub = {setChangedCreateSub}
                                     />
+                                </Modal.Body>
+                            </Modal>
+                        </div>
+                        <div>
+                            <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleShow}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Create Subscription</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
                                 </Modal.Body>
                             </Modal>
                         </div>

@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useCallback} from 'react';
-import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal, Stack} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal, Stack, Col} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -104,8 +104,8 @@ const Root = () => {
          
         </Modal>
         </div>
-        <div className="topDiv">
-          <div className="navBar">
+        <div >
+          <div className="col-span-2">
           <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
             <Container key="navContainer1" className="clockNav">
               <LinkContainer to="/">
@@ -113,38 +113,46 @@ const Root = () => {
               </LinkContainer>
             </Container>
             <Container key="navContainer" className="clockNav2">
-            <Row></Row>
-            <Row>
-          <Nav key="nav">
-            {isConnected ? (<Navbar.Text>Account: {address}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
-          </Nav>
-          </Row>
-        </Container>
-      </Navbar>
-      </div>
-      <div className="sideNav">
-        <div className="sideNav2">
-        <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
-        <Nav defaultActiveKey="/home" className="flex-column">
-          
-          <div className='sideButtons'>
-          <Stack gap={3}>
-            <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
-            <Button variant="outline-info" onClick={handleOnClickProv}>Provider Dash</Button>{' '}
-            <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber Dash</Button>{' '}
-            {account === adminAccount ?
-            <Button variant="outline-info" onClick={handleOnClickAdmin}>Admin</Button>
-            : ""}
-          </Stack>
+              <Row></Row>
+              <Row>
+                <Nav key="nav">
+                  {isConnected ? (<Navbar.Text>Account: {address}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+                </Nav>
+              </Row>
+            </Container>
+          </Navbar>
           </div>
-        </Nav>
-        </Navbar>
+          <div>
+            <div>
+              
+                <Row>
+
+                  <Col>
+                   
+                        <div className="bg-black w-60">
+                        <Stack gap={3}>
+                          <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
+                          <Button variant="outline-info" onClick={handleOnClickProv}>Provider Dash</Button>{' '}
+                          <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber Dash</Button>{' '}
+                          {account === adminAccount ?
+                          <Button variant="outline-info" onClick={handleOnClickAdmin}>Admin</Button>
+                          : ""}
+                        </Stack>
+                        </div>
+                  
+                  </Col>
+                  <Col>
+                    <div id="detail">
+                      <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
+                    </div>
+                  </Col>
+
+                </Row>
+              
+            </div>
+          
+          </div>
         </div>
-        <div id="detail" className="mainDiv">
-          <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
-        </div>
-      </div>
-    </div>
   </>
   )
 

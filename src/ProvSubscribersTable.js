@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
+import {Link} from "react-router-dom";
 import {formatEther} from 'viem'
 
 const ProvSubscribersTable = (props) => {
@@ -23,7 +24,7 @@ const ProvSubscribersTable = (props) => {
         let feeBalance = formatEther(subscribersArray[i].feeBalance)
   
         row.push(
-          <td key={String(subscribersArray[i])+1}>{subscribersArray[i].subscriber}</td>,
+          <td key={String(subscribersArray[i])+1}><Link to={`../account/${subscribersArray[i].subscriber}`}>{subscribersArray[i].subscriber}</Link></td>,
           <td key={String(subscribersArray[i])+2}>{Number(feeBalance).toFixed(4)}&nbsp;&nbsp;{props.ticker}</td>,
           <td key={String(subscribersArray[i])+3}>{Math.floor(props.remainingCycles[i])}</td>,
         )     

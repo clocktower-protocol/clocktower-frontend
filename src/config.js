@@ -820,31 +820,31 @@ export const DUEDAY_RANGE = [
 //lookup for day of week
 export const DAY_OF_WEEK_LOOKUP = [
   {
-    index: 1,
+    index: 7,
     name: "Sunday"
   },
   {
-    index: 2,
+    index: 1,
     name: "Monday"
   },
   {
-    index: 3,
+    index: 2,
     name: "Tuesday"
   },
   {
-    index: 4,
+    index: 3,
     name: "Wednesday"
   },
   {
-    index: 5,
+    index: 4,
     name: "Thursday"
   },
   {
-    index: 6,
+    index: 5,
     name: "Friday"
   },
   {
-    index: 7,
+    index: 6,
     name: "Saturday"
   },
 ]

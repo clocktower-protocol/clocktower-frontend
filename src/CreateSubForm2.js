@@ -57,7 +57,7 @@ const CreateSubForm2 = (props) => {
                 const options = []
                 for(let i = dayRange.start; i <= dayRange.stop; i++) {
                     if(dayRange.frequency === 0){
-                        options.push(<option value={i} key={DAY_OF_WEEK_LOOKUP[(i-1)].name}>{DAY_OF_WEEK_LOOKUP[(i-1)].name}</option>)
+                        options.push(<option value={DAY_OF_WEEK_LOOKUP[(i-1)].index} key={DAY_OF_WEEK_LOOKUP[(i-1)].name}>{DAY_OF_WEEK_LOOKUP[(i-1)].name}</option>)
                     } else {
                         options.push(<option value={i} key={i}>{i}</option>)
                     }

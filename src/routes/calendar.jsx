@@ -82,7 +82,7 @@ const Calendar = () => {
                             //adds the days to the next event
                             let nextEvent = now.add(difference, 'day')
                             //saves info to array
-                            tempEventsArray.push({title: "test", date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
+                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
                             //increments event by a week for the next two years and saves to array
                             for (var j = 0; j < 105; j++) {
                                 nextEvent = nextEvent.add(7, 'd')
@@ -92,6 +92,36 @@ const Calendar = () => {
                             break
                         //monthly
                         case 1:
+                            let year
+                            let month
+                            let monthEvent
+                            //day is next month
+                            if(dueDay < now.day()) {
+                                //gets month number and increments it
+                                month = now.month()
+                                month += 1
+                                year = now.year()
+                                //month goes into next year
+                                if(month === 12) {
+                                    month = 0
+                                    year += 1
+                                }
+                            } else {
+                                month = now.month()
+                                year = now.year()
+                            }
+                            
+                            monthEvent = dayjs(String(year)+"-"+String(month + 1)+"-"+dueDay)
+                            //pushs first date to array
+                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
+
+                            //increments event by a month for the next two years and saves to array
+                            for (var j = 0; j < 25; j++) {
+                                monthEvent = monthEvent.add(1, 'M')
+                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
+                            }
+
+                            
                             break
                         //quarterly
                         case 2: 

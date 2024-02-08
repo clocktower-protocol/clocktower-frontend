@@ -23,6 +23,7 @@ const Root = () => {
     const navigate = useNavigate();
     const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
     const handleOnClickSub = useCallback(() => navigate('/subscriberdash', {replace: true}), [navigate])
+    const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
 
@@ -130,6 +131,7 @@ const Root = () => {
           <div className='sideButtons'>
           <Stack gap={3}>
             <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
+            <Button variant="outline-info" onClick={handleOnClickCalendar}>Calendar</Button>{' '}
             {/*
             <Button variant="outline-info" onClick={handleOnClickProv}>Provider Dash</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber Dash</Button>{' '}

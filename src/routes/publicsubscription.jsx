@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Card, ListGroup, Button, Modal} from 'react-bootstrap';
-import { useOutletContext, useParams, useNavigate} from "react-router-dom";
+import { useOutletContext, useParams, useNavigate, Link} from "react-router-dom";
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS} from "../config"; 
 import { useContractWrite, useWaitForTransaction, usePublicClient, useSignMessage, erc20ABI, useAccount} from 'wagmi'
 import { readContract, writeContract } from 'wagmi/actions'
@@ -331,7 +331,7 @@ const PublicSubscription = () => {
                         </Card.Text>
                     </Card.Body>
                     <ListGroup className="list-group-flush">
-                        <ListGroup.Item>Provider:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {subscription.provider}</ListGroup.Item>
+                        <ListGroup.Item>Provider:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Link to={`../account/${subscription.provider}`}>{subscription.provider}</Link> </ListGroup.Item>
                         <ListGroup.Item>Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{amount} {tickerName}</ListGroup.Item>
                         <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>

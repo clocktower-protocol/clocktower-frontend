@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-import { SUBEVENT_LOOKUP, PROVEVENT_LOOKUP, SUBSCRIPTEVENT_LOOKUP } from './config';
+import {Link} from "react-router-dom";
+import { SUBSCRIPTEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'
 import {TOKEN_LOOKUP} from "./config";
 import {formatEther} from 'viem'
@@ -40,7 +41,7 @@ const SubHistoryTable = (props) => {
         let ticker = tickerLookup(historyArray[i].args.token)
   
         row.push(
-            <td key={String(historyArray[i].args.subscriber)+1}>{historyArray[i].args.subscriber}</td>, 
+            <td key={String(historyArray[i].args.subscriber)+1}><Link to={`../account/${historyArray[i].args.subscriber}`}>{historyArray[i].args.subscriber}</Link></td>, 
             <td key={String(historyArray[i].args.subEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].args.subscriptevent]}</td>,
             <td key={String(historyArray[i].args.timestamp)+3}>{formatDate}</td>,
             <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,

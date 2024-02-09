@@ -7,6 +7,8 @@ import { readContract } from 'wagmi/actions'
 import { useAccount } from "wagmi"
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import dayjs from 'dayjs'
+import quarterOfYear from 'dayjs/plugin/quarterOfYear'
+dayjs.extend(quarterOfYear)
 
 
 const Calendar = () => {
@@ -120,11 +122,48 @@ const Calendar = () => {
                                 monthEvent = monthEvent.add(1, 'M')
                                 tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
                             }
-
-                            
                             break
                         //quarterly
                         case 2: 
+                            
+                            let nowMonth
+                            let nowYear
+
+                            //converts now to quarter day (1 -- 90)
+                            const maxMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                            const leapMaxMonthDays = [31, 29, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                            const daysInQuarter = [90, 91, 92, 92]
+                            const leapDaysInQuarter = [91, 91, 92, 92]
+
+                           // console.log(now.quarter())
+
+                            //gets current quarter day
+                            const monthAtEndOfQuarter = now.quarter() * 3
+                            const monthAtBeginningOfQuarter = monthAtEndOfQuarter - 3
+                            
+                            /*
+                            let counter = 0
+                            for (var m = 3; m > 0; m--) {
+                                counter += maxMonthDays[monthAtEndOfQuarter - m]
+                            }
+                            */
+                           // console.log(counter)
+
+                            let counter2 = 0
+                            let quarterDay = 0
+                            for(var m = monthAtBeginningOfQuarter; m <= now.month(); m++) {
+                                for(var d = 1; d <= maxMonthDays[m]; d++) {
+                                    counter2 += 1
+                                    console.log(d)
+                                    if(m == now.month() && d == now.date()) {
+                                        quarterDay = counter2
+                                        break
+                                    }
+                                }
+                            }
+
+                            console.log(quarterDay)
+
                             break
                         //yearly
                         case 3:

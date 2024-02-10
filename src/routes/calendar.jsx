@@ -9,8 +9,10 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import dayjs from 'dayjs'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
+import dayOfYear from 'dayjs/plugin/dayOfYear'
 dayjs.extend(quarterOfYear)
 dayjs.extend(isLeapYear)
+dayjs.extend(dayOfYear)
 
 
 const Calendar = () => {
@@ -55,7 +57,6 @@ const Calendar = () => {
 
            //loops through each subscription
            for (var i = 0; i < accountSubscriptions.length; i++) {
-
 
                 if(accountSubscriptions[i].status === 0) {
                     //gets time information from each subscription
@@ -127,36 +128,18 @@ const Calendar = () => {
                             break
                         //quarterly
                         case 2: 
-                            
-                           // let nowMonth
-                           // let nowYear
 
                             //converts now to quarter day (1 -- 90)
-                            const maxMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                            let maxMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
                             const leapMaxMonthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-                            const daysInQuarter = [90, 91, 92, 92]
-                            const leapDaysInQuarter = [91, 91, 92, 92]
-
-                           // console.log(now.quarter())
-
-                                                       
+                           
                             if(now.isLeapYear) {
                                 maxMonthDays = leapMaxMonthDays
                             } 
                             
-                            
-
                             //gets current quarter day
                             const monthAtEndOfQuarter = now.quarter() * 3
                             const monthAtBeginningOfQuarter = monthAtEndOfQuarter - 3
-                            
-                            /*
-                            let counter = 0
-                            for (var m = 3; m > 0; m--) {
-                                counter += maxMonthDays[monthAtEndOfQuarter - m]
-                            }
-                            */
-                           // console.log(counter)
 
                             //converts current day to quarter day
                             let counter2 = 0
@@ -173,8 +156,6 @@ const Calendar = () => {
                                 }
                             }
 
-                           // console.log(currentQuarterDay)
-
                             let eventYear = now.year()
                             let eventMonth
                             let eventDay
@@ -190,9 +171,7 @@ const Calendar = () => {
                                 } else {
                                     beginningMonth += 3
                                 }
-                            } else {
-
-                            }
+                            } 
                             
                             //converts dueDay to date object
 
@@ -205,7 +184,6 @@ const Calendar = () => {
                                 //increments the days inside the quarter until current day is found
                                 for(var d = 1; d <= maxMonthDays[m]; d++) {
                                     counter3 += 1
-                                    //console.log(m)
                                     if(counter3 == dueDay) {
                                         eventDay = d
                                         eventMonth = m
@@ -237,25 +215,37 @@ const Calendar = () => {
                                     //increments the days inside the quarter until current day is found
                                     for(var d = 1; d <= maxMonthDays[m]; d++) {
                                         counter4 += 1
-                                        //console.log(m)
                                         if(counter4 == dueDay) {
                                             eventDay = d
                                             eventMonth = m
                                             quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
-                                            //pushs first date to array
+                                            //pushs date to array
                                             tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
                                             break
                                         }
                                     }
                                 }
                             }
-
-                            // console.log(eventYear)
-                            // console.log(eventMonth)
-                            // console.log(eventDay)
                             break
                         //yearly
                         case 3:
+                            let y = now.year()
+                            //checks if current day of year is after dueDay
+                            if(now.dayOfYear() > dueDay) {
+                                //increments year
+                                y += 1
+                            }
+
+                            //loops through two years
+                            for(var l = y; l <= (y + 1); l++) {
+                                //gets date from day of year
+                                let yearStartObject = dayjs(String(l)+"-01-01")
+                                let yearEvent = dayjs(yearStartObject.format('YYYY-MM-DD')).dayOfYear(dueDay)
+
+                                //pushs date to array
+                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: "red"})
+                            }
+
                             break
                         
                     }

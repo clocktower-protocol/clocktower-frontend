@@ -8,7 +8,9 @@ import { useAccount } from "wagmi"
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import dayjs from 'dayjs'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
+import isLeapYear from 'dayjs/plugin/isLeapYear'
 dayjs.extend(quarterOfYear)
+dayjs.extend(isLeapYear)
 
 
 const Calendar = () => {
@@ -126,19 +128,23 @@ const Calendar = () => {
                         //quarterly
                         case 2: 
                             
-                            let nowMonth
-                            let nowYear
+                           // let nowMonth
+                           // let nowYear
 
                             //converts now to quarter day (1 -- 90)
                             const maxMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-                            const leapMaxMonthDays = [31, 29, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                            const leapMaxMonthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
                             const daysInQuarter = [90, 91, 92, 92]
                             const leapDaysInQuarter = [91, 91, 92, 92]
 
                            // console.log(now.quarter())
 
-                           //TODO: check for leap year
-
+                                                       
+                            if(now.isLeapYear) {
+                                maxMonthDays = leapMaxMonthDays
+                            } 
+                            
+                            
 
                             //gets current quarter day
                             const monthAtEndOfQuarter = now.quarter() * 3
@@ -173,7 +179,7 @@ const Calendar = () => {
                             let eventMonth
                             let eventDay
                             let beginningMonth = monthAtBeginningOfQuarter
-                            let firstDay
+                            let quarterEvent
 
                             //checks if next scheduled quarter event is in current quarter or next quarter
                             if(currentQuarterDay > dueDay){
@@ -192,6 +198,8 @@ const Calendar = () => {
 
                             let counter3 = 0
 
+                            //gets first date of sequence 
+
                             //increments each month of quarter
                             for(var m = beginningMonth; m <= (beginningMonth + 2); m++) {
                                 //increments the days inside the quarter until current day is found
@@ -201,15 +209,50 @@ const Calendar = () => {
                                     if(counter3 == dueDay) {
                                         eventDay = d
                                         eventMonth = m
+                                        quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
+                                        //pushs first date to array
+                                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
                                         break
                                     }
                                 }
                             }
 
-                            console.log(eventYear)
-                            console.log(eventMonth)
-                            console.log(eventDay)
+                            //increments sequence by seven more quarters
+                            for(var q = 0; q <= 6; q++) {
+                                let quarter = quarterEvent.quarter()
+                                //increments quarter
+                                if(quarter == 4) {
+                                    quarter = 1
+                                    eventYear += 1
+                                } else {
+                                    quarter += 1
+                                }
+                                
+                                //gets begining month
+                                beginningMonth = quarter * 3 - 3
 
+                                //increments through days of quarter to get month and day
+                                let counter4 = 0
+                                for(var m = beginningMonth; m <= (beginningMonth + 2); m++) {
+                                    //increments the days inside the quarter until current day is found
+                                    for(var d = 1; d <= maxMonthDays[m]; d++) {
+                                        counter4 += 1
+                                        //console.log(m)
+                                        if(counter4 == dueDay) {
+                                            eventDay = d
+                                            eventMonth = m
+                                            quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
+                                            //pushs first date to array
+                                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
+                                            break
+                                        }
+                                    }
+                                }
+                            }
+
+                            // console.log(eventYear)
+                            // console.log(eventMonth)
+                            // console.log(eventDay)
                             break
                         //yearly
                         case 3:

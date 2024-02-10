@@ -137,6 +137,9 @@ const Calendar = () => {
 
                            // console.log(now.quarter())
 
+                           //TODO: check for leap year
+
+
                             //gets current quarter day
                             const monthAtEndOfQuarter = now.quarter() * 3
                             const monthAtBeginningOfQuarter = monthAtEndOfQuarter - 3
@@ -149,20 +152,63 @@ const Calendar = () => {
                             */
                            // console.log(counter)
 
+                            //converts current day to quarter day
                             let counter2 = 0
-                            let quarterDay = 0
+                            let currentQuarterDay = 0
+                            //increments each month of quarter
                             for(var m = monthAtBeginningOfQuarter; m <= now.month(); m++) {
+                                //increments the days inside the quarter until current day is found
                                 for(var d = 1; d <= maxMonthDays[m]; d++) {
                                     counter2 += 1
-                                    console.log(d)
                                     if(m == now.month() && d == now.date()) {
-                                        quarterDay = counter2
+                                        currentQuarterDay = counter2
                                         break
                                     }
                                 }
                             }
 
-                            console.log(quarterDay)
+                           // console.log(currentQuarterDay)
+
+                            let eventYear = now.year()
+                            let eventMonth
+                            let eventDay
+                            let beginningMonth = monthAtBeginningOfQuarter
+                            let firstDay
+
+                            //checks if next scheduled quarter event is in current quarter or next quarter
+                            if(currentQuarterDay > dueDay){
+                                //checks if we are in quarter 4. If so increments the year and quarter 
+                                if(now.quarter() == 4) {
+                                    eventYear += 1
+                                    beginningMonth = 0
+                                } else {
+                                    beginningMonth += 3
+                                }
+                            } else {
+
+                            }
+                            
+                            //converts dueDay to date object
+
+                            let counter3 = 0
+
+                            //increments each month of quarter
+                            for(var m = beginningMonth; m <= (beginningMonth + 2); m++) {
+                                //increments the days inside the quarter until current day is found
+                                for(var d = 1; d <= maxMonthDays[m]; d++) {
+                                    counter3 += 1
+                                    //console.log(m)
+                                    if(counter3 == dueDay) {
+                                        eventDay = d
+                                        eventMonth = m
+                                        break
+                                    }
+                                }
+                            }
+
+                            console.log(eventYear)
+                            console.log(eventMonth)
+                            console.log(eventDay)
 
                             break
                         //yearly

@@ -43,7 +43,7 @@ const Calendar = () => {
     }, []);
 
     //converts dueDay and frequency to cal events
-    const convertToCalEvents = (subscriptions) => {
+    const convertToCalEvents = (subscriptions, color) => {
 
         let tempEventsArray = []
         const accountSubscriptions = subscriptions
@@ -80,12 +80,12 @@ const Calendar = () => {
                         //adds the days to the next event
                         let nextEvent = now.add(difference, 'day')
                         //saves info to array
-                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
+                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         //increments event by a week for the next two years and saves to array
                         for (var j = 0; j < 105; j++) {
                             nextEvent = nextEvent.add(7, 'd')
                             //eventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD')})
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
+                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
                         break
                     //monthly
@@ -111,12 +111,12 @@ const Calendar = () => {
                         
                         monthEvent = dayjs(String(year)+"-"+String(month + 1)+"-"+dueDay)
                         //pushs first date to array
-                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
+                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
 
                         //increments event by a month for the next two years and saves to array
                         for (var j = 0; j < 25; j++) {
                             monthEvent = monthEvent.add(1, 'M')
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
+                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
                         break
                     //quarterly
@@ -182,7 +182,7 @@ const Calendar = () => {
                                     eventMonth = m
                                     quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                     //pushs first date to array
-                                    tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
+                                    tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
                                     break
                                 }
                             }
@@ -213,7 +213,7 @@ const Calendar = () => {
                                         eventMonth = m
                                         quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                         //pushs date to array
-                                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
+                                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
                                         break
                                     }
                                 }
@@ -236,7 +236,7 @@ const Calendar = () => {
                             let yearEvent = dayjs(yearStartObject.format('YYYY-MM-DD')).dayOfYear(dueDay)
 
                             //pushs date to array
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: "red"})
+                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
 
                         break
@@ -471,19 +471,18 @@ const Calendar = () => {
 
            setEventsArray(tempEventsArray)
            */
-            tempEventsArray = convertToCalEvents(result)
+            tempEventsArray = convertToCalEvents(result, "green")
             await readContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'getAccountSubscriptions',
                 args: [true, account]
             })
-            .then(async function(result) {
-          //tempEventsArray.concat(convertToCalEvents(result))
-                tempEventsArray.concat(convertToCalEvents(result))
+            .then(async function(result2) {
+                const tempEventsArray2 = convertToCalEvents(result2, "blue")
+                Array.prototype.push.apply(tempEventsArray,tempEventsArray2)
                 setEventsArray(tempEventsArray)
             })
-          //setEventsArray(tempEventsArray)
      
        })
     

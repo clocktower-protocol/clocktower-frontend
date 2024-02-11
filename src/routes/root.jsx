@@ -16,9 +16,6 @@ const Root = () => {
 
     const [showWalletChoice, setShowWalletChoice] = useState(false);
 
-    const handleClose = () => setShowWalletChoice(false);
-    const handleShow = () => setShowWalletChoice(true);
-
     //functions for links
     const navigate = useNavigate();
     const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
@@ -26,6 +23,12 @@ const Root = () => {
     const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
+
+    const handleClose = () => {
+      setShowWalletChoice(false);
+      
+    }
+    const handleShow = () => setShowWalletChoice(true);
 
     //WAGMI
     const {connector: activeConnector, address, isConnected } = useAccount({

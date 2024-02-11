@@ -1,6 +1,6 @@
 
 import { useOutletContext, useNavigate } from "react-router-dom";
-import {React, useEffect, useState }from 'react'
+import {React, useEffect, useState, useCallback }from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { readContract } from 'wagmi/actions'
@@ -28,10 +28,11 @@ const Calendar = () => {
     const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
     const [eventsArray, setEventsArray] = useState(emptyArray)
 
-    //event click handler
-    const eventClick = (info) => {
-            navigate('/public_subscription/'+info.event.extendedProps.id+"/"+info.event.extendedProps.frequency+"/"+info.event.extendedProps.dueDay, {replace: true})
-    }
+    
+    //link functions
+    const eventClick = useCallback((info) => {
+        navigate('/public_subscription/'+info.event.extendedProps.id+"/"+info.event.extendedProps.frequency+"/"+info.event.extendedProps.dueDay, {replace: true})
+    }, [navigate])
 
     //loads provider subscription list upon login
     useEffect(() => {

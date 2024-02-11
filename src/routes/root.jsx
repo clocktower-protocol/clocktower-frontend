@@ -23,10 +23,10 @@ const Root = () => {
     const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
+    //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
 
     const handleClose = () => {
       setShowWalletChoice(false);
-      
     }
     const handleShow = () => setShowWalletChoice(true);
 
@@ -53,6 +53,13 @@ const Root = () => {
       setAccount(address)
     
     }, [address])
+
+    //sends to account page once logged in
+    useEffect(() => {
+      if(typeof address !== "undefined") {
+        handleOnClickAccount()
+      }
+    }, [account])
 
     
   const adminAccount = ADMIN_ACCOUNT

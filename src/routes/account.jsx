@@ -252,6 +252,7 @@ const Account = () => {
 
     //turns on and off edit warning modal
     const editHandleClose = () => setShowEditWarn(false);
+    
     const editHandleShow = () => setShowEditWarn(true);
 
     //turns on and off verify domain modal 
@@ -469,7 +470,7 @@ const getSubscriberSubs = async () => {
 
 const isTableEmpty1 = (subscriptionArray) => {
        
-    console.log(subscriptionArray)
+    //console.log(subscriptionArray)
     let count = 0
     if(subscriptionArray.length === 0){
         return true

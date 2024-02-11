@@ -66,7 +66,7 @@ const SubscriptionsTable = (props) => {
     let table = []
     let tableTop = []
 
-    console.log(subscriptionArray.length)
+    //console.log(subscriptionArray.length)
 
     //loops through array to create table rows
     for(let i = 0; i < subscriptionArray.length; i++) {

@@ -436,7 +436,7 @@ const getSubscriberSubs = async () => {
                 
                //checks for latest update by getting highest timestamp
                if(events != undefined) {
-                   console.log(events)
+                   //console.log(events)
                    
                    let time = 0
                    let index = 0

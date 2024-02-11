@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ethereumjs/util": "^9.0.0",
+    "@fullcalendar/bootstrap5": "^6.1.10",
     "@fullcalendar/core": "^6.1.10",
     "@fullcalendar/daygrid": "^6.1.10",
     "@fullcalendar/react": "^6.1.10",
@@ -14,7 +15,8 @@
     "@types/node": "^18.11.10",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.3",
     "boring-avatars": "^1.10.1",
     "dayjs": "^1.11.6",
     "eth-crypto": "^2.6.0",

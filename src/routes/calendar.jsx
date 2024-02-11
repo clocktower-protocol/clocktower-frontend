@@ -6,10 +6,14 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { readContract } from 'wagmi/actions'
 import { useAccount } from "wagmi"
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import dayjs from 'dayjs'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
 import dayOfYear from 'dayjs/plugin/dayOfYear'
+
 dayjs.extend(quarterOfYear)
 dayjs.extend(isLeapYear)
 dayjs.extend(dayOfYear)
@@ -291,10 +295,11 @@ const Calendar = () => {
 
     return (
         <FullCalendar
-        plugins={[ dayGridPlugin ]}
+        plugins={[ dayGridPlugin, bootstrap5Plugin ]}
         initialView="dayGridMonth"
         events={eventsArray}
         eventClick={eventClick}
+        themeSystem="bootstrap5"
       />
     )
 }

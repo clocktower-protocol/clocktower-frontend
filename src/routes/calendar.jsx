@@ -1,5 +1,5 @@
 
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import {React, useEffect, useState }from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -22,9 +22,16 @@ const Calendar = () => {
     const { address } = useAccount()
 
     let emptyArray = []
+
+    const navigate = useNavigate()
     
     const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
     const [eventsArray, setEventsArray] = useState(emptyArray)
+
+    //event click handler
+    const eventClick = (info) => {
+            navigate('/public_subscription/'+info.event.extendedProps.id+"/"+info.event.extendedProps.frequency+"/"+info.event.extendedProps.dueDay, {replace: true})
+    }
 
     //loads provider subscription list upon login
     useEffect(() => {
@@ -87,12 +94,12 @@ const Calendar = () => {
                             //adds the days to the next event
                             let nextEvent = now.add(difference, 'day')
                             //saves info to array
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
+                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
                             //increments event by a week for the next two years and saves to array
                             for (var j = 0; j < 105; j++) {
                                 nextEvent = nextEvent.add(7, 'd')
                                 //eventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD')})
-                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
+                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: "green"})
                             }
                             break
                         //monthly
@@ -118,12 +125,12 @@ const Calendar = () => {
                             
                             monthEvent = dayjs(String(year)+"-"+String(month + 1)+"-"+dueDay)
                             //pushs first date to array
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
+                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
 
                             //increments event by a month for the next two years and saves to array
                             for (var j = 0; j < 25; j++) {
                                 monthEvent = monthEvent.add(1, 'M')
-                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
+                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: "pink"})
                             }
                             break
                         //quarterly
@@ -189,7 +196,7 @@ const Calendar = () => {
                                         eventMonth = m
                                         quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                         //pushs first date to array
-                                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
+                                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
                                         break
                                     }
                                 }
@@ -220,7 +227,7 @@ const Calendar = () => {
                                             eventMonth = m
                                             quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                             //pushs date to array
-                                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
+                                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: "blue"})
                                             break
                                         }
                                     }
@@ -243,7 +250,7 @@ const Calendar = () => {
                                 let yearEvent = dayjs(yearStartObject.format('YYYY-MM-DD')).dayOfYear(dueDay)
 
                                 //pushs date to array
-                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: "red"})
+                                tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: "red"})
                             }
 
                             break
@@ -266,6 +273,7 @@ const Calendar = () => {
         plugins={[ dayGridPlugin ]}
         initialView="dayGridMonth"
         events={eventsArray}
+        eventClick={eventClick}
       />
     )
 }

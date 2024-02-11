@@ -13,6 +13,7 @@ const Root = () => {
     const [account, setAccount] = useState("-1")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
 
     const [showWalletChoice, setShowWalletChoice] = useState(false);
 
@@ -27,6 +28,7 @@ const Root = () => {
 
     const handleClose = () => {
       setShowWalletChoice(false);
+      console.log("clicked")
     }
     const handleShow = () => setShowWalletChoice(true);
 
@@ -41,6 +43,7 @@ const Root = () => {
       //connector: new InjectedConnector(),
       onSuccess(data) {
         console.log('Connect', data.account)
+        setLoggedIn(true)
       },
       onError(error) {
         console.log('Error', error)
@@ -54,12 +57,14 @@ const Root = () => {
     
     }, [address])
 
+    
     //sends to account page once logged in
     useEffect(() => {
       if(typeof address !== "undefined") {
         handleOnClickAccount()
       }
-    }, [account])
+    }, [loggedIn])
+    
 
     
   const adminAccount = ADMIN_ACCOUNT

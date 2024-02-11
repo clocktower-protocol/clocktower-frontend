@@ -31,7 +31,7 @@ const Calendar = () => {
     
     //link functions
     const eventClick = useCallback((info) => {
-        navigate('/public_subscription/'+info.event.extendedProps.id+"/"+info.event.extendedProps.frequency+"/"+info.event.extendedProps.dueDay, {replace: true})
+        navigate('/public_subscription/'+info.event.extendedProps.id+"/"+info.event.extendedProps.frequency+"/"+info.event.extendedProps.dueDay, {replace: false})
     }, [navigate])
 
     //loads provider subscription list upon login

@@ -459,7 +459,7 @@ const getSubscriberSubs = async () => {
            })
            
        }
-       console.log(accountSubscriptions)
+     //  console.log(accountSubscriptions)
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(subscribedDetailsArray)
    })

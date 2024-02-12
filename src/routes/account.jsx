@@ -70,13 +70,15 @@ const Account = () => {
     },[account])
     */
 
+    /*
     //changes data when passed account is switched
     useEffect(() => {
         getAccount()
         setIsDomainVerified(false)
         getProviderSubs()
         getSubscriberSubs()
-    },[a, getAccount])
+    },[a, getAccount, getProviderSubs, getSubscriberSubs])
+    */
 
     //functions for editing account
     const editAccount = useContractWrite({
@@ -338,7 +340,7 @@ const Account = () => {
         }
     },[a, address, isLoggedIn, publicClient])
 
-const getProviderSubs = async () => {
+const getProviderSubs = useCallback(async () => {
         //checks if user is logged into account
        
         if(!isLoggedIn() || typeof address === "undefined") {
@@ -402,9 +404,9 @@ const getProviderSubs = async () => {
    } catch(Err) {
        console.log(Err)
    }
-}
+}, [account, address, isLoggedIn, provDetailsArray, publicClient])
 
-const getSubscriberSubs = async () => {
+const getSubscriberSubs = useCallback(async () => {
     //checks if user is logged into account
    
     if(!isLoggedIn() || account === "-1" || typeof address === "undefined") {
@@ -469,7 +471,15 @@ const getSubscriberSubs = async () => {
     } catch(Err) {
         console.log(Err)
     }
-}
+},[account, address, isLoggedIn, publicClient, subscribedDetailsArray])
+
+//changes data when passed account is switched
+useEffect(() => {
+    getAccount()
+    setIsDomainVerified(false)
+    getProviderSubs()
+    getSubscriberSubs()
+},[a, getAccount, getProviderSubs, getSubscriberSubs])
 
 const isTableEmpty1 = (subscriptionArray) => {
        

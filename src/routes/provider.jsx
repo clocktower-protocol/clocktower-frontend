@@ -23,7 +23,7 @@ const Provider = () => {
     let emptyDetails = []
     const [alertType, setAlertType] = useState("danger")
     const [token, setToken] = useState(ZERO_ADDRESS)
-    const [tokenABI, setTokenABI] = useState({})
+    //const [tokenABI, setTokenABI] = useState({})
     const [frequency, setFrequency] = useState(0)
     const [dueDay, setDueDay] = useState(0)
     const [description, setDescription] = useState("")
@@ -36,7 +36,7 @@ const Provider = () => {
     const [detailsArray, setDetailsArray] = useState(emptyDetails)
     const [details, setDetails] = useState({})
     const [cancelledSub, setCancelledSub] = useState({})
-    const fee = 0.1
+   // const fee = 0.1
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -254,7 +254,7 @@ const Provider = () => {
                                         phone = {phone}
 
                                         setToken = {setToken}
-                                        setTokenABI = {setTokenABI}
+                                        //setTokenABI = {setTokenABI}
                                         setAmount = {setAmount}
                                         setFrequency = {setFrequency}
                                         setDueDay = {setDueDay}

@@ -29,7 +29,7 @@ const Calendar = () => {
 
     const navigate = useNavigate()
     
-    const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
+    //const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
     const [eventsArray, setEventsArray] = useState(emptyArray)
 
     
@@ -118,7 +118,7 @@ const Calendar = () => {
                         tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
 
                         //increments event by a month for the next two years and saves to array
-                        for (var j = 0; j < 25; j++) {
+                        for (var k = 0; k < 25; k++) {
                             monthEvent = monthEvent.add(1, 'M')
                             tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
@@ -177,13 +177,13 @@ const Calendar = () => {
                         //gets first date of sequence 
 
                         //increments each month of quarter
-                        for(var m = beginningMonth; m <= (beginningMonth + 2); m++) {
+                        for(var m2 = beginningMonth; m2 <= (beginningMonth + 2); m2++) {
                             //increments the days inside the quarter until current day is found
-                            for(var d = 1; d <= maxMonthDays[m]; d++) {
+                            for(var d2 = 1; d2 <= maxMonthDays[m2]; d2++) {
                                 counter3 += 1
                                 if(counter3 == dueDay) {
-                                    eventDay = d
-                                    eventMonth = m
+                                    eventDay = d2
+                                    eventMonth = m2
                                     quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                     //pushs first date to array
                                     tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
@@ -208,13 +208,13 @@ const Calendar = () => {
 
                             //increments through days of quarter to get month and day
                             let counter4 = 0
-                            for(var m = beginningMonth; m <= (beginningMonth + 2); m++) {
+                            for(var m3 = beginningMonth; m3 <= (beginningMonth + 2); m3++) {
                                 //increments the days inside the quarter until current day is found
-                                for(var d = 1; d <= maxMonthDays[m]; d++) {
+                                for(var d3 = 1; d3 <= maxMonthDays[m3]; d3++) {
                                     counter4 += 1
                                     if(counter4 == dueDay) {
-                                        eventDay = d
-                                        eventMonth = m
+                                        eventDay = d3
+                                        eventMonth = m3
                                         quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                         //pushs date to array
                                         tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
@@ -244,6 +244,8 @@ const Calendar = () => {
                         }
 
                         break
+                    default: 
+                        break
                     
                 }
             }
@@ -261,7 +263,7 @@ const Calendar = () => {
        }
 
        //variable to pass scope so that the state can be set
-       let accountSubscriptions = []
+       //let accountSubscriptions = []
        let tempEventsArray = []
 
        try{
@@ -295,12 +297,12 @@ const Calendar = () => {
 
     return (
         <FullCalendar
-        plugins={[ dayGridPlugin, bootstrap5Plugin ]}
-        initialView="dayGridMonth"
-        events={eventsArray}
-        eventClick={eventClick}
-        themeSystem="bootstrap5"
-      />
+            plugins={[ dayGridPlugin, bootstrap5Plugin ]}
+            initialView="dayGridMonth"
+            events={eventsArray}
+            eventClick={eventClick}
+            themeSystem="bootstrap5"
+        />
     )
 }
 

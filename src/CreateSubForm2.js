@@ -6,7 +6,7 @@ import { readContract } from 'wagmi/actions'
 
 const CreateSubForm2 = (props) => {
 
-    const [validated, setValidated] = useState(false)
+    //const [validated, setValidated] = useState(false)
     const [invalidToken, setInvalidToken] = useState(true)
     const [invalidFrequency, setInvalidFrequency] = useState(true)
     const [invalidDay, setInvalidDay] = useState(true)
@@ -29,7 +29,7 @@ const CreateSubForm2 = (props) => {
         if(!invalidAmount && !invalidUrl && !invalidDescription && !invalidToken && !invalidFrequency && !invalidDay) {
             setAllValidated(true)
         }
-    },[invalidAmount, invalidUrl, invalidDay, invalidDescription, invalidDay, invalidFrequency])
+    },[invalidAmount, invalidUrl, invalidDay, invalidDescription, invalidFrequency, invalidToken])
     
 
    // let ff = props.frequency
@@ -169,6 +169,7 @@ const CreateSubForm2 = (props) => {
      const urlChange = (event) => {
 
         if(event.target.value != ""){
+            //eslint-disable-next-line
             let regexUrl = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)
             if(!regexUrl.test(event.target.value)) {
                 setInvalidUrl(true)
@@ -221,7 +222,7 @@ const CreateSubForm2 = (props) => {
     }
 
     return (
-        <Form className="mb-3" noValidate validated={validated}  onSubmit={submitForm}>
+        <Form className="mb-3" noValidate validated={false}  onSubmit={submitForm}>
             <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>

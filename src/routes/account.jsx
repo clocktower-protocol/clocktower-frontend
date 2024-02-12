@@ -1,7 +1,7 @@
 import { useOutletContext, useParams } from "react-router-dom";
-import React, {useEffect, useState , useRef} from 'react'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"; 
-import {Alert, Row, Col, Container, Card, ListGroup, Button, Stack, Modal, Tabs, Tab} from 'react-bootstrap';
+import React, {useEffect, useState , useRef, useCallback} from 'react'
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction, usePublicClient} from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -76,7 +76,7 @@ const Account = () => {
         setIsDomainVerified(false)
         getProviderSubs()
         getSubscriberSubs()
-    },[a])
+    },[a, getAccount])
 
     //functions for editing account
     const editAccount = useContractWrite({
@@ -134,7 +134,7 @@ const Account = () => {
 
 
     //hook for signing messages
-    const {data: signMessageData, error, isLoading, signMessage, variables}  = useSignMessage({
+    const {data: signMessageData, signMessage, variables}  = useSignMessage({
         message: msg
     })
 
@@ -271,23 +271,25 @@ const Account = () => {
     const createSubHandleShow = () => setShowCreateSub(true)
 
     //turns on and off subscription details edit modal
-    const subEditDetailsHandleClose = () => setShowSubEditForm(false)
+    //const subEditDetailsHandleClose = () => setShowSubEditForm(false)
     const subEditDetailsHandleShow = () => setShowSubEditForm(true)
 
     const editButtonClick = () => {
         editHandleShow()
     }
 
+    /*
     const verifyButtonClick = () => {
         verifyHandleShow()
     }
+    */
 
     const createButtonClick = () => {
         createSubHandleShow()
     }
 
     //gets account info
-    const getAccount = async () => {
+    const getAccount = useCallback(async () => {
 
 
         //checks if user is logged into account
@@ -334,7 +336,7 @@ const Account = () => {
         } catch(Err) {
             console.log(Err)
         }
-    }
+    },[a, address, isLoggedIn, publicClient])
 
 const getProviderSubs = async () => {
         //checks if user is logged into account
@@ -359,6 +361,7 @@ const getProviderSubs = async () => {
 
            //loops through each subscription
            for (var i = 0; i < accountSubscriptions.length; i++) {
+            
                await publicClient.getLogs({
                    address: CLOCKTOWERSUB_ADDRESS,
                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),

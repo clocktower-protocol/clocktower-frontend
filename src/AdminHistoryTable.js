@@ -1,12 +1,12 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-import { PROVEVENT_LOOKUP, SUBEVENT_LOOKUP, SUBSCRIPTEVENT_LOOKUP } from './config';
+import { SUBSCRIPTEVENT_LOOKUP } from './config';
 import dayjs from 'dayjs'
 
 const AdminHistoryTable = (props) => {
 
     const providerHistory = props.providerHistory
-    const isp = props.isp
+    //const isp = props.isp
 
     //checks for empty array
     if(!Array.isArray(providerHistory) || (providerHistory.length <= 0 || typeof providerHistory[0].args === "undefined")) {

@@ -52,7 +52,7 @@ const ProvSubscribers = () => {
             args: [id]
         })
 
-        let feeBalance
+        //let feeBalance
         let remainingCycles
         let remainingCyclesArray = []
 
@@ -66,11 +66,11 @@ const ProvSubscribers = () => {
 
 
             if(balance == 0) {
-                feeBalance = 0
+                //feeBalance = 0
                 remainingCycles = Number(cycles)
                 remainingCyclesArray.push(remainingCycles)
             } else {
-                feeBalance = balance
+                //feeBalance = balance
 
                 const remainingBalancePercent = (balance / a)
                 console.log(remainingBalancePercent)

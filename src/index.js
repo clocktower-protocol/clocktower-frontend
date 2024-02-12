@@ -20,7 +20,7 @@ import AdminHistory from './routes/adminhistory';
 import Account from './routes/account';
 import Calendar from './routes/calendar';
 
-import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
+//import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
 import { WagmiConfig, createConfig, configureChains } from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'

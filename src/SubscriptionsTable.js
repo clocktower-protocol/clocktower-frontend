@@ -157,10 +157,10 @@ const SubscriptionsTable = (props) => {
                 {role === 1 || role === 0
                 ? <th key="urlHead">URL</th> : ""
                 }
-                {role === 1 || role === 0 && !bySubscriber
+                {(role === 1 || role === 0) && !bySubscriber
                 ? <th key="totalSubs">Subscribers</th> : ""
                 }
-                {role === 1 || role === 0 && !bySubscriber
+                {(role === 1 || role === 0) && !bySubscriber
                 ? <th key="incomeHead">Income per Period</th> : ""
                 }
                 {isAdmin && bySubscriber

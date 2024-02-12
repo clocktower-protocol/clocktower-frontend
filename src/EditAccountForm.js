@@ -1,10 +1,10 @@
 import {React, useState , useEffect} from 'react';
-import { Form, Button, Row, Col, FloatingLabel} from 'react-bootstrap';
+import { Form, Button, Row, Col} from 'react-bootstrap';
 
 const EditAccountForm = (props) => {
 
     //variable to tell if forms are validated or not
-    const [validated, setValidated] = useState(false);
+    //const [validated, setValidated] = useState(false);
     const [invalidDomain, setInvalidDomain] = useState(false)
     const [invalidUrl, setInvalidUrl] = useState(false)
     const [invalidCompany, setInvalidCompany] = useState(false)
@@ -68,6 +68,7 @@ const EditAccountForm = (props) => {
     const urlChange = (event) => {
 
         if(event.target.value != ""){
+            //eslint-disable-next-line
             let regexUrl = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)
             if(!regexUrl.test(event.target.value)) {
                 setInvalidUrl(true)
@@ -89,6 +90,7 @@ const EditAccountForm = (props) => {
             //(formDomain != ""){
                 //let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
                 //let regexDomain = new RegExp(/^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]{1,1}\.)*(xn--)?([a-z0-9][a-z0-9\-]{0,60}|[a-z0-9-]{1,30}\.[a-z]{2,})$/)
+                //eslint-disable-next-line
                 let regexDomain = new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/)
                 if(!regexDomain.test(event.target.value)) {
                     setInvalidDomain(true)
@@ -133,7 +135,7 @@ const EditAccountForm = (props) => {
     }
 
     return (
-        <Form noValidate validated={validated} className="mb-3" onSubmit={submitForm}>
+        <Form noValidate validated={false} className="mb-3" onSubmit={submitForm}>
             <Row>
                 <Col>
                     <Form.Group className="mb-3" controlId="formAccountDescription" defaultValue={props.accountDetails.description} value={props.description} onChange={descriptionChange}>

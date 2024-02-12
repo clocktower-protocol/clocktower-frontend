@@ -20,7 +20,7 @@ const Admin = () => {
     //creates empty array for table
     let emptyArray = [];
 
-    const [allAccounts, setAllAccounts] = useState(emptyArray)
+    //const [allAccounts, setAllAccounts] = useState(emptyArray)
     const [allProviders, setAllProviders] = useState(emptyArray)
     const [allSubscribers, setAllSubscribers] = useState(emptyArray)
     const [callerHistory, setCallerHistory] = useState(emptyArray)
@@ -100,7 +100,7 @@ const Admin = () => {
             }
             setAllProviders(providers)
             setAllSubscribers(subscribers)
-            setAllAccounts(accounts)
+           // setAllAccounts(accounts)
         })
 
     }

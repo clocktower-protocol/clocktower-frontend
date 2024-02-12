@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useCallback} from 'react';
-import { Navbar, Container, Nav, Button, NavDropdown, Row, Modal, Stack} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Row, Modal, Stack} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -9,7 +9,7 @@ import { useAccount, useConnect } from 'wagmi'
 
 const Root = () => {
 
-    const [buttonClicked, setButtonClicked] = useState(false)
+    //const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("-1")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
@@ -19,8 +19,8 @@ const Root = () => {
 
     //functions for links
     const navigate = useNavigate();
-    const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
-    const handleOnClickSub = useCallback(() => navigate('/subscriberdash', {replace: true}), [navigate])
+    //const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
+    //const handleOnClickSub = useCallback(() => navigate('/subscriberdash', {replace: true}), [navigate])
     const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
@@ -74,11 +74,13 @@ const Root = () => {
     handleShow()
   }
 
+  /*
   const injectedButtonClick = () => {
     connect()
-    setButtonClicked(true)
+    //setButtonClicked(true)
     handleClose()
   }
+  */
 
   //checks if user is logged in 
   const isLoggedIn = () => {

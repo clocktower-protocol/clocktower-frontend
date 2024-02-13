@@ -24,7 +24,7 @@ const EditAccountForm = (props) => {
         setCompany(props.accountDetails.company)
         setUrl(props.accountDetails.url)
         setDomain(props.accountDetails.domain)
-    },[])
+    },[props.accountDetails.description, props.accountDetails.company, props.accountDetails.url, props.accountDetails.domain])
 
     useEffect(() => {
 
@@ -38,7 +38,7 @@ const EditAccountForm = (props) => {
 
     //Event listeners-----------------------------
     const descriptionChange = (event) => {
-        if(event.target.value != ""){
+        if(event.target.value !== ""){
             if(event.target.value.length > 255) {
                 setInvalidDescription(true)
             } else {
@@ -53,7 +53,7 @@ const EditAccountForm = (props) => {
 
     const companyChange = (event) => {
 
-        if(event.target.value != ""){
+        if(event.target.value !== ""){
             if(event.target.value.length > 255) {
                 setInvalidCompany(true)
             } else {
@@ -67,7 +67,7 @@ const EditAccountForm = (props) => {
 
     const urlChange = (event) => {
 
-        if(event.target.value != ""){
+        if(event.target.value !== ""){
             //eslint-disable-next-line
             let regexUrl = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)
             if(!regexUrl.test(event.target.value)) {
@@ -82,10 +82,10 @@ const EditAccountForm = (props) => {
         }
 
     }
-
+//
     const domainChange = (event) => {
 
-        if(event.target.value != ""){
+        if(event.target.value !== ""){
 
             //(formDomain != ""){
                 //let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)

@@ -40,20 +40,22 @@ const Calendar = () => {
     }, [navigate])
     
 
+    /*
     //loads provider subscription list upon login
     useEffect(() => {
         setCalEvents()
        // setCalEvents(true)
-    }, []);
+    }, [setCalEvents]);
+    */
 
     //converts dueDay and frequency to cal events
-    const convertToCalEvents = (subscriptions, color) => {
+    const convertToCalEvents = useCallback((subscriptions, color) => {
 
         let tempEventsArray = []
         const accountSubscriptions = subscriptions
 
         //loops through each subscription
-        for (var i = 0; i < accountSubscriptions.length; i++) {
+        for (let i = 0; i < accountSubscriptions.length; i++) {
 
             if(accountSubscriptions[i].status === 0) {
                 //gets time information from each subscription
@@ -86,7 +88,7 @@ const Calendar = () => {
                         //saves info to array
                         tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         //increments event by a week for the next two years and saves to array
-                        for (var j = 0; j < 105; j++) {
+                        for (let j = 0; j < 105; j++) {
                             nextEvent = nextEvent.add(7, 'd')
                             //eventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD')})
                             tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
@@ -118,7 +120,7 @@ const Calendar = () => {
                         tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
 
                         //increments event by a month for the next two years and saves to array
-                        for (var k = 0; k < 25; k++) {
+                        for (let k = 0; k < 25; k++) {
                             monthEvent = monthEvent.add(1, 'M')
                             tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
@@ -142,11 +144,11 @@ const Calendar = () => {
                         let counter2 = 0
                         let currentQuarterDay = 0
                         //increments each month of quarter
-                        for(var m = monthAtBeginningOfQuarter; m <= now.month(); m++) {
+                        for(let m = monthAtBeginningOfQuarter; m <= now.month(); m++) {
                             //increments the days inside the quarter until current day is found
-                            for(var d = 1; d <= maxMonthDays[m]; d++) {
+                            for(let d = 1; d <= maxMonthDays[m]; d++) {
                                 counter2 += 1
-                                if(m == now.month() && d == now.date()) {
+                                if(m === now.month() && d === now.date()) {
                                     currentQuarterDay = counter2
                                     break
                                 }
@@ -162,7 +164,7 @@ const Calendar = () => {
                         //checks if next scheduled quarter event is in current quarter or next quarter
                         if(currentQuarterDay > dueDay){
                             //checks if we are in quarter 4. If so increments the year and quarter 
-                            if(now.quarter() == 4) {
+                            if(now.quarter() === 4) {
                                 eventYear += 1
                                 beginningMonth = 0
                             } else {
@@ -177,11 +179,11 @@ const Calendar = () => {
                         //gets first date of sequence 
 
                         //increments each month of quarter
-                        for(var m2 = beginningMonth; m2 <= (beginningMonth + 2); m2++) {
+                        for(let m2 = beginningMonth; m2 <= (beginningMonth + 2); m2++) {
                             //increments the days inside the quarter until current day is found
-                            for(var d2 = 1; d2 <= maxMonthDays[m2]; d2++) {
+                            for(let d2 = 1; d2 <= maxMonthDays[m2]; d2++) {
                                 counter3 += 1
-                                if(counter3 == dueDay) {
+                                if(counter3 === dueDay) {
                                     eventDay = d2
                                     eventMonth = m2
                                     quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
@@ -193,10 +195,10 @@ const Calendar = () => {
                         }
 
                         //increments sequence by seven more quarters
-                        for(var q = 0; q <= 6; q++) {
+                        for(let q = 0; q <= 6; q++) {
                             let quarter = quarterEvent.quarter()
                             //increments quarter
-                            if(quarter == 4) {
+                            if(quarter === 4) {
                                 quarter = 1
                                 eventYear += 1
                             } else {
@@ -208,11 +210,11 @@ const Calendar = () => {
 
                             //increments through days of quarter to get month and day
                             let counter4 = 0
-                            for(var m3 = beginningMonth; m3 <= (beginningMonth + 2); m3++) {
+                            for(let m3 = beginningMonth; m3 <= (beginningMonth + 2); m3++) {
                                 //increments the days inside the quarter until current day is found
-                                for(var d3 = 1; d3 <= maxMonthDays[m3]; d3++) {
+                                for(let d3 = 1; d3 <= maxMonthDays[m3]; d3++) {
                                     counter4 += 1
-                                    if(counter4 == dueDay) {
+                                    if(counter4 === dueDay) {
                                         eventDay = d3
                                         eventMonth = m3
                                         quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
@@ -234,7 +236,7 @@ const Calendar = () => {
                         }
 
                         //loops through two years
-                        for(var l = y; l <= (y + 1); l++) {
+                        for(let l = y; l <= (y + 1); l++) {
                             //gets date from day of year
                             let yearStartObject = dayjs(String(l)+"-01-01")
                             let yearEvent = dayjs(yearStartObject.format('YYYY-MM-DD')).dayOfYear(dueDay)
@@ -251,10 +253,10 @@ const Calendar = () => {
             }
        }
        return tempEventsArray
-    }
+    },[])
 
     //gets created subscriptions
-    const setCalEvents = async () => {
+    const setCalEvents = useCallback(async () => {
         //checks if user is logged into account
        
         if(!isLoggedIn() || typeof address === "undefined") {
@@ -293,7 +295,13 @@ const Calendar = () => {
    } catch(Err) {
        console.log(Err)
    }
-}
+},[account, address, convertToCalEvents, isLoggedIn])
+
+useEffect(() => {
+    setCalEvents()
+   // setCalEvents(true)
+}, [setCalEvents]);
+
 
     return (
         <FullCalendar

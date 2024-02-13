@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import {Alert, Card, ListGroup, Button, Modal} from 'react-bootstrap';
+import {Alert, Card, ListGroup, Button} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate, Link} from "react-router-dom";
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
-import { useContractWrite, useWaitForTransaction, usePublicClient, useSignMessage, erc20ABI, useAccount} from 'wagmi'
+import { useContractWrite, useWaitForTransaction, usePublicClient, erc20ABI, useAccount} from 'wagmi'
 import { readContract, writeContract } from 'wagmi/actions'
-import { parseAbiItem, formatEther, recoverMessageAddress } from 'viem'
+import { parseAbiItem, formatEther} from 'viem'
 /* global BigInt */
 
 const PublicSubscription = () => {
@@ -35,15 +35,17 @@ const PublicSubscription = () => {
     const [alertType, setAlertType] = useState("danger")
     const [subscribed, setIsSubscribed] = useState(false)
     const [isProvider, setIsProvider] = useState(false)
-    const [show, setShow] = useState(false);
+    //const [show, setShow] = useState(false);
     //const [signature, setSignature] = useState("-1")
-    const [isDomainVerified, setIsDomainVerified] = useState(false)
-    const [isDisabled, setIsDisabled] = useState(false)
-    const [copyTitle, setCopyTitle] = useState("Copy")
-    const msg = 'test'
+    //const [isDomainVerified, setIsDomainVerified] = useState(false)
+    //const [isDisabled, setIsDisabled] = useState(false)
+    //const [copyTitle, setCopyTitle] = useState("Copy")
+    //const msg = 'test'
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    //const handleClose = () => setShow(false);
+    //const handleShow = () => setShow(true);
+
+    /*
 
     //hook for signing messages
     const {data: signMessageData, signMessage, variables}  = useSignMessage({
@@ -58,6 +60,8 @@ const PublicSubscription = () => {
                 message: variables?.message,
                 signature: signMessageData,
               })
+              console.log(typeof recoveredAddress)
+              console.log(typeof address)
               if(recoveredAddress == address){
                 console.log("here")
                 setCopyTitle("Copy")
@@ -68,6 +72,7 @@ const PublicSubscription = () => {
         })()
 
     },[signMessageData])
+    */
 
     //hook for token approval
     const subscribeWrite = useContractWrite({
@@ -82,6 +87,7 @@ const PublicSubscription = () => {
         hash: subscribeWrite.data?.hash,
     })
 
+    /*
      //shows alert when waiting for transaction to finish
      useEffect(() => {
 
@@ -101,7 +107,8 @@ const PublicSubscription = () => {
 
             sendToSubDash()
         }
-    },[subscribeWait.isLoading, subscribeWait.isSuccess])
+    },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToSubDash, setAlert, setAlertText])
+    */
 
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
@@ -109,21 +116,26 @@ const PublicSubscription = () => {
         //looks up ticker for token
         const tickerLookup = (tokenAddress) => {
             return TOKEN_LOOKUP.map((token) => {
-            if(token.address == tokenAddress) {
+            if(token.address === tokenAddress) {
                 return token.ticker
+            } else {
+                return ""
             }
             })
-         }
+        }
   
         //looks up frequency
         const frequencyLookup = (frequencyIndex) => {
             return FREQUENCY_LOOKUP.map((frequencyObject) => {
-            if(frequencyIndex == frequencyObject.index) {
+            if(frequencyIndex === frequencyObject.index) {
                 return frequencyObject.name
+            } else {
+                return ""
             }
             })
         }
 
+        //
         /*
         //looks up token abi
         const abiLookup = (tokenAddress) => {
@@ -154,8 +166,8 @@ const PublicSubscription = () => {
                 }) 
                 .then(async function(events){
                     //checks for latest update by getting highest timestamp
-                    if(events != undefined) {
-                        console.log(events)
+                    if(events !== undefined) {
+                       // console.log(events)
                         
                         let time = 0
                         let index = 0
@@ -172,7 +184,7 @@ const PublicSubscription = () => {
                             //adds latest details to details array
                             setDetails(events[index].args)
                             //verifies domain
-                            verifyDomain(events[index].args.domain, result.provider)
+                           // verifyDomain(events[index].args.domain, result.provider)
                         }       
                     }    
                 })
@@ -195,7 +207,7 @@ const PublicSubscription = () => {
             let status = false
             
             result.forEach((element) => {
-                if(element.subscriber == account) {
+                if(element.subscriber === account) {
                     setIsSubscribed(true)
                     status = true
                     return
@@ -220,21 +232,21 @@ const PublicSubscription = () => {
                 args: [id, f, d]
             })
 
-            if(result.provider == account) {
+            if(result.provider === account) {
                 setIsProvider(true)
             } else {
                 setIsProvider(false)
             }
         }
 
-        if(account != "-1"){
+        if(account !== "-1"){
             getSub()
             isSubscribed()
             isProviderSame()
 
         }
 
-    }, [account]);
+    }, [account, d, f, id, publicClient, setAlert, setAlertText]);
     
      //Creates alert
      const alertMaker = () => {
@@ -247,6 +259,7 @@ const PublicSubscription = () => {
         }
     }
 
+/*
     const verifyDomain = async (domain, provAddress) => {
 
         let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
@@ -276,6 +289,7 @@ const PublicSubscription = () => {
                 console.log(Err)
             }
     }
+    */
 
     //handles subscription button click and navigation
     const subscribe = useCallback(async () => {
@@ -307,16 +321,35 @@ const PublicSubscription = () => {
         subscribeWrite.write()
     
        
-    },[subscription])
+    },[subscription, address, token])
 
     const sendToSubDash = useCallback(() => 
             navigate('/subscriberdash', {replace: true})
     ,[navigate])
     
+     //shows alert when waiting for transaction to finish
+     useEffect(() => {
 
+        if(subscribeWait.isLoading) {
+            setAlertType("warning")
+            setAlert(true)
+            setAlertText("Transaction Pending...")
+            console.log("pending")
+        }
+
+        if(subscribeWait.isSuccess) {
+
+            //turns off alert
+            setAlert(false)
+            setAlertType("danger")
+            console.log("done")
+
+            sendToSubDash()
+        }
+    },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToSubDash, setAlert, setAlertText])
    
     //checks that user has logged in 
-    if(account == "-1") {
+    if(account === "-1") {
         return ( 
             <Alert align="center" variant="info">Please Login to Subscribe</Alert>  
         )
@@ -337,7 +370,7 @@ const PublicSubscription = () => {
                         <ListGroup.Item>Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{amount} {tickerName}</ListGroup.Item>
                         <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
                         <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
-                        <ListGroup.Item>Domain: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.domain}&nbsp;&nbsp;{isDomainVerified ? "VERIFIED" : ""}</ListGroup.Item>
+                        <ListGroup.Item>Domain: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.domain}&nbsp;&nbsp;</ListGroup.Item>
                         <ListGroup.Item>URL: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.url}</ListGroup.Item>
                         <ListGroup.Item>Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.email}</ListGroup.Item>
                         <ListGroup.Item>Phone: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.phone}</ListGroup.Item>
@@ -347,6 +380,7 @@ const PublicSubscription = () => {
                         <Button onClick={subscribe}>Subscribe</Button>
                     </Card.Body>
                     : ""}
+                    {/*
                     {(isProvider && !isDomainVerified && details.domain != "") ?
                     <>
                     <Card.Body align="center">
@@ -380,10 +414,15 @@ const PublicSubscription = () => {
                         </Button>
                     </Modal.Footer>
                   </Modal>
+                   
                   </>
+                   
                     : ""}
+                 */}
                 </Card>
+                
                 </div>
+                 
             </div>
         )
     }

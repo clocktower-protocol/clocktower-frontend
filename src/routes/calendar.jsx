@@ -33,7 +33,14 @@ const Calendar = () => {
     //const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
     const [eventsArray, setEventsArray] = useState(emptyArray)
 
-    
+    //event handlers for tooltip
+    const handleMouseEnter = (info) => {
+        
+    }
+
+    const handleMouseLeave = (info) => {
+        
+    }
     
     //link functions
     const eventClick = useCallback((info) => {
@@ -323,6 +330,8 @@ useEffect(() => {
             events={eventsArray}
             eventClick={eventClick}
             themeSystem="bootstrap5"
+            eventMouseEnter={handleMouseEnter}
+            eventMouseLeave={handleMouseLeave}
         />
     )
 }

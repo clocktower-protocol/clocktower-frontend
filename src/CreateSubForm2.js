@@ -52,9 +52,9 @@ const CreateSubForm2 = (props) => {
     //populates day pulldown based on frequency selection
     const dayPulldown = () => {
         return DUEDAY_RANGE.map((dayRange) => {
-            if(dayRange.frequency == ff) {
+            const options = []
+            if(dayRange.frequency === Number(ff)) {
                 //sets weekname for weekly
-                const options = []
                 for(let i = dayRange.start; i <= dayRange.stop; i++) {
                     if(dayRange.frequency === 0){
                         options.push(<option value={DAY_OF_WEEK_LOOKUP[(i-1)].index} key={DAY_OF_WEEK_LOOKUP[(i-1)].name}>{DAY_OF_WEEK_LOOKUP[(i-1)].name}</option>)
@@ -62,9 +62,10 @@ const CreateSubForm2 = (props) => {
                         options.push(<option value={i} key={i}>{i}</option>)
                     }
                 }
-                return options
             }
+            return options
         })
+
     }
 
     //gets token minimum from contract
@@ -127,7 +128,7 @@ const CreateSubForm2 = (props) => {
         //props.setFrequency(event.target.value)
         setFrequency(event.target.value)
 
-        if(event.target.value == -1) {
+        if(Number(event.target.value) === -1) {
             setInvalidFrequency(true)
         } else {
             setInvalidFrequency(false)
@@ -149,7 +150,7 @@ const CreateSubForm2 = (props) => {
      }
  
      const descriptionChange = (event) => {
-        if(event.target.value != ""){
+        if(event.target.value !== ""){
             if(event.target.value.length > 255) {
                 setInvalidDescription(true)
             } else {
@@ -168,7 +169,7 @@ const CreateSubForm2 = (props) => {
  
      const urlChange = (event) => {
 
-        if(event.target.value != ""){
+        if(event.target.value !== ""){
             //eslint-disable-next-line
             let regexUrl = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)
             if(!regexUrl.test(event.target.value)) {

@@ -53,6 +53,7 @@ const Account = () => {
 
     const msg = 'test'
 
+    /*
      //sets mounting bool to not mounting after initial load
     useEffect(() => {
         isMounting.current = true
@@ -60,7 +61,10 @@ const Account = () => {
         getAccount()
         getProviderSubs()
         getSubscriberSubs()
+
+        console.log("here")
     },[])
+    */
 
     /*
     //changes data when account is switched
@@ -148,7 +152,7 @@ const Account = () => {
                 message: variables?.message,
                 signature: signMessageData,
               })
-              if(recoveredAddress == address){
+              if(recoveredAddress === address){
                 setCopyTitle("Copy")
                 setIsDisabled(false)
                 verifyHandleShow()
@@ -156,7 +160,7 @@ const Account = () => {
             }
         })()
 
-    },[signMessageData])
+    },[signMessageData, address, variables?.message])
 
     //hook for account form changes
     useEffect(() => {
@@ -196,32 +200,6 @@ const Account = () => {
         }
     },[unsubscribedSub])
 
-
-    //shows alert when waiting for transaction to finish
-    useEffect(() => {
-
-        if(editAccountWait.isLoading || createSubWait.isLoading || cancelWait.isLoading || unsubscribeWait.isLoading) {
-            setAlertType("warning")
-            setAlert(true)
-            setAlertText("Transaction Pending...")
-            console.log("pending")
-        }
-
-        if(editAccountWait.isSuccess || createSubWait.isSuccess || cancelWait.isSuccess || unsubscribeWait.isSuccess) {
-
-            //turns off alert
-            setAlert(false)
-            setAlertType("danger")
-            console.log("done")
-            
-            editFormHandleClose()
-            createSubHandleClose()
-            getAccount()
-            getProviderSubs()
-            getSubscriberSubs()
-        }
-    },[editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
-
     const verifyDomain = async (domain, provAddress) => {
 
         let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
@@ -240,8 +218,7 @@ const Account = () => {
                         message: msg,
                         signature: json.Answer[0].data,
                       })
-                    console.log(dnsRecoveredAddress)
-                    if(dnsRecoveredAddress == provAddress) {
+                    if(dnsRecoveredAddress === provAddress) {
                         setIsDomainVerified(true)
                         console.log("TRUE!")
                     }
@@ -286,6 +263,8 @@ const Account = () => {
     }
     */
 
+    //
+
     const createButtonClick = () => {
         createSubHandleShow()
     }
@@ -313,7 +292,7 @@ const Account = () => {
             }) 
             .then(async function(events){
                  //checks for latest update by getting highest timestamp
-                 if(events != undefined) {
+                 if(events !== undefined) {
                         
                     let time = 0
                     let index = 0
@@ -362,7 +341,7 @@ const getProviderSubs = useCallback(async () => {
            accountSubscriptions = result
 
            //loops through each subscription
-           for (var i = 0; i < accountSubscriptions.length; i++) {
+           for (let i = 0; i < accountSubscriptions.length; i++) {
             
                await publicClient.getLogs({
                    address: CLOCKTOWERSUB_ADDRESS,
@@ -375,7 +354,7 @@ const getProviderSubs = useCallback(async () => {
                
                     
                    //checks for latest update by getting highest timestamp
-                   if(events != undefined) {
+                   if(events !== undefined) {
                        
                        let time = 0
                        let index = 0
@@ -428,7 +407,7 @@ const getSubscriberSubs = useCallback(async () => {
        accountSubscriptions = result
 
        //loops through each subscription
-       for (var i = 0; i < accountSubscriptions.length; i++) {
+       for (let i = 0; i < accountSubscriptions.length; i++) {
            await publicClient.getLogs({
                address: CLOCKTOWERSUB_ADDRESS,
                event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
@@ -440,7 +419,7 @@ const getSubscriberSubs = useCallback(async () => {
            
                 
                //checks for latest update by getting highest timestamp
-               if(events != undefined) {
+               if(events !== undefined) {
                    //console.log(events)
                    
                    let time = 0
@@ -473,6 +452,17 @@ const getSubscriberSubs = useCallback(async () => {
     }
 },[account, address, isLoggedIn, publicClient, subscribedDetailsArray])
 
+//sets mounting bool to not mounting after initial load
+useEffect(() => {
+    isMounting.current = true
+
+    getAccount()
+    getProviderSubs()
+    getSubscriberSubs()
+
+    console.log("here")
+},[getAccount, getProviderSubs, getSubscriberSubs])
+
 //changes data when passed account is switched
 useEffect(() => {
     getAccount()
@@ -480,6 +470,31 @@ useEffect(() => {
     getProviderSubs()
     getSubscriberSubs()
 },[a, getAccount, getProviderSubs, getSubscriberSubs])
+
+//shows alert when waiting for transaction to finish
+useEffect(() => {
+
+    if(editAccountWait.isLoading || createSubWait.isLoading || cancelWait.isLoading || unsubscribeWait.isLoading) {
+        setAlertType("warning")
+        setAlert(true)
+        setAlertText("Transaction Pending...")
+        console.log("pending")
+    }
+
+    if(editAccountWait.isSuccess || createSubWait.isSuccess || cancelWait.isSuccess || unsubscribeWait.isSuccess) {
+
+        //turns off alert
+        setAlert(false)
+        setAlertType("danger")
+        //console.log("done")
+        
+        editFormHandleClose()
+        createSubHandleClose()
+        getAccount()
+        getProviderSubs()
+        getSubscriberSubs()
+    }
+},[getAccount, getProviderSubs, getSubscriberSubs, setAlert, setAlertType, setAlertText, unsubscribeWait.isSuccess, editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
 
 const isTableEmpty1 = (subscriptionArray) => {
        

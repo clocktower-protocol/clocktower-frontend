@@ -100,7 +100,7 @@ const Calendar = () => {
                         let month
                         let monthEvent
                         //day is next month
-                        if(dueDay < now.day()) {
+                        if(dueDay < now.date()) {
                             //gets month number and increments it
                             month = now.month()
                             month += 1

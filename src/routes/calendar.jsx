@@ -5,7 +5,8 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { readContract } from 'wagmi/actions'
 import { useAccount } from "wagmi"
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import {formatEther} from 'viem'
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ERC20TOKEN_LOOKUP} from "../config"; 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
@@ -57,6 +58,18 @@ const Calendar = () => {
         //loops through each subscription
         for (let i = 0; i < accountSubscriptions.length; i++) {
 
+            //gets token ticker
+            let ticker = ERC20TOKEN_LOOKUP.map((token) => {
+                if(token.address === accountSubscriptions[i].subscription.token){
+                    //setTokenMinimum(token.address)
+                    //setInvalidToken(false)
+                // props.setTokenABI(token.ABI)
+                return token.ticker
+                } else {
+                    return ""
+                }
+            })
+
             if(accountSubscriptions[i].status === 0) {
                 //gets time information from each subscription
                 let dueDay = accountSubscriptions[i].subscription.dueDay
@@ -86,12 +99,12 @@ const Calendar = () => {
                         //adds the days to the next event
                         let nextEvent = now.add(difference, 'day')
                         //saves info to array
-                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                        tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         //increments event by a week for the next two years and saves to array
                         for (let j = 0; j < 105; j++) {
                             nextEvent = nextEvent.add(7, 'd')
                             //eventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD')})
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                            tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
                         break
                     //monthly
@@ -117,12 +130,12 @@ const Calendar = () => {
                         
                         monthEvent = dayjs(String(year)+"-"+String(month + 1)+"-"+dueDay)
                         //pushs first date to array
-                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                        tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
 
                         //increments event by a month for the next two years and saves to array
                         for (let k = 0; k < 25; k++) {
                             monthEvent = monthEvent.add(1, 'M')
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                            tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
                         break
                     //quarterly
@@ -188,7 +201,7 @@ const Calendar = () => {
                                     eventMonth = m2
                                     quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                     //pushs first date to array
-                                    tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                                    tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
                                     break
                                 }
                             }
@@ -219,7 +232,7 @@ const Calendar = () => {
                                         eventMonth = m3
                                         quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                         //pushs date to array
-                                        tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                                        tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
                                         break
                                     }
                                 }

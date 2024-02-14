@@ -57,7 +57,7 @@ const Calendar = () => {
     */
 
     //converts dueDay and frequency to cal events
-    const convertToCalEvents = useCallback((subscriptions, color) => {
+    const convertToCalEvents = useCallback((subscriptions, color, isSubscriber) => {
 
         let tempEventsArray = []
         const accountSubscriptions = subscriptions
@@ -68,22 +68,29 @@ const Calendar = () => {
             //gets token ticker
             let ticker = ERC20TOKEN_LOOKUP.map((token) => {
                 if(token.address === accountSubscriptions[i].subscription.token){
-                    //setTokenMinimum(token.address)
-                    //setInvalidToken(false)
-                // props.setTokenABI(token.ABI)
                 return token.ticker
                 } else {
                     return ""
                 }
             })
 
+            //gets total 
+            let total = ""
+            if(isSubscriber) {
+                total = String(Number(formatEther(accountSubscriptions[i].subscription.amount)))
+            } else {
+                if(Number(accountSubscriptions[i].totalSubscribers) > 0) {
+                    total = String(Number(formatEther(accountSubscriptions[i].subscription.amount)) * Number(accountSubscriptions[i].totalSubscribers))
+                } else {
+                    total = "No Subs Yet"
+                }
+            }
+
             if(accountSubscriptions[i].status === 0) {
                 //gets time information from each subscription
                 let dueDay = accountSubscriptions[i].subscription.dueDay
                 let frequency = accountSubscriptions[i].subscription.frequency
                 let now = dayjs()
-                //console.log(now.day())
-                //console.log(dueDay)
 
                 //creates calendar events based on frequency and dueDay
                 switch (frequency) {
@@ -106,12 +113,12 @@ const Calendar = () => {
                         //adds the days to the next event
                         let nextEvent = now.add(difference, 'day')
                         //saves info to array
-                        tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                        tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         //increments event by a week for the next two years and saves to array
                         for (let j = 0; j < 105; j++) {
                             nextEvent = nextEvent.add(7, 'd')
                             //eventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD')})
-                            tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                            tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
                         break
                     //monthly
@@ -137,12 +144,12 @@ const Calendar = () => {
                         
                         monthEvent = dayjs(String(year)+"-"+String(month + 1)+"-"+dueDay)
                         //pushs first date to array
-                        tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                        tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
 
                         //increments event by a month for the next two years and saves to array
                         for (let k = 0; k < 25; k++) {
                             monthEvent = monthEvent.add(1, 'M')
-                            tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                            tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
                         break
                     //quarterly
@@ -208,7 +215,7 @@ const Calendar = () => {
                                     eventMonth = m2
                                     quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                     //pushs first date to array
-                                    tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                                    tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
                                     break
                                 }
                             }
@@ -239,7 +246,7 @@ const Calendar = () => {
                                         eventMonth = m3
                                         quarterEvent = dayjs(String(eventYear)+"-"+String(eventMonth + 1)+"-"+eventDay)
                                         //pushs date to array
-                                        tempEventsArray.push({title: formatEther(String(accountSubscriptions[i].subscription.amount))+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                                        tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: quarterEvent.format('YYYY-MM-DD'), backgroundColor: color})
                                         break
                                     }
                                 }
@@ -262,7 +269,7 @@ const Calendar = () => {
                             let yearEvent = dayjs(yearStartObject.format('YYYY-MM-DD')).dayOfYear(dueDay)
 
                             //pushs date to array
-                            tempEventsArray.push({title: accountSubscriptions[i].subscription.id, extendedProps: accountSubscriptions[i].subscription, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                            tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
 
                         break
@@ -297,7 +304,7 @@ const Calendar = () => {
        })
        .then(async function(result) {
         
-            tempEventsArray = convertToCalEvents(result, "green")
+            tempEventsArray = convertToCalEvents(result, "green", false)
             await readContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -305,7 +312,7 @@ const Calendar = () => {
                 args: [true, account]
             })
             .then(async function(result2) {
-                const tempEventsArray2 = convertToCalEvents(result2, "blue")
+                const tempEventsArray2 = convertToCalEvents(result2, "blue", true)
                 Array.prototype.push.apply(tempEventsArray,tempEventsArray2)
                 setEventsArray(tempEventsArray)
             })

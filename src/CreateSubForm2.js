@@ -223,7 +223,7 @@ const CreateSubForm2 = (props) => {
     }
 
     return (
-        <Form className="mb-3" noValidate validated={false}  onSubmit={submitForm}>
+        <Form className="mb-3" noValidate validated={true}  onSubmit={submitForm}>
             <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>

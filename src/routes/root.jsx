@@ -3,6 +3,7 @@ import { Navbar, Container, Nav, Button, Row, Modal, Stack} from 'react-bootstra
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
+import axios from 'axios'
 //import Web3 from 'web3'
 
 import { useAccount, useConnect } from 'wagmi'
@@ -26,9 +27,41 @@ const Root = () => {
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
 
+    
+    //checks local storage for current jwt if empty fetchs token
+    useEffect(() => {
+
+      //if empty
+      if(localStorage.getItem("clockAccess") === null) {
+        console.log("not set")
+        let config = {
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        }
+
+        let data = {
+          "id": 4
+         }
+        //gets token
+        axios.post('http://138.197.26.60:3000/api/createtoken', data)
+        .then(function (response) {
+          console.log(response.data);
+          //stores token in local storage
+          localStorage.setItem("clockAccess", response.data)
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      } else {
+        console.log(localStorage.getItem("clockAccess"))
+        console.log("set")
+      }
+    }, [])
+    
+
     const handleClose = () => {
       setShowWalletChoice(false);
-      console.log("clicked")
     }
     const handleShow = () => setShowWalletChoice(true);
 
@@ -54,6 +87,8 @@ const Root = () => {
     useEffect(() => {
       
       setAccount(address)
+
+
     
     }, [address])
 

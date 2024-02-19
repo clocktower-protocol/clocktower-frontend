@@ -29,6 +29,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 
 
+
 //connects to hardhat
 const { chains, publicClient, webSocketPublicClient } = configureChains(
 [hardhat],

@@ -31,6 +31,8 @@ const EditAccountForm = (props) => {
         setAllValidated(false)        
         if(!invalidCompany && !invalidDescription && !invalidDomain && !invalidUrl && isChecked) {
             setAllValidated(true)
+        } else {
+            setAllValidated(false)
         }
 
     },[invalidCompany, invalidDescription, invalidDomain, invalidUrl, isChecked])

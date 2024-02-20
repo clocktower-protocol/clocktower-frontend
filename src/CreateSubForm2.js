@@ -194,6 +194,8 @@ const CreateSubForm2 = (props) => {
 
     const submitForm = async (event) => {
 
+       // console.log("test")
+
         const form = event.currentTarget
   
         event.preventDefault();

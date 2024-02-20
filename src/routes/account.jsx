@@ -86,6 +86,7 @@ const Account = () => {
     },[a, getAccount, getProviderSubs, getSubscriberSubs])
     */
 
+    /*
     //functions for editing account
     const editAccount = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
@@ -96,35 +97,42 @@ const Account = () => {
 
     const editAccountWait = useWaitForTransactionReceipt({
         confirmations: 1,
-        hash: editAccount.data?.hash,
+        hash: editAccount.data,
     })
+    */
 
     //functions for creating subscription
+    /*
     const createSub = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'createSubscription',
         args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
     })
+    */
+    const { data, writeContract } = useWriteContract()
 
-    const createSubWait = useWaitForTransactionReceipt({
+    const wait = useWaitForTransactionReceipt({
         confirmations: 1,
-        hash: createSub.data?.hash
+        hash: data
     })
 
     //functions for cancelling subscription
     //cancel subscription
+    /*
     const cancelSubscription = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'cancelSubscription',
         args: [cancelledSub]
     })
+    
 
     const cancelWait = useWaitForTransactionReceipt({
         confirmations: 1,
-        hash: cancelSubscription.data?.hash,
+        hash: cancelSubscription.data,
     })
+    */
 
     //unsubscribe hooks
     const unsubscribeWrite = useWriteContract({
@@ -136,10 +144,8 @@ const Account = () => {
 
     const unsubscribeWait = useWaitForTransactionReceipt({
         confirmations: 1,
-        hash: unsubscribeWrite.data?.hash,
+        hash: unsubscribeWrite.data,
     })
-
-
 
     //hook for signing messages
     const {data: signMessageData, signMessage, variables}  = useSignMessage({
@@ -168,7 +174,12 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
-            editAccount.write()
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'editProvDetails',
+                args: [changedAccountDetails]
+            })
         } else {
             isMounting.current = false
         }
@@ -178,7 +189,12 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedCreateSub).length !== 0) {
-            createSub.write()
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'createSubscription',
+                args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
+            })
         } else {
             isMounting.current = false
         }
@@ -188,7 +204,13 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
-            cancelSubscription.write()
+            //cancelSubscription.write()
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'cancelSubscription',
+                args: [cancelledSub]
+            })
         } else {
             isMounting.current = false
         }
@@ -476,14 +498,14 @@ useEffect(() => {
 //shows alert when waiting for transaction to finish
 useEffect(() => {
 
-    if(editAccountWait.isLoading || createSubWait.isLoading || cancelWait.isLoading || unsubscribeWait.isLoading) {
+    if(wait.isLoading || unsubscribeWait.isLoading) {
         setAlertType("warning")
         setAlert(true)
         setAlertText("Transaction Pending...")
         console.log("pending")
     }
 
-    if(editAccountWait.isSuccess || createSubWait.isSuccess || cancelWait.isSuccess || unsubscribeWait.isSuccess) {
+    if(wait.isSuccess || unsubscribeWait.isSuccess) {
 
         //turns off alert
         setAlert(false)
@@ -496,7 +518,7 @@ useEffect(() => {
         getProviderSubs()
         getSubscriberSubs()
     }
-},[getAccount, getProviderSubs, getSubscriberSubs, setAlert, setAlertType, setAlertText, unsubscribeWait.isSuccess, editAccountWait.isLoading, createSubWait.isLoading, cancelWait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, createSubWait.isSuccess, editAccountWait.isSuccess, cancelWait.isSuccess])
+},[getAccount, getProviderSubs, getSubscriberSubs, setAlert, setAlertType, setAlertText, unsubscribeWait.isSuccess, wait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, wait.isSuccess])
 
 const isTableEmpty1 = (subscriptionArray) => {
        

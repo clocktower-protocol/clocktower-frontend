@@ -71,7 +71,7 @@ const CreateSubForm2 = (props) => {
 
     //gets token minimum from contract
     const setTokenMinimum = async (tokenAddress) => {
-        await readContract( config, {
+        await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'approvedERC20',

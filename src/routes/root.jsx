@@ -7,7 +7,7 @@ import {config} from '../wagmiconfig'
 import axios from 'axios'
 //import Web3 from 'web3'
 
-import { useAccount, useConnect, useConnectors } from 'wagmi'
+import { useAccount, useConnect, useConnectors, useAccountEffect} from 'wagmi'
 
 
 const Root = () => {
@@ -70,9 +70,16 @@ const Root = () => {
     const handleShow = () => setShowWalletChoice(true);
 
     //WAGMI
-    const {connector: activeConnector, address, isConnected } = useAccount({
-      onConnect({ address, connector, isReconnected }) {
-        console.log('Connected', { address, connector, isReconnected })
+    
+    const {connector: activeConnector, address, isConnected } = useAccount()
+
+
+    useAccountEffect({
+      onConnect() {
+        console.log('Connected!')
+      },
+      onDisconnect() {
+        console.log('Disconnected!')
       },
     })
 
@@ -89,11 +96,7 @@ const Root = () => {
 
     //checks for account change
     useEffect(() => {
-      
       setAccount(address)
-
-
-    
     }, [address])
 
     
@@ -143,7 +146,10 @@ const Root = () => {
                     variant="info"
                     //disabled={!connector2.ready}
                     key={connector2.id}
-                    onClick={() => {connect({ connector2 })
+                    onClick={() => {
+                    console.log(connector2)
+                    //connect({ connector2 })
+                    connector2.connect()
                     handleClose()
                     }}
                   >

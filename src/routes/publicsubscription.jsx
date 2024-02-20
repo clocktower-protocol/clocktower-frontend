@@ -75,17 +75,21 @@ const PublicSubscription = () => {
     },[signMessageData])
     */
 
-    //hook for token approval
+    //hook for subscribing
+    /*
     const subscribeWrite = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'subscribe',
         args: [subscription]
     })
+    */
+    const { data, writeContract } = useWriteContract()
+
     
     const subscribeWait = useWaitForTransactionReceipt({
         confirmations: 1,
-        hash: subscribeWrite.data?.hash,
+        hash: data,
     })
 
     /*
@@ -319,7 +323,12 @@ const PublicSubscription = () => {
         }
 
         //subscribes
-        subscribeWrite.write()
+        writeContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'subscribe',
+            args: [subscription]
+        })
     
        
     },[subscription, address, token])

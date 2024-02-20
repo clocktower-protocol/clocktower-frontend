@@ -33,22 +33,30 @@ const SubscriberDash = () => {
     }, [account]);
 
     //unsubscribe hooks
+    const { data, writeContract } = useWriteContract()
+    /*
     const unsubscribeWrite = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'unsubscribe',
         args: [unsubscribedSub]
     })
+    */
 
     const unsubscribeWait = useWaitForTransactionReceipt({
         confirmations: 1,
-        hash: unsubscribeWrite.data?.hash,
+        data
     })
 
     useEffect(() => {
         //calls wallet
         if(Object.keys(unsubscribedSub).length !== 0) {
-            unsubscribeWrite.write()
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'unsubscribe',
+                args: [unsubscribedSub]
+            })
         }
     },[unsubscribedSub])
 

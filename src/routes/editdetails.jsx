@@ -93,23 +93,31 @@ const EditDetails = () => {
        // console.log(encryptedURLString)
 
    // }
-    
+/*
 const editDetailsWrite = useWriteContract({
     address: CLOCKTOWERSUB_ADDRESS,
     abi: CLOCKTOWERSUB_ABI,
     functionName: 'editDetails',
     args: [submittedDetails, id]
 })
+*/
+const { data, writeContract } = useWriteContract()
 
 const editDetailsWait = useWaitForTransactionReceipt({
     confirmations: 1,
-    hash: editDetailsWrite.data?.hash,
+    hash: data,
 })
 
 useEffect(() => {
     //calls wallet
     if(Object.keys(submittedDetails).length !== 0) {
-        editDetailsWrite.write()
+        //editDetailsWrite.write()
+        writeContract({
+            address: CLOCKTOWERSUB_ADDRESS,
+            abi: CLOCKTOWERSUB_ABI,
+            functionName: 'editDetails',
+            args: [submittedDetails, id]
+        })
     } 
 },[submittedDetails])
 

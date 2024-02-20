@@ -55,23 +55,31 @@ const Provider = () => {
        
     }, [account]);
 
+    /*
     const createSubscription3 = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'createSubscription',
         args: [amount, token, details, frequency, dueDay]
     })
+    */
+    const { data, writeContract } = useWriteContract()
     
-    const createWait = useWaitForTransactionReceipt({
+    const wait = useWaitForTransactionReceipt({
         confirmations: 1,
-        hash: createSubscription3.data?.hash,
+        hash: data
     })
 
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(details).length !== 0) {
             console.log("not mounting it")
-            createSubscription3.write()
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'createSubscription',
+                args: [amount, token, details, frequency, dueDay]
+            })
         } else {
             console.log("mounting...")
             isMounting.current = false
@@ -79,24 +87,32 @@ const Provider = () => {
     },[details])
 
     //cancel subscription
+    /*
     const cancelSubscription2 = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'cancelSubscription',
         args: [cancelledSub]
     })
+    
 
     const cancelWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: cancelSubscription2.data?.hash,
     })
+    */
 
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
             console.log(cancelledSub)
             console.log("cancel triggered!")
-            cancelSubscription2.write()
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'cancelSubscription',
+                args: [cancelledSub]
+            })
         } else {
             console.log("mounting!")
             isMounting.current = false
@@ -106,14 +122,14 @@ const Provider = () => {
     //shows alert when waiting for transaction to finish
     useEffect(() => {
 
-        if(createWait.isLoading || cancelWait.isLoading) {
+        if(wait.isLoading) {
             setAlertType("warning")
             setAlert(true)
             setAlertText("Transaction Pending...")
             console.log("pending")
         }
 
-        if(createWait.isSuccess || cancelWait.isSuccess) {
+        if(wait.isSuccess) {
 
             //turns off alert
             setAlert(false)
@@ -123,7 +139,7 @@ const Provider = () => {
             getProviderSubsWAGMI()
             
         }
-    },[createWait.isLoading, createWait.isSuccess, cancelWait.isLoading, cancelWait.isSuccess])
+    },[wait.isLoading, wait.isSuccess])
 
     //Creates alert
     const alertMaker = () => {

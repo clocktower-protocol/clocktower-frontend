@@ -135,6 +135,7 @@ const Account = () => {
     */
 
     //unsubscribe hooks
+    /*
     const unsubscribeWrite = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
@@ -146,6 +147,7 @@ const Account = () => {
         confirmations: 1,
         hash: unsubscribeWrite.data,
     })
+    */
 
     //hook for signing messages
     const {data: signMessageData, signMessage, variables}  = useSignMessage({
@@ -220,7 +222,12 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(Object.keys(unsubscribedSub).length !== 0) {
-            unsubscribeWrite.write()
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'unsubscribe',
+                args: [unsubscribedSub]
+            })
         }
     },[unsubscribedSub])
 
@@ -498,14 +505,14 @@ useEffect(() => {
 //shows alert when waiting for transaction to finish
 useEffect(() => {
 
-    if(wait.isLoading || unsubscribeWait.isLoading) {
+    if(wait.isLoading) {
         setAlertType("warning")
         setAlert(true)
         setAlertText("Transaction Pending...")
         console.log("pending")
     }
 
-    if(wait.isSuccess || unsubscribeWait.isSuccess) {
+    if(wait.isSuccess) {
 
         //turns off alert
         setAlert(false)
@@ -518,7 +525,7 @@ useEffect(() => {
         getProviderSubs()
         getSubscriberSubs()
     }
-},[getAccount, getProviderSubs, getSubscriberSubs, setAlert, setAlertType, setAlertText, unsubscribeWait.isSuccess, wait.isLoading, unsubscribeWait.isLoading, unsubscribeWrite.isSuccess, wait.isSuccess])
+},[getAccount, getProviderSubs, getSubscriberSubs, setAlert, setAlertType, setAlertText, wait.isLoading, wait.isSuccess])
 
 const isTableEmpty1 = (subscriptionArray) => {
        

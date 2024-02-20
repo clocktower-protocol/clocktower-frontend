@@ -141,13 +141,13 @@ const CreateSubForm2 = (props) => {
          //props.setDueDay(event.target.value)
         setDueDay(event.target.value)
 
-        if(event.target.value === 0) {
+        if(Number(event.target.value) === 0) {
             setInvalidDay(true)
         } else {
             setInvalidDay(false)
         }
 
-         console.log(event.target.value)
+         console.log(typeof event.target.value)
      }
  
      const descriptionChange = (event) => {
@@ -224,7 +224,7 @@ const CreateSubForm2 = (props) => {
     }
 
     return (
-        <Form className="mb-3" noValidate validated={true}  onSubmit={submitForm}>
+        <Form className="mb-3" noValidate validated={false}  onSubmit={submitForm}>
             <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>

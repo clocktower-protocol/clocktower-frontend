@@ -7,7 +7,7 @@ import EditDetailsForm from '../EditDetailsForm';
 //import EthCrypto from 'eth-crypto';
 //import { fromString } from 'uint8arrays/from-string'
 //import {ecrecover, ecsign, privateToPublic} from '@ethereumjs/util'
-import { useContractWrite, useWaitForTransaction, usePublicClient} from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt, usePublicClient} from 'wagmi'
 import { parseAbiItem } from 'viem'
 
 const EditDetails = () => {
@@ -94,14 +94,14 @@ const EditDetails = () => {
 
    // }
     
-const editDetailsWrite = useContractWrite({
+const editDetailsWrite = useWriteContract({
     address: CLOCKTOWERSUB_ADDRESS,
     abi: CLOCKTOWERSUB_ABI,
     functionName: 'editDetails',
     args: [submittedDetails, id]
 })
 
-const editDetailsWait = useWaitForTransaction({
+const editDetailsWait = useWaitForTransactionReceipt({
     confirmations: 1,
     hash: editDetailsWrite.data?.hash,
 })

@@ -3,6 +3,7 @@ import { Form, Button, Row, Col} from 'react-bootstrap';
 import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from './config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
+import {config} from './wagmiconfig'
 
 const CreateSubForm2 = (props) => {
 
@@ -70,7 +71,7 @@ const CreateSubForm2 = (props) => {
 
     //gets token minimum from contract
     const setTokenMinimum = async (tokenAddress) => {
-        await readContract({
+        await readContract( config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'approvedERC20',

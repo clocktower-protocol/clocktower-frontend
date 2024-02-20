@@ -6,6 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { readContract } from 'wagmi/actions'
 import { useAccount } from "wagmi"
 import {formatEther} from 'viem'
+import {config} from '../wagmiconfig'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ERC20TOKEN_LOOKUP} from "../config"; 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -296,7 +297,7 @@ const Calendar = () => {
        let tempEventsArray = []
 
        try{
-       await readContract({
+       await readContract(config, {
            address: CLOCKTOWERSUB_ADDRESS,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',
@@ -305,7 +306,7 @@ const Calendar = () => {
        .then(async function(result) {
         
             tempEventsArray = convertToCalEvents(result, "green", false)
-            await readContract({
+            await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'getAccountSubscriptions',

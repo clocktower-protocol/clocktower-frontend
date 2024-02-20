@@ -9,6 +9,7 @@ import SubscribersTable from '../SubscribersTable';
 import { usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
+import {config} from '../wagmiconfig'
 
 const Admin = () => {
 
@@ -58,7 +59,7 @@ const Admin = () => {
         let subscribers = []
         
         //gets all accounts
-        await readContract({
+        await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'getTotalSubscribers'
@@ -70,14 +71,14 @@ const Admin = () => {
             //iterates through each subscriber
             for (let i = 0; i < totalSubscribers; i++) {
                 
-                await readContract({
+                await readContract(config, {
                     address: CLOCKTOWERSUB_ADDRESS,
                     abi: CLOCKTOWERSUB_ABI,
                     functionName: 'accountLookup',
                     args: [i]
                 })
                 .then(async function(address) {
-                    await readContract({
+                    await readContract(config, {
                         address: CLOCKTOWERSUB_ADDRESS,
                         abi: CLOCKTOWERSUB_ABI,
                         functionName: 'getAccount',

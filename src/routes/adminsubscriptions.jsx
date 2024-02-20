@@ -6,6 +6,7 @@ import SubscriptionsTable from '../SubscriptionsTable';
 import {usePublicClient} from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
+import {config} from '../wagmiconfig'
 
 const AdminSubscriptions = () => {
 
@@ -57,7 +58,7 @@ const AdminSubscriptions = () => {
         let remainingCycles
 
         //const cycles = Math.round(1 / ((fee / 10000) - 1))
-        let fee =  await readContract({
+        let fee =  await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'callerFee',
@@ -68,7 +69,7 @@ const AdminSubscriptions = () => {
 
 
         //calls contract 
-        subscriptions =  await readContract({
+        subscriptions =  await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'getAccountSubscriptions',
@@ -77,7 +78,7 @@ const AdminSubscriptions = () => {
 
          //gets fee balance and remaining cycles
         for (var i = 0; i < subscriptions.length; i++) {
-            let balance =  await readContract({
+            let balance =  await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'feeBalance',

@@ -21,15 +21,22 @@ import Account from './routes/account';
 import Calendar from './routes/calendar';
 
 //import {CLIENT_LOCALITY, NODE_ADDRESS} from "./config"
-import { WagmiConfig, createConfig, configureChains } from 'wagmi'
-import { hardhat } from 'wagmi/chains'
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WagmiProvider} from 'wagmi'
+import {config} from './wagmiconfig'
+//import { hardhat } from 'wagmi/chains'
+//import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+//import { jsonRpcProvider } from 'viem'
+//import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+//import { InjectedConnector } from 'wagmi/connectors/injected'
+//import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+//import { coinbaseWallet, injected} from 'wagmi/connectors' 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query' 
 
 
+const queryClient = new QueryClient() 
 
+
+/*
 //connects to hardhat
 const { chains, publicClient, webSocketPublicClient } = configureChains(
 [hardhat],
@@ -41,7 +48,9 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   }),
 ],
 )
+*/
 
+/*
 const config = createConfig({
   autoConnect: false,
   connectors: [
@@ -63,6 +72,17 @@ const config = createConfig({
   publicClient,
   webSocketPublicClient,
 })
+*/
+
+/*
+const config = createConfig({
+  chains: [hardhat],
+  connectors: [coinbaseWallet(), injected({ target: 'metaMask' })],
+  transports: { 
+    [hardhat.id]: http(`http://localhost:8545`),  
+  }, 
+})
+*/
 
 
 const router = createBrowserRouter([
@@ -136,10 +156,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   
   <React.StrictMode>
-      <WagmiConfig config={config}>
-        <RouterProvider router={router}>
-        </RouterProvider>
-      </WagmiConfig>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router}>
+          </RouterProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
   </React.StrictMode>
 );
 

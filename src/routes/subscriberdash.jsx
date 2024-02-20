@@ -4,9 +4,10 @@ import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import SubscriptionsTable from '../SubscriptionsTable';
-import { useContractWrite, useWaitForTransaction, usePublicClient, useAccount } from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
+import {config} from '../wagmiconfig'
 /* global BigInt */
 
 const SubscriberDash = () => {
@@ -32,14 +33,14 @@ const SubscriberDash = () => {
     }, [account]);
 
     //unsubscribe hooks
-    const unsubscribeWrite = useContractWrite({
+    const unsubscribeWrite = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'unsubscribe',
         args: [unsubscribedSub]
     })
 
-    const unsubscribeWait = useWaitForTransaction({
+    const unsubscribeWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: unsubscribeWrite.data?.hash,
     })
@@ -98,7 +99,7 @@ const SubscriberDash = () => {
        //variable to pass scope so that the state can be set
        let accountSubscriptions = []
 
-       await readContract({
+       await readContract(config, {
            address: CLOCKTOWERSUB_ADDRESS,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',

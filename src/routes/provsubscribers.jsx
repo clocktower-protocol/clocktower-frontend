@@ -4,6 +4,7 @@ import {Alert} from 'react-bootstrap';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import ProvSubscribersTable from '../ProvSubscribersTable';
 import { readContract } from 'wagmi/actions'
+import {config} from '../wagmiconfig'
 /* global BigInt */
 const ProvSubscribers = () => {
 
@@ -33,7 +34,7 @@ const ProvSubscribers = () => {
         }    
 
         //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
-        let fee =  await readContract({
+        let fee =  await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'callerFee',
@@ -45,7 +46,7 @@ const ProvSubscribers = () => {
 
         let subscribers = []
 
-        subscribers = await readContract({
+        subscribers = await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'getSubscribersById',

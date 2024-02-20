@@ -3,12 +3,14 @@ import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab} from 'react-bootstrap';
 import Avatar from "boring-avatars"
-import { useSignMessage, useAccount, useContractWrite, useWaitForTransaction, usePublicClient} from "wagmi";
+import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient} from "wagmi";
 import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
+import {config} from '../wagmiconfig'
 import EditAccountForm from "../EditAccountForm";
 import CreateSubForm2 from "../CreateSubForm2";
 import SubscriptionsTable from "../SubscriptionsTable";
+
 
 const Account = () => {
 
@@ -85,54 +87,54 @@ const Account = () => {
     */
 
     //functions for editing account
-    const editAccount = useContractWrite({
+    const editAccount = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'editProvDetails',
         args: [changedAccountDetails]
     })
 
-    const editAccountWait = useWaitForTransaction({
+    const editAccountWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: editAccount.data?.hash,
     })
 
     //functions for creating subscription
-    const createSub = useContractWrite({
+    const createSub = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'createSubscription',
         args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
     })
 
-    const createSubWait = useWaitForTransaction({
+    const createSubWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: createSub.data?.hash
     })
 
     //functions for cancelling subscription
     //cancel subscription
-    const cancelSubscription = useContractWrite({
+    const cancelSubscription = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'cancelSubscription',
         args: [cancelledSub]
     })
 
-    const cancelWait = useWaitForTransaction({
+    const cancelWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: cancelSubscription.data?.hash,
     })
 
     //unsubscribe hooks
-    const unsubscribeWrite = useContractWrite({
+    const unsubscribeWrite = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'unsubscribe',
         args: [unsubscribedSub]
     })
 
-    const unsubscribeWait = useWaitForTransaction({
+    const unsubscribeWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: unsubscribeWrite.data?.hash,
     })
@@ -331,7 +333,7 @@ const getProviderSubs = useCallback(async () => {
        let accountSubscriptions = []
 
        try{
-       await readContract({
+       await readContract(config, {
            address: CLOCKTOWERSUB_ADDRESS,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',
@@ -397,7 +399,7 @@ const getSubscriberSubs = useCallback(async () => {
    let accountSubscriptions = []
 
    try{
-   await readContract({
+   await readContract(config, {
        address: CLOCKTOWERSUB_ADDRESS,
        abi: CLOCKTOWERSUB_ABI,
        functionName: 'getAccountSubscriptions',

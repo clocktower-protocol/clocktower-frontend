@@ -6,9 +6,10 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ZERO_ADDRESS} from "../config"
 import { useOutletContext } from "react-router-dom";
 import CreateSubForm from '../CreateSubForm';
 import SubscriptionsTable from '../SubscriptionsTable';
-import { useContractWrite, useWaitForTransaction, usePublicClient, useAccount } from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
+import {config} from '../wagmiconfig'
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -54,14 +55,14 @@ const Provider = () => {
        
     }, [account]);
 
-    const createSubscription3 = useContractWrite({
+    const createSubscription3 = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'createSubscription',
         args: [amount, token, details, frequency, dueDay]
     })
     
-    const createWait = useWaitForTransaction({
+    const createWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: createSubscription3.data?.hash,
     })
@@ -78,14 +79,14 @@ const Provider = () => {
     },[details])
 
     //cancel subscription
-    const cancelSubscription2 = useContractWrite({
+    const cancelSubscription2 = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'cancelSubscription',
         args: [cancelledSub]
     })
 
-    const cancelWait = useWaitForTransaction({
+    const cancelWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: cancelSubscription2.data?.hash,
     })
@@ -162,7 +163,7 @@ const Provider = () => {
         let accountSubscriptions = []
 
         try{
-        await readContract({
+        await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'getAccountSubscriptions',

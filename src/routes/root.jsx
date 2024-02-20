@@ -3,10 +3,12 @@ import { Navbar, Container, Nav, Button, Row, Modal, Stack} from 'react-bootstra
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
+import {config} from '../wagmiconfig'
 import axios from 'axios'
 //import Web3 from 'web3'
 
-import { useAccount, useConnect } from 'wagmi'
+import { useAccount, useConnect, useConnectors } from 'wagmi'
+
 
 const Root = () => {
 
@@ -27,7 +29,9 @@ const Root = () => {
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
 
-    
+    //gets connections from wagmiconfig
+    const connectors2 = useConnectors()
+    /*
     //checks local storage for current jwt if empty fetchs token
     useEffect(() => {
 
@@ -58,7 +62,7 @@ const Root = () => {
         console.log("set")
       }
     }, [])
-    
+    */
 
     const handleClose = () => {
       setShowWalletChoice(false);
@@ -133,20 +137,21 @@ const Root = () => {
           <Modal.Body>
             <Container>
               <Stack gap={3}>
-              {connectors.map((connector) => (
-              <Row key={connector.id+1}>
+              {connectors2.map((connector2) => (
+              <Row key={connector2.id+1}>
                   <Button 
                     variant="info"
-                    disabled={!connector.ready}
-                    key={connector.id}
-                    onClick={() => {connect({ connector })
+                    //disabled={!connector2.ready}
+                    key={connector2.id}
+                    onClick={() => {connect({ connector2 })
                     handleClose()
                     }}
                   >
-                    {connector.name}
-                    {!connector.ready && ' (unsupported)'}
+                    {connector2.name}
+                    {//!connector2.ready && ' (unsupported)'
+                    }
                     {isLoading &&
-                      connector.id === pendingConnector?.id &&
+                      connector2.id === pendingConnector?.id &&
                       ' (connecting)'}
                   </Button>
               </Row>

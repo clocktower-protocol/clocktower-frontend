@@ -2,9 +2,10 @@ import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Card, ListGroup, Button} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate, Link} from "react-router-dom";
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
-import { useContractWrite, useWaitForTransaction, usePublicClient, erc20ABI, useAccount} from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount} from 'wagmi'
 import { readContract, writeContract } from 'wagmi/actions'
-import { parseAbiItem, formatEther} from 'viem'
+import { parseAbiItem, formatEther, erc20Abi} from 'viem'
+import {config} from '../wagmiconfig'
 /* global BigInt */
 
 const PublicSubscription = () => {
@@ -75,14 +76,14 @@ const PublicSubscription = () => {
     */
 
     //hook for token approval
-    const subscribeWrite = useContractWrite({
+    const subscribeWrite = useWriteContract({
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
         functionName: 'subscribe',
         args: [subscription]
     })
     
-    const subscribeWait = useWaitForTransaction({
+    const subscribeWait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: subscribeWrite.data?.hash,
     })
@@ -150,7 +151,7 @@ const PublicSubscription = () => {
         */
 
         const getSub = async () => {
-            await readContract({
+            await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'getSubByIndex',
@@ -198,7 +199,7 @@ const PublicSubscription = () => {
         }
 
         const isSubscribed = async () => {
-            let result = await readContract({
+            let result = await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'getSubscribersById',
@@ -225,7 +226,7 @@ const PublicSubscription = () => {
         }
      
         const isProviderSame = async () => {
-            let result = await readContract({
+            let result = await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'getSubByIndex',
@@ -298,9 +299,9 @@ const PublicSubscription = () => {
 
         
         //checks if user already has allowance
-        const allowanceBalance = await readContract({
+        const allowanceBalance = await readContract(config, {
             address: token,
-            abi: erc20ABI,
+            abi: erc20Abi,
             functionName: 'allowance',
             args: [address, CLOCKTOWERSUB_ADDRESS]
         })
@@ -311,7 +312,7 @@ const PublicSubscription = () => {
             //if allowance has dropped below 100,000 site requests infinite approval again
             await writeContract({
                 address: token,
-                abi: erc20ABI,
+                abi: erc20Abi,
                 functionName: 'approve',
                 args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
             })

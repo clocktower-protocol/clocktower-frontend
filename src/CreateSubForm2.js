@@ -27,9 +27,13 @@ const CreateSubForm2 = (props) => {
     
     //disables submit button if all fields are not validated
     useEffect(() => {
+        console.log(invalidDay)
         if(!invalidAmount && !invalidUrl && !invalidDescription && !invalidToken && !invalidFrequency && !invalidDay) {
             setAllValidated(true)
+        } else {
+            setAllValidated(false)
         }
+        console.log(allValidated)
     },[invalidAmount, invalidUrl, invalidDay, invalidDescription, invalidFrequency, invalidToken])
     
 
@@ -146,8 +150,6 @@ const CreateSubForm2 = (props) => {
         } else {
             setInvalidDay(false)
         }
-
-         console.log(typeof event.target.value)
      }
  
      const descriptionChange = (event) => {

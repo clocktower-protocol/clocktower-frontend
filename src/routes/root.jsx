@@ -7,13 +7,15 @@ import {config} from '../wagmiconfig'
 import axios from 'axios'
 //import Web3 from 'web3'
 
-import { useAccount, useConnect, useConnectors, useAccountEffect} from 'wagmi'
+import { useAccount, useConnect, useConnectors, useAccountEffect, useConnectorClient, useConnections} from 'wagmi'
 
 
 const Root = () => {
 
+    const {connector: activeConnector, address, isConnected } = useAccount()
+
     //const [buttonClicked, setButtonClicked] = useState(false)
-    const [account, setAccount] = useState("-1")
+    const [account, setAccount] = useState(address)
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
     const [loggedIn, setLoggedIn] = useState(false)
@@ -28,6 +30,7 @@ const Root = () => {
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
+    const accountSwitch = useCallback(() => navigate('/account/'+address))
 
     //gets connections from wagmiconfig
     const connectors2 = useConnectors()
@@ -71,7 +74,9 @@ const Root = () => {
 
     //WAGMI
     
-    const {connector: activeConnector, address, isConnected } = useAccount()
+    //const {connector: activeConnector, address, isConnected } = useAccount()
+
+    //const connections = useConnections()
 
 
     useAccountEffect({
@@ -97,7 +102,20 @@ const Root = () => {
     //checks for account change
     useEffect(() => {
       setAccount(address)
+      accountSwitch()
+      
     }, [address])
+
+    /*
+    useEffect(() => {
+      //first load
+      if(account === "-1") {
+        console.log("test")
+        console.log(isConnected)
+      }
+
+    },[account])
+    */
 
     
     //sends to account page once logged in

@@ -491,7 +491,7 @@ useEffect(() => {
     getProviderSubs()
     getSubscriberSubs()
 
-    console.log("here")
+    //console.log("here")
 },[getAccount, getProviderSubs, getSubscriberSubs])
 
 //changes data when passed account is switched

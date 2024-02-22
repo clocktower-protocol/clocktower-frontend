@@ -76,13 +76,6 @@ const Root = () => {
        //if empty
        if(localStorage.getItem("clockAccess") !== null) {
         console.log("not set")
-        /*
-        let config = {
-          headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-            }
-        }
-        */
     
         let data = {
           "id": 4
@@ -93,10 +86,10 @@ const Root = () => {
           }
         })
         .then(function (response) {
-          console.log(response.data);
+          console.log(response.data.token);
           //stores token in local storage
-          localStorage.setItem("clockAccess", response.data)
-          console.log("set token")
+          localStorage.setItem("clockAccess", response.data.token)
+          console.log("token set")
         })
         .catch(function (error) {
           console.log(error);

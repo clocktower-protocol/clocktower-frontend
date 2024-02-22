@@ -1,4 +1,4 @@
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams, useNavigate } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab} from 'react-bootstrap';
@@ -52,6 +52,10 @@ const Account = () => {
     const [cancelledSub, setCancelledSub] = useState({})
     const [changedCreateSub, setChangedCreateSub] = useState({})
     const [unsubscribedSub, setUnsubscribedSub] = useState({})
+
+    //link functions
+    const navigate = useNavigate();
+    const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
 
     const msg = 'test'
 
@@ -305,8 +309,9 @@ const Account = () => {
 
 
         //checks if user is logged into account
-        if(!isLoggedIn() || typeof address === "undefined") {
+        if(typeof address === "undefined") {
             console.log("Not Logged in")
+            //linkToMain()
             return
         }
 
@@ -487,9 +492,16 @@ const getSubscriberSubs = useCallback(async () => {
 useEffect(() => {
     isMounting.current = true
 
-    getAccount()
-    getProviderSubs()
-    getSubscriberSubs()
+
+    //checks if user is logged into account
+    if(typeof address === "undefined") {
+        //console.log("Not Logged in")
+        //linkToMain()
+    } else {
+        getAccount()
+        getProviderSubs()
+        getSubscriberSubs()
+    }
 
     //console.log("here")
 },[getAccount, getProviderSubs, getSubscriberSubs])

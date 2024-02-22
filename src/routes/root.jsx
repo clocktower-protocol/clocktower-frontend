@@ -12,10 +12,10 @@ import { useAccount, useConnect, useConnectors, useAccountEffect, useConnectorCl
 
 const Root = () => {
 
-    const {connector: activeConnector, address, isConnected } = useAccount()
+    const {connector: activeConnector, address, isConnected, isDisconnected } = useAccount()
 
     //const [buttonClicked, setButtonClicked] = useState(false)
-    const [account, setAccount] = useState(address)
+    const [account, setAccount] = useState("")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
     const [loggedIn, setLoggedIn] = useState(false)
@@ -30,10 +30,11 @@ const Root = () => {
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
-    const accountSwitch = useCallback(() => navigate('/account/'+address))
+    const accountSwitch = useCallback((passedAddress) => navigate('/account/'+passedAddress), [navigate])
+    const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
 
     //gets connections from wagmiconfig
-    const connectors2 = useConnectors()
+    //const connectors2 = useConnectors()
     /*
     //checks local storage for current jwt if empty fetchs token
     useEffect(() => {
@@ -85,11 +86,11 @@ const Root = () => {
       },
       onDisconnect() {
         console.log('Disconnected!')
+        linkToMain()
       },
     })
 
     const { connect, connectors, isLoading, pendingConnector } = useConnect({
-      //connector: new InjectedConnector(),
       onSuccess(data) {
         console.log('Connect', data.account)
         setLoggedIn(true)
@@ -100,30 +101,56 @@ const Root = () => {
     })
 
     //checks for account change
+    
     useEffect(() => {
+     
       setAccount(address)
-      accountSwitch()
+      if(address !== undefined){
+        accountSwitch(address)
+      }
+      
       
     }, [address])
+    
 
     /*
     useEffect(() => {
-      //first load
-      if(account === "-1") {
-        console.log("test")
-        console.log(isConnected)
+      if(address == undefined) {
+        setAccount(address)
+        linkToMain()
+      } else {
+        setAccount(address)
+        accountSwitch()
       }
 
     },[account])
     */
-
     
+
+    /*
+    //checks for change in connection status
+    useEffect(() => {
+      if(isDisconnected) {
+        console.log("disconnected")
+      }
+      if(isConnected) {
+        console.log("connected!!")
+      }
+    }, [isDisconnected, isConnected])
+    */
+
+    /*
     //sends to account page once logged in
     useEffect(() => {
       if(typeof address !== "undefined") {
+        setAccount(address)
+        console.log(address)
         handleOnClickAccount()
+      } else {
+        linkToMain()
       }
     }, [loggedIn])
+    */
     
 
     
@@ -142,10 +169,12 @@ const Root = () => {
   }
   */
 
+  
   //checks if user is logged in 
   const isLoggedIn = () => {
     return(account === "-1" ? false : true) 
   }
+  
 
   
    return (
@@ -158,24 +187,24 @@ const Root = () => {
           <Modal.Body>
             <Container>
               <Stack gap={3}>
-              {connectors2.map((connector2) => (
-              <Row key={connector2.id+1}>
+              {connectors.map((connector) => (
+              <Row key={connector.id+1}>
                   <Button 
                     variant="info"
                     //disabled={!connector2.ready}
-                    key={connector2.id}
+                    key={connector.id}
                     onClick={() => {
-                    console.log(connector2)
+                    console.log(connector)
                     //connect({ connector2 })
-                    connector2.connect()
+                    connect({connector})
                     handleClose()
                     }}
                   >
-                    {connector2.name}
+                    {connector.name}
                     {//!connector2.ready && ' (unsupported)'
                     }
                     {isLoading &&
-                      connector2.id === pendingConnector?.id &&
+                      connector.id === pendingConnector?.id &&
                       ' (connecting)'}
                   </Button>
               </Row>
@@ -198,7 +227,7 @@ const Root = () => {
             <Row></Row>
             <Row>
           <Nav key="nav">
-            {isConnected ? (<Navbar.Text>Account: {address}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+            {isConnected && !isDisconnected ? (<Navbar.Text>Account: {address}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
           </Nav>
           </Row>
         </Container>

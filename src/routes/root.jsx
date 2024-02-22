@@ -36,6 +36,7 @@ const Root = () => {
 
     //gets connections from wagmiconfig
     //const connectors2 = useConnectors()
+    
     /*
     //checks local storage for current jwt if empty fetchs token
     useEffect(() => {
@@ -43,12 +44,14 @@ const Root = () => {
       //if empty
       if(localStorage.getItem("clockAccess") === null) {
         console.log("not set")
+        /*
         let config = {
           headers: {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
         }
-
+        */
+    /*
         let data = {
           "id": 4
          }
@@ -68,6 +71,42 @@ const Root = () => {
       }
     }, [])
     */
+
+    const fetchToken = () => {
+       //if empty
+       if(localStorage.getItem("clockAccess") !== null) {
+        console.log("not set")
+        /*
+        let config = {
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        }
+        */
+    
+        let data = {
+          "id": 4
+         }
+        //gets token
+        axios.post('http://138.197.26.60:3000/api/requesttoken', data, {headers: {
+          'Content-Type': 'application/json'
+          }
+        })
+        .then(function (response) {
+          console.log(response.data);
+          //stores token in local storage
+          localStorage.setItem("clockAccess", response.data)
+          console.log("set token")
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      } else {
+        console.log(localStorage.getItem("clockAccess"))
+        console.log("got existing token")
+      }
+    }
+    
 
     const handleClose = () => {
       setShowWalletChoice(false);
@@ -241,6 +280,7 @@ const Root = () => {
           <Stack gap={3}>
             <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickCalendar}>Calendar</Button>{' '}
+            <Button variant="outline-info" onClick={fetchToken}>Fetch Token</Button>{' '}
             {/*
             <Button variant="outline-info" onClick={handleOnClickProv}>Provider Dash</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber Dash</Button>{' '}
@@ -255,7 +295,7 @@ const Root = () => {
         </div>
         <div id="detail" className="mainDiv">
           
-          {!loggedIn2? <Alert align="center" variant="info">Please Log In</Alert>: <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>}
+          {!loggedIn2? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>}
         
         </div>
       </div>

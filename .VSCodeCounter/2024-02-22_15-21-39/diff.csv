@@ -1,0 +1,22 @@
+"filename", "language", "JavaScript", "JavaScript JSX", "comment", "blank", "total"
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/AdminHistoryTable.js", "JavaScript", -1, 0, 1, 0, 0
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/CreateSubForm.js", "JavaScript", 0, 0, 2, 0, 2
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/CreateSubForm2.js", "JavaScript", 234, 0, 32, 40, 306
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/EditAccountForm.js", "JavaScript", 26, 0, -56, 3, -27
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/ProvSubscribersTable.js", "JavaScript", 1, 0, 0, 0, 1
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/SubHistoryTable.js", "JavaScript", 1, 0, 0, 0, 1
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/SubscriptionsTable.js", "JavaScript", 0, 0, 2, 2, 4
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/config.js", "JavaScript", 59, 0, 1, 2, 62
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/index.js", "JavaScript", -23, 0, 52, 3, 32
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/account.jsx", "JavaScript JSX", 0, 240, 102, 54, 396
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/admin.jsx", "JavaScript JSX", 0, -1, 2, 0, 1
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/adminsubscriptions.jsx", "JavaScript JSX", 0, 1, 0, 0, 1
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/calendar.jsx", "JavaScript JSX", 0, 232, 60, 55, 347
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/editdetails.jsx", "JavaScript JSX", 0, -2, 11, -1, 8
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/provider.jsx", "JavaScript JSX", 0, -7, 25, -1, 17
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/provsubscribers.jsx", "JavaScript JSX", 0, -2, 3, 0, 1
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/publicsubscription.jsx", "JavaScript JSX", 0, -94, 149, -4, 51
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/root.jsx", "JavaScript JSX", 0, 8, 88, 20, 116
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/routes/subscriberdash.jsx", "JavaScript JSX", 0, 1, 8, 0, 9
+"/home/hugo/Documents/Crypto/dev/clocktower-frontend/src/wagmiconfig.js", "JavaScript", 11, 0, 9, 1, 21
+"Total", "-", 308, 376, 491, 174, 1349

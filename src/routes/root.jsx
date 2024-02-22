@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useCallback} from 'react';
-import { Navbar, Container, Nav, Button, Row, Modal, Stack} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Row, Modal, Stack, Alert} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -12,13 +12,14 @@ import { useAccount, useConnect, useConnectors, useAccountEffect, useConnectorCl
 
 const Root = () => {
 
-    const {connector: activeConnector, address, isConnected, isDisconnected } = useAccount()
+    const {connector: activeConnector, address, isConnected, isDisconnected } = useAccount({config})
 
     //const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
     const [loggedIn, setLoggedIn] = useState(false)
+    const [loggedIn2, setLoggedIn2] = useState(false)
 
     const [showWalletChoice, setShowWalletChoice] = useState(false);
 
@@ -80,32 +81,28 @@ const Root = () => {
     //const connections = useConnections()
 
 
-    useAccountEffect({
+    useAccountEffect({config, 
       onConnect() {
         console.log('Connected!')
       },
       onDisconnect() {
         console.log('Disconnected!')
+        console.log(isDisconnected)
         linkToMain()
       },
     })
 
-    const { connect, connectors, isLoading, pendingConnector } = useConnect({
-      onSuccess(data) {
-        console.log('Connect', data.account)
-        setLoggedIn(true)
-      },
-      onError(error) {
-        console.log('Error', error)
-      },
-    })
+    const { connect, connectors, isLoading, pendingConnector } = useConnect({config})
 
     //checks for account change
     
     useEffect(() => {
      
+      console.log("address loop")
       setAccount(address)
+      setLoggedIn2(true)
       if(address !== undefined){
+        console.log("address empty here")
         accountSwitch(address)
       }
       
@@ -205,7 +202,8 @@ const Root = () => {
                     }
                     {isLoading &&
                       connector.id === pendingConnector?.id &&
-                      ' (connecting)'}
+                      ' (connecting)'
+                    }
                   </Button>
               </Row>
               ))}
@@ -255,7 +253,10 @@ const Root = () => {
         </Navbar>
         </div>
         <div id="detail" className="mainDiv">
+          {}
+          <Alert align="center" variant="info">Test</Alert>
           <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
+        
         </div>
       </div>
     </div>

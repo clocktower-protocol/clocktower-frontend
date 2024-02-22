@@ -5,10 +5,14 @@ import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 import axios from 'axios'
+import {jwtDecode} from 'jwt-decode'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 //import Web3 from 'web3'
 
 import { useAccount, useConnect, useConnectors, useAccountEffect, useConnectorClient, useConnections} from 'wagmi'
 
+dayjs.extend(utc)
 
 const Root = () => {
 
@@ -74,7 +78,7 @@ const Root = () => {
 
     const fetchToken = () => {
        //if empty
-       if(localStorage.getItem("clockAccess") !== null) {
+       if(localStorage.getItem("clockAccess") === null) {
         console.log("not set")
     
         let data = {
@@ -95,7 +99,13 @@ const Root = () => {
           console.log(error);
         })
       } else {
-        console.log(localStorage.getItem("clockAccess"))
+        //checks if its expired
+        const savedToken = localStorage.getItem("clockAccess")
+        const decodedToken = jwtDecode(savedToken)
+        console.log("current utc time  " + dayjs().utc().unix())
+        console.log("token expiry  " + decodedToken.exp)
+        console.log("difference  " + (decodedToken.exp - dayjs().utc().unix()))
+        console.log(decodedToken)
         console.log("got existing token")
       }
     }

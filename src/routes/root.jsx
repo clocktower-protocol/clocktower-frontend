@@ -87,7 +87,7 @@ const Root = () => {
       },
       onDisconnect() {
         console.log('Disconnected!')
-        console.log(isDisconnected)
+        setLoggedIn2(false)
         linkToMain()
       },
     })
@@ -100,9 +100,10 @@ const Root = () => {
      
       console.log("address loop")
       setAccount(address)
-      setLoggedIn2(true)
+      ///address reset
       if(address !== undefined){
         console.log("address empty here")
+        setLoggedIn2(true)
         accountSwitch(address)
       }
       
@@ -253,9 +254,8 @@ const Root = () => {
         </Navbar>
         </div>
         <div id="detail" className="mainDiv">
-          {}
-          <Alert align="center" variant="info">Test</Alert>
-          <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>
+          
+          {!loggedIn2? <Alert align="center" variant="info">Please Log In</Alert>: <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>}
         
         </div>
       </div>

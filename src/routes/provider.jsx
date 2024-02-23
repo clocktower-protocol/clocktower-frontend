@@ -10,6 +10,7 @@ import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAcc
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
+import {fetchToken} from '../clockfunctions'
 
 const Provider = () => {
     const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
@@ -177,7 +178,7 @@ const Provider = () => {
 
         //variable to pass scope so that the state can be set
         let accountSubscriptions = []
-
+        await fetchToken()
         try{
         await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,

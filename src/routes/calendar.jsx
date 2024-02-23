@@ -15,6 +15,7 @@ import dayjs from 'dayjs'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
 import dayOfYear from 'dayjs/plugin/dayOfYear'
+import {fetchToken} from '../clockfunctions'
 
 dayjs.extend(quarterOfYear)
 dayjs.extend(isLeapYear)
@@ -296,6 +297,7 @@ const Calendar = () => {
        //let accountSubscriptions = []
        let tempEventsArray = []
 
+       fetchToken()
        try{
        await readContract(config, {
            address: CLOCKTOWERSUB_ADDRESS,

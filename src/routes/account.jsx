@@ -10,6 +10,7 @@ import {config} from '../wagmiconfig'
 import EditAccountForm from "../EditAccountForm";
 import CreateSubForm2 from "../CreateSubForm2";
 import SubscriptionsTable from "../SubscriptionsTable";
+import {fetchToken} from '../clockfunctions'
 
 
 const Account = () => {
@@ -318,6 +319,8 @@ const Account = () => {
         //variable to pass scope so that the state can be set
         let accountDetails = {}
 
+        //checks token
+        await fetchToken()
         try{
             await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
@@ -366,6 +369,7 @@ const getProviderSubs = useCallback(async () => {
        //variable to pass scope so that the state can be set
        let accountSubscriptions = []
 
+       await fetchToken()
        try{
        await readContract(config, {
            address: CLOCKTOWERSUB_ADDRESS,
@@ -432,6 +436,7 @@ const getSubscriberSubs = useCallback(async () => {
    //variable to pass scope so that the state can be set
    let accountSubscriptions = []
 
+   await fetchToken()
    try{
    await readContract(config, {
        address: CLOCKTOWERSUB_ADDRESS,

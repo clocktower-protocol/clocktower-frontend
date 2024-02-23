@@ -8,6 +8,7 @@ import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAcc
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
+import {fetchToken} from '../clockfunctions'
 /* global BigInt */
 
 const SubscriberDash = () => {
@@ -104,6 +105,7 @@ const SubscriberDash = () => {
            return
        }
        
+       await fetchToken()
        //variable to pass scope so that the state can be set
        let accountSubscriptions = []
 

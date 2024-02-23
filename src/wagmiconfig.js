@@ -2,6 +2,8 @@ import { createConfig, http } from 'wagmi'
 import { hardhat, sepolia } from 'wagmi/chains'
 import { injected, coinbaseWallet} from 'wagmi/connectors'
 
+let token = localStorage.getItem('clockAccess')
+
 export const config = createConfig(
     {
     chains: [hardhat],
@@ -12,7 +14,7 @@ export const config = createConfig(
       [sepolia.id]: http('https://eth-sepolia.g.alchemy.com/v2', {
         fetchOptions: { 
           headers: {
-            'Authorization': 'Bearer ...'
+            'Authorization': 'Bearer ' + token
           }
         }
       })

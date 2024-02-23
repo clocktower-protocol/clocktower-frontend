@@ -4,6 +4,7 @@ import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRE
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
 import {config} from './wagmiconfig'
+import {fetchToken} from '../clockfunctions'
 
 const CreateSubForm2 = (props) => {
 
@@ -75,6 +76,7 @@ const CreateSubForm2 = (props) => {
 
     //gets token minimum from contract
     const setTokenMinimum = async (tokenAddress) => {
+        await fetchToken()
         await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,

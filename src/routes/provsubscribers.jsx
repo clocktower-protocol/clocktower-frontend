@@ -5,6 +5,7 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import ProvSubscribersTable from '../ProvSubscribersTable';
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
+import {fetchToken} from '../clockfunctions'
 /* global BigInt */
 const ProvSubscribers = () => {
 
@@ -33,6 +34,7 @@ const ProvSubscribers = () => {
         return
         }    
 
+        await fetchToken()
         //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
         let fee =  await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,

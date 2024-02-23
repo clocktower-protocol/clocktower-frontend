@@ -4,16 +4,16 @@ import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
-import axios from 'axios'
-import {jwtDecode} from 'jwt-decode'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
+//import axios from 'axios'
+//import {jwtDecode} from 'jwt-decode'
+//import dayjs from 'dayjs'
+//import utc from 'dayjs/plugin/utc'
 //import Web3 from 'web3'
 import {fetchToken} from '../clockfunctions'
 
 import { useAccount, useConnect, useConnectors, useAccountEffect, useConnectorClient, useConnections} from 'wagmi'
 
-dayjs.extend(utc)
+//dayjs.extend(utc)
 
 const Root = () => {
 
@@ -171,9 +171,11 @@ const Root = () => {
      
       console.log("address loop")
       setAccount(address)
-      ///address reset
+      //address reset
       if(address !== undefined){
-        console.log("address empty here")
+        //checks/resets token
+        fetchToken()
+
         setLoggedIn2(true)
         accountSwitch(address)
       }

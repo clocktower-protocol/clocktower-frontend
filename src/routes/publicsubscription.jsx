@@ -6,6 +6,8 @@ import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAcc
 import { readContract, writeContract } from 'wagmi/actions'
 import { parseAbiItem, formatEther, erc20Abi} from 'viem'
 import {config} from '../wagmiconfig'
+import {fetchToken} from '../clockfunctions'
+
 /* global BigInt */
 
 const PublicSubscription = () => {
@@ -155,6 +157,7 @@ const PublicSubscription = () => {
         */
 
         const getSub = async () => {
+            await fetchToken()
             await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -203,6 +206,7 @@ const PublicSubscription = () => {
         }
 
         const isSubscribed = async () => {
+            await fetchToken()
             let result = await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -230,6 +234,7 @@ const PublicSubscription = () => {
         }
      
         const isProviderSame = async () => {
+            await fetchToken()
             let result = await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -303,6 +308,7 @@ const PublicSubscription = () => {
 
         
         //checks if user already has allowance
+        await fetchToken()
         const allowanceBalance = await readContract(config, {
             address: token,
             abi: erc20Abi,

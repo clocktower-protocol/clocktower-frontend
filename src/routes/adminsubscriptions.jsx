@@ -7,6 +7,7 @@ import {usePublicClient} from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
+import {fetchToken} from '../clockfunctions'
 
 const AdminSubscriptions = () => {
 
@@ -58,6 +59,7 @@ const AdminSubscriptions = () => {
         let remainingCycles
 
         //const cycles = Math.round(1 / ((fee / 10000) - 1))
+        await fetchToken()
         let fee =  await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,

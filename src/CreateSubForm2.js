@@ -4,7 +4,7 @@ import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRE
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
 import {config} from './wagmiconfig'
-import {fetchToken} from '../clockfunctions'
+import {fetchToken} from './clockfunctions'
 
 const CreateSubForm2 = (props) => {
 

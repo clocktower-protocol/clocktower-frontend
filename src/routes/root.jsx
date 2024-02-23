@@ -314,7 +314,6 @@ const Root = () => {
           <Stack gap={3}>
             <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickCalendar}>Calendar</Button>{' '}
-            <Button variant="outline-info" onClick={fetchToken}>Fetch Token</Button>{' '}
             {/*
             <Button variant="outline-info" onClick={handleOnClickProv}>Provider Dash</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber Dash</Button>{' '}

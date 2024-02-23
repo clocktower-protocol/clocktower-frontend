@@ -9,6 +9,7 @@ import {jwtDecode} from 'jwt-decode'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 //import Web3 from 'web3'
+import {fetchToken} from '../clockfunctions'
 
 import { useAccount, useConnect, useConnectors, useAccountEffect, useConnectorClient, useConnections} from 'wagmi'
 
@@ -75,7 +76,7 @@ const Root = () => {
       }
     }, [])
     */
-
+    /*
     const fetchToken = async () => {
       try{
         //if empty
@@ -137,7 +138,7 @@ const Root = () => {
         console.error(error)
       }
     }
-    
+    */
 
     const handleClose = () => {
       setShowWalletChoice(false);

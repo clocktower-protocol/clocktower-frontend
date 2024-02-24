@@ -92,10 +92,6 @@ const router = createBrowserRouter([
       errorElement: <ErrorPage />,
       children: [
         {
-          path: "provider/",
-          element: <Provider />,
-        },
-        {
           path: "account/:a",
           element: <Account />,
         },
@@ -114,10 +110,6 @@ const router = createBrowserRouter([
         {
           path: "public_subscription/:id/:f/:d",
           element: <PublicSubscription />,
-        },
-        {
-          path: "subscriberdash/",
-          element: <SubscriberDash />
         },
         {
           path: "subscription/:id",

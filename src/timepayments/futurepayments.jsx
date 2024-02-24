@@ -1,4 +1,4 @@
-import FuturePayments from "../FuturePayments"
+import FuturePayments from "./FuturePayments"
 
 export default function FutPaymentRoute() {
     return (

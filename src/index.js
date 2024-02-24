@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter,RouterProvider} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from './errorPage';
-import FutPaymentRoute from './routes/futurepayments';
+import FutPaymentRoute from './timepayments/futurepayments';
 import Provider from './routes/provider';
 //import ProvSubscription from './routes/provsubscription';
 import ProvSubHistory from './routes/provsubhistory';
@@ -91,10 +91,6 @@ const router = createBrowserRouter([
       element: <Root />,
       errorElement: <ErrorPage />,
       children: [
-        {
-          path: "payments/",
-          element: <FutPaymentRoute />,
-        },
         {
           path: "provider/",
           element: <Provider />,

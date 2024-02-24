@@ -2,7 +2,7 @@ import React, { Component, useEffect} from 'react'
 import {Alert} from 'react-bootstrap';
 import Web3 from 'web3'
 import './App.css';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERPAY_ABI, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERPAY_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "./config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERPAY_ABI, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERPAY_ADDRESS, ZERO_ADDRESS, CLOCKTOKEN_ADDRESS, CLOCKTOKEN_ABI, INFINITE_APPROVAL, TOKEN_LOOKUP} from "../config"; 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'

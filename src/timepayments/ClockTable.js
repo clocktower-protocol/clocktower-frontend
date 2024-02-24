@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Table} from 'react-bootstrap';
-import {TOKEN_LOOKUP} from "./config";
+import {TOKEN_LOOKUP} from "../config";
 import Web3 from 'web3'
 import dayjs from 'dayjs'
 

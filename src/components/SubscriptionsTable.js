@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-import {TOKEN_LOOKUP, FREQUENCY_LOOKUP} from "./config";
+import {TOKEN_LOOKUP, FREQUENCY_LOOKUP} from "../config";
 //import Web3 from 'web3'
 import {formatEther} from 'viem'
 

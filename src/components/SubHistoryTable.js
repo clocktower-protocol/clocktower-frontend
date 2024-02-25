@@ -1,9 +1,9 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-import { SUBSCRIPTEVENT_LOOKUP } from './config';
+import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs'
-import {TOKEN_LOOKUP} from "./config";
+import {TOKEN_LOOKUP} from "../config";
 import {formatEther} from 'viem'
 /* global BigInt */
 const SubHistoryTable = (props) => {

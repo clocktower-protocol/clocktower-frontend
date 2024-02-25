@@ -1,10 +1,10 @@
 import {React, useState, useEffect} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from './config';
+import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
-import {config} from './wagmiconfig'
-import {fetchToken} from './clockfunctions'
+import {config} from '../wagmiconfig'
+import {fetchToken} from '../clockfunctions'
 
 const CreateSubForm2 = (props) => {
 

@@ -56,65 +56,10 @@ const Account = () => {
 
     //link functions
     const navigate = useNavigate();
-    const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
+    //const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
 
     const msg = 'test'
 
-    /*
-     //sets mounting bool to not mounting after initial load
-    useEffect(() => {
-        isMounting.current = true
-
-        getAccount()
-        getProviderSubs()
-        getSubscriberSubs()
-
-        console.log("here")
-    },[])
-    */
-
-    /*
-    //changes data when account is switched
-    useEffect(() => {
-        getAccount()
-        setIsDomainVerified(false)
-    },[account])
-    */
-
-    /*
-    //changes data when passed account is switched
-    useEffect(() => {
-        getAccount()
-        setIsDomainVerified(false)
-        getProviderSubs()
-        getSubscriberSubs()
-    },[a, getAccount, getProviderSubs, getSubscriberSubs])
-    */
-
-    /*
-    //functions for editing account
-    const editAccount = useWriteContract({
-        address: CLOCKTOWERSUB_ADDRESS,
-        abi: CLOCKTOWERSUB_ABI,
-        functionName: 'editProvDetails',
-        args: [changedAccountDetails]
-    })
-
-    const editAccountWait = useWaitForTransactionReceipt({
-        confirmations: 1,
-        hash: editAccount.data,
-    })
-    */
-
-    //functions for creating subscription
-    /*
-    const createSub = useWriteContract({
-        address: CLOCKTOWERSUB_ADDRESS,
-        abi: CLOCKTOWERSUB_ABI,
-        functionName: 'createSubscription',
-        args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
-    })
-    */
     const { data, writeContract } = useWriteContract()
 
     const wait = useWaitForTransactionReceipt({
@@ -122,37 +67,6 @@ const Account = () => {
         hash: data
     })
 
-    //functions for cancelling subscription
-    //cancel subscription
-    /*
-    const cancelSubscription = useWriteContract({
-        address: CLOCKTOWERSUB_ADDRESS,
-        abi: CLOCKTOWERSUB_ABI,
-        functionName: 'cancelSubscription',
-        args: [cancelledSub]
-    })
-    
-
-    const cancelWait = useWaitForTransactionReceipt({
-        confirmations: 1,
-        hash: cancelSubscription.data,
-    })
-    */
-
-    //unsubscribe hooks
-    /*
-    const unsubscribeWrite = useWriteContract({
-        address: CLOCKTOWERSUB_ADDRESS,
-        abi: CLOCKTOWERSUB_ABI,
-        functionName: 'unsubscribe',
-        args: [unsubscribedSub]
-    })
-
-    const unsubscribeWait = useWaitForTransactionReceipt({
-        confirmations: 1,
-        hash: unsubscribeWrite.data,
-    })
-    */
 
     //hook for signing messages
     const {data: signMessageData, signMessage, variables}  = useSignMessage({
@@ -293,13 +207,6 @@ const Account = () => {
         editHandleShow()
     }
 
-    /*
-    const verifyButtonClick = () => {
-        verifyHandleShow()
-    }
-    */
-
-    //
 
     const createButtonClick = () => {
         createSubHandleShow()

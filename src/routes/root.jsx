@@ -4,17 +4,10 @@ import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
-//import axios from 'axios'
-//import {jwtDecode} from 'jwt-decode'
-//import dayjs from 'dayjs'
-//import utc from 'dayjs/plugin/utc'
-//import Web3 from 'web3'
 import {fetchToken} from '../clockfunctions'
 
-import { useAccount, useConnect, useConnectors, useAccountEffect, useConnectorClient, useConnections} from 'wagmi'
+import { useAccount, useConnect, useAccountEffect} from 'wagmi'
 
-//dayjs.extend(utc)
-//
 const Root = () => {
 
     const {connector: activeConnector, address, isConnected, isDisconnected } = useAccount({config})
@@ -30,8 +23,6 @@ const Root = () => {
 
     //functions for links
     const navigate = useNavigate();
-    //const handleOnClickProv = useCallback(() => navigate('/provider', {replace: true}), [navigate])
-    //const handleOnClickSub = useCallback(() => navigate('/subscriberdash', {replace: true}), [navigate])
     const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
@@ -39,106 +30,6 @@ const Root = () => {
     const accountSwitch = useCallback((passedAddress) => navigate('/account/'+passedAddress), [navigate])
     const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
 
-    //gets connections from wagmiconfig
-    //const connectors2 = useConnectors()
-    
-    /*
-    //checks local storage for current jwt if empty fetchs token
-    useEffect(() => {
-
-      //if empty
-      if(localStorage.getItem("clockAccess") === null) {
-        console.log("not set")
-        /*
-        let config = {
-          headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-            }
-        }
-        */
-    /*
-        let data = {
-          "id": 4
-         }
-        //gets token
-        axios.post('http://138.197.26.60:3000/api/createtoken', data)
-        .then(function (response) {
-          console.log(response.data);
-          //stores token in local storage
-          localStorage.setItem("clockAccess", response.data)
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-      } else {
-        console.log(localStorage.getItem("clockAccess"))
-        console.log("set")
-      }
-    }, [])
-    */
-    /*
-    const fetchToken = async () => {
-      try{
-        //if empty
-        if(localStorage.getItem("clockAccess") === null) {
-          console.log("not set")
-      
-          let data = {
-            "id": 4
-          }
-          //gets token
-          axios.post('http://138.197.26.60:3000/api/requesttoken', data, {headers: {
-            'Content-Type': 'application/json'
-            }
-          })
-          .then(function (response) {
-            console.log(response.data.token);
-            //stores token in local storage
-            localStorage.setItem("clockAccess", response.data.token)
-            console.log("token set")
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-        } else {
-          //checks if token has expired
-          const savedToken = localStorage.getItem("clockAccess")
-          const decodedToken = jwtDecode(savedToken)
-          
-          console.log("current utc time  " + dayjs().utc().unix())
-          console.log("token expiry  " + decodedToken.exp)
-          console.log("difference  " + (decodedToken.exp - dayjs().utc().unix()))
-          console.log(decodedToken)
-          console.log(typeof dayjs().utc().unix())
-          //gets token if out of date
-          if(decodedToken.exp < dayjs().utc().unix()) {
-            //gets token
-            let data = {
-              "id": 4
-            }
-
-            axios.post('http://138.197.26.60:3000/api/requesttoken', data, {headers: {
-              'Content-Type': 'application/json'
-              }
-            })
-            .then(function (response) {
-              console.log(response.data.token);
-              //stores token in local storage
-              localStorage.setItem("clockAccess", response.data.token)
-              console.log("token set")
-            })
-            .catch(function (error) {
-              console.log(error);
-            })
-          }
-          
-          console.log("got existing token")
-        }
-      } catch (error){
-        console.error(error)
-      }
-    }
-    */
 
     const handleClose = () => {
       setShowWalletChoice(false);
@@ -146,12 +37,7 @@ const Root = () => {
     const handleShow = () => setShowWalletChoice(true);
 
     //WAGMI
-    
-    //const {connector: activeConnector, address, isConnected } = useAccount()
-
-    //const connections = useConnections()
-
-
+   
     useAccountEffect({config, 
       onConnect() {
         console.log('Connected!')
@@ -183,62 +69,13 @@ const Root = () => {
       
     }, [address])
     
-
-    /*
-    useEffect(() => {
-      if(address == undefined) {
-        setAccount(address)
-        linkToMain()
-      } else {
-        setAccount(address)
-        accountSwitch()
-      }
-
-    },[account])
-    */
-    
-
-    /*
-    //checks for change in connection status
-    useEffect(() => {
-      if(isDisconnected) {
-        console.log("disconnected")
-      }
-      if(isConnected) {
-        console.log("connected!!")
-      }
-    }, [isDisconnected, isConnected])
-    */
-
-    /*
-    //sends to account page once logged in
-    useEffect(() => {
-      if(typeof address !== "undefined") {
-        setAccount(address)
-        console.log(address)
-        handleOnClickAccount()
-      } else {
-        linkToMain()
-      }
-    }, [loggedIn])
-    */
-    
-
-    
+ 
   const adminAccount = ADMIN_ACCOUNT
     
 
   const walletButtonClick = () => {
     handleShow()
   }
-
-  /*
-  const injectedButtonClick = () => {
-    connect()
-    //setButtonClicked(true)
-    handleClose()
-  }
-  */
 
   
   //checks if user is logged in 
@@ -314,10 +151,6 @@ const Root = () => {
           <Stack gap={3}>
             <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickCalendar}>Calendar</Button>{' '}
-            {/*
-            <Button variant="outline-info" onClick={handleOnClickProv}>Provider Dash</Button>{' '}
-            <Button variant="outline-info" onClick={handleOnClickSub}>Subscriber Dash</Button>{' '}
-            */}
             {account === adminAccount ?
             <Button variant="outline-info" onClick={handleOnClickAdmin}>Admin</Button>
             : ""}

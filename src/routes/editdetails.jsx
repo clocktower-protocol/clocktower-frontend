@@ -44,63 +44,6 @@ const EditDetails = () => {
     navigate('/provider', {replace: true})
     ,[navigate])
 
-    /*
-    const testEncryption = async () => {
-
-        //TODO:
-        
-        try{
-        //get public key from private key
-        const hex = Uint8Array.from(Buffer.from('47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a', 'hex'));
-        
-        let publicKeyArray = privateToPublic(hex)
-
-        let publicKey = Buffer.from(publicKeyArray).toString('hex');
-
-       // console.log(publicKey)
-        
-        //encrypt data with public key and post to logs
-        const encrypted = await EthCrypto.encryptWithPublicKey(
-            publicKey, // by encrypting with bobs publicKey, only bob can decrypt the payload with his privateKey
-            JSON.stringify("test") // we have to stringify the payload before we can encrypt it
-        );
-
-        // we convert the object into a smaller string-representation
-        const encryptedString = EthCrypto.cipher.stringify(encrypted);
-
-        let decryptedString = await window.ethereum.request({
-            "method": "eth_decrypt",
-            "params": [
-              encryptedString,
-              "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65"
-            ]
-        });
-
-        console.log(decryptedString)
-        } catch (err) {
-            console.error(err);
-        }
-          /*
-        const accountArray = fromString(String(account));
-
-        const encryptedURL = await EthCrypto.encryptWithPublicKey(
-            accountArray, 
-            JSON.stringify(url) 
-        );
-        const encryptedURLString = EthCrypto.cipher.stringify(encryptedURL);
-        */
-
-       // console.log(encryptedURLString)
-
-   // }
-/*
-const editDetailsWrite = useWriteContract({
-    address: CLOCKTOWERSUB_ADDRESS,
-    abi: CLOCKTOWERSUB_ABI,
-    functionName: 'editDetails',
-    args: [submittedDetails, id]
-})
-*/
 const { data, writeContract } = useWriteContract()
 
 const editDetailsWait = useWaitForTransactionReceipt({

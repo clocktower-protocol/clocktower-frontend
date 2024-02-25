@@ -35,56 +35,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient() 
 
-
-/*
-//connects to hardhat
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-[hardhat],
-[
-  jsonRpcProvider({
-    rpc: () => ({
-      http: `http://localhost:8545`,
-    }),
-  }),
-],
-)
-*/
-
-/*
-const config = createConfig({
-  autoConnect: false,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new CoinbaseWalletConnector({
-      chains,
-      options: {
-        appName: 'wagmi',
-      },
-    }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: 'Injected',
-        shimDisconnect: true,
-      },
-    }),
-  ],
-  publicClient,
-  webSocketPublicClient,
-})
-*/
-
-/*
-const config = createConfig({
-  chains: [hardhat],
-  connectors: [coinbaseWallet(), injected({ target: 'metaMask' })],
-  transports: { 
-    [hardhat.id]: http(`http://localhost:8545`),  
-  }, 
-})
-*/
-
-
 const router = createBrowserRouter([
     {
       path: "/",

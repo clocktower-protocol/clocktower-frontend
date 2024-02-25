@@ -3,7 +3,7 @@ import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 //import Web3 from 'web3'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
-import EditDetailsForm from '../EditDetailsForm';
+import EditDetailsForm from '../components/EditDetailsForm';
 //import EthCrypto from 'eth-crypto';
 //import { fromString } from 'uint8arrays/from-string'
 //import {ecrecover, ecsign, privateToPublic} from '@ethereumjs/util'

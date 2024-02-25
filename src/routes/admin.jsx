@@ -3,9 +3,9 @@ import {Alert, Tab, Tabs} from 'react-bootstrap';
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
 import { useOutletContext } from "react-router-dom";
-import ProvidersTable from '../ProvidersTable';
-import CallerHistoryTable from '../CallerHistoryTable';
-import SubscribersTable from '../SubscribersTable';
+import ProvidersTable from '../components/ProvidersTable';
+import CallerHistoryTable from '../components/CallerHistoryTable';
+import SubscribersTable from '../components/SubscribersTable';
 import { usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'

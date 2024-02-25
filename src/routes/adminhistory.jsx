@@ -4,7 +4,7 @@ import { useParams, useOutletContext } from "react-router-dom"
 import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT } from "../config"; 
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
-import AdminHistoryTable from '../AdminHistoryTable';
+import AdminHistoryTable from '../components/AdminHistoryTable';
 
 const AdminHistory = () => {
 

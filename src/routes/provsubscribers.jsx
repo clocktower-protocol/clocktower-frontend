@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import ProvSubscribersTable from '../ProvSubscribersTable';
+import ProvSubscribersTable from '../components/ProvSubscribersTable';
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import { CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import SubHistoryTable from '../SubHistoryTable';
+import SubHistoryTable from '../components/SubHistoryTable';
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
 

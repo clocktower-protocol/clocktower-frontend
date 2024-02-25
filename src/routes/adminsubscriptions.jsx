@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import SubscriptionsTable from '../SubscriptionsTable';
+import SubscriptionsTable from '../components/SubscriptionsTable';
 import {usePublicClient} from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'

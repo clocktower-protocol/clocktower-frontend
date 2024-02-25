@@ -7,9 +7,9 @@ import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionRece
 import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
-import EditAccountForm from "../EditAccountForm";
-import CreateSubForm2 from "../CreateSubForm2";
-import SubscriptionsTable from "../SubscriptionsTable";
+import EditAccountForm from "../components/EditAccountForm";
+import CreateSubForm2 from "../components/CreateSubForm2";
+import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 
 

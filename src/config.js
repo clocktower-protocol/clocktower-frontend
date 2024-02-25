@@ -8,19 +8,19 @@ export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 
-/*This variable determines how public your frontend is. Currently there are three options
+/*This variable determines how public your frontend is. Currently there are four options
 
-LOCAL = Front end is completely client side. You MUST provide your own node whose address must be provided
-below in NODE_ADDRESS. 
+LOCAL = You MUST provide your own node whose address must be provided
+below in LOCAL_NODE. 
 
-USER_INFURA = Client provided Infura account url
+USER_INFURA = User provided Infura account url
 
-USER_ALCHEMY = Client provided Alchmey account url
+USER_ALCHEMY = User provided Alchmey account url
 
-BACKEND = Client fully connects to our backend including databases. (Default)
+BACKEND = User fully connects to our backend including databases. (Default)
 */
 
-export const CLIENT_LOCALITY = "LOCAL"
+export const USER_LOCALITY = "LOCAL"
 
 export const LOCAL_NODE = ""
 

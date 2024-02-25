@@ -1,3 +1,4 @@
+import {JWT_SERVER} from './config'
 import axios from 'axios'
 import {jwtDecode} from 'jwt-decode'
 import dayjs from 'dayjs'
@@ -14,7 +15,7 @@ export const fetchToken = async () => {
           "id": 4
         }
         //gets token
-        axios.post('http://138.197.26.60:3000/api/requesttoken', data, {headers: {
+        axios.post(JWT_SERVER, data, {headers: {
           'Content-Type': 'application/json'
           }
         })
@@ -59,7 +60,7 @@ export const fetchToken = async () => {
             "id": 4
           }
 
-          axios.post('http://138.197.26.60:3000/api/requesttoken', data, {headers: {
+          axios.post(JWT_SERVER, data, {headers: {
             'Content-Type': 'application/json'
             }
           })

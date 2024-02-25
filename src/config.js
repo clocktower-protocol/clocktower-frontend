@@ -13,14 +13,25 @@ export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 LOCAL = Front end is completely client side. You MUST provide your own node whose address must be provided
 below in NODE_ADDRESS. 
 
-PUBLIC_NODE_ONLY = Client side except for connection to our ABI to provide credentials to connect to a public node
+USER_INFURA = Client provided Infura account url
 
-BACKEND = Client fully connects to our backend including databases. 
+USER_ALCHEMY = Client provided Alchmey account url
+
+BACKEND = Client fully connects to our backend including databases. (Default)
 */
 
 export const CLIENT_LOCALITY = "LOCAL"
 
-export const NODE_ADDRESS = ""
+export const LOCAL_NODE = ""
+
+export const USER_INFURA_PROVIDER = ""
+
+export const USER_ALCHEMY_PROVIDER = ""
+
+
+//**************************************************************************** 
+
+export const JWT_SERVER = "https://clocktowerdev/api/requesttoken"
 
 export const ROLE = ["Admin", "Provider", "Subscriber"]
 

@@ -18,6 +18,7 @@ USER_INFURA = User provided Infura account url
 USER_ALCHEMY = User provided Alchmey account url
 
 BACKEND = User fully connects to our backend including databases. (Default)
+
 */
 
 export const USER_LOCALITY = "LOCAL"
@@ -31,7 +32,7 @@ export const USER_ALCHEMY_PROVIDER = ""
 
 //**************************************************************************** 
 
-export const JWT_SERVER = "https://clocktowerdev/api/requesttoken"
+export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const ROLE = ["Admin", "Provider", "Subscriber"]
 

@@ -15,7 +15,7 @@ export const fetchToken = async () => {
           "id": 4
         }
         //gets token
-        axios.post(JWT_SERVER, data, {headers: {
+        await axios.post(JWT_SERVER, data, {headers: {
           'Content-Type': 'application/json'
           }
         })
@@ -60,7 +60,9 @@ export const fetchToken = async () => {
             "id": 4
           }
 
-          axios.post(JWT_SERVER, data, {headers: {
+          console.log("updating expired token")
+
+          await axios.post(JWT_SERVER, data, {headers: {
             'Content-Type': 'application/json'
             }
           })

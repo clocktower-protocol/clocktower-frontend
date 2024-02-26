@@ -497,14 +497,14 @@ const isTableEmpty2 = (subscriptionArray2) => {
 
  //Creates alert
 const alertMaker = () => {
-    if(alert) {
+    if(isAlertSet) {
         return (
             <div className="alertDiv">
                 <Alert variant={alertType} align="center" onClose={() => setAlert2(false)} dismissible>{alertText2}</Alert>
             </div>
         )
     }
-    console.log(alert)
+    console.log(isAlertSet)
 }
 
     //checks that user has logged in 

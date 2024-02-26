@@ -14,8 +14,8 @@ const Root = () => {
 
     //const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("")
-    const [alertText, setAlertText] = useState("")
-    const [alert, setAlert] = useState(false)
+    //const [alertText, setAlertText] = useState("")
+    //const [alert, setAlert] = useState(false)
     //const [loggedIn, setLoggedIn] = useState(false)
     const [loggedIn, setLoggedIn] = useState(false)
 
@@ -78,10 +78,12 @@ const Root = () => {
   }
 
   
+  /*
   //checks if user is logged in 
   const isLoggedIn = () => {
     return(account === "-1" ? false : true) 
   }
+  */
   
 
   
@@ -161,7 +163,7 @@ const Root = () => {
         </div>
         <div id="detail" className="mainDiv">
           
-          {!loggedIn? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account, isLoggedIn]}/>}
+          {!loggedIn? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account]}/>}
         
         </div>
       </div>

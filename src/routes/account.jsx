@@ -26,7 +26,7 @@ const Account = () => {
     //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
 
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     const [alertType, setAlertType] = useState("danger")
 
@@ -266,12 +266,12 @@ const Account = () => {
         } catch(Err) {
             console.log(Err)
         }
-    },[a, address, isLoggedIn, publicClient])
+    },[a, address, publicClient])
 
 const getProviderSubs = useCallback(async () => {
         //checks if user is logged into account
        
-        if(!isLoggedIn() || typeof address === "undefined") {
+        if(typeof address === "undefined") {
            console.log("Not Logged in")
            return
        }
@@ -333,12 +333,12 @@ const getProviderSubs = useCallback(async () => {
    } catch(Err) {
        console.log(Err)
    }
-}, [account, address, isLoggedIn, provDetailsArray, publicClient])
+}, [account, address, provDetailsArray, publicClient])
 
 const getSubscriberSubs = useCallback(async () => {
     //checks if user is logged into account
    
-    if(!isLoggedIn() || account === "-1" || typeof address === "undefined") {
+    if(typeof address === "undefined") {
        console.log("Not Logged in")
        return
    }
@@ -401,7 +401,7 @@ const getSubscriberSubs = useCallback(async () => {
     } catch(Err) {
         console.log(Err)
     }
-},[account, address, isLoggedIn, publicClient, subscribedDetailsArray])
+},[account, address, publicClient, subscribedDetailsArray])
 
 //sets mounting bool to not mounting after initial load
 useEffect(() => {

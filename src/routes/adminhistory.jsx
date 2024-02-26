@@ -8,7 +8,7 @@ import AdminHistoryTable from '../components/AdminHistoryTable';
 
 const AdminHistory = () => {
 
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     let {a, isp} = useParams();
 

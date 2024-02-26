@@ -9,7 +9,7 @@ import {fetchToken} from '../clockfunctions'
 /* global BigInt */
 const ProvSubscribers = () => {
 
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     let {id, a, t, p} = useParams();
 
@@ -29,7 +29,7 @@ const ProvSubscribers = () => {
     const getSubscribers = async () => {
 
         //checks if user is logged into account
-        if(!isLoggedIn()) {
+        if(typeof account === undefined) {
             console.log("Not Logged in")
         return
         }    

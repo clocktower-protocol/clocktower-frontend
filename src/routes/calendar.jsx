@@ -24,7 +24,7 @@ dayjs.extend(dayOfYear)
 
 const Calendar = () => {
 
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     const { address } = useAccount()
 
@@ -288,7 +288,7 @@ const Calendar = () => {
     const setCalEvents = useCallback(async () => {
         //checks if user is logged into account
        
-        if(!isLoggedIn() || typeof address === "undefined") {
+        if(typeof address === "undefined") {
            console.log("Not Logged in")
            return
        }
@@ -325,7 +325,7 @@ const Calendar = () => {
    } catch(Err) {
        console.log(Err)
    }
-},[account, address, convertToCalEvents, isLoggedIn])
+},[account, address, convertToCalEvents])
 
 useEffect(() => {
     setCalEvents()

@@ -12,7 +12,7 @@ import { parseAbiItem } from 'viem'
 
 const EditDetails = () => {
 
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     //gets public client for log lookup
     const publicClient = usePublicClient()

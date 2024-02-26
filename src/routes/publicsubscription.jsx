@@ -17,7 +17,7 @@ const PublicSubscription = () => {
     //gets public client for log lookup
     const publicClient = usePublicClient()
 
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     let {id, f, d} = useParams();
 

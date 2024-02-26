@@ -11,7 +11,7 @@ import {fetchToken} from '../clockfunctions'
 
 const AdminSubscriptions = () => {
 
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -39,7 +39,7 @@ const AdminSubscriptions = () => {
 
     const getSubsByAccount = async (t, s) => {
         //checks if user is logged into account
-        if(!isLoggedIn()) {
+        if(typeof account === undefined) {
             console.log("Not Logged in")
             return
         }

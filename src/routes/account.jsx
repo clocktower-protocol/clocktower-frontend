@@ -26,7 +26,7 @@ const Account = () => {
     //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
 
-    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, isLoggedIn] = useOutletContext();
 
     const [alertType, setAlertType] = useState("danger")
 
@@ -53,6 +53,9 @@ const Account = () => {
     const [cancelledSub, setCancelledSub] = useState({})
     const [changedCreateSub, setChangedCreateSub] = useState({})
     const [unsubscribedSub, setUnsubscribedSub] = useState({})
+    //alerts
+    const [alertText2, setAlertText2] = useState("Test")
+    const [isAlertSet, setAlert2] = useState(false)
 
     //link functions
     const navigate = useNavigate();
@@ -431,15 +434,22 @@ useEffect(() => {
 
     if(wait.isLoading) {
         setAlertType("warning")
-        setAlert(true)
-        setAlertText("Transaction Pending...")
+
+       // setAlert(true)
+      //  setAlertText("Transaction Pending...")
+
+        setAlert2(true)
+        setAlertText2("Transaction Pending...")
         console.log("pending")
     }
 
     if(wait.isSuccess) {
 
         //turns off alert
-        setAlert(false)
+      //  setAlert(false)
+
+        setAlert2(false)
+
         setAlertType("danger")
         //console.log("done")
         
@@ -449,7 +459,7 @@ useEffect(() => {
         getProviderSubs()
         getSubscriberSubs()
     }
-},[getAccount, getProviderSubs, getSubscriberSubs, setAlert, setAlertType, setAlertText, wait.isLoading, wait.isSuccess])
+},[getAccount, getProviderSubs, getSubscriberSubs, setAlertType, wait.isLoading, wait.isSuccess, setAlert2, setAlertText2])
 
 const isTableEmpty1 = (subscriptionArray) => {
        
@@ -490,18 +500,21 @@ const alertMaker = () => {
     if(alert) {
         return (
             <div className="alertDiv">
-                <Alert variant={alertType} align="center" onClose={() => setAlert(false)} dismissible>{alertText}</Alert>
+                <Alert variant={alertType} align="center" onClose={() => setAlert2(false)} dismissible>{alertText2}</Alert>
             </div>
         )
     }
+    console.log(alert)
 }
 
     //checks that user has logged in 
+    /*
     if(account === "-1") {
         return (
             <Alert align="center" variant="info">Please Login</Alert>
         )
     } else {
+    */
             return (
             
                 <div className="clockMeta">
@@ -565,8 +578,8 @@ const alertMaker = () => {
                                         accountDetails = {accountDetails}
                                         setChangedAccountDetails = {setChangedAccountDetails}
 
-                                        setAlert = {setAlert}
-                                        setAlertText = {setAlertText}
+                                        setAlert = {setAlert2}
+                                        setAlertText = {setAlertText2}
                                     />
                                 </Modal.Body>
                             </Modal>
@@ -721,8 +734,8 @@ const alertMaker = () => {
                         </Stack>
                     </div>
                 </div>
-            )
-        } 
+        )
+        
 }
 
 export default Account

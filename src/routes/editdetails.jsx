@@ -12,7 +12,7 @@ import { parseAbiItem } from 'viem'
 
 const EditDetails = () => {
 
-    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, isLoggedIn] = useOutletContext();
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -29,6 +29,8 @@ const EditDetails = () => {
     const [email, setEmail] = useState("")
     const [phone, setPhone] = useState("")
     const [submittedDetails, setSubmittedDetails] = useState({})
+    const [alertText, setAlertText] = useState("")
+    const [alert, setAlert] = useState(false)
    
    // const fee = 0.1
 

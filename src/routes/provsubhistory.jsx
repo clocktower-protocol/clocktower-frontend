@@ -7,7 +7,7 @@ import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
 
 const ProvSubHistory = () => {
-    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, isLoggedIn] = useOutletContext();
 
     //gets public client for log lookup
     const publicClient = usePublicClient()

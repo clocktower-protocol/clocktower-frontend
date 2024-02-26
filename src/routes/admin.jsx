@@ -14,7 +14,7 @@ import {fetchToken} from '../clockfunctions'
 
 const Admin = () => {
 
-    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, isLoggedIn] = useOutletContext();
 
     //gets public client for log lookup
     const publicClient = usePublicClient()

@@ -24,7 +24,7 @@ dayjs.extend(dayOfYear)
 
 const Calendar = () => {
 
-    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, isLoggedIn] = useOutletContext();
 
     const { address } = useAccount()
 

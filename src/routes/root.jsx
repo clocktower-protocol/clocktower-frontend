@@ -16,8 +16,8 @@ const Root = () => {
     const [account, setAccount] = useState("")
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
+    //const [loggedIn, setLoggedIn] = useState(false)
     const [loggedIn, setLoggedIn] = useState(false)
-    const [loggedIn2, setLoggedIn2] = useState(false)
 
     const [showWalletChoice, setShowWalletChoice] = useState(false);
 
@@ -44,7 +44,7 @@ const Root = () => {
       },
       onDisconnect() {
         console.log('Disconnected!')
-        setLoggedIn2(false)
+        setLoggedIn(false)
         linkToMain()
       },
     })
@@ -62,7 +62,7 @@ const Root = () => {
         //checks/resets token
         fetchToken()
 
-        setLoggedIn2(true)
+        setLoggedIn(true)
         accountSwitch(address)
       }
       
@@ -161,7 +161,7 @@ const Root = () => {
         </div>
         <div id="detail" className="mainDiv">
           
-          {!loggedIn2? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account, alertText, setAlertText, alert, setAlert, isLoggedIn]}/>}
+          {!loggedIn? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account, isLoggedIn]}/>}
         
         </div>
       </div>

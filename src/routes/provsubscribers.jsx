@@ -9,7 +9,7 @@ import {fetchToken} from '../clockfunctions'
 /* global BigInt */
 const ProvSubscribers = () => {
 
-    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, isLoggedIn] = useOutletContext();
 
     let {id, a, t, p} = useParams();
 

@@ -17,7 +17,7 @@ const PublicSubscription = () => {
     //gets public client for log lookup
     const publicClient = usePublicClient()
 
-    const [account, alertText, setAlertText, alert, setAlert, isLoggedIn] = useOutletContext();
+    const [account, isLoggedIn] = useOutletContext();
 
     let {id, f, d} = useParams();
 
@@ -34,6 +34,8 @@ const PublicSubscription = () => {
     const [alertType, setAlertType] = useState("danger")
     const [subscribed, setIsSubscribed] = useState(false)
     const [isProvider, setIsProvider] = useState(false)
+    const [alertText, setAlertText] = useState("")
+    const [alert, setAlert] = useState(false)
    
    
     const { data, writeContract } = useWriteContract()

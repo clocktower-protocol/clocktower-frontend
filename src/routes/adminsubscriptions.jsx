@@ -150,11 +150,6 @@ const AdminSubscriptions = () => {
     }
 
     //checks that user has logged in 
-    if(account === "-1") {
-        return (
-            <Alert align="center" variant="info">Please Login</Alert>
-        )
-    } else {
         return (
             <div>
                 <div>
@@ -172,8 +167,6 @@ const AdminSubscriptions = () => {
                 </div>
             </div>
         )
-    }
-
 }
 
 export default AdminSubscriptions

@@ -88,11 +88,7 @@ const ProvSubscribers = () => {
         setRemainingCycles(remainingCyclesArray)
     }
 
-    if(account === "-1") {
-        return (
-            <Alert align="center" variant="info">Please Login</Alert>
-        )
-    } else {
+    
         if(p != account) {
             return(
                 <Alert align="center" variant="info">Must be Provider Account to View</Alert>
@@ -112,7 +108,5 @@ const ProvSubscribers = () => {
             )
         }
     }
-
-}
 
 export default ProvSubscribers

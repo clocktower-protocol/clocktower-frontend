@@ -146,11 +146,6 @@ const getDetails = async () => {
     }
 
     //checks that user has logged in 
-    if(account == "-1") {
-        return ( 
-            <Alert align="center" variant="info">Please Login</Alert>  
-        )
-    } else {
         if(account != details.provider) {
             return (
                 <Alert align="center" variant="info">Unrecognized Subscription</Alert>
@@ -193,7 +188,7 @@ const getDetails = async () => {
             </div>
         
             )
-    }   }
+    }   
 }
 
 export default EditDetails 

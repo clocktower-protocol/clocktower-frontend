@@ -162,7 +162,7 @@ const PublicSubscription = () => {
             }
         }
 
-        if(account !== "-1"){
+        if(typeof account !== undefined){
             getSub()
             isSubscribed()
             isProviderSame()
@@ -246,11 +246,7 @@ const PublicSubscription = () => {
     },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToSubDash, setAlert, setAlertText])
    
     //checks that user has logged in 
-    if(account === "-1") {
-        return ( 
-            <Alert align="center" variant="info">Please Login to Subscribe</Alert>  
-        )
-    } else {
+   
         return (
             <div> 
             {alertMaker()}
@@ -284,7 +280,6 @@ const PublicSubscription = () => {
                  
             </div>
         )
-    }
 }
 
 export default PublicSubscription

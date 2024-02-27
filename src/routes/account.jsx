@@ -507,14 +507,7 @@ const alertMaker = () => {
     console.log(isAlertSet)
 }
 
-    //checks that user has logged in 
-    /*
-    if(account === "-1") {
-        return (
-            <Alert align="center" variant="info">Please Login</Alert>
-        )
-    } else {
-    */
+    
             return (
             
                 <div className="clockMeta">

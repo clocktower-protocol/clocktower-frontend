@@ -109,11 +109,6 @@ const Admin = () => {
 
 
     //checks that user has logged in 
-    if(account === "-1") {
-        return (
-            <Alert align="center" variant="info">Please Login</Alert>
-        )
-    } else {
     if(account != ADMIN_ACCOUNT) {
         return (
             <Alert align="center" variant="danger">Must be Admin</Alert>
@@ -154,7 +149,7 @@ const Admin = () => {
         </div>
         </div>
         )
-    }}
+    }
 }
 
 export default Admin

@@ -234,7 +234,7 @@ const Account = () => {
         try{
             await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
-                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain)'),
+                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain, string email, string misc)'),
                 fromBlock: 0n,
                 toBlock: 'latest',
                 args: {provider: a}
@@ -630,16 +630,24 @@ const alertMaker = () => {
                                                     <ListGroup.Item>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">Company</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
+                                                    <ListGroup.Item variant="primary">Email</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.email === undefined || accountDetails.email === "") ? "---" : accountDetails.email}</ListGroup.Item>
+                                                </ListGroup>
+                                                <ListGroup horizontal={'lg'}>
+                                                    <ListGroup.Item variant="primary">URL</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
                                         </Col>
                                         <Col>
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">URL</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
+                                                    <ListGroup.Item variant="primary">Company</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
+                                                </ListGroup>
+                                                <ListGroup horizontal={'lg'}>
+                                                    <ListGroup.Item variant="primary">Misc</ListGroup.Item>
+                                                    <ListGroup.Item>{(accountDetails.misc === undefined || accountDetails.misc === "") ? "---" : accountDetails.misc}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'}>
                                                     <ListGroup.Item variant="primary">Domain</ListGroup.Item>

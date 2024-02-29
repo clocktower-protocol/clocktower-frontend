@@ -1789,25 +1789,7 @@ export const CLOCKTOWERSUB_ABI = [
       {
         "indexed": false,
         "internalType": "string",
-        "name": "domain",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
         "name": "url",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "email",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "phone",
         "type": "string"
       },
       {
@@ -1857,6 +1839,18 @@ export const CLOCKTOWERSUB_ABI = [
         "indexed": false,
         "internalType": "string",
         "name": "domain",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "misc",
         "type": "string"
       }
     ],
@@ -2125,22 +2119,7 @@ export const CLOCKTOWERSUB_ABI = [
         "components": [
           {
             "internalType": "string",
-            "name": "domain",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
             "name": "url",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "email",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "phone",
             "type": "string"
           },
           {
@@ -2175,22 +2154,7 @@ export const CLOCKTOWERSUB_ABI = [
         "components": [
           {
             "internalType": "string",
-            "name": "domain",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
             "name": "url",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "email",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "phone",
             "type": "string"
           },
           {
@@ -2236,6 +2200,16 @@ export const CLOCKTOWERSUB_ABI = [
           {
             "internalType": "string",
             "name": "domain",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "misc",
             "type": "string"
           }
         ],

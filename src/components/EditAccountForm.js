@@ -9,6 +9,8 @@ const EditAccountForm = (props) => {
     const [invalidUrl, setInvalidUrl] = useState(false)
     const [invalidCompany, setInvalidCompany] = useState(false)
     const [invalidDescription, setInvalidDescription] = useState(false)
+    const [invalidEmail, setInvalidEmail] = useState(false)
+    const [invalidMisc, setInvalidMisc] = useState(false)
     const [isChecked, setIsChecked] = useState(false)
     const [allValidated, setAllValidated] = useState(false)
 
@@ -16,6 +18,8 @@ const EditAccountForm = (props) => {
     const [company, setCompany] = useState("")
     const [url, setUrl] = useState("")
     const [domain, setDomain] = useState("")
+    const [email, setEmail] = useState("")
+    const [misc, setMisc] = useState("")
 
     
     useEffect(() => {
@@ -64,6 +68,34 @@ const EditAccountForm = (props) => {
             }
         } else {
             setCompany(event.target.value)
+        }
+    }
+
+    const emailChange = (event) => {
+        if(event.target.value !== ""){
+            let regexEmail = new RegExp(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/)
+            if(!regexEmail.test(event.target.value)) {
+                setInvalidEmail(true)
+            } else {
+                setInvalidEmail(false)
+                setEmail(event.target.value)
+            }
+        } else {
+            setInvalidEmail(false)
+            setEmail(event.target.value)
+        }
+    }
+
+    const miscChange = (event) => {
+        if(event.target.value !== ""){
+            if(event.target.value.length > 255) {
+                setInvalidMisc(true)
+            } else {
+                setInvalidMisc(false)
+                setMisc(event.target.value)
+            }
+        } else {
+            setMisc(event.target.value)
         }
     }
 
@@ -121,12 +153,14 @@ const EditAccountForm = (props) => {
         event.preventDefault();
         event.stopPropagation();
         
-        if(form.checkValidity() === true && !invalidDomain && !invalidUrl && !invalidCompany && !invalidDescription) {
+        if(form.checkValidity() === true && !invalidDomain && !invalidUrl && !invalidCompany && !invalidDescription && !invalidEmail && !invalidMisc) {
             const formAccountDetails = {
                 domain: domain,
                 url: url,
                 company: company,
-                description: description
+                description: description,
+                email: email,
+                misc: misc
             }
 
             props.setChangedAccountDetails(formAccountDetails)
@@ -154,6 +188,26 @@ const EditAccountForm = (props) => {
                         <Form.Control type="input" defaultValue={props.accountDetails.company}  isInvalid={invalidCompany} isValid={!invalidCompany}/>
                         <Form.Control.Feedback type="invalid">
                             Company name must be under 255 characters
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formAccountEmail" defaultValue={props.accountDetails.email} value={props.email} onChange={emailChange}>
+                        <Form.Label>Email:</Form.Label>
+                        <Form.Control type="input" defaultValue={props.accountDetails.email}  isInvalid={invalidEmail} isValid={!invalidEmail}/>
+                        <Form.Control.Feedback type="invalid">
+                            Please provide a valid email address.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="formAccountMisc" defaultValue={props.accountDetails.misc} value={props.misc} onChange={miscChange}>
+                        <Form.Label>Misc:</Form.Label>
+                        <Form.Control type="input" defaultValue={props.accountDetails.misc}  isInvalid={invalidMisc} isValid={!invalidMisc}/>
+                        <Form.Control.Feedback type="invalid">
+                            Misc entry must be under 255 characters
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

@@ -11,6 +11,7 @@ import EditAccountForm from "../components/EditAccountForm";
 import CreateSubForm2 from "../components/CreateSubForm2";
 import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
+import EditDetailsForm2 from "../components/EditDetailsForm2";
 
 
 const Account = () => {
@@ -56,6 +57,10 @@ const Account = () => {
     //alerts
     const [alertText2, setAlertText2] = useState("Test")
     const [isAlertSet, setAlert2] = useState(false)
+    //editing subscription 
+    const [editSub, setEditSub] = useState({})
+    const [preEditDetails, setPreEditDetails] = useState({})
+    const [editSubParams, setEditSubParams] = useState({})
 
     //link functions
     const navigate = useNavigate();
@@ -203,7 +208,7 @@ const Account = () => {
     const createSubHandleShow = () => setShowCreateSub(true)
 
     //turns on and off subscription details edit modal
-    //const subEditDetailsHandleClose = () => setShowSubEditForm(false)
+    const subEditDetailsHandleClose = () => setShowSubEditForm(false)
     const subEditDetailsHandleShow = () => setShowSubEditForm(true)
 
     const editButtonClick = () => {
@@ -295,7 +300,7 @@ const getProviderSubs = useCallback(async () => {
             
                await publicClient.getLogs({
                    address: CLOCKTOWERSUB_ADDRESS,
-                   event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+                   event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
                    fromBlock: 0n,
                    toBlock: 'latest',
                    args: {id:[accountSubscriptions[i].subscription.id]}
@@ -361,7 +366,7 @@ const getSubscriberSubs = useCallback(async () => {
        for (let i = 0; i < accountSubscriptions.length; i++) {
            await publicClient.getLogs({
                address: CLOCKTOWERSUB_ADDRESS,
-               event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+               event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
                fromBlock: 0n,
                toBlock: 'latest',
                args: {id:[accountSubscriptions[i].subscription.id]}
@@ -402,6 +407,50 @@ const getSubscriberSubs = useCallback(async () => {
         console.log(Err)
     }
 },[account, address, publicClient, subscribedDetailsArray])
+
+const getSub = async (editSubParams) => {
+    await fetchToken()
+    await readContract(config, {
+        address: CLOCKTOWERSUB_ADDRESS,
+        abi: CLOCKTOWERSUB_ABI,
+        functionName: 'getSubByIndex',
+        args: [editSubParams.id, editSubParams.f, editSubParams.d]
+    })
+    .then(async function(result) {
+        await publicClient.getLogs({
+            address: CLOCKTOWERSUB_ADDRESS,
+            event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
+            fromBlock: 0n,
+            toBlock: 'latest',
+            args: {id:[result.id]}
+        }) 
+        .then(async function(events){
+            //checks for latest update by getting highest timestamp
+            if(events !== undefined) {
+                
+                let time = 0
+                let index = 0
+                
+                if(events.length > 0)
+                {
+                    for (var j = 0; j < events.length; j++) {
+                            if(time < events[j].args.timestamp)
+                            {
+                                time = events[j].args.timestamp
+                                index = j
+                            }
+                    }
+                    //adds latest details to details array
+                    setPreEditDetails(events[index].args)
+                }       
+            }    
+        })
+        setEditSub(result)
+        //subEditDetailsHandleShow()
+    })
+}
+
+
 
 //sets mounting bool to not mounting after initial load
 useEffect(() => {
@@ -460,6 +509,25 @@ useEffect(() => {
         getSubscriberSubs()
     }
 },[getAccount, getProviderSubs, getSubscriberSubs, setAlertType, wait.isLoading, wait.isSuccess, setAlert2, setAlertText2])
+
+//called when edit subscription button is pushed
+useEffect(() =>{
+    if(JSON.stringify(editSubParams) !== '{}'
+    ){
+        //subEditDetailsHandleShow()
+        getSub(editSubParams)
+    }
+
+},[editSubParams])
+
+//called when subscription data is done loading
+useEffect(() =>{
+    if(Object.keys(editSub).length !== 0)
+    {
+        subEditDetailsHandleShow()
+    }
+
+},[editSub])
 
 const isTableEmpty1 = (subscriptionArray) => {
        
@@ -590,13 +658,20 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleShow}>
+                            <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleClose}>
                             <Modal.Header closeButton>
-                                <Modal.Title>Create Subscription</Modal.Title>
+                                <Modal.Title>Edit Subscription</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
+                                    <EditDetailsForm2
+                                        editSub = {editSub}
+                                        preEditDetails = {preEditDetails}
+                                    />
                                 </Modal.Body>
                             </Modal>
+                        </div>
+                        <div>
+
                         </div>
                         <Stack gap={3}>
                         <div>  
@@ -706,6 +781,8 @@ const alertMaker = () => {
                                             role = {1}
                                             detailsArray = {provDetailsArray}
                                             setCancelledSub = {setCancelledSub}
+                                            subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                                            setEditSubParams = {setEditSubParams}
                                         />
                                         : <div></div>}
                                         
@@ -713,7 +790,7 @@ const alertMaker = () => {
                                 </Tab>
                                
                                 <Tab eventKey="subscriber" title="Subscribed To">
-                                    <div className="provHistory">
+                                    <div className="subHistory">
                                    
                                         
                                         {!isTableEmpty2(subscribedSubsArray) ?

@@ -93,7 +93,7 @@ const getDetails = async () => {
     let tempDetails = {}
     await publicClient.getLogs({
         address: CLOCKTOWERSUB_ADDRESS,
-        event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string domain, string url, string email, string phone, string description)'),
+        event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
         fromBlock: 0n,
         toBlock: 'latest',
         args: {id:id}

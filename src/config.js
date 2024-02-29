@@ -791,7 +791,7 @@ export const FREQUENCY_LOOKUP = [
     index: 3,
     name: "Yearly"
   }
-]
+];
 
 //lookup table for dueDay
 export const DUEDAY_RANGE = [

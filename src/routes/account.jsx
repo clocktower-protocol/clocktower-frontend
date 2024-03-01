@@ -61,6 +61,7 @@ const Account = () => {
     const [editSub, setEditSub] = useState({})
     const [preEditDetails, setPreEditDetails] = useState({})
     const [editSubParams, setEditSubParams] = useState({})
+    const [editResult, setEditResult] = useState({})
 
     //link functions
     const navigate = useNavigate();
@@ -157,6 +158,23 @@ const Account = () => {
             })
         }
     },[unsubscribedSub])
+
+    //hook for editing subscription
+    useEffect(() => {
+        console.log("editing")
+         //calls wallet
+         if(Object.keys(editResult).length !== 0) {
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'editDetails',
+                args: [editResult.details, editResult.id]
+            })
+
+            subEditDetailsHandleClose()
+
+        }
+    },[editResult])
 
     const verifyDomain = async (domain, provAddress) => {
 
@@ -666,6 +684,7 @@ const alertMaker = () => {
                                     <EditDetailsForm2
                                         editSub = {editSub}
                                         preEditDetails = {preEditDetails}
+                                        setEditResult = {setEditResult}
                                     />
                                 </Modal.Body>
                             </Modal>

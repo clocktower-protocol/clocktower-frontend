@@ -590,7 +590,7 @@ const alertMaker = () => {
             </div>
         )
     }
-    console.log(isAlertSet)
+   // console.log(isAlertSet)
 }
 
     

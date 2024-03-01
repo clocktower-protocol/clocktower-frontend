@@ -85,6 +85,7 @@ const Calendar = () => {
                     total = String(Number(formatEther(accountSubscriptions[i].subscription.amount)) * Number(accountSubscriptions[i].totalSubscribers))
                 } else {
                     total = "No Subs Yet"
+                    ticker = ""
                 }
             }
 

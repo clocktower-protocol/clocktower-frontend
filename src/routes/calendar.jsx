@@ -7,7 +7,7 @@ import { readContract } from 'wagmi/actions'
 import { useAccount } from "wagmi"
 import {formatEther} from 'viem'
 import {config} from '../wagmiconfig'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ERC20TOKEN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ERC20TOKEN_LOOKUP, TOKEN_LOOKUP} from "../config"; 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
@@ -68,7 +68,7 @@ const Calendar = () => {
         for (let i = 0; i < accountSubscriptions.length; i++) {
 
             //gets token ticker
-            let ticker = ERC20TOKEN_LOOKUP.map((token) => {
+            let ticker = TOKEN_LOOKUP.map((token) => {
                 if(token.address === accountSubscriptions[i].subscription.token){
                 return token.ticker
                 } else {

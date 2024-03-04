@@ -1,6 +1,6 @@
 import {React, useState, useEffect} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
+import { ERC20TOKEN_LOOKUP , TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
@@ -43,7 +43,7 @@ const CreateSubForm2 = (props) => {
 
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
-        return ERC20TOKEN_LOOKUP.map((token) => {
+        return TOKEN_LOOKUP.map((token) => {
             return <option value={token.address} key={token.address}>{token.ticker}</option>;
         });
     }
@@ -102,7 +102,7 @@ const CreateSubForm2 = (props) => {
             setInvalidToken(true)
         } else {
             //sets abi and token minimum
-            ERC20TOKEN_LOOKUP.map((token) => {
+            TOKEN_LOOKUP.map((token) => {
                 if(token.address === tokenAddress){
                     setTokenMinimum(token.address)
                     setInvalidToken(false)

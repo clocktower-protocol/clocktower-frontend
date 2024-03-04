@@ -1,6 +1,6 @@
 import {React, useState, useEffect} from 'react';
 import { Form, Button, Row, Col} from 'react-bootstrap';
-import { ERC20TOKEN_LOOKUP , FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP} from '../config';
+import { ERC20TOKEN_LOOKUP , TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP} from '../config';
 import { formatEther} from 'viem'
 
 const EditDetailsForm2 = (props) => {
@@ -24,7 +24,7 @@ const EditDetailsForm2 = (props) => {
     
 
     const fetchTokenTicker = () => {
-        const array = ERC20TOKEN_LOOKUP.map((token) => {
+        const array = TOKEN_LOOKUP.map((token) => {
             if(token.address === props.editSub.token) {
                 return token.ticker
             }

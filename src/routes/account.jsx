@@ -634,7 +634,7 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={verifyShow} size="xl" onHide={verifyHandleClose}>
+                            <Modal show={verifyShow} size="xl" onHide={verifyHandleClose} centered>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Verify Domain</Modal.Title>
                                 </Modal.Header>
@@ -662,7 +662,7 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={showEditForm} size="xl" onHide={editFormHandleClose}>
+                            <Modal show={showEditForm} size="xl" onHide={editFormHandleClose} centered>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Edit Account</Modal.Title>
                                 </Modal.Header>
@@ -679,7 +679,7 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={showCreateSub} size="xl" onHide={createSubHandleClose}>
+                            <Modal show={showCreateSub} size="xl" onHide={createSubHandleClose} centered>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Create Subscription</Modal.Title>
                                 </Modal.Header>
@@ -691,7 +691,7 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleClose}>
+                            <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleClose} centered>
                             <Modal.Header closeButton>
                                 <Modal.Title>Edit Subscription</Modal.Title>
                                 </Modal.Header>

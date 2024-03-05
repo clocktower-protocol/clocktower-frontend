@@ -146,7 +146,7 @@ const Root = () => {
       </div>
       <div className="sideNav">
         <div className="sideNav2">
-        <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
+        <Navbar key="navBar" bg="dark" variant="dark" expand="lg" style={{justifyContent: "center"}}>
         <Nav defaultActiveKey="/home" className="flex-column">
           
           <div className='sideButtons'>

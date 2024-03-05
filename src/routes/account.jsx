@@ -105,6 +105,8 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
+            setToastHeader("Waiting on wallet transaction...")
+            setShowToast(true)
             writeContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -120,6 +122,9 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedCreateSub).length !== 0) {
+            //sets toast
+            setToastHeader("Waiting on wallet transaction...")
+            setShowToast(true)
             writeContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -135,6 +140,8 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
+            setToastHeader("Waiting on wallet transaction...")
+            setShowToast(true)
             //cancelSubscription.write()
             writeContract({
                 address: CLOCKTOWERSUB_ADDRESS,
@@ -150,7 +157,9 @@ const Account = () => {
     //hook for calling wallet to unsubscribe
     useEffect(() => {
         //calls wallet
-        if(Object.keys(unsubscribedSub).length !== 0) {
+        setToastHeader("Waiting on wallet transaction...")
+        setShowToast(true)
+        if(!isMounting.current && Object.keys(unsubscribedSub).length !== 0) {
             writeContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -163,6 +172,8 @@ const Account = () => {
     //hook for editing subscription
     useEffect(() => {
         console.log("editing")
+        setToastHeader("Waiting on wallet transaction...")
+        setShowToast(true)
          //calls wallet
          if(Object.keys(editResult).length !== 0) {
             writeContract({
@@ -501,6 +512,7 @@ useEffect(() => {
 useEffect(() => {
 
     if(wait.isLoading) {
+        /*
         setAlertType("warning")
 
        // setAlert(true)
@@ -508,6 +520,8 @@ useEffect(() => {
 
         setAlert2(true)
         setAlertText2("Transaction Pending...")
+        */
+        setToastHeader("Transaction Pending")
         console.log("pending")
     }
 
@@ -515,17 +529,20 @@ useEffect(() => {
 
         //turns off alert
       //  setAlert(false)
+        setShowToast(false)
 
+        /*
         setAlert2(false)
 
         setAlertType("danger")
         //console.log("done")
-        
+        */
         editFormHandleClose()
         createSubHandleClose()
         getAccount()
         getProviderSubs()
         getSubscriberSubs()
+        
     }
 },[getAccount, getProviderSubs, getSubscriberSubs, setAlertType, wait.isLoading, wait.isSuccess, setAlert2, setAlertText2])
 
@@ -599,15 +616,17 @@ const alertMaker = () => {
             
                 <div className="clockMeta">
                     {alertMaker()}
-                    <ToastContainer position="top-end">
-                        <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={5000} autohide>
+                    <ToastContainer position="top-center">
+                        <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>
                                 <Toast.Header style={{justifyContent: "space-between"}}>
                                     <Spinner animation="border" variant="info" />
-                                    Test Header
+                                    {toastHeader}
                                 </Toast.Header>
+                                {/*
                                 <Toast.Body style={{backgroundColor: "white", textAlign: "center"}}>
-                                    Hello World
+                                    {toastBody}
                                 </Toast.Body>
+                                */}
                         </Toast>
                     </ToastContainer>
                     <div>

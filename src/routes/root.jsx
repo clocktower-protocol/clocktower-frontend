@@ -6,7 +6,7 @@ import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 
-import { useAccount, useConnect, useAccountEffect} from 'wagmi'
+import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions} from 'wagmi'
 
 const Root = () => {
 
@@ -46,6 +46,15 @@ const Root = () => {
         console.log('Disconnected!')
         setLoggedIn(false)
         linkToMain()
+      },
+    })
+
+    useWatchPendingTransactions({
+      onError(error) { 
+        console.log('Error', error) 
+      }, 
+      onTransactions(transactions) {
+        console.log('New transactions!', transactions)
       },
     })
 

@@ -58,6 +58,8 @@ const Account = () => {
     const [alertText2, setAlertText2] = useState("Test")
     const [isAlertSet, setAlert2] = useState(false)
     const [showToast, setShowToast] = useState(false)
+    const [toastHeader, setToastHeader] = useState("")
+    const [toastBody, setToastBody] = useState("")
     //editing subscription 
     const [editSub, setEditSub] = useState({})
     const [preEditDetails, setPreEditDetails] = useState({})
@@ -79,9 +81,7 @@ const Account = () => {
 
 
     //hook for signing messages
-    const {data: signMessageData, signMessage, variables}  = useSignMessage({
-        message: msg
-    })
+    const {data: signMessageData, signMessage, variables}  = useSignMessage()
 
     //gets signed message
     useEffect(() => {
@@ -599,13 +599,13 @@ const alertMaker = () => {
             
                 <div className="clockMeta">
                     {alertMaker()}
-                    <ToastContainer position="top-end" style={{ zIndex: 1}}>
+                    <ToastContainer position="top-end">
                         <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={5000} autohide>
-                                <Toast.Header>
+                                <Toast.Header style={{justifyContent: "space-between"}}>
                                     <Spinner animation="border" variant="info" />
                                     Test Header
                                 </Toast.Header>
-                                <Toast.Body style={{backgroundColor: "white"}}>
+                                <Toast.Body style={{backgroundColor: "white", textAlign: "center"}}>
                                     Hello World
                                 </Toast.Body>
                         </Toast>
@@ -775,7 +775,8 @@ const alertMaker = () => {
                                         <Col>
                                             <ListGroup horizontal={'lg'}>
                                                 <Button variant="outline-info" onClick={async () => {
-                                                    signMessage()
+                                                    signMessage({message: msg})
+                                                    //verifyHandleShow()
                                                 }}>Verify Domain</Button>
                                             </ListGroup>
                                         </Col>

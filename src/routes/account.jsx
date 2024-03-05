@@ -1,7 +1,7 @@
 import { useOutletContext, useParams, useNavigate } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab} from 'react-bootstrap';
+import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient} from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -57,6 +57,7 @@ const Account = () => {
     //alerts
     const [alertText2, setAlertText2] = useState("Test")
     const [isAlertSet, setAlert2] = useState(false)
+    const [showToast, setShowToast] = useState(false)
     //editing subscription 
     const [editSub, setEditSub] = useState({})
     const [preEditDetails, setPreEditDetails] = useState({})
@@ -598,6 +599,20 @@ const alertMaker = () => {
             
                 <div className="clockMeta">
                     {alertMaker()}
+                    <ToastContainer position="top-end" style={{ zIndex: 1}}>
+                        <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={5000} autohide>
+                                <Toast.Header>
+                                    <Spinner animation="border" variant="info" />
+                                    Test Header
+                                </Toast.Header>
+                                <Toast.Body style={{backgroundColor: "white"}}>
+                                    Hello World
+                                </Toast.Body>
+                        </Toast>
+                    </ToastContainer>
+                    <div>
+                        <Button onClick={() => setShowToast(true)}>Toaster</Button>
+                    </div>
                     <div className="clockBody">
                         <div>
                             <Modal show={showEditWarn} onHide={editHandleClose} centered>

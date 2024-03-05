@@ -202,8 +202,6 @@ const CreateSubForm2 = (props) => {
   
         event.preventDefault();
         event.stopPropagation();
-
-        //TODO: need to remove phone, email and domain once contract is updated
         
         if(form.checkValidity() === true && !invalidAmount && !invalidUrl && !invalidDescription && !invalidToken && !invalidFrequency && !invalidDay) {
             const formCreateDetails = {

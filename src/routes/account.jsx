@@ -3,7 +3,7 @@ import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
-import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient} from "wagmi";
+import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient, useWalletClient} from "wagmi";
 import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
@@ -157,9 +157,9 @@ const Account = () => {
     //hook for calling wallet to unsubscribe
     useEffect(() => {
         //calls wallet
-        setToastHeader("Waiting on wallet transaction...")
-        setShowToast(true)
         if(!isMounting.current && Object.keys(unsubscribedSub).length !== 0) {
+            setToastHeader("Waiting on wallet transaction...")
+            setShowToast(true)
             writeContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -172,10 +172,10 @@ const Account = () => {
     //hook for editing subscription
     useEffect(() => {
         console.log("editing")
-        setToastHeader("Waiting on wallet transaction...")
-        setShowToast(true)
          //calls wallet
          if(Object.keys(editResult).length !== 0) {
+            setToastHeader("Waiting on wallet transaction...")
+            setShowToast(true)
             writeContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -244,7 +244,6 @@ const Account = () => {
     const editButtonClick = () => {
         editHandleShow()
     }
-
 
     const createButtonClick = () => {
         createSubHandleShow()
@@ -510,7 +509,6 @@ useEffect(() => {
 
 //shows alert when waiting for transaction to finish
 useEffect(() => {
-
     if(wait.isLoading) {
         /*
         setAlertType("warning")

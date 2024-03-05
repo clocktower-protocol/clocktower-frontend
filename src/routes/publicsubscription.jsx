@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import {Alert, Card, ListGroup, Button} from 'react-bootstrap';
+import {Alert, Card, ListGroup, Button, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate, Link} from "react-router-dom";
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
 import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount} from 'wagmi'
@@ -36,6 +36,10 @@ const PublicSubscription = () => {
     const [isProvider, setIsProvider] = useState(false)
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
+    //alerts
+    const [showToast, setShowToast] = useState(false)
+    const [toastHeader, setToastHeader] = useState("")
+    const [toastBody, setToastBody] = useState("")
    
    
     const { data, writeContract } = useWriteContract()
@@ -186,7 +190,8 @@ const PublicSubscription = () => {
     const subscribe = useCallback(async () => {
 
         //first requires user to approve unlimited allowance
-
+        setToastHeader("Waiting on wallet transaction...")
+        setShowToast(true)
         
         //checks if user already has allowance
         await fetchToken()
@@ -201,55 +206,84 @@ const PublicSubscription = () => {
         
         if(BigInt(allowanceBalance) < 100000000000000000000000n) {
             //if allowance has dropped below 100,000 site requests infinite approval again
-            await writeContract({
+            writeContract({
                 address: token,
                 abi: erc20Abi,
                 functionName: 'approve',
                 args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
             })
-        }
-
-        //subscribes
-        writeContract({
+             //subscribes
+            writeContract({
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'subscribe',
             args: [subscription]
         })
     
+        } else {
+
+            //subscribes
+            writeContract({
+                address: CLOCKTOWERSUB_ADDRESS,
+                abi: CLOCKTOWERSUB_ABI,
+                functionName: 'subscribe',
+                args: [subscription]
+            })
+        }
+    
        
     },[subscription, address, token])
 
-    const sendToSubDash = useCallback(() => 
-            navigate('/subscriberdash', {replace: true})
+    const sendToAccount = useCallback(() => 
+            navigate('/account/'+address)
     ,[navigate])
-    
+
+
      //shows alert when waiting for transaction to finish
      useEffect(() => {
 
         if(subscribeWait.isLoading) {
+            /*
             setAlertType("warning")
             setAlert(true)
             setAlertText("Transaction Pending...")
+            */
+            setToastHeader("Transaction Pending")
             console.log("pending")
         }
 
         if(subscribeWait.isSuccess) {
 
             //turns off alert
+            setShowToast(false)
+            /*
             setAlert(false)
             setAlertType("danger")
             console.log("done")
+            */
 
-            sendToSubDash()
+            sendToAccount()
         }
-    },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToSubDash, setAlert, setAlertText])
+    },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, setAlert, setAlertText])
    
     //checks that user has logged in 
    
         return (
             <div> 
-            {alertMaker()}
+                {alertMaker()}
+                <ToastContainer position="top-center">
+                <   Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>
+                        <Toast.Header style={{justifyContent: "space-between"}}>
+                                <Spinner animation="border" variant="info" />
+                                {toastHeader}
+                        </Toast.Header>
+                                {/*
+                                <Toast.Body style={{backgroundColor: "white", textAlign: "center"}}>
+                                    {toastBody}
+                                </Toast.Body>
+                                */}
+                        </Toast>
+             </ToastContainer>
                 <div className="publicSub">
                 <Card style={{ width: '35rem' }}>
                     <Card.Body>

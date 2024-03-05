@@ -171,7 +171,7 @@ const EditAccountForm = (props) => {
     }
 
     return (
-        <Form noValidate validated={false} className="mb-3" onSubmit={submitForm}>
+        <Form noValidate validated={allValidated} className="mb-3" onSubmit={submitForm}>
             <Row>
                 <Col>
                     <Form.Group className="mb-3" controlId="formAccountDescription" defaultValue={props.accountDetails.description} value={props.description} onChange={descriptionChange}>

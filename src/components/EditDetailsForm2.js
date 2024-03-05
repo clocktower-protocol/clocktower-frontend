@@ -116,7 +116,7 @@ const EditDetailsForm2 = (props) => {
     }
 
     return (
-        <Form className="mb-3" noValidate validated={false}  onSubmit={submitForm}>
+        <Form className="mb-3" noValidate validated={allValidated}  onSubmit={submitForm}>
             <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" defaultValue={props.editSub.token} value={props.editSub.token} >

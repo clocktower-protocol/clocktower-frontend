@@ -44,6 +44,7 @@ export const fetchToken = async () => {
             console.log(error.config);
           })
       } else {
+        /*
         //checks if token has expired
         const savedToken = localStorage.getItem("clockAccess")
         const decodedToken = jwtDecode(savedToken)
@@ -93,6 +94,7 @@ export const fetchToken = async () => {
         }
         
         console.log("got existing token")
+        */
       }
     } catch (error){
         console.error(error)

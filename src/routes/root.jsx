@@ -1,7 +1,7 @@
 import {React, useState, useEffect, useCallback} from 'react';
 import { Navbar, Container, Nav, Button, Row, Modal, Stack, Alert} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
-import { Outlet, useNavigate} from "react-router-dom";
+import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
@@ -11,6 +11,9 @@ import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions} 
 const Root = () => {
 
     const {connector: activeConnector, address, isConnected, isDisconnected } = useAccount({config})
+
+    //gets current url
+    const location = useLocation();
 
     //const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("")
@@ -70,12 +73,13 @@ const Root = () => {
       if(address !== undefined){
         //checks/resets token
         fetchToken()
-
         setLoggedIn(true)
-        accountSwitch(address)
+        if(location.pathname.slice(0,20) !== "/public_subscription") {
+          accountSwitch(address)
+        }
+        //accountSwitch(address)
       }
-      
-      
+      console.log(location.pathname.slice(0,20))
     }, [address])
     
  

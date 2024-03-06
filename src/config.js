@@ -1,7 +1,12 @@
+//imported svg images
+import {ReactComponent as HardhatLogo} from "./images/hardhat.svg"
+import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
+
+
 /* global BigInt */
 export const CLOCKTOWERSUB_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-export const CLOCKTOKEN_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+//export const CLOCKTOKEN_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
@@ -34,10 +39,25 @@ export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const TOKEN_LOOKUP = [
   {
-    address: CLOCKTOKEN_ADDRESS,
+    address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
     ticker: "CLOCK"
   }
 ]
+
+//supported chains (this needs to match the wagmiconfig)
+export const CHAIN_LOOKUP = [
+  {
+    name: "hardhat",
+    id: 31337,
+    icon: HardhatLogo
+  }, 
+  {
+    name: "sepolia",
+    id: 11155111, 
+    icon: SepoliaLogo
+  }
+]
+
 //lookup table for frequency
 export const FREQUENCY_LOOKUP = [
   {
@@ -56,7 +76,7 @@ export const FREQUENCY_LOOKUP = [
     index: 3,
     name: "Yearly"
   }
-];
+]
 
 //lookup table for dueDay
 export const DUEDAY_RANGE = [

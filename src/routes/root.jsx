@@ -5,6 +5,11 @@ import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
+import { CHAIN_LOOKUP } from '../config';
+import Icon from '../components/Icon'
+
+//images
+//import {ReactComponent as HardhatLogo} from "../images/hardhat.svg"
 
 import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useChains, useChainId, useSwitchChain} from 'wagmi'
 
@@ -158,13 +163,21 @@ const Root = () => {
                 <NavDropdown title={chains[0].name} id="basic-nav-dropdown">
                    {chains.map((chain) => (
                       <NavDropdown.Item>
+                  
+                        {CHAIN_LOOKUP.map((lchain) => {
+                          if(lchain.id === chain.id){
+                            return <Icon icon={lchain.icon}></Icon>
+                          }
+                        })
+                        }
+                        
                         <Button variant="outline-info" key={chain.id} onClick={() => switchChain({ chainId: chain.id })}>
                           {chain.name}
                         </Button>
                       </NavDropdown.Item>
                     ))}
                 </NavDropdown>
-                : <Navbar.Text>{chains[0].name}</Navbar.Text>}
+                : <Navbar.Text><Icon icon={CHAIN_LOOKUP[0].icon}></Icon></Navbar.Text>}
               </Row>
             <Row>
           <Nav key="nav">

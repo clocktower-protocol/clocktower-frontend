@@ -6,7 +6,7 @@ let token = localStorage.getItem('clockAccess')
 
 export const config = createConfig(
     {
-    chains: [hardhat],
+    chains: [hardhat, sepolia],
     connectors: [injected({ target: 'metaMask' })],
     transports: { 
       [hardhat.id]: http('http://localhost:8545'),

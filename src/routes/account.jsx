@@ -627,9 +627,6 @@ const alertMaker = () => {
                                 */}
                         </Toast>
                     </ToastContainer>
-                    <div>
-                        <Button onClick={() => setShowToast(true)}>Toaster</Button>
-                    </div>
                     <div className="clockBody">
                         <div>
                             <Modal show={showEditWarn} onHide={editHandleClose} centered>

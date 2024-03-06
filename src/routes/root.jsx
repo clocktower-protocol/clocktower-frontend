@@ -1,16 +1,20 @@
 import {React, useState, useEffect, useCallback} from 'react';
-import { Navbar, Container, Nav, Button, Row, Modal, Stack, Alert} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Row, Modal, Stack, Alert, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 
-import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions} from 'wagmi'
+import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useChains, useChainId, useSwitchChain} from 'wagmi'
 
 const Root = () => {
 
     const {connector: activeConnector, address, isConnected, isDisconnected } = useAccount({config})
+
+    //const chains = useChains({config})
+    //const chainId = useChainId({config})
+    const { chains, switchChain } = useSwitchChain()
 
     //gets current url
     const location = useLocation();
@@ -67,6 +71,7 @@ const Root = () => {
     
     useEffect(() => {
      
+      console.log(chains)
       console.log("address loop")
       setAccount(address)
       //address reset
@@ -90,7 +95,7 @@ const Root = () => {
     handleShow()
   }
 
-  
+
   /*
   //checks if user is logged in 
   const isLoggedIn = () => {
@@ -148,7 +153,19 @@ const Root = () => {
               </LinkContainer>
             </Container>
             <Container key="navContainer" className="clockNav2">
-            <Row></Row>
+              <Row style={{color: "white"}}>
+                {chains.length > 1 ? 
+                <NavDropdown title={chains[0].name} id="basic-nav-dropdown">
+                   {chains.map((chain) => (
+                      <NavDropdown.Item>
+                        <Button variant="outline-info" key={chain.id} onClick={() => switchChain({ chainId: chain.id })}>
+                          {chain.name}
+                        </Button>
+                      </NavDropdown.Item>
+                    ))}
+                </NavDropdown>
+                : <Navbar.Text>{chains[0].name}</Navbar.Text>}
+              </Row>
             <Row>
           <Nav key="nav">
             {isConnected && !isDisconnected ? (<Navbar.Text>Account: {address}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}

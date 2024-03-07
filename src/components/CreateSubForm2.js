@@ -35,13 +35,11 @@ const CreateSubForm2 = (props) => {
     
     //disables submit button if all fields are not validated
     useEffect(() => {
-        console.log(invalidDay)
         if(!invalidAmount && !invalidUrl && !invalidDescription && !invalidToken && !invalidFrequency && !invalidDay) {
             setAllValidated(true)
         } else {
             setAllValidated(false)
         }
-        console.log(allValidated)
     },[invalidAmount, invalidUrl, invalidDay, invalidDescription, invalidFrequency, invalidToken])
     
 
@@ -51,8 +49,8 @@ const CreateSubForm2 = (props) => {
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
         return TOKEN_LOOKUP.map((token) => {
-            return <option value={token.address} key={token.address}>{token.ticker}</option>;
-        });
+            return  <option value={token.address} key={token.address}>{ token.ticker}</option>
+        })
     }
 
     const tokenPulldown2 = () => {
@@ -270,7 +268,7 @@ const CreateSubForm2 = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                    <DropdownButton id="dropdown-basic-button" title="Token">
                         {tokenPulldown3()}
                     </DropdownButton>
                 </Col>
@@ -280,7 +278,7 @@ const CreateSubForm2 = (props) => {
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>
                         <Form.Label>Token *</Form.Label>
                         <Form.Select isValid={!invalidToken} isInvalid={invalidToken}>
-                            <option value={"-1"}>Select which token</option>
+                            <option value={"-1"}>Select token</option>
                             {tokenPulldown()}
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">

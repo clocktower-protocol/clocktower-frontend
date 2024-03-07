@@ -1,4 +1,4 @@
-import { useOutletContext, useParams, useNavigate } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
@@ -13,6 +13,7 @@ import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
 
+//TODO: getAccount() is called too many times need to cache result
 
 const Account = () => {
 
@@ -67,7 +68,7 @@ const Account = () => {
     const [editResult, setEditResult] = useState({})
 
     //link functions
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     //const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
 
     const msg = 'test'
@@ -171,7 +172,6 @@ const Account = () => {
 
     //hook for editing subscription
     useEffect(() => {
-        console.log("editing")
          //calls wallet
          if(Object.keys(editResult).length !== 0) {
             setToastHeader("Waiting on wallet transaction...")
@@ -501,10 +501,14 @@ useEffect(() => {
 
 //changes data when passed account is switched
 useEffect(() => {
-    getAccount()
-    setIsDomainVerified(false)
-    getProviderSubs()
-    getSubscriberSubs()
+    //doesn't reload on initial load
+    if(!isMounting.current){
+        console.log("Account Switch")
+        getAccount()
+        setIsDomainVerified(false)
+        getProviderSubs()
+        getSubscriberSubs()
+    }
 },[a, getAccount, getProviderSubs, getSubscriberSubs])
 
 //shows alert when waiting for transaction to finish
@@ -520,7 +524,6 @@ useEffect(() => {
         setAlertText2("Transaction Pending...")
         */
         setToastHeader("Transaction Pending")
-        console.log("pending")
     }
 
     if(wait.isSuccess) {
@@ -531,6 +534,7 @@ useEffect(() => {
 
         /*
         setAlert2(false)
+        
 
         setAlertType("danger")
         //console.log("done")
@@ -542,7 +546,7 @@ useEffect(() => {
         getSubscriberSubs()
         
     }
-},[getAccount, getProviderSubs, getSubscriberSubs, setAlertType, wait.isLoading, wait.isSuccess, setAlert2, setAlertText2])
+},[getAccount, getProviderSubs, getSubscriberSubs, wait.isLoading, wait.isSuccess])
 
 //called when edit subscription button is pushed
 useEffect(() =>{
@@ -686,8 +690,8 @@ const alertMaker = () => {
                                         accountDetails = {accountDetails}
                                         setChangedAccountDetails = {setChangedAccountDetails}
 
-                                        setAlert = {setAlert2}
-                                        setAlertText = {setAlertText2}
+                                       // setAlert = {setAlert2}
+                                       // setAlertText = {setAlertText2}
                                     />
                                 </Modal.Body>
                             </Modal>

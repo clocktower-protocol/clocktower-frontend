@@ -3,7 +3,7 @@ import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
-import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient, useWalletClient} from "wagmi";
+import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'

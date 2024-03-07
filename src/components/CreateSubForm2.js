@@ -1,10 +1,11 @@
 import {React, useState, useEffect} from 'react';
-import { Form, Button, Row, Col} from 'react-bootstrap';
-import { ERC20TOKEN_LOOKUP , TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
+import { Form, Button, Row, Col, Modal, ListGroup, DropdownButton, Dropdown} from 'react-bootstrap';
+import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
+import Icon from './Icon'
 
 const CreateSubForm2 = (props) => {
 
@@ -24,6 +25,12 @@ const CreateSubForm2 = (props) => {
     const [amount, setAmount] = useState(1)
     const [subDescription, setSubDescription] = useState("")
     const [subUrl, setSubUrl] = useState("")
+
+    //modal control
+    const [showTokenMenu, setShowTokenMenu] = useState(false);
+
+    const tokenMenuShow = () => setShowTokenMenu(true)
+    const hideTokenMenu = () => setShowTokenMenu(false)
 
     
     //disables submit button if all fields are not validated
@@ -46,6 +53,26 @@ const CreateSubForm2 = (props) => {
         return TOKEN_LOOKUP.map((token) => {
             return <option value={token.address} key={token.address}>{token.ticker}</option>;
         });
+    }
+
+    const tokenPulldown2 = () => {
+        return TOKEN_LOOKUP.map((token) => {
+            return (
+                <ListGroup.Item>
+                     <Icon icon={token.icon}></Icon>{token.ticker}
+                </ListGroup.Item>
+            )
+        })
+    }
+
+    const tokenPulldown3 = () => {
+        return TOKEN_LOOKUP.map((token) => {
+            return (
+                <Dropdown.Item href="#/action-1">
+                     <Icon icon={token.icon}></Icon>{token.ticker}
+                </Dropdown.Item>
+            )
+        })
     }
 
     //populates select info for frequency based on lookup in config
@@ -228,7 +255,26 @@ const CreateSubForm2 = (props) => {
     }
 
     return (
+        <div>
+        <Modal show={showTokenMenu} size="l" onHide={hideTokenMenu} >
+            <Modal.Header closeButton>
+                <Modal.Title>Choose a Token</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {tokenPulldown2()}
+            </Modal.Body>
+        </Modal>
         <Form className="mb-3" noValidate validated={allValidated}  onSubmit={submitForm}>
+            <Row>
+                <Col><Button onClick={() => tokenMenuShow()}>Choose Token</Button></Col>
+            </Row>
+            <Row>
+                <Col>
+                    <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                        {tokenPulldown3()}
+                    </DropdownButton>
+                </Col>
+            </Row>
             <Row>
             <Col>
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>
@@ -299,6 +345,7 @@ const CreateSubForm2 = (props) => {
                 <Col align="center"><Button type="submit" disabled={!allValidated}>Submit</Button></Col>
             </Row>
         </Form>
+        </div>
     )
  
 }

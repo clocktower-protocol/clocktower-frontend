@@ -61,6 +61,14 @@ export const CHAIN_LOOKUP = [
   }
 ]
 
+//supported Wallets
+export const WALLET_LOOKUP = [
+  {
+    name: "metamask",
+    id: ""
+  }
+]
+
 //lookup table for frequency
 export const FREQUENCY_LOOKUP = [
   {

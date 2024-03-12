@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useCallback} from 'react';
-import { Navbar, Container, Nav, Button, Row, Modal, Stack, Alert, NavDropdown} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Row, Modal, Stack, Alert, NavDropdown, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -48,6 +48,14 @@ const Root = () => {
       setShowWalletChoice(false);
     }
     const handleShow = () => setShowWalletChoice(true);
+
+    //Tooltips
+    const renderTooltip = () => (
+  
+      <Tooltip id="button-tooltip">
+        Simple tooltip
+      </Tooltip>
+    )
 
     //WAGMI
    
@@ -177,8 +185,22 @@ const Root = () => {
                         </NavDropdown.Item>
                       ))}
                   </NavDropdown>
-                  : <Navbar.Text><Icon icon={CHAIN_LOOKUP[0].icon}></Icon></Navbar.Text>}
-            
+                  : 
+                    <OverlayTrigger
+                      placement="left"
+                      delay={{ show: 250, hide: 400 }}
+                      overlay={
+                        <Tooltip id={`tooltip-1`}>
+                            {CHAIN_LOOKUP[0].displayName}
+                        </Tooltip>
+                      }
+                    >
+                    <Navbar.Text>
+                      <Icon icon={CHAIN_LOOKUP[0].icon}></Icon>
+                    </Navbar.Text>
+                    </OverlayTrigger>
+                 }
+                  
                   <Nav key="nav">
                     {isConnected && !isDisconnected ? (<Navbar.Text>Account: {address.slice(0,5)+"..."+address.slice(37, 42)}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
                   </Nav>

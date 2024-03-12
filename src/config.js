@@ -50,12 +50,14 @@ export const CHAIN_LOOKUP = [
   {
     name: "hardhat",
     id: 31337,
-    icon: HardhatLogo
+    icon: HardhatLogo,
+    displayName: "Hardhat Network"
   }, 
   {
     name: "sepolia",
     id: 11155111, 
-    icon: SepoliaLogo
+    icon: SepoliaLogo,
+    displayName: "Sepolia Network"
   }
 ]
 

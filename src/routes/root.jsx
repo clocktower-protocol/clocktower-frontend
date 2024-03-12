@@ -7,6 +7,7 @@ import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 import { CHAIN_LOOKUP } from '../config';
 import Icon from '../components/Icon'
+//import '../App.css'
 
 //images
 //import {ReactComponent as HardhatLogo} from "../images/hardhat.svg"
@@ -151,40 +152,37 @@ const Root = () => {
         </div>
         <div className="topDiv">
           <div className="navBar">
-          <Navbar key="navBar" bg="dark" variant="dark" expand="lg">
-            <Container key="navContainer1" className="clockNav">
+          <Navbar key="navBar" bg="dark" variant="dark" expand="lg" >
+            <Container key="navContainer1">
               <LinkContainer to="/">
                 <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
               </LinkContainer>
             </Container>
-            <Container key="navContainer" className="clockNav2">
-              <Row style={{color: "white"}}>
-                {chains.length > 1 ? 
-                <NavDropdown title={chains[0].name} id="basic-nav-dropdown">
-                   {chains.map((chain) => (
-                      <NavDropdown.Item>
-                  
-                        {CHAIN_LOOKUP.map((lchain) => {
-                          if(lchain.id === chain.id){
-                            return <Icon icon={lchain.icon}></Icon>
+            <Container key="navContainer" style={{justifyContent:"flex-end", gap:"50px"}}>
+                  {chains.length > 1 ? 
+                  <NavDropdown title={chains[0].name} id="basic-nav-dropdown">
+                    {chains.map((chain) => (
+                        <NavDropdown.Item>
+                    
+                          {CHAIN_LOOKUP.map((lchain) => {
+                            if(lchain.id === chain.id){
+                              return <Icon icon={lchain.icon}></Icon>
+                            }
+                          })
                           }
-                        })
-                        }
-                        
-                        <Button variant="outline-info" key={chain.id} onClick={() => switchChain({ chainId: chain.id })}>
-                          {chain.name}
-                        </Button>
-                      </NavDropdown.Item>
-                    ))}
-                </NavDropdown>
-                : <Navbar.Text><Icon icon={CHAIN_LOOKUP[0].icon}></Icon></Navbar.Text>}
-              </Row>
-            <Row>
-          <Nav key="nav">
-            {isConnected && !isDisconnected ? (<Navbar.Text>Account: {address}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
-          </Nav>
-          </Row>
-        </Container>
+                          
+                          <Button variant="outline-info" key={chain.id} onClick={() => switchChain({ chainId: chain.id })}>
+                            {chain.name}
+                          </Button>
+                        </NavDropdown.Item>
+                      ))}
+                  </NavDropdown>
+                  : <Navbar.Text><Icon icon={CHAIN_LOOKUP[0].icon}></Icon></Navbar.Text>}
+            
+                  <Nav key="nav">
+                    {isConnected && !isDisconnected ? (<Navbar.Text>Account: {address.slice(0,5)+"..."+address.slice(37, 42)}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+                  </Nav>
+              </Container>
       </Navbar>
       </div>
       <div className="sideNav">

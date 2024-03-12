@@ -1,7 +1,8 @@
 //imported svg images
 import {ReactComponent as HardhatLogo} from "./images/hardhat.svg"
 import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
-
+import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
+import {ReactComponent as BraveLogo} from "./images/brave.svg"
 
 /* global BigInt */
 export const CLOCKTOWERSUB_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
@@ -65,7 +66,13 @@ export const CHAIN_LOOKUP = [
 export const WALLET_LOOKUP = [
   {
     name: "metamask",
-    id: ""
+    id: "io.metamask",
+    icon: MetamaskLogo
+  },
+  {
+    name: "brave wallet",
+    id: "com.brave.wallet",
+    icon: BraveLogo
   }
 ]
 

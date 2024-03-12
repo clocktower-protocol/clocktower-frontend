@@ -1,11 +1,11 @@
 import {React, useState, useEffect, useCallback} from 'react';
-import { Navbar, Container, Nav, Button, Row, Modal, Stack, Alert, NavDropdown, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Row, Col, Modal, Stack, Alert, NavDropdown, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
-import { CHAIN_LOOKUP } from '../config';
+import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
 import Icon from '../components/Icon'
 //import '../App.css'
 
@@ -48,14 +48,6 @@ const Root = () => {
       setShowWalletChoice(false);
     }
     const handleShow = () => setShowWalletChoice(true);
-
-    //Tooltips
-    const renderTooltip = () => (
-  
-      <Tooltip id="button-tooltip">
-        Simple tooltip
-      </Tooltip>
-    )
 
     //WAGMI
    
@@ -122,7 +114,7 @@ const Root = () => {
    return (
         <>
         <div>
-          <Modal show={showWalletChoice} onHide={handleClose}>
+          <Modal show={showWalletChoice} onHide={handleClose} >
           <Modal.Header closeButton>
             <Modal.Title>Choose a Wallet</Modal.Title>
           </Modal.Header>
@@ -130,26 +122,38 @@ const Root = () => {
             <Container>
               <Stack gap={3}>
               {connectors.map((connector) => (
-              <Row key={connector.id+1}>
-                  <Button 
-                    variant="info"
-                    //disabled={!connector2.ready}
-                    key={connector.id}
-                    onClick={() => {
-                    console.log(connector)
-                    //connect({ connector2 })
-                    connect({connector})
-                    handleClose()
-                    }}
-                  >
-                    {connector.name}
-                    {//!connector2.ready && ' (unsupported)'
+              <Row key={connector.id+1}  >
+                  <Col key={connector.id+60} md="auto" >
+                    {
+                      WALLET_LOOKUP.map((lWallet) => {
+                          if(lWallet.id === connector.id){
+                            return <Icon icon={lWallet.icon}></Icon>
+                          }
+                      })
                     }
-                    {isLoading &&
-                      connector.id === pendingConnector?.id &&
-                      ' (connecting)'
-                    }
-                  </Button>
+                  </Col>
+                  <Col key={connector.id+120} >
+                    <Button 
+                      style={{width:"100%"}}
+                      variant="info"
+                      //disabled={!connector2.ready}
+                      key={connector.id}
+                      onClick={() => {
+                      console.log(connector)
+                      //connect({ connector2 })
+                      connect({connector})
+                      handleClose()
+                      }}
+                    >
+                      {connector.name}
+                      {//!connector2.ready && ' (unsupported)'
+                      }
+                      {isLoading &&
+                        connector.id === pendingConnector?.id &&
+                        ' (connecting)'
+                      }
+                    </Button>
+                  </Col>
               </Row>
               ))}
               </Stack>

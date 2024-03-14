@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import { Form, Button, Row, Col, Modal, ListGroup, DropdownButton, Dropdown} from 'react-bootstrap';
+import { Form, Button, Row, Col, Modal, ListGroup, DropdownButton, Dropdown, ButtonGroup} from 'react-bootstrap';
 import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
@@ -31,8 +31,11 @@ const CreateSubForm2 = (props) => {
     //modal control
     const [showTokenMenu, setShowTokenMenu] = useState(false);
 
+    const [tokenOutline, setTokenOutline] = useState("danger")
+
     const tokenMenuShow = () => setShowTokenMenu(true)
     const hideTokenMenu = () => setShowTokenMenu(false)
+    
 
     //function that gets selected token
     const setTokenSelection = (token) => {
@@ -44,6 +47,7 @@ const CreateSubForm2 = (props) => {
         //hides dropdown
         //
         setDropdownTitle(token.ticker)
+        setTokenOutline("success")
 
         if(token.address === "-1"){
             setInvalidToken(true)
@@ -95,7 +99,7 @@ const CreateSubForm2 = (props) => {
     const tokenPulldown3 = () => {
         return TOKEN_LOOKUP.map((token) => {
             return (
-                <Dropdown.Item as="button" onClick={() => setTokenSelection(token) }>
+                <Dropdown.Item onClick={() => setTokenSelection(token)}>
                      <Icon icon={token.icon}></Icon>{token.ticker}
                 </Dropdown.Item>
             )
@@ -294,14 +298,24 @@ const CreateSubForm2 = (props) => {
             </Modal.Body>
         </Modal>
         <Form className="mb-3" noValidate validated={allValidated}  onSubmit={submitForm}>
+            {/*
             <Row>
                 <Col><Button onClick={() => tokenMenuShow()}>Choose Token</Button></Col>
             </Row>
+            */}
             <Row>
                 <Col>
-                    <DropdownButton id="dropdown-basic-button" title={dropdownTitle}>
+                <Dropdown style={{width:"100%"}}>
+                    <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white"}}>
+                        {dropdownTitle}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu style={{width:"100%"}}>
                         {tokenPulldown3()}
-                    </DropdownButton>
+                    </Dropdown.Menu>
+                </Dropdown>
+                </Col>
+                <Col>
                 </Col>
             </Row>
             <Row>

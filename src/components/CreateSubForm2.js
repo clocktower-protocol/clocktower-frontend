@@ -17,7 +17,9 @@ const CreateSubForm2 = (props) => {
     const [invalidDescription, setInvalidDescription] = useState(false)
     const [invalidUrl, setInvalidUrl] = useState(false)
     const [allValidated, setAllValidated] = useState(false)
-    const [selectedTokenMinimum, setSelectedTokenMinimum] = useState(parseEther("1"))
+    const [selectedTokenMinimum, setSelectedTokenMinimum] = useState("-1")
+
+    const [dropdownTitle, setDropdownTitle] = useState("Select Token")
 
     const [token, setToken] = useState("-1")
     const [frequency, setFrequency] = useState("-1")
@@ -31,6 +33,33 @@ const CreateSubForm2 = (props) => {
 
     const tokenMenuShow = () => setShowTokenMenu(true)
     const hideTokenMenu = () => setShowTokenMenu(false)
+
+    //function that gets selected token
+    const setTokenSelection = (token) => {
+        console.log(token)
+
+        if(typeof token !== undefined)
+        setToken(token.address)
+
+        //hides dropdown
+        //
+        setDropdownTitle(token.ticker)
+
+        if(token.address === "-1"){
+            setInvalidToken(true)
+        } else {
+            //sets abi and token minimum
+            TOKEN_LOOKUP.map((token2) => {
+                if(token2.address === token.address){
+                    setTokenMinimum(token2.address)
+                    setInvalidToken(false)
+                // props.setTokenABI(token.ABI)
+                }
+                return true
+            })
+        }
+        
+    }
 
     
     //disables submit button if all fields are not validated
@@ -66,7 +95,7 @@ const CreateSubForm2 = (props) => {
     const tokenPulldown3 = () => {
         return TOKEN_LOOKUP.map((token) => {
             return (
-                <Dropdown.Item href="#/action-1">
+                <Dropdown.Item as="button" onClick={() => setTokenSelection(token) }>
                      <Icon icon={token.icon}></Icon>{token.ticker}
                 </Dropdown.Item>
             )
@@ -111,6 +140,7 @@ const CreateSubForm2 = (props) => {
         .then(async function(result) {
             //gets token minimum
             setSelectedTokenMinimum(result[1])
+            console.log(formatEther(result[1]))
         })
     }
 
@@ -119,6 +149,7 @@ const CreateSubForm2 = (props) => {
 
         let tokenAddress = event.target.value
 
+        console.log(event)
         //sets token
         //props.setToken(event.target.value)
         setToken(event.target.value)
@@ -140,7 +171,7 @@ const CreateSubForm2 = (props) => {
 
     const amountChange = (event) => {
 
-        if(event.target.value > 0 && event.target.value > formatEther(selectedTokenMinimum)) {
+        if((event.target.value > 0) && (event.target.value > formatEther(selectedTokenMinimum))) {
             let wei = parseEther(event.target.value)
             setInvalidAmount(false)
             //props.setAmount(wei)
@@ -268,13 +299,14 @@ const CreateSubForm2 = (props) => {
             </Row>
             <Row>
                 <Col>
-                    <DropdownButton id="dropdown-basic-button" title="Token">
+                    <DropdownButton id="dropdown-basic-button" title={dropdownTitle}>
                         {tokenPulldown3()}
                     </DropdownButton>
                 </Col>
             </Row>
             <Row>
             <Col>
+                {
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>
                         <Form.Label>Token *</Form.Label>
                         <Form.Select isValid={!invalidToken} isInvalid={invalidToken}>
@@ -285,13 +317,14 @@ const CreateSubForm2 = (props) => {
                             Please select a token
                         </Form.Control.Feedback>
                     </Form.Group>
+    }
                 </Col>
                 <Col>
                     <Form.Group  className="mb-3" controlId="formAmount" value={amount} onChange={amountChange}>
                         <Form.Label>Amount *</Form.Label>
                         <Form.Control required type="input" placeholder="amount" isInvalid={invalidAmount} isValid={!invalidAmount}/>
                         <Form.Control.Feedback type="invalid">
-                            Must be greater than token minimum of {formatEther(String(selectedTokenMinimum))}
+                            Must be greater than token minimum {selectedTokenMinimum != "-1" ? "of " + formatEther(String(selectedTokenMinimum)) : ""}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

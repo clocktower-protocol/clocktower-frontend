@@ -742,43 +742,45 @@ const alertMaker = () => {
 
                                     </Row>
                                         <Col>
-                                            <ListGroup horizontal={'lg'}>
-                                                <ListGroup.Item variant="primary">Status</ListGroup.Item>
+                                            <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
+                                                <ListGroup.Item variant="primary" style={{width:"200px", textAlign:"center"}}>Status</ListGroup.Item>
                                                 {!isDomainVerified ?
                                                 <ListGroup.Item variant="warning">Domain Unverified</ListGroup.Item>
                                                 : <ListGroup.Item variant="success">Domain Verified</ListGroup.Item>}
                                             </ListGroup>
                                         </Col>
+                                        <Col>
+                                        </Col>
                                     <Row>
                                         <Col>
                                             <Stack gap={3}>
-                                                <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">Description</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
+                                                <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
+                                                    <ListGroup.Item variant="primary" style={{width:"150px", textAlign:"center"}}>Description</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
                                                 </ListGroup>
-                                                <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">Email</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.email === undefined || accountDetails.email === "") ? "---" : accountDetails.email}</ListGroup.Item>
+                                                <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
+                                                    <ListGroup.Item variant="primary" style={{width:"150px", textAlign:"center"}}>Email</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.email === undefined || accountDetails.email === "") ? "---" : accountDetails.email}</ListGroup.Item>
                                                 </ListGroup>
-                                                <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">URL</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
+                                                <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">URL</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
                                         </Col>
                                         <Col>
                                             <Stack gap={3}>     
-                                                <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">Company</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
+                                                <ListGroup horizontal={'lg'} variant="primary" style={{justifyContent:"center"}}>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">Company</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
                                                 </ListGroup>
-                                                <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">Misc</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.misc === undefined || accountDetails.misc === "") ? "---" : accountDetails.misc}</ListGroup.Item>
+                                                <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">Misc</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.misc === undefined || accountDetails.misc === "") ? "---" : accountDetails.misc}</ListGroup.Item>
                                                 </ListGroup>
-                                                <ListGroup horizontal={'lg'}>
-                                                    <ListGroup.Item variant="primary">Domain</ListGroup.Item>
-                                                    <ListGroup.Item>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "---" : accountDetails.domain }</ListGroup.Item>
+                                                <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">Domain</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "---" : accountDetails.domain }</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>
                                         </Col>
@@ -786,12 +788,12 @@ const alertMaker = () => {
                                     {a === account ?
                                     <Row>
                                         <Col>
-                                            <ListGroup horizontal={'lg'}>
+                                            <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                 <Button variant="outline-info" onClick = {() => editButtonClick()}>Edit Details</Button>
                                             </ListGroup>
                                         </Col>
                                         <Col>
-                                            <ListGroup horizontal={'lg'}>
+                                            <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                 <Button variant="outline-info" onClick={async () => {
                                                     signMessage({message: msg})
                                                     //verifyHandleShow()

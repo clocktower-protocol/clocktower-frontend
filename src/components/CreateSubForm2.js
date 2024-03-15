@@ -324,7 +324,7 @@ const CreateSubForm2 = (props) => {
             <Col>
             <Form.Label>Token *</Form.Label>
                 <Dropdown style={{width:"100%"}}>
-                    <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white"}}>
+                    <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white", textAlign:"left"}}>
                         {dropdownTitle}
                     </Dropdown.Toggle>
 

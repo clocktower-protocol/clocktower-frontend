@@ -1,14 +1,14 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner, Container} from 'react-bootstrap';
+import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
 import EditAccountForm from "../components/EditAccountForm";
-import CreateSubForm2 from "../components/CreateSubForm2";
+import CreateSubForm from "../components/CreateSubForm";
 import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
@@ -702,7 +702,7 @@ const alertMaker = () => {
                                     <Modal.Title>Create Subscription</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <CreateSubForm2
+                                    <CreateSubForm
                                         setChangedCreateSub = {setChangedCreateSub}
                                     />
                                 </Modal.Body>

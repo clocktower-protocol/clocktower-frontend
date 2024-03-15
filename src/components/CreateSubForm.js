@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import { Form, Button, Row, Col, Modal, ListGroup, DropdownButton, Dropdown, ButtonGroup} from 'react-bootstrap';
+import { Form, Button, Row, Col, Modal, ListGroup, Dropdown} from 'react-bootstrap';
 import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
@@ -7,7 +7,7 @@ import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 import Icon from './Icon'
 
-const CreateSubForm2 = (props) => {
+const CreateSubForm = (props) => {
 
     //const [validated, setValidated] = useState(false)
     const [invalidToken, setInvalidToken] = useState(true)
@@ -79,12 +79,14 @@ const CreateSubForm2 = (props) => {
    // let ff = props.frequency
     let ff = frequency
 
+    /*
     //populates select info for token based on lookup object in config
     const tokenPulldown = () => {
         return TOKEN_LOOKUP.map((token) => {
             return  <option value={token.address} key={token.address}>{ token.ticker}</option>
         })
     }
+    */
 
     const tokenPulldown2 = () => {
         return TOKEN_LOOKUP.map((token) => {
@@ -407,4 +409,4 @@ const CreateSubForm2 = (props) => {
  
 }
 
-export default CreateSubForm2
+export default CreateSubForm

@@ -302,9 +302,10 @@ const CreateSubForm2 = (props) => {
             <Row>
                 <Col><Button onClick={() => tokenMenuShow()}>Choose Token</Button></Col>
             </Row>
-            */}
+    
             <Row>
                 <Col>
+                <Form.Label>Token *</Form.Label>
                 <Dropdown style={{width:"100%"}}>
                     <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white"}}>
                         {dropdownTitle}
@@ -318,9 +319,20 @@ const CreateSubForm2 = (props) => {
                 <Col>
                 </Col>
             </Row>
+            */}
             <Row>
             <Col>
-                {
+            <Form.Label>Token *</Form.Label>
+                <Dropdown style={{width:"100%"}}>
+                    <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white"}}>
+                        {dropdownTitle}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu style={{width:"100%"}}>
+                        {tokenPulldown3()}
+                    </Dropdown.Menu>
+            </Dropdown>
+                {/*
                     <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>
                         <Form.Label>Token *</Form.Label>
                         <Form.Select isValid={!invalidToken} isInvalid={invalidToken}>
@@ -331,7 +343,7 @@ const CreateSubForm2 = (props) => {
                             Please select a token
                         </Form.Control.Feedback>
                     </Form.Group>
-    }
+        */  }
                 </Col>
                 <Col>
                     <Form.Group  className="mb-3" controlId="formAmount" value={amount} onChange={amountChange}>

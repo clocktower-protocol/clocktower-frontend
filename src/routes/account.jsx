@@ -1,7 +1,7 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
+import {Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -30,7 +30,7 @@ const Account = () => {
 
     const [account] = useOutletContext();
 
-    const [alertType, setAlertType] = useState("danger")
+    //const [alertType, setAlertType] = useState("danger")
 
     //modal triggers
     const [showEditWarn, setShowEditWarn] = useState(false);
@@ -56,11 +56,11 @@ const Account = () => {
     const [changedCreateSub, setChangedCreateSub] = useState({})
     const [unsubscribedSub, setUnsubscribedSub] = useState({})
     //alerts
-    const [alertText2, setAlertText2] = useState("Test")
-    const [isAlertSet, setAlert2] = useState(false)
+    //const [alertText2, setAlertText2] = useState("Test")
+    //const [isAlertSet, setAlert2] = useState(false)
     const [showToast, setShowToast] = useState(false)
     const [toastHeader, setToastHeader] = useState("")
-    const [toastBody, setToastBody] = useState("")
+    //const [toastBody, setToastBody] = useState("")
     //editing subscription 
     const [editSub, setEditSub] = useState({})
     const [preEditDetails, setPreEditDetails] = useState({})
@@ -117,7 +117,7 @@ const Account = () => {
         } else {
             isMounting.current = false
         }
-    },[changedAccountDetails])
+    },[changedAccountDetails, writeContract])
 
     //hook for calling wallet to create sub
     useEffect(() => {
@@ -135,7 +135,7 @@ const Account = () => {
         } else {
             isMounting.current = false
         }
-    },[changedCreateSub])
+    },[changedCreateSub, writeContract])
 
     //hook for calling wallet to cancel sub
     useEffect(() => {
@@ -153,7 +153,7 @@ const Account = () => {
         } else {
             isMounting.current = false
         }
-    },[cancelledSub])
+    },[cancelledSub, writeContract])
 
     //hook for calling wallet to unsubscribe
     useEffect(() => {
@@ -168,7 +168,7 @@ const Account = () => {
                 args: [unsubscribedSub]
             })
         }
-    },[unsubscribedSub])
+    },[unsubscribedSub, writeContract])
 
     //hook for editing subscription
     useEffect(() => {
@@ -186,7 +186,7 @@ const Account = () => {
             subEditDetailsHandleClose()
 
         }
-    },[editResult])
+    },[editResult, writeContract])
 
     const verifyDomain = async (domain, provAddress) => {
 
@@ -437,7 +437,7 @@ const getSubscriberSubs = useCallback(async () => {
     }
 },[account, address, publicClient, subscribedDetailsArray])
 
-const getSub = async (editSubParams) => {
+const getSub = useCallback(async (editSubParams) => {
     await fetchToken()
     await readContract(config, {
         address: CLOCKTOWERSUB_ADDRESS,
@@ -477,7 +477,7 @@ const getSub = async (editSubParams) => {
         setEditSub(result)
         //subEditDetailsHandleShow()
     })
-}
+},[publicClient])
 
 
 
@@ -497,7 +497,7 @@ useEffect(() => {
     }
 
     //console.log("here")
-},[getAccount, getProviderSubs, getSubscriberSubs])
+},[getAccount, getProviderSubs, getSubscriberSubs, address])
 
 //changes data when passed account is switched
 useEffect(() => {
@@ -556,7 +556,7 @@ useEffect(() =>{
         getSub(editSubParams)
     }
 
-},[editSubParams])
+},[editSubParams, getSub])
 
 //called when subscription data is done loading
 useEffect(() =>{
@@ -602,22 +602,26 @@ const isTableEmpty2 = (subscriptionArray2) => {
 }
 
  //Creates alert
+ /*
 const alertMaker = () => {
     if(isAlertSet) {
         return (
             <div className="alertDiv">
-                <Alert variant={alertType} align="center" onClose={() => setAlert2(false)} dismissible>{alertText2}</Alert>
+                <Alert variant={"danger"} align="center" onClose={() => setAlert2(false)} dismissible>{alertText2}</Alert>
             </div>
         )
     }
    // console.log(isAlertSet)
 }
+*/
 
     
             return (
             
                 <div className="clockMeta">
-                    {alertMaker()}
+                    {/*
+                    alertMaker()
+            */}
                     <ToastContainer position="top-center">
                         <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>
                                 <Toast.Header style={{justifyContent: "space-between"}}>

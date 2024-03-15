@@ -33,7 +33,7 @@ const CreateSubForm = (props) => {
 
     const [tokenOutline, setTokenOutline] = useState("danger")
 
-    const tokenMenuShow = () => setShowTokenMenu(true)
+    //const tokenMenuShow = () => setShowTokenMenu(true)
     const hideTokenMenu = () => setShowTokenMenu(false)
     
 
@@ -41,11 +41,9 @@ const CreateSubForm = (props) => {
     const setTokenSelection = (token) => {
         console.log(token)
 
-        if(typeof token !== undefined)
+        
         setToken(token.address)
 
-        //hides dropdown
-        //
         setDropdownTitle(token.ticker)
         setTokenOutline("success")
 
@@ -57,12 +55,11 @@ const CreateSubForm = (props) => {
                 if(token2.address === token.address){
                     setTokenMinimum(token2.address)
                     setInvalidToken(false)
-                // props.setTokenABI(token.ABI)
+                    // props.setTokenABI(token.ABI)
                 }
                 return true
             })
         }
-        
     }
 
     
@@ -151,6 +148,7 @@ const CreateSubForm = (props) => {
     }
 
     //event listeners
+    /*
     const tokenChange = (event) => {
 
         let tokenAddress = event.target.value
@@ -174,6 +172,7 @@ const CreateSubForm = (props) => {
             })
         }
     }
+    */
 
     const amountChange = (event) => {
 
@@ -352,7 +351,7 @@ const CreateSubForm = (props) => {
                         <Form.Label>Amount *</Form.Label>
                         <Form.Control required type="input" placeholder="amount" isInvalid={invalidAmount} isValid={!invalidAmount}/>
                         <Form.Control.Feedback type="invalid">
-                            Must be greater than token minimum {selectedTokenMinimum != "-1" ? "of " + formatEther(String(selectedTokenMinimum)) : ""}
+                            Must be greater than token minimum {selectedTokenMinimum !== "-1" ? "of " + formatEther(String(selectedTokenMinimum)) : ""}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

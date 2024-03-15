@@ -1,7 +1,7 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
+import {Alert, Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner, Container} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -730,27 +730,27 @@ const alertMaker = () => {
                             <div>
                             <Card>
                                 <Card.Body>
-                                    <Card.Title> <Avatar
+                                    
+                                    <Card.Title style={{justifyContent:"center", textAlign:"center"}}> 
+                                        <Avatar
                                             size={75}
                                             name={a}
                                             variant="pixel"
                                             colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
-                                    />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{a}
+                                        />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{a}
                                     </Card.Title>
+                                   
                                     <Stack gap={3}>
                                     <Row>
-
-                                    </Row>
                                         <Col>
                                             <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
-                                                <ListGroup.Item variant="primary" style={{width:"200px", textAlign:"center"}}>Status</ListGroup.Item>
+                                                <ListGroup.Item variant="primary" style={{width:"150px", textAlign:"center"}}>Status</ListGroup.Item>
                                                 {!isDomainVerified ?
-                                                <ListGroup.Item variant="warning">Domain Unverified</ListGroup.Item>
-                                                : <ListGroup.Item variant="success">Domain Verified</ListGroup.Item>}
+                                                <ListGroup.Item style={{width:"175px"}} variant="warning">Domain Unverified</ListGroup.Item>
+                                                : <ListGroup.Item style={{width:"175px"}} variant="success">Domain Verified</ListGroup.Item>}
                                             </ListGroup>
                                         </Col>
-                                        <Col>
-                                        </Col>
+                                    </Row>
                                     <Row>
                                         <Col>
                                             <Stack gap={3}>
@@ -767,8 +767,8 @@ const alertMaker = () => {
                                                     <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
-                                        </Col>
-                                        <Col>
+                                            </Col>
+                                            <Col>
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'} variant="primary" style={{justifyContent:"center"}}>
                                                     <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">Company</ListGroup.Item>

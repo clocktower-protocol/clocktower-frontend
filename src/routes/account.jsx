@@ -38,9 +38,13 @@ const Account = () => {
     const [showEditForm, setShowEditForm] = useState(false)
     const [showCreateSub, setShowCreateSub] = useState(false)
     const [showSubEditForm, setShowSubEditForm] = useState(false)
+    const [showLinkDisplay, setShowLinkDisplay] = useState(false)
 
+    //copy variables
     const [isDisabled, setIsDisabled] = useState(false)
     const [copyTitle, setCopyTitle] = useState("Copy")
+    const [isLinkCopyDisabled, setLinkCopyDisabled] = useState(false)
+    const [copyTitleLink, setCopyTitleLink] = useState("Copy")
     //account variables
     const [isDomainVerified, setIsDomainVerified] = useState(false)
     const [changedAccountDetails, setChangedAccountDetails] = useState({})
@@ -66,7 +70,8 @@ const Account = () => {
     const [preEditDetails, setPreEditDetails] = useState({})
     const [editSubParams, setEditSubParams] = useState({})
     const [editResult, setEditResult] = useState({})
-
+    //Display Link
+    const [linkDisplayed, setLinkDisplayed] = useState("")
     //link functions
     //const navigate = useNavigate();
     //const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
@@ -240,6 +245,17 @@ const Account = () => {
     //turns on and off subscription details edit modal
     const subEditDetailsHandleClose = () => setShowSubEditForm(false)
     const subEditDetailsHandleShow = () => setShowSubEditForm(true)
+
+    //turns on and off link display modal
+    const linkDisplayClose = () => {
+        setShowLinkDisplay(false)
+        setLinkDisplayed("")
+    }
+    const linkDisplayShow = () => {
+        setLinkCopyDisabled(false)
+        setCopyTitleLink("Copy")
+        setShowLinkDisplay(true)
+    }
 
     const editButtonClick = () => {
         editHandleShow()
@@ -567,6 +583,15 @@ useEffect(() =>{
 
 },[editSub])
 
+//called when link to be displayed in modal 
+useEffect(() => {
+    console.log(linkDisplayed)
+    if(linkDisplayed !== "" && typeof linkDisplayed !== undefined){
+        linkDisplayShow()
+    }
+
+},[linkDisplayed])
+
 const isTableEmpty1 = (subscriptionArray) => {
        
     //console.log(subscriptionArray)
@@ -678,6 +703,31 @@ const alertMaker = () => {
                                         {copyTitle}
                                     </Button>
                                     <Button variant="secondary" onClick={verifyHandleClose}>
+                                        Close
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
+                        </div>
+                        <div>
+                            <Modal show={showLinkDisplay} size="xl" onHide={linkDisplayClose} centered>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Subscription Link</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>Pass the following link to your potential subscribers: 
+                                    <p></p> {linkDisplayed.slice(0,85)}<br></br>{linkDisplayed.slice(86,170)}
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="primary" 
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(linkDisplayed)
+                                        setLinkCopyDisabled(true)
+                                        setCopyTitleLink("Copied")
+                                    }}
+                                    disabled = {isLinkCopyDisabled}
+                                    >
+                                        {copyTitleLink}
+                                    </Button>
+                                    <Button variant="secondary" onClick={linkDisplayClose}>
                                         Close
                                     </Button>
                                 </Modal.Footer>
@@ -842,6 +892,7 @@ const alertMaker = () => {
                                             setCancelledSub = {setCancelledSub}
                                             subEditDetailsHandleShow = {subEditDetailsHandleShow}
                                             setEditSubParams = {setEditSubParams}
+                                            setLinkDisplayed = {setLinkDisplayed}
                                         />
                                         : <div></div>}
                                         

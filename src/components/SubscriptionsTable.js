@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-import {TOKEN_LOOKUP, FREQUENCY_LOOKUP} from "../config";
+import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DOMAIN} from "../config";
 //import Web3 from 'web3'
 import {formatEther} from 'viem'
 
@@ -112,7 +112,7 @@ const SubscriptionsTable = (props) => {
         if(role === 1 && Number(totalSubscribers) > 0) {
             row.push(
             //<td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+5}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`localhost:3000/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+5}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link></td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
@@ -124,7 +124,7 @@ const SubscriptionsTable = (props) => {
         if(role === 1 && Number(totalSubscribers) === 0) {
           row.push(
             //<td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+5}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`localhost:3000/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
+            <td key={String(subscriptionArray[i].subscription.id)+5}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
             <td key={String(subscriptionArray[i].subscription.id)+6}>{Number(totalSubscribers)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,

@@ -36,6 +36,8 @@ export const USER_ALCHEMY_PROVIDER = ""
 
 //**************************************************************************** 
 
+export const DOMAIN = "localhost:3000"
+
 export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const TOKEN_LOOKUP = [

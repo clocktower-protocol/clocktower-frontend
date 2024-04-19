@@ -145,6 +145,7 @@ const Account = () => {
 
     //hook for calling wallet to cancel sub
     useEffect(() => {
+        console.log("test")
         //calls wallet
         if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
             setToastHeader("Waiting on wallet transaction...")
@@ -158,6 +159,7 @@ const Account = () => {
             })
         } else {
             isMounting.current = false
+            console.log("here")
         }
     },[cancelledSub, writeContract])
 
@@ -903,6 +905,10 @@ const alertMaker = () => {
                                             <ProviderSubCards
                                                 subscriptionArray = {provSubscriptionArray}
                                                 detailsArray = {provDetailsArray}
+                                                setCancelledSub = {setCancelledSub}
+                                                subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                                                setEditSubParams = {setEditSubParams}
+                                                setLinkDisplayed = {setLinkDisplayed}
                                             />
                                         </div>
                                         : <div></div>}

@@ -111,6 +111,9 @@ const ProviderSubCards = (props) => {
                 description = "(No Description)"
             }
 
+            //formats subscription amount
+            let subAmount = formatEther(String(subscriptionArray[i].subscription.amount))
+
             //builds payday string
             let paydayString = ""
             
@@ -118,7 +121,7 @@ const ProviderSubCards = (props) => {
             if(subscriptionArray[i].subscription.frequency > 0){
                 paydayString = dayEndString(String(subscriptionArray[i].subscription.dueDay)) + " Day of the " + frequencyLookup(subscriptionArray[i].subscription.frequency)
             } else {
-
+                //TODO: weekly
             }
             
             cards.push(
@@ -139,12 +142,23 @@ const ProviderSubCards = (props) => {
                         <Stack gap={1}>
 
                         <ListGroup horizontal={'sm'} >
+                            <ListGroup.Item variant="info" style={{width:"120px", textAlign:"center"}}>Amount</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center"}}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
+                        </ListGroup>
+                        
+                    
+                        <ListGroup horizontal={'sm'} >
                             <ListGroup.Item variant="info" style={{width:"120px", textAlign:"center"}}>Payday</ListGroup.Item>
                             <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center"}}>{paydayString}</ListGroup.Item>
                         </ListGroup>
 
-                      
+                        <hr></hr>
 
+                        <div style={{display: "flex", justifyContent: "space-evenly"}}>
+                            <Button style ={{width: "100%", padding:'5px'}} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
+                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button>
+                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button>
+                        </div>
                         </Stack>
                     </Card.Body>
                 </Card>

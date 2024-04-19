@@ -128,29 +128,48 @@ const ProviderSubCards = (props) => {
                 <Card style={{width:"500px"}}>
                     <Card.Body>
                         <Card.Title >
+                            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap"}}>
                             <Avatar
                                 size={50}
-                                name={description}
+                                name={subscriptionArray[i].subscription.id}
                                 square={true}
                                 variant="marble"
                                 colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
-                            />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{description}
+                            />
+                            
+                                <div>
+                                    {description}
+                                </div>
+                                <div style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px"}}>
+                                    
+                                    <div style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}>
+                                    {String(Number(totalSubscribers) * Number(subAmount))}
+                                    </div>
+                                    <div>
+                                    {" Subscribers"}
+                                    </div>
+                                </div>
+                            </div>
                         </Card.Title>
 
                         <hr></hr>
 
+                        <div style={{display: "flex", justifyContent: "center"}}>
                         <Stack gap={1}>
 
-                        <ListGroup horizontal={'sm'} >
+                        <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}} >
                             <ListGroup.Item variant="info" style={{width:"120px", textAlign:"center"}}>Amount</ListGroup.Item>
                             <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center"}}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
-                        
+
                     
-                        <ListGroup horizontal={'sm'} >
+                        <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
                             <ListGroup.Item variant="info" style={{width:"120px", textAlign:"center"}}>Payday</ListGroup.Item>
                             <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center"}}>{paydayString}</ListGroup.Item>
                         </ListGroup>
+
+                        </Stack>
+                        </div>
 
                         <hr></hr>
 
@@ -159,7 +178,7 @@ const ProviderSubCards = (props) => {
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button>
                         </div>
-                        </Stack>
+                        
                     </Card.Body>
                 </Card>
             );

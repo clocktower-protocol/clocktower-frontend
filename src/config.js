@@ -82,19 +82,23 @@ export const WALLET_LOOKUP = [
 export const FREQUENCY_LOOKUP = [
   {
     index: 0,
-    name: "Weekly"
+    name: "Weekly",
+    name2: "Week"
   },
   {
     index: 1,
-    name: "Monthly"
+    name: "Monthly",
+    name2:"Month"
   },
   {
     index: 2,
-    name: "Quarterly"
+    name: "Quarterly",
+    name2: "Quarter"
   },
   {
     index: 3,
-    name: "Yearly"
+    name: "Yearly",
+    name2: "Year"
   }
 ]
 

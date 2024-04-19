@@ -12,6 +12,7 @@ import CreateSubForm from "../components/CreateSubForm";
 import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
+import ProviderSubCards from "../components/ProviderSubCards";
 
 //TODO: getAccount() is called too many times need to cache result
 
@@ -884,6 +885,7 @@ const alertMaker = () => {
                                     <div className="provHistory">
                                         
                                         {!isTableEmpty1(provSubscriptionArray) ?
+                                        
                                         <SubscriptionsTable
                                             subscriptionArray = {provSubscriptionArray}
                                             isAdmin = {false}
@@ -894,6 +896,15 @@ const alertMaker = () => {
                                             setEditSubParams = {setEditSubParams}
                                             setLinkDisplayed = {setLinkDisplayed}
                                         />
+                                        : <div></div>}
+                                        
+                                        {!isTableEmpty1(provSubscriptionArray) ?
+                                        <div style={{justifyContent:"center", display:"flex"}}>
+                                            <ProviderSubCards
+                                                subscriptionArray = {provSubscriptionArray}
+                                                detailsArray = {provDetailsArray}
+                                            />
+                                        </div>
                                         : <div></div>}
                                         
                                     </div>

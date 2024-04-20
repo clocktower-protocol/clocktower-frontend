@@ -1,14 +1,14 @@
 import React from 'react';
 import {Button, Table, Card, Stack, Col, Row, ListGroup} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DOMAIN} from "../config";
 //import Web3 from 'web3'
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
-import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
+//import dayjs from 'dayjs'
+//import advancedFormat from 'dayjs/plugin/advancedFormat'
 
-dayjs.extend(advancedFormat)
+//dayjs.extend(advancedFormat)
 
 const ProviderSubCards = (props) => {
 
@@ -18,6 +18,7 @@ const ProviderSubCards = (props) => {
 
     const cards = []
 
+    const navigate = useNavigate();
 
      //checks for empty array
     if(!Array.isArray(subscriptionArray) || (subscriptionArray.length <= 0)) {
@@ -158,14 +159,19 @@ const ProviderSubCards = (props) => {
                         <Stack gap={1}>
 
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}} >
-                            <ListGroup.Item variant="info" style={{width:"120px", textAlign:"center"}}>Amount</ListGroup.Item>
-                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center"}}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
+                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Amount</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
 
                     
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
-                            <ListGroup.Item variant="info" style={{width:"120px", textAlign:"center"}}>Payday</ListGroup.Item>
-                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center"}}>{paydayString}</ListGroup.Item>
+                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Payday</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{paydayString}</ListGroup.Item>
+                        </ListGroup>
+
+                        <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
+                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Pay Per Period</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
 
                         </Stack>
@@ -174,6 +180,7 @@ const ProviderSubCards = (props) => {
                         <hr></hr>
 
                         <div style={{display: "flex", justifyContent: "space-evenly"}}>
+                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => navigate(`../history/${subscriptionArray[i].subscription.id}`)}>History</Button>
                             <Button style ={{width: "100%", padding:'5px'}} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button>

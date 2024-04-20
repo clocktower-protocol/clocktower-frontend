@@ -338,7 +338,7 @@ const getProviderSubs = useCallback(async () => {
            address: CLOCKTOWERSUB_ADDRESS,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',
-           args: [false, account]
+           args: [false, address]
        })
        .then(async function(result) {
            accountSubscriptions = result
@@ -346,6 +346,8 @@ const getProviderSubs = useCallback(async () => {
            //loops through each subscription
            for (let i = 0; i < accountSubscriptions.length; i++) {
             
+               console.log(i+1)
+               console.log(address)
                await publicClient.getLogs({
                    address: CLOCKTOWERSUB_ADDRESS,
                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -355,7 +357,7 @@ const getProviderSubs = useCallback(async () => {
                }) 
                .then(async function(events){
                
-                    
+                
                    //checks for latest update by getting highest timestamp
                    if(events !== undefined) {
                        
@@ -405,7 +407,7 @@ const getSubscriberSubs = useCallback(async () => {
        address: CLOCKTOWERSUB_ADDRESS,
        abi: CLOCKTOWERSUB_ABI,
        functionName: 'getAccountSubscriptions',
-       args: [true, account]
+       args: [true, address]
    })
    .then(async function(result) {
        accountSubscriptions = result
@@ -612,6 +614,8 @@ const isTableEmpty1 = (subscriptionArray) => {
 
 const isTableEmpty2 = (subscriptionArray2) => {
     let count = 0
+    //console.log(subscriptionArray2)
+    //console.log("check")
     if(subscriptionArray2.length === 0){
         return true
     } else {

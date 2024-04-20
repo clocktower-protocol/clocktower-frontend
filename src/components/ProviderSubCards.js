@@ -143,9 +143,14 @@ const ProviderSubCards = (props) => {
                                 </div>
                                 <div style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px"}}>
                                     
-                                    <div style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}>
-                                    {String(Number(totalSubscribers) * Number(subAmount))}
+                                    {Number(totalSubscribers) > 0 ?
+                                    <div style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
+                                    <Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link>
                                     </div>
+                                    : 
+                                    <div style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
+                                    {String(Number(totalSubscribers) * Number(subAmount))}
+                                    </div>}
                                     <div>
                                     {" Subscribers"}
                                     </div>

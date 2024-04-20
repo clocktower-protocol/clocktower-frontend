@@ -145,7 +145,6 @@ const Account = () => {
 
     //hook for calling wallet to cancel sub
     useEffect(() => {
-        console.log("test")
         //calls wallet
         if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
             setToastHeader("Waiting on wallet transaction...")
@@ -159,14 +158,14 @@ const Account = () => {
             })
         } else {
             isMounting.current = false
-            console.log("here")
         }
     },[cancelledSub, writeContract])
 
     //hook for calling wallet to unsubscribe
     useEffect(() => {
+        console.log(unsubscribedSub)
         //calls wallet
-        if(!isMounting.current && Object.keys(unsubscribedSub).length !== 0) {
+        if(Object.keys(unsubscribedSub).length !== 0) {
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({

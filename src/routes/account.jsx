@@ -1,7 +1,7 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner} from 'react-bootstrap';
+import {Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -71,8 +71,10 @@ const Account = () => {
     const [preEditDetails, setPreEditDetails] = useState({})
     const [editSubParams, setEditSubParams] = useState({})
     const [editResult, setEditResult] = useState({})
-    //Display Link
+    //display Link
     const [linkDisplayed, setLinkDisplayed] = useState("")
+    //page formatting 
+    const [isTableView, setIsTableView] = useState(true)
     //link functions
     //const navigate = useNavigate();
     //const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
@@ -887,8 +889,13 @@ const alertMaker = () => {
                             >
                                 <Tab eventKey="provider" title="Created">
                                     <div className="provHistory">
-                                        
-                                        {!isTableEmpty1(provSubscriptionArray) ?
+
+                                        <ButtonGroup aria-label="Basic example">
+                                            <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
+                                            <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
+                                        </ButtonGroup>
+                            
+                                        {!isTableEmpty1(provSubscriptionArray) && isTableView ?
                                         
                                         <SubscriptionsTable
                                             subscriptionArray = {provSubscriptionArray}
@@ -902,7 +909,7 @@ const alertMaker = () => {
                                         />
                                         : <div></div>}
                                         
-                                        {!isTableEmpty1(provSubscriptionArray) ?
+                                        {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
                                         <div style={{justifyContent:"center", display:"flex"}}>
                                             <ProviderSubCards
                                                 subscriptionArray = {provSubscriptionArray}

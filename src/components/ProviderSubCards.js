@@ -129,7 +129,7 @@ const ProviderSubCards = (props) => {
                 <Card style={{width:"500px"}}>
                     <Card.Body>
                         <Card.Title >
-                            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap"}}>
+                            <div key={i+1} style={{display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap"}}>
                             <Avatar
                                 size={50}
                                 name={subscriptionArray[i].subscription.id}
@@ -138,29 +138,29 @@ const ProviderSubCards = (props) => {
                                 colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
                             />
                             
-                                <div>
+                                <div key={(i+1)*2}>
                                     {description}
                                 </div>
-                                <div style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px"}}>
+                                <div key={(i+1)*3} style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px"}}>
                                     
                                     {Number(totalSubscribers) > 0 ?
-                                    <div style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
+                                    <div key={(i+1)*4} style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
                                     <Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link>
                                     </div>
                                     : 
-                                    <div style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
+                                    <div key={(i+1)*4} style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
                                     {String(Number(totalSubscribers) * Number(subAmount))}
                                     </div>}
-                                    <div>
+                                    <div key={(i+1)*5}>
                                     {" Subscribers"}
                                     </div>
                                 </div>
                             </div>
                         </Card.Title>
 
-                        <hr></hr>
+                        <hr key={(i+1)*6}></hr>
 
-                        <div style={{display: "flex", justifyContent: "center"}}>
+                        <div key={(i+1)*7} style={{display: "flex", justifyContent: "center"}}>
                         <Stack gap={1}>
 
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}} >
@@ -182,9 +182,9 @@ const ProviderSubCards = (props) => {
                         </Stack>
                         </div>
 
-                        <hr></hr>
+                        <hr key={(i+1)*8}></hr>
 
-                        <div style={{display: "flex", justifyContent: "space-evenly"}}>
+                        <div key={(i+1)*9} style={{display: "flex", justifyContent: "space-evenly"}}>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => navigate(`../history/${subscriptionArray[i].subscription.id}`)}>History</Button>
                             <Button style ={{width: "100%", padding:'5px'}} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button>
@@ -198,7 +198,7 @@ const ProviderSubCards = (props) => {
     }
 
     return (
-        <div>{cards}</div>
+        <div key={"cards"}>{cards}</div>
     )
 }
 

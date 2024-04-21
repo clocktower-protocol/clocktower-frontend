@@ -40,9 +40,11 @@ const PublicSubscription = () => {
     const [showToast, setShowToast] = useState(false)
     const [toastHeader, setToastHeader] = useState("")
     const [toastBody, setToastBody] = useState("")
+    const [isAllowanceSet, setAllowance] = useState(false)
+    //const [allowanceBalance, setAllowanceBalance] = useState(0n)
    
    
-    const { data, writeContract } = useWriteContract()
+    const { data, variables, writeContract } = useWriteContract()
 
     
     const subscribeWait = useWaitForTransactionReceipt({
@@ -170,7 +172,6 @@ const PublicSubscription = () => {
             getSub()
             isSubscribed()
             isProviderSame()
-
         }
 
     }, [account, d, f, id, publicClient, setAlert, setAlertText]);
@@ -186,13 +187,14 @@ const PublicSubscription = () => {
         }
     }
 
-    //handles subscription button click and navigation
+
+    //subscribes to contract
     const subscribe = useCallback(async () => {
 
         //first requires user to approve unlimited allowance
         setToastHeader("Waiting on wallet transaction...")
         setShowToast(true)
-        
+
         //checks if user already has allowance
         await fetchToken()
         const allowanceBalance = await readContract(config, {
@@ -201,25 +203,17 @@ const PublicSubscription = () => {
             functionName: 'allowance',
             args: [address, CLOCKTOWERSUB_ADDRESS]
         })
-
-        //console.log(allowanceBalance)
         
         if(BigInt(allowanceBalance) < 100000000000000000000000n) {
             //if allowance has dropped below 100,000 site requests infinite approval again
+            
             writeContract({
                 address: token,
                 abi: erc20Abi,
                 functionName: 'approve',
                 args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
             })
-             //subscribes
-            writeContract({
-            address: CLOCKTOWERSUB_ADDRESS,
-            abi: CLOCKTOWERSUB_ABI,
-            functionName: 'subscribe',
-            args: [subscription]
-        })
-    
+           
         } else {
 
             //subscribes
@@ -243,11 +237,7 @@ const PublicSubscription = () => {
      useEffect(() => {
 
         if(subscribeWait.isLoading) {
-            /*
-            setAlertType("warning")
-            setAlert(true)
-            setAlertText("Transaction Pending...")
-            */
+        
             setToastHeader("Transaction Pending")
             console.log("pending")
         }
@@ -256,13 +246,14 @@ const PublicSubscription = () => {
 
             //turns off alert
             setShowToast(false)
-            /*
-            setAlert(false)
-            setAlertType("danger")
-            console.log("done")
-            */
 
-            sendToAccount()
+            //if approval is set calls subscribe function again
+            if(variables.functionName === "approve"){
+                subscribe()
+                
+            } else {
+                sendToAccount()
+            }
         }
     },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, setAlert, setAlertText])
    

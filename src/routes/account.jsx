@@ -163,7 +163,6 @@ const Account = () => {
 
     //hook for calling wallet to unsubscribe
     useEffect(() => {
-        console.log(unsubscribedSub)
         //calls wallet
         if(Object.keys(unsubscribedSub).length !== 0) {
             setToastHeader("Waiting on wallet transaction...")

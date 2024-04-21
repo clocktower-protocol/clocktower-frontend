@@ -113,7 +113,7 @@ const Root = () => {
   
    return (
         <>
-        <div>
+        <div key={"root"}>
           <Modal show={showWalletChoice} onHide={handleClose} >
           <Modal.Header closeButton>
             <Modal.Title>Choose a Wallet</Modal.Title>
@@ -162,8 +162,8 @@ const Root = () => {
          
         </Modal>
         </div>
-        <div className="topDiv">
-          <div className="navBar">
+        <div key={"topDiv"} className="topDiv">
+          <div key={"navBarKey"} className="navBar">
           <Navbar key="navBar" bg="dark" variant="dark" expand="lg" >
             <Container key="navContainer1">
               <LinkContainer to="/">
@@ -211,12 +211,12 @@ const Root = () => {
               </Container>
       </Navbar>
       </div>
-      <div className="sideNav">
-        <div className="sideNav2">
+      <div key={"sideNav"} className="sideNav">
+        <div key={"sideNav2"} className="sideNav2">
         <Navbar key="navBar" bg="dark" variant="dark" expand="lg" style={{justifyContent: "center"}}>
         <Nav defaultActiveKey="/home" className="flex-column">
           
-          <div className='sideButtons'>
+          <div key={"sideButtons"} className='sideButtons'>
           <Stack gap={3}>
             <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
             <Button variant="outline-info" onClick={handleOnClickCalendar}>Calendar</Button>{' '}
@@ -228,7 +228,7 @@ const Root = () => {
         </Nav>
         </Navbar>
         </div>
-        <div id="detail" className="mainDiv">
+        <div key={"mainDiv"} id="detail" className="mainDiv">
           
           {!loggedIn? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account]}/>}
         

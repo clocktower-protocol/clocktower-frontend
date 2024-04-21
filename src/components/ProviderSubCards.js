@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Table, Card, Stack, Col, Row, ListGroup} from 'react-bootstrap';
 import {Link, useNavigate} from "react-router-dom";
-import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DOMAIN} from "../config";
+import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../config";
 //import Web3 from 'web3'
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
@@ -122,7 +122,14 @@ const ProviderSubCards = (props) => {
             if(subscriptionArray[i].subscription.frequency > 0){
                 paydayString = dayEndString(String(subscriptionArray[i].subscription.dueDay)) + " Day of the " + frequencyLookup(subscriptionArray[i].subscription.frequency)
             } else {
-                //TODO: weekly
+                //TODO: need to test
+                let index = subscriptionArray[i].subscription.dueDay
+                if(subscriptionArray[i].subscription.dueDay === 7){
+                    index = 0
+                }
+
+                paydayString = "Every " + DAY_OF_WEEK_LOOKUP[index].name
+                console.log(subscriptionArray[i].subscription.dueDay)
             }
             
             cards.push(

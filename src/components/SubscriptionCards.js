@@ -10,7 +10,7 @@ import Avatar from "boring-avatars"
 
 //dayjs.extend(advancedFormat)
 
-const ProviderSubCards = (props) => {
+const SubscriptionCards = (props) => {
 
     const subscriptionArray = props.subscriptionArray
 
@@ -122,7 +122,7 @@ const ProviderSubCards = (props) => {
             if(subscriptionArray[i].subscription.frequency > 0){
                 paydayString = dayEndString(String(subscriptionArray[i].subscription.dueDay)) + " Day of the " + frequencyLookup(subscriptionArray[i].subscription.frequency)
             } else {
-                //TODO: need to test
+                //weekly
                 let index = subscriptionArray[i].subscription.dueDay
                 if(subscriptionArray[i].subscription.dueDay === 7){
                     index = 0
@@ -133,7 +133,7 @@ const ProviderSubCards = (props) => {
             }
             
             cards.push(
-                <Card style={{width:"500px"}}>
+                <Card style={{width:"500px", marginBottom:"20px"}}>
                     <Card.Body>
                         <Card.Title >
                             <div key={i+1} style={{display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap"}}>
@@ -148,6 +148,7 @@ const ProviderSubCards = (props) => {
                                 <div key={(i+1)*2}>
                                     {description}
                                 </div>
+                                {props.isProvider ?
                                 <div key={(i+1)*3} style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px"}}>
                                     
                                     {Number(totalSubscribers) > 0 ?
@@ -162,6 +163,7 @@ const ProviderSubCards = (props) => {
                                     {" Subscribers"}
                                     </div>
                                 </div>
+                                : <div></div>}
                             </div>
                         </Card.Title>
 
@@ -181,10 +183,12 @@ const ProviderSubCards = (props) => {
                             <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{paydayString}</ListGroup.Item>
                         </ListGroup>
 
+                        {props.isProvider ?
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
                             <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Pay Per Period</ListGroup.Item>
                             <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
+                        : <div></div>}
 
                         </Stack>
                         </div>
@@ -192,10 +196,19 @@ const ProviderSubCards = (props) => {
                         <hr key={(i+1)*8}></hr>
 
                         <div key={(i+1)*9} style={{display: "flex", justifyContent: "space-evenly"}}>
+                            {props.isProvider ?
+                            <>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => navigate(`../history/${subscriptionArray[i].subscription.id}`)}>History</Button>
-                            <Button style ={{width: "100%", padding:'5px'}} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
-                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button>
-                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button>
+                            <Button style={{ width: "100%", padding: '5px' }} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
+                            <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.setEditSubParams({ id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay })}>Edit</Button>
+                            <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button>
+                            </>
+                            : 
+                            <>
+                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => navigate(`../subscription/${subscriptionArray[i].subscription.id}`)}>History</Button>
+                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setUnsubscribedSub(subscriptionArray[i].subscription)}>Unsubscribe</Button>
+                            </>
+                            }
                         </div>
                         
                     </Card.Body>
@@ -209,4 +222,4 @@ const ProviderSubCards = (props) => {
     )
 }
 
-export default ProviderSubCards
+export default SubscriptionCards

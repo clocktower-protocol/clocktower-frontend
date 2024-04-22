@@ -12,7 +12,7 @@ import CreateSubForm from "../components/CreateSubForm";
 import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
-import ProviderSubCards from "../components/ProviderSubCards";
+import SubscriptionCards from "../components/SubscriptionCards";
 
 //TODO: getAccount() is called too many times need to cache result
 
@@ -75,6 +75,7 @@ const Account = () => {
     const [linkDisplayed, setLinkDisplayed] = useState("")
     //page formatting 
     const [isTableView, setIsTableView] = useState(true)
+    const [tab, setTab] = useState('created')
     //link functions
     //const navigate = useNavigate();
     //const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
@@ -886,12 +887,14 @@ const alertMaker = () => {
                                 <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
                             </ButtonGroup>
                             <Tabs
-                                defaultActiveKey="provider"
+                                defaultActiveKey="created"
+                                activeKey={tab}
+                                onSelect={(k) => setTab(k)}
                                 id="account-tabs"
                                 className="mb-3"
                                 justify
                             >
-                                <Tab eventKey="provider" title="Created">
+                                <Tab eventKey="created" title="Created">
                                     <div className="provHistory">
 
                             
@@ -911,13 +914,14 @@ const alertMaker = () => {
                                         
                                         {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
                                         <div style={{justifyContent:"center", display:"flex"}}>
-                                            <ProviderSubCards
+                                            <SubscriptionCards
                                                 subscriptionArray = {provSubscriptionArray}
                                                 detailsArray = {provDetailsArray}
                                                 setCancelledSub = {setCancelledSub}
                                                 subEditDetailsHandleShow = {subEditDetailsHandleShow}
                                                 setEditSubParams = {setEditSubParams}
                                                 setLinkDisplayed = {setLinkDisplayed}
+                                                isProvider = {true}
                                             />
                                         </div>
                                         : <div></div>}
@@ -925,11 +929,11 @@ const alertMaker = () => {
                                     </div>
                                 </Tab>
                                
-                                <Tab eventKey="subscriber" title="Subscribed To">
+                                <Tab eventKey="subscribed" title="Subscribed To">
                                     <div className="subHistory">
                                    
                                         
-                                        {!isTableEmpty2(subscribedSubsArray) ?
+                                        {!isTableEmpty2(subscribedSubsArray) && isTableView ?
                                         <SubscriptionsTable
                                             subscriptionArray = {subscribedSubsArray}
                                             detailsArray = {subscribedDetailsArray}
@@ -938,6 +942,23 @@ const alertMaker = () => {
                                             role = {2}
                                             setUnsubscribedSub = {setUnsubscribedSub}
                                         />
+                                        : <div></div>}
+
+                                        {!isTableEmpty2(subscribedSubsArray) && !isTableView ?
+                                        <div style={{justifyContent:"center", display:"flex"}}>
+                                            <SubscriptionCards
+                                                subscriptionArray = {subscribedSubsArray}
+                                                detailsArray = {subscribedDetailsArray}
+                                                /*
+                                                setCancelledSub = {setCancelledSub}
+                                                subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                                                setEditSubParams = {setEditSubParams}
+                                                setLinkDisplayed = {setLinkDisplayed}
+                                                */
+                                                setUnsubscribedSub = {setUnsubscribedSub}
+                                                isProvider = {false}
+                                            />
+                                        </div>
                                         : <div></div>}
                                         
                                     </div>

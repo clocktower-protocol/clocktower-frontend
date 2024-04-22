@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DOMAIN} from "../config";
 //import Web3 from 'web3'
 import {formatEther} from 'viem'
+import Avatar from "boring-avatars"
 
 const SubscriptionsTable = (props) => {
 
@@ -90,6 +91,15 @@ const SubscriptionsTable = (props) => {
         }
 
         row.push(
+            <td key={String(subscriptionArray[i].subscription.id)+8}>{ 
+            <Avatar
+              size={50}
+              name={subscriptionArray[i].subscription.id}
+              square={true}
+              variant="marble"
+              colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+            />
+            }</td>,
             <td key={String(subscriptionArray[i].subscription.id)+1}>{detailsArray[i].description}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+2}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
@@ -154,18 +164,19 @@ const SubscriptionsTable = (props) => {
                 {isAdmin
                 ? <th key="IdHead">ID</th> : ""
                 }
+                <th key="avatarhead"></th>
                 <th key="descriptionHead">Description</th>
                 <th key="dateHead">Amount</th>
                 <th key="amountHead">Frequency</th>
                 <th key="statusHead">Due Day</th>
                 {role === 1 || role === 0
-                ? <th key="urlHead">URL</th> : ""
+                ? <th key="urlHead">Link</th> : ""
                 }
                 {role === 1 || (role === 0 && !bySubscriber)
                 ? <th key="totalSubs">Subscribers</th> : ""
                 }
                 {role === 1 || (role === 0 && !bySubscriber)
-                ? <th key="incomeHead">Income per Period</th> : ""
+                ? <th key="incomeHead">Pay per Period</th> : ""
                 }
                 {isAdmin && bySubscriber
                 ? <th key="feeBalanceHead">Fee Balance</th> : ""

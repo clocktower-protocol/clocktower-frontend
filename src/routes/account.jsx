@@ -148,7 +148,7 @@ const Account = () => {
     //hook for calling wallet to cancel sub
     useEffect(() => {
         //calls wallet
-        if(!isMounting.current && Object.keys(cancelledSub).length !== 0) {
+        if(Object.keys(cancelledSub).length !== 0) {
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             //cancelSubscription.write()
@@ -716,7 +716,7 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={showLinkDisplay} size="xl" onHide={linkDisplayClose} centered>
+                            <Modal show={showLinkDisplay} size="lg" onHide={linkDisplayClose} centered>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Subscription Link</Modal.Title>
                                 </Modal.Header>
@@ -881,6 +881,10 @@ const alertMaker = () => {
                          : ""}
                         {a === account ?
                         <div>    
+                             <ButtonGroup aria-label="Basic example" style={{paddingLeft: "20px"}}>
+                                <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
+                                <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
+                            </ButtonGroup>
                             <Tabs
                                 defaultActiveKey="provider"
                                 id="account-tabs"
@@ -890,10 +894,6 @@ const alertMaker = () => {
                                 <Tab eventKey="provider" title="Created">
                                     <div className="provHistory">
 
-                                        <ButtonGroup aria-label="Basic example">
-                                            <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
-                                            <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
-                                        </ButtonGroup>
                             
                                         {!isTableEmpty1(provSubscriptionArray) && isTableView ?
                                         

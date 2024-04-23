@@ -235,8 +235,10 @@ const SubscriptionCards = (props) => {
                         </Stack>
                         </div>
 
-                        <hr key={(i+1)*8}></hr>
-
+                        {props.isProvider && props.isLink ?
+                            <></> :
+                            <hr key={(i+1)*8}></hr>
+                        }
                         <div key={(i+1)*9} style={{display: "flex", justifyContent: "space-evenly"}}>
                             {props.isProvider && !props.isLink ?
                             <>

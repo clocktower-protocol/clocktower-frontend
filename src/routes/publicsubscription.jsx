@@ -285,6 +285,7 @@ const PublicSubscription = () => {
                                 */}
                         </Toast>
              </ToastContainer>
+            {/*}
                 <div className="publicSub">
                 <Card style={{ width: '35rem' }}>
                     <Card.Body>
@@ -307,9 +308,9 @@ const PublicSubscription = () => {
                     : ""}
                    
                 </Card>
-                
                 </div>
-                <div style={{justifyContent:"center", display:"flex"}}>
+                 */}
+                <div style={{justifyContent:"center", display:"flex", paddingTop:"30px"}}>
                     <SubscriptionCards
                         subscriptionArray = {formattedSub}
                         detailsArray = {formattedDetails}

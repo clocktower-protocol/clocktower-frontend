@@ -347,8 +347,8 @@ const getProviderSubs = useCallback(async () => {
            //loops through each subscription
            for (let i = 0; i < accountSubscriptions.length; i++) {
             
-               console.log(i+1)
-               console.log(address)
+               //console.log(i+1)
+               //console.log(address)
                await publicClient.getLogs({
                    address: CLOCKTOWERSUB_ADDRESS,
                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -497,7 +497,6 @@ const getSub = useCallback(async (editSubParams) => {
             }    
         })
         setEditSub(result)
-        console.log(editSubParams)
         //subEditDetailsHandleShow()
     })
 },[publicClient])

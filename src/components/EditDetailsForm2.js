@@ -8,8 +8,8 @@ const EditDetailsForm2 = (props) => {
     const [invalidDescription, setInvalidDescription] = useState(false)
     const [invalidUrl, setInvalidUrl] = useState(false)
     const [allValidated, setAllValidated] = useState(false)
-    const [subDescription, setSubDescription] = useState("")
-    const [subUrl, setSubUrl] = useState("")
+    const [subDescription, setSubDescription] = useState(props.preEditDetails.description)
+    const [subUrl, setSubUrl] = useState(props.preEditDetails.url)
 
     
     //disables submit button if all fields are not validated

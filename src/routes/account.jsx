@@ -900,16 +900,18 @@ const alertMaker = () => {
                             
                                         {!isTableEmpty1(provSubscriptionArray) && isTableView ?
                                         
-                                        <SubscriptionsTable
-                                            subscriptionArray = {provSubscriptionArray}
-                                            isAdmin = {false}
-                                            role = {1}
-                                            detailsArray = {provDetailsArray}
-                                            setCancelledSub = {setCancelledSub}
-                                            subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                                            setEditSubParams = {setEditSubParams}
-                                            setLinkDisplayed = {setLinkDisplayed}
-                                        />
+                                        <div style={{paddingLeft: "10px", paddingRight: "20px"}}>
+                                            <SubscriptionsTable
+                                                subscriptionArray = {provSubscriptionArray}
+                                                isAdmin = {false}
+                                                role = {1}
+                                                detailsArray = {provDetailsArray}
+                                                setCancelledSub = {setCancelledSub}
+                                                subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                                                setEditSubParams = {setEditSubParams}
+                                                setLinkDisplayed = {setLinkDisplayed}
+                                            />
+                                        </div>
                                         : <div></div>}
                                         
                                         {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
@@ -936,14 +938,16 @@ const alertMaker = () => {
                                    
                                         
                                         {!isTableEmpty2(subscribedSubsArray) && isTableView ?
-                                        <SubscriptionsTable
-                                            subscriptionArray = {subscribedSubsArray}
-                                            detailsArray = {subscribedDetailsArray}
-                                        // unsubscribe = {unsubscribe}
-                                            account = {account}
-                                            role = {2}
-                                            setUnsubscribedSub = {setUnsubscribedSub}
-                                        />
+                                        <div style={{paddingLeft: "10px", paddingRight: "20px"}}>
+                                            <SubscriptionsTable
+                                                subscriptionArray = {subscribedSubsArray}
+                                                detailsArray = {subscribedDetailsArray}
+                                            // unsubscribe = {unsubscribe}
+                                                account = {account}
+                                                role = {2}
+                                                setUnsubscribedSub = {setUnsubscribedSub}
+                                            />
+                                        </div>
                                         : <div></div>}
 
                                         {!isTableEmpty2(subscribedSubsArray) && !isTableView ?

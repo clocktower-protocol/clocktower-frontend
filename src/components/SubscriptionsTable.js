@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DOMAIN} from "../config";
+import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../config";
 //import Web3 from 'web3'
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
@@ -80,6 +80,18 @@ const SubscriptionsTable = (props) => {
           totalSubscribers = subscriptionArray[i].totalSubscribers
         }
 
+        let dueDay = subscriptionArray[i].subscription.dueDay
+        //changes weekday number to weekday name
+        if(subscriptionArray[i].subscription.frequency === 0) {
+
+          let index = subscriptionArray[i].subscription.dueDay
+          if(subscriptionArray[i].subscription.dueDay === 7){
+              index = 0
+          }
+
+          dueDay = DAY_OF_WEEK_LOOKUP[index].name
+        }
+
        // console.log(subscriptionArray[i].subscription.amount)
 
         let subAmount = formatEther(String(subscriptionArray[i].subscription.amount))
@@ -103,7 +115,7 @@ const SubscriptionsTable = (props) => {
             <td key={String(subscriptionArray[i].subscription.id)+1}>{detailsArray[i].description}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+2}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
-            <td key={String(subscriptionArray[i].subscription.id)+4}>{subscriptionArray[i].subscription.dueDay}</td>,
+            <td key={String(subscriptionArray[i].subscription.id)+4}>{dueDay}</td>,
         )
         if(role === 0 && bySubscriber) {
           row.push(
@@ -158,7 +170,7 @@ const SubscriptionsTable = (props) => {
     }
 
     tableTop.push(
-        <Table key="table" striped bordered hover size="sm" className="provTable">
+        <Table key="table" striped bordered hover size="sm" className="provTable" >
           <thead key="tableHead">
             <tr key="headRow" align="center">
                 {isAdmin

@@ -103,10 +103,18 @@ const SubscriptionCards = (props) => {
 
             let totalSubscribers = 0;
 
-            //Sets pay string depending on if this is a link or not
+            let urlDisplayed = props.detailsArray[i].url
+
+            //if this is a link card
             if(props.isLink) {
+                //Sets pay string depending on if this is a link or not
                 dueString = "Due"
+                //shortens url displayed if too long
+                if(props.detailsArray[i].url.split("").length > 40) {
+                    urlDisplayed = props.detailsArray[i].url.slice(0,40) + "..."
+                }
             }
+
         
             if(typeof subscriptionArray[i].totalSubscribers !== 'undefined') {
                 totalSubscribers = subscriptionArray[i].totalSubscribers
@@ -214,7 +222,7 @@ const SubscriptionCards = (props) => {
                             <>
                                 <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
                                     <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>URL</ListGroup.Item>
-                                    <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{props.detailsArray[i].url}</ListGroup.Item>
+                                    <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}><Link to={props.detailsArray[i].url}>{urlDisplayed}</Link></ListGroup.Item>
                                 </ListGroup> 
                                 <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
                                     <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>Provider</ListGroup.Item>

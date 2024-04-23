@@ -139,15 +139,21 @@ const SubscriptionCards = (props) => {
                 //console.log(subscriptionArray[i].subscription.dueDay)
             }
 
-            const textBarWidth = "300px"
+            //dynamic styling based on if its on the link page or not
+            let textBarWidth = "300px"
+            let titleBarWidth = "140px"
             let linkNamePadding = "0px"
+            let cardWidth = "500px"
             //dynamic name padding
             if(props.isLink) {
                 linkNamePadding = "78px"
+                titleBarWidth = "95px"
+                textBarWidth = "400px"
+                cardWidth = "550px"
             }
             
             cards.push(
-                <Card style={{width:"500px", marginBottom:"20px"}}>
+                <Card style={{width: cardWidth, marginBottom:"20px"}}>
                     <Card.Body>
                         <Card.Title >
                             <div key={i+1} style={{display: "flex", flexGrow: "1", alignItems: "center", flexWrap: "wrap"}}>
@@ -187,19 +193,19 @@ const SubscriptionCards = (props) => {
                         <Stack gap={1}>
 
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}} >
-                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Amount</ListGroup.Item>
+                            <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>Amount</ListGroup.Item>
                             <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
 
                     
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
-                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>{dueString}</ListGroup.Item>
+                            <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>{dueString}</ListGroup.Item>
                             <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{paydayString}</ListGroup.Item>
                         </ListGroup>
 
-                        {props.isProvider ?
+                        {props.isProvider && !props.isLink ?
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
-                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Pay Per Period</ListGroup.Item>
+                            <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>Pay Per Period</ListGroup.Item>
                             <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
                         : <></>}
@@ -207,11 +213,11 @@ const SubscriptionCards = (props) => {
                         {props.isLink ? 
                             <>
                                 <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
-                                    <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>URL</ListGroup.Item>
+                                    <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>URL</ListGroup.Item>
                                     <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{props.detailsArray[i].url}</ListGroup.Item>
                                 </ListGroup> 
                                 <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
-                                    <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Provider</ListGroup.Item>
+                                    <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>Provider</ListGroup.Item>
                                     <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}><Link to={`../account/${subscriptionArray[i].subscription.provider}`}>{subscriptionArray[i].subscription.provider}</Link></ListGroup.Item>
                                 </ListGroup> 
                             </>

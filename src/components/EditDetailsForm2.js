@@ -46,6 +46,9 @@ const EditDetailsForm2 = (props) => {
     const fetchDueDay = () => {
         //weekly
         if(props.editSub.frequency === 0){
+            if(props.editSub.dueDay === 7) {
+                return DAY_OF_WEEK_LOOKUP[0].name
+            }
             return DAY_OF_WEEK_LOOKUP[props.editSub.dueDay].name
         } else {
             return props.editSub.dueDay

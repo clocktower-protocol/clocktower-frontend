@@ -277,7 +277,7 @@ const SubscriptionCards = (props) => {
     }
 
     return (
-        cards
+        <div>{cards}</div>
     )
 }
 

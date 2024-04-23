@@ -5,6 +5,7 @@ import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../con
 //import Web3 from 'web3'
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
+import { v4 as uuidv4 } from 'uuid'
 
 const SubscriptionsTable = (props) => {
 
@@ -98,12 +99,12 @@ const SubscriptionsTable = (props) => {
 
         if(role === 0) {
           row.push(
-            <td key={String(subscriptionArray[i].subscription.id)+0}>{subscriptionArray[i].subscription.id.slice(0,8) + "..."}</td>
+            <td key={uuidv4()}>{subscriptionArray[i].subscription.id.slice(0,8) + "..."}</td>
           )
         }
 
         row.push(
-            <td key={String(subscriptionArray[i].subscription.id)+8}>{ 
+            <td key={uuidv4()}>{ 
             <Avatar
               size={50}
               name={subscriptionArray[i].subscription.id}
@@ -112,54 +113,54 @@ const SubscriptionsTable = (props) => {
               colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
             />
             }</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+1}>{detailsArray[i].description}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+2}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+3}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
-            <td key={String(subscriptionArray[i].subscription.id)+4}>{dueDay}</td>,
+            <td key={uuidv4()}>{detailsArray[i].description}</td>,
+            <td key={uuidv4()}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={uuidv4()}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
+            <td key={uuidv4()}>{dueDay}</td>,
         )
         if(role === 0 && bySubscriber) {
           row.push(
-            <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}>{Number(formatEther(String(props.feeObjects[i].feeBalance))).toFixed(4)}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+9}>{Math.floor(props.feeObjects[i].remainingCycles)}</td>,
+            <td key={uuidv4()}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
+            <td key={uuidv4()}>{Number(formatEther(String(props.feeObjects[i].feeBalance))).toFixed(4)}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={uuidv4()}>{Math.floor(props.feeObjects[i].remainingCycles)}</td>,
           )
         }
         if(role === 0 && !bySubscriber) {
           row.push(
-            <td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}>{Number(totalSubscribers)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>
+            <td key={uuidv4()}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
+            <td key={uuidv4()}>{Number(totalSubscribers)}</td>,
+            <td key={uuidv4()}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>
           )
         }
         if(role === 1 && Number(totalSubscribers) > 0) {
             row.push(
             //<td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+5}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" variant="outline-info" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button></td>,
+            <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
+            <td key={uuidv4()}><Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link></td>,
+            <td key={uuidv4()}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={uuidv4()}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
+            <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button></td>,
             //<td key={String(subscriptionArray[i].subscription.id)+9}><Link to={`../editdetails/${subscriptionArray[i].subscription.id}`}>Edit</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+10}><Button type="submit" variant="outline-info" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button></td>
+            <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
         }
         if(role === 1 && Number(totalSubscribers) === 0) {
           row.push(
             //<td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+5}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+6}>{Number(totalSubscribers)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+7}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
-            <td key={String(subscriptionArray[i].subscription.id)+8}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+9}><Button type="submit" variant="outline-info" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button></td>,
+            <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
+            <td key={uuidv4()}>{Number(totalSubscribers)}</td>,
+            <td key={uuidv4()}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={uuidv4()}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
+            <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setEditSubParams({id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay})}>Edit</Button></td>,
             //<td key={String(subscriptionArray[i].subscription.id)+9}><Link to={`../editdetails/${subscriptionArray[i].subscription.id}`}>Edit</Link></td>,
-            <td key={String(subscriptionArray[i].subscription.id)+10}><Button type="submit"  variant="outline-info" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button></td>
+            <td key={uuidv4()}><Button type="submit"  variant="outline-info" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button></td>
             )
         }
 
         if(role === 2) {
           row.push(
-          <td key={String(subscriptionArray[i].subscription.id)+6}><Link to={`../subscription/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
-          <td key={String(subscriptionArray[i].subscription.id)+7}><Button type="submit" variant="outline-info" onClick={() => props.setUnsubscribedSub(subscriptionArray[i].subscription)}>Unsubscribe</Button></td>
+          <td key={uuidv4()}><Link to={`../subscription/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
+          <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setUnsubscribedSub(subscriptionArray[i].subscription)}>Unsubscribe</Button></td>
           )
       }
         
@@ -170,47 +171,47 @@ const SubscriptionsTable = (props) => {
     }
 
     tableTop.push(
-        <Table key="table" striped bordered hover size="sm" className="provTable" >
-          <thead key="tableHead">
-            <tr key="headRow" align="center">
+        <Table key={uuidv4()} striped bordered hover size="sm" className="provTable" >
+          <thead key={uuidv4()}>
+            <tr key={uuidv4()} align="center">
                 {isAdmin
-                ? <th key="IdHead">ID</th> : ""
+                ? <th key={uuidv4()}>ID</th> : ""
                 }
-                <th key="avatarhead"></th>
-                <th key="descriptionHead">Description</th>
-                <th key="dateHead">Amount</th>
-                <th key="amountHead">Frequency</th>
-                <th key="statusHead">Due Day</th>
+                <th key={uuidv4()}></th>
+                <th key={uuidv4()}>Description</th>
+                <th key={uuidv4()}>Amount</th>
+                <th key={uuidv4()}>Frequency</th>
+                <th key={uuidv4()}>Due Day</th>
                 {role === 1 || role === 0
-                ? <th key="urlHead">Link</th> : ""
+                ? <th key={uuidv4()}>Link</th> : ""
                 }
                 {role === 1 || (role === 0 && !bySubscriber)
-                ? <th key="totalSubs">Subscribers</th> : ""
+                ? <th key={uuidv4()}>Subscribers</th> : ""
                 }
                 {role === 1 || (role === 0 && !bySubscriber)
-                ? <th key="incomeHead">Pay per Period</th> : ""
+                ? <th key={uuidv4()}>Pay per Period</th> : ""
                 }
                 {isAdmin && bySubscriber
-                ? <th key="feeBalanceHead">Fee Balance</th> : ""
+                ? <th key={uuidv4()}>Fee Balance</th> : ""
                 }
                 {isAdmin && bySubscriber
-                ? <th key="remainCyclesHead">Remaining Cycles</th> : ""
+                ? <th key={uuidv4()}>Remaining Cycles</th> : ""
                 }
                 {!isAdmin  
-                ?  <th key="detailsHead">History</th> : ""
+                ?  <th key={uuidv4()}>History</th> : ""
                 }
                 {role === 1 
-                ?   <th key="detailsProvHead">Edit Details</th> : ""
+                ?   <th key={uuidv4()}>Edit Details</th> : ""
                 }  
                 {role === 1 
-                ?   <th key="cancelProvHead">Cancel</th> : ""
+                ?   <th key={uuidv4()}>Cancel</th> : ""
                 }   
                 {role === 2
-                ?   <th key="unsubscribeHead">Unsubscribe</th> : ""
+                ?   <th key={uuidv4()}>Unsubscribe</th> : ""
                 } 
             </tr>
           </thead>
-          <tbody key="tableBody">
+          <tbody key={uuidv4()}>
             {table}
           </tbody>
         </Table>)

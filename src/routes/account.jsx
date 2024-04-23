@@ -497,6 +497,7 @@ const getSub = useCallback(async (editSubParams) => {
             }    
         })
         setEditSub(result)
+        console.log(editSubParams)
         //subEditDetailsHandleShow()
     })
 },[publicClient])
@@ -882,7 +883,7 @@ const alertMaker = () => {
                          : ""}
                         {a === account ?
                         <div>    
-                             <ButtonGroup aria-label="Basic example" style={{paddingLeft: "20px"}}>
+                             <ButtonGroup aria-label="Basic example" style={{paddingLeft: "20px", paddingBottom: "20px"}}>
                                 <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
                                 <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
                             </ButtonGroup>

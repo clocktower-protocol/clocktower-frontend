@@ -7,6 +7,7 @@ import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
 import Icon from '../components/Icon'
+import { v4 as uuidv4 } from 'uuid';
 //import '../App.css'
 
 //images
@@ -122,22 +123,22 @@ const Root = () => {
             <Container>
               <Stack gap={3}>
               {connectors.map((connector) => (
-              <Row key={connector.id+1}  >
-                  <Col key={connector.id+60} md="auto" >
+              <Row key={uuidv4()}  >
+                  <Col key={uuidv4()} md="auto" >
                     {
                       WALLET_LOOKUP.map((lWallet) => {
                           if(lWallet.id === connector.id){
-                            return <Icon icon={lWallet.icon}></Icon>
+                            return <Icon key={uuidv4()} icon={lWallet.icon}></Icon>
                           }
                       })
                     }
                   </Col>
-                  <Col key={connector.id+120} >
+                  <Col key={uuidv4()} >
                     <Button 
                       style={{width:"100%"}}
                       variant="info"
                       //disabled={!connector2.ready}
-                      key={connector.id}
+                      key={uuidv4()}
                       onClick={() => {
                       console.log(connector)
                       //connect({ connector2 })

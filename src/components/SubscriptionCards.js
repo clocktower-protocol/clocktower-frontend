@@ -96,10 +96,17 @@ const SubscriptionCards = (props) => {
     //loops through subscription and creates cards
     for (let i = 0; i < subscriptionArray.length; i++) {
 
+        let dueString = "Payday"
+
         //checks for cancelled subscriptions
         if(subscriptionArray[i].status < 1) {
 
             let totalSubscribers = 0;
+
+            //Sets pay string depending on if this is a link or not
+            if(props.isLink) {
+                dueString = "Due"
+            }
         
             if(typeof subscriptionArray[i].totalSubscribers !== 'undefined') {
                 totalSubscribers = subscriptionArray[i].totalSubscribers
@@ -129,15 +136,22 @@ const SubscriptionCards = (props) => {
                 }
 
                 paydayString = "Every " + DAY_OF_WEEK_LOOKUP[index].name
-                console.log(subscriptionArray[i].subscription.dueDay)
+                //console.log(subscriptionArray[i].subscription.dueDay)
+            }
+
+            const textBarWidth = "300px"
+            let linkNamePadding = "0px"
+            //dynamic name padding
+            if(props.isLink) {
+                linkNamePadding = "78px"
             }
             
             cards.push(
                 <Card style={{width:"500px", marginBottom:"20px"}}>
                     <Card.Body>
                         <Card.Title >
-                            <div key={i+1} style={{display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap"}}>
-                            <Avatar
+                            <div key={i+1} style={{display: "flex", flexGrow: "1", alignItems: "center", flexWrap: "wrap"}}>
+                            <Avatar style={{display: "flex", justifyContent: "start", flexGrow: "1"}}
                                 size={50}
                                 name={subscriptionArray[i].subscription.id}
                                 square={true}
@@ -145,21 +159,21 @@ const SubscriptionCards = (props) => {
                                 colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
                             />
                             
-                                <div key={(i+1)*2}>
+                                <div key={(i+1)*2} style={{display: "flex", justifyContent: "center", flexGrow: "1", paddingLeft:"28px", paddingRight: linkNamePadding}}>
                                     {description}
                                 </div>
-                                {props.isProvider ?
-                                <div key={(i+1)*3} style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px"}}>
+                                {props.isProvider && !props.isLink ?
+                                <div key={(i+1)*3} style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px", justifyContent: "flex-end"}}>
                                     
                                     {Number(totalSubscribers) > 0 ?
-                                    <div key={(i+1)*4} style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
+                                    <div key={(i+1)*4} style={{display: "flex", justifyContent: "flex-end", paddingBottom:"5px", paddingRight:"35px"}}> 
                                     <Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link>
                                     </div>
                                     : 
-                                    <div key={(i+1)*4} style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}> 
+                                    <div key={(i+1)*4} style={{display: "flex", justifyContent: "flex-end", paddingBottom:"5px", paddingRight:"35px"}}> 
                                     {String(Number(totalSubscribers) * Number(subAmount))}
                                     </div>}
-                                    <div key={(i+1)*5}>
+                                    <div key={(i+1)*5} style={{display: "flex", justifyContent: "flex-end", paddingBottom:"5px"}}>
                                     {" Subscribers"}
                                     </div>
                                 </div>
@@ -174,21 +188,35 @@ const SubscriptionCards = (props) => {
 
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}} >
                             <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Amount</ListGroup.Item>
-                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
 
                     
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
-                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Payday</ListGroup.Item>
-                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{paydayString}</ListGroup.Item>
+                            <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>{dueString}</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{paydayString}</ListGroup.Item>
                         </ListGroup>
 
                         {props.isProvider ?
                         <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
                             <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Pay Per Period</ListGroup.Item>
-                            <ListGroup.Item variant="light" style={{width:"300px", textAlign:"center", fontSize: "15px"}}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
-                        : <div></div>}
+                        : <></>}
+
+                        {props.isLink ? 
+                            <>
+                                <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
+                                    <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>URL</ListGroup.Item>
+                                    <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{props.detailsArray[i].url}</ListGroup.Item>
+                                </ListGroup> 
+                                <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
+                                    <ListGroup.Item variant="info" style={{width:"140px", textAlign:"center", fontSize: "15px"}}>Provider</ListGroup.Item>
+                                    <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}><Link to={`../account/${subscriptionArray[i].subscription.provider}`}>{subscriptionArray[i].subscription.provider}</Link></ListGroup.Item>
+                                </ListGroup> 
+                            </>
+                        : <></>
+                        }
 
                         </Stack>
                         </div>
@@ -196,7 +224,7 @@ const SubscriptionCards = (props) => {
                         <hr key={(i+1)*8}></hr>
 
                         <div key={(i+1)*9} style={{display: "flex", justifyContent: "space-evenly"}}>
-                            {props.isProvider ?
+                            {props.isProvider && !props.isLink ?
                             <>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => navigate(`../history/${subscriptionArray[i].subscription.id}`)}>History</Button>
                             <Button style={{ width: "100%", padding: '5px' }} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
@@ -205,8 +233,22 @@ const SubscriptionCards = (props) => {
                             </>
                             : 
                             <>
-                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => navigate(`../subscription/${subscriptionArray[i].subscription.id}`)}>History</Button>
-                            <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => props.setUnsubscribedSub(subscriptionArray[i].subscription)}>Unsubscribe</Button>
+                                {!props.isLink ?
+                                
+                                <>
+                                    <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => navigate(`../subscription/${subscriptionArray[i].subscription.id}`)}>History</Button>
+                                    <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.setUnsubscribedSub(subscriptionArray[i].subscription)}>Unsubscribe</Button>
+                                </>
+                                :
+                                    <>
+                                    {!props.isSubscribed && !props.isProvider ?    
+                                        <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.subscribe()}>Subscribe</Button>
+                                    :
+                                        <>
+                                        </>
+                                    }
+                                    </>
+                                }
                             </>
                             }
                         </div>

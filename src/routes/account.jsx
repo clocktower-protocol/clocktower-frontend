@@ -922,6 +922,8 @@ const alertMaker = () => {
                                                 setEditSubParams = {setEditSubParams}
                                                 setLinkDisplayed = {setLinkDisplayed}
                                                 isProvider = {true}
+                                                isLink = {false}
+                                                isSubscribed = {false}
                                             />
                                         </div>
                                         : <div></div>}
@@ -957,6 +959,8 @@ const alertMaker = () => {
                                                 */
                                                 setUnsubscribedSub = {setUnsubscribedSub}
                                                 isProvider = {false}
+                                                isLink = {false}
+                                                isSubscribed = {false}
                                             />
                                         </div>
                                         : <div></div>}

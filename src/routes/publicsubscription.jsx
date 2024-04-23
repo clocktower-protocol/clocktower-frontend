@@ -7,6 +7,7 @@ import { readContract} from 'wagmi/actions'
 import { parseAbiItem, formatEther, erc20Abi} from 'viem'
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
+import SubscriptionCards from "../components/SubscriptionCards";
 
 /* global BigInt */
 
@@ -36,6 +37,10 @@ const PublicSubscription = () => {
     const [isProvider, setIsProvider] = useState(false)
     const [alertText, setAlertText] = useState("")
     const [alert, setAlert] = useState(false)
+    //card variables
+    let emptyArray = []
+    const [formattedSub, setFormattedSub] = useState(emptyArray)
+    const [formattedDetails, setFormattedDetails] = useState(emptyArray)
     //alerts
     const [showToast, setShowToast] = useState(false)
     const [toastHeader, setToastHeader] = useState("")
@@ -113,6 +118,8 @@ const PublicSubscription = () => {
                             }
                             //adds latest details to details array
                             setDetails(events[index].args)
+                            const tempDetails = [events[index].args]
+                            setFormattedDetails(tempDetails)
                         }       
                     }    
                 })
@@ -121,6 +128,9 @@ const PublicSubscription = () => {
                 setFrequencyName(frequencyLookup(result.frequency))
                 setTickerName(tickerLookup(result.token))
                 setToken(result.token)
+                const tempSub = [{subscription: result, status: 0, totalSubscribers: 0}]
+                setFormattedSub(tempSub)
+                
             })
         }
 
@@ -298,6 +308,23 @@ const PublicSubscription = () => {
                    
                 </Card>
                 
+                </div>
+                <div style={{justifyContent:"center", display:"flex"}}>
+                    <SubscriptionCards
+                        subscriptionArray = {formattedSub}
+                        detailsArray = {formattedDetails}
+                        /*
+                        setCancelledSub = {setCancelledSub}
+                        subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                        setEditSubParams = {setEditSubParams}
+                        setLinkDisplayed = {setLinkDisplayed}
+                        */
+                        //setUnsubscribedSub = {setUnsubscribedSub}
+                        isProvider = {isProvider}
+                        isLink = {true}
+                        isSubscribed = {subscribed}
+                        subscribe = {subscribe}
+                    />
                 </div>
                  
             </div>

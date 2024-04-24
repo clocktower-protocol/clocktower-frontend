@@ -166,10 +166,17 @@ const Root = () => {
         <div key={"topDiv"} className="topDiv">
           <div key={"navBarKey"} className="navBar">
           <Navbar key="navBar" bg="dark" variant="dark" expand="lg" >
-            <Container key="navContainer1">
-              <LinkContainer to="/">
+            <Container key="navContainer1" style={{width: "250px"}}>
+              <LinkContainer to="/" style={{paddingLeft: "20px"}}>
                 <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
               </LinkContainer>
+            </Container>
+            <Container style={{justifyContent: "flex-start"}}>
+              <Button variant="outline-info" style={{margin: "5px", marginLeft:"100px"}} onClick={handleOnClickAccount}>Account</Button>{' '}
+              <Button variant="outline-info" style={{margin: "5px"}} onClick={handleOnClickCalendar}>Calendar</Button>{' '}
+              {account === adminAccount ?
+              <Button variant="outline-info"  style={{margin: "5px"}} onClick={handleOnClickAdmin}>Admin</Button>
+              : ""}
             </Container>
             <Container key="navContainer" style={{justifyContent:"flex-end", gap:"50px"}}>
                   {chains.length > 1 ? 

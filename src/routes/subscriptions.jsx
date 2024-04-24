@@ -611,10 +611,11 @@ return (
             <div>
 
             </div>
-            <Stack gap={3}>
             <p style={{display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize:"20px"}}>
                     <b>Subscriptions</b>
             </p>
+            <hr style={{marginBottom: "25px"}}></hr>
+            <Stack gap={3}>
             {//a === account ?
             <div>
                 <Row>

@@ -35,7 +35,6 @@ const SubHistoryTable = (props) => {
         
         let row = []
        
-       // let subAmount = Web3.utils.fromWei(historyArray[i].args.amount)
         let subAmount = formatEther(historyArray[i].args.amount)
         let formatDate = dayjs.unix(historyArray[i].args.timestamp).format('MM/DD/YYYY h:mm:s A')
         let ticker = tickerLookup(historyArray[i].args.token)

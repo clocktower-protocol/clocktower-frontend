@@ -24,7 +24,6 @@
     "eth-crypto": "^2.6.0",
     "eth-permit": "^0.2.3",
     "ethereum-cryptography": "^2.1.2",
-    "ethers": "^6.9.0",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
@@ -38,8 +37,7 @@
     "uuid": "^9.0.1",
     "viem": "^2.7.11",
     "wagmi": "^2.5.7",
-    "web-vitals": "^2.1.4",
-    "web3": "^1.8.1"
+    "web-vitals": "^2.1.4"
   },
   "overrides": {
     "react-scripts": {

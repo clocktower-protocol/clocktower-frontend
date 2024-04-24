@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import {Alert, Card, ListGroup, Button, Toast, ToastContainer, Spinner} from 'react-bootstrap';
-import { useOutletContext, useParams, useNavigate, Link} from "react-router-dom";
+import {Alert, Toast, ToastContainer, Spinner} from 'react-bootstrap';
+import { useOutletContext, useParams, useNavigate} from "react-router-dom";
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
 import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount} from 'wagmi'
 import { readContract} from 'wagmi/actions'

@@ -2,7 +2,6 @@ import React from 'react';
 import {Button, Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../config";
-//import Web3 from 'web3'
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
 import { v4 as uuidv4 } from 'uuid'

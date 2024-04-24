@@ -1,13 +1,11 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
-import Avatar from "boring-avatars"
-import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
+import {Row, Col, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
-import {recoverMessageAddress, parseAbiItem } from 'viem'
+import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
-import EditAccountForm from "../components/EditAccountForm";
 import CreateSubForm from "../components/CreateSubForm";
 import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
@@ -160,71 +158,9 @@ const Subscriptions = () => {
         setShowLinkDisplay(true)
     }
 
-    /*
-    const editButtonClick = () => {
-        editHandleShow()
-    }
-    */
-
     const createButtonClick = () => {
         createSubHandleShow()
     }
-
-    //Read methods-------------------------------------------
-    //gets account info
-    /*
-    const getAccount = useCallback(async () => {
-
-
-        //checks if user is logged into account
-        if(typeof address === "undefined") {
-            console.log("Not Logged in")
-            //linkToMain()
-            return
-        }
-
-        //variable to pass scope so that the state can be set
-        let accountDetails = {}
-
-        //checks token
-        await fetchToken()
-        try{
-            await publicClient.getLogs({
-                address: CLOCKTOWERSUB_ADDRESS,
-                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain, string email, string misc)'),
-                fromBlock: 0n,
-                toBlock: 'latest',
-                args: {provider: a}
-            }) 
-            .then(async function(events){
-                 //checks for latest update by getting highest timestamp
-                 if(events !== undefined) {
-                        
-                    let time = 0
-                    let index = 0
-                    
-                    if(events.length > 0)
-                    {
-                        for (var j = 0; j < events.length; j++) {
-                                if(time < events[j].args.timestamp)
-                                {
-                                    time = events[j].args.timestamp
-                                    index = j
-                                }
-                        }
-                        //adds latest details to details array
-                        accountDetails = events[index].args
-                    }    
-                    
-                }
-                verifyDomain(accountDetails.domain, a)
-                setAccountDetails(accountDetails)
-            })
-        } catch(Err) {
-            console.log(Err)
-        }
-    },[a, address, publicClient])
-    */
 
     const getProviderSubs = useCallback(async () => {
         //checks if user is logged into account
@@ -251,8 +187,6 @@ const Subscriptions = () => {
            //loops through each subscription
            for (let i = 0; i < accountSubscriptions.length; i++) {
             
-               //console.log(i+1)
-               //console.log(address)
                await publicClient.getLogs({
                    address: CLOCKTOWERSUB_ADDRESS,
                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -441,31 +375,14 @@ useEffect(() => {
 //Hooks to catch object mutations------------------------
 useEffect(() => {
     if(wait.isLoading) {
-        /*
-        setAlertType("warning")
-
-       // setAlert(true)
-      //  setAlertText("Transaction Pending...")
-
-        setAlert2(true)
-        setAlertText2("Transaction Pending...")
-        */
         setToastHeader("Transaction Pending")
     }
 
     if(wait.isSuccess) {
 
         //turns off alert
-      //  setAlert(false)
         setShowToast(false)
 
-        /*
-        setAlert2(false)
-        
-
-        setAlertType("danger")
-        //console.log("done")
-        */
         //editFormHandleClose()
         createSubHandleClose()
         //getAccount()

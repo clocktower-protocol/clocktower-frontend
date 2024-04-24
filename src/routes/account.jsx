@@ -789,6 +789,9 @@ const alertMaker = () => {
                         </div>
                         <Stack gap={3}>
                         <div>  
+                            <p style={{display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize:"20px"}}>
+                                <b>Account</b>
+                            </p>
                             <div>
                             <Card>
                                 <Card.Body>
@@ -869,6 +872,9 @@ const alertMaker = () => {
                             </Card>
                             </div>
                         </div>
+                        <p style={{display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize:"20px"}}>
+                                <b>Subscriptions</b>
+                        </p>
                         {a === account ?
                         <div>
                             <Row>

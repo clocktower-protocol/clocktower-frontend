@@ -39,6 +39,7 @@ const Root = () => {
     const navigate = useNavigate();
     const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
+    const handleOnClickSubscriptions = useCallback(() => navigate('/subscriptions', {replace: true}), [navigate]);
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     const accountSwitch = useCallback((passedAddress) => navigate('/account/'+passedAddress), [navigate])
@@ -173,6 +174,7 @@ const Root = () => {
             </Container>
             <Container style={{justifyContent: "flex-start"}}>
               <Button variant="outline-info" style={{margin: "5px", marginLeft:"100px"}} onClick={handleOnClickAccount}>Account</Button>{' '}
+              <Button variant="outline-info" style={{margin: "5px", marginLeft: "5px"}} onClick={handleOnClickSubscriptions}>Subscriptions</Button>{' '}
               <Button variant="outline-info" style={{margin: "5px"}} onClick={handleOnClickCalendar}>Calendar</Button>{' '}
               {account === adminAccount ?
               <Button variant="outline-info"  style={{margin: "5px"}} onClick={handleOnClickAdmin}>Admin</Button>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
@@ -27,19 +27,10 @@ const AdminSubscriptions = () => {
     const [feeObjects, setFeeObjects] = useState(emptySubscriptionArray)
     const [isSubscriber, setIsSubscriber] = useState(true)
 
-    //loads provider subscription list upon login
-    useEffect(() => {
-        if(t == "provider") {
-            setIsSubscriber(false)
-        }
 
-        getSubsByAccount(t,s)
-    }, [account, t, s]);
-
-
-    const getSubsByAccount = async (t, s) => {
+    const getSubsByAccount = useCallback(async (t, s) => {
         //checks if user is logged into account
-        if(typeof account === undefined) {
+        if(typeof account === "undefined") {
             console.log("Not Logged in")
             return
         }
@@ -49,7 +40,7 @@ const AdminSubscriptions = () => {
         let isSubscriber = true
         let titleMessage = "Subscribed By:"
 
-        if(t == "provider") {
+        if(t === "provider") {
             isSubscriber = false
             titleMessage = "Created By:"
         }
@@ -89,7 +80,7 @@ const AdminSubscriptions = () => {
 
             balance = Number(balance)
 
-            if(balance == 0) {
+            if(balance === 0) {
                 feeBalance = 0
                 remainingCycles = Number(cycles)
             } else {
@@ -120,7 +111,7 @@ const AdminSubscriptions = () => {
             }) 
             .then(async function(events){
                 //checks for latest update by getting highest timestamp
-                if(events != undefined) {
+                if(events !== undefined) {
                     let time = 0
                     let index = 0
                    
@@ -147,7 +138,17 @@ const AdminSubscriptions = () => {
         setSubscriptionArray(subscriptions)
         setDetailsArray(detailsArray)
        
-    }
+    },[account, detailsArray, publicClient])
+
+    //loads provider subscription list upon login
+    useEffect(() => {
+        if(t === "provider") {
+            setIsSubscriber(false)
+        }
+
+        getSubsByAccount(t,s)
+    }, [account, t, s, getSubsByAccount]);
+
 
     //checks that user has logged in 
         return (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import { CLOCKTOWERSUB_ADDRESS} from "../config"; 
@@ -19,15 +19,8 @@ const ProvSubHistory = () => {
 
     let {id, t} = useParams();
 
-    //loads once
-    useEffect( () => {
-        //gets subscriber events
-        
-        getLogs()
 
-    }, []);
-
-    const getLogs = async () => {
+    const getLogs = useCallback(async () => {
 
         //looks up provider from contract
             const logs = await publicClient.getLogs({
@@ -41,13 +34,21 @@ const ProvSubHistory = () => {
             console.log(logs)
 
             setHistoryArray(logs)
-    }
+    },[id, publicClient])
+
+    //loads once
+    useEffect( () => {
+        //gets subscriber events
+        
+        getLogs()
+
+    }, [getLogs]);
 
     //console.log(historyArray[0].args)
     //if(typeof historyArray[0].args !== "undefined") {
     if(historyArray.length > 0 && typeof historyArray[0].args !== "undefined") {
     //checks that user has logged in  
-        if(historyArray[0].args.provider != account) {
+        if(historyArray[0].args.provider !== account) {
                 return(
                     <Alert align="center" variant="info">Switch Back to Provider Account</Alert>
                 )

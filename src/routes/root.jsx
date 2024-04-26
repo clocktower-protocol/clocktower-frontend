@@ -13,11 +13,11 @@ import { v4 as uuidv4 } from 'uuid';
 //images
 //import {ReactComponent as HardhatLogo} from "../images/hardhat.svg"
 
-import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useChains, useChainId, useSwitchChain} from 'wagmi'
+import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain} from 'wagmi'
 
 const Root = () => {
 
-    const {connector: activeConnector, address, isConnected, isDisconnected } = useAccount({config})
+    const {address, isConnected, isDisconnected } = useAccount({config})
 
     //const chains = useChains({config})
     //const chainId = useChainId({config})
@@ -93,7 +93,7 @@ const Root = () => {
         //accountSwitch(address)
       }
       console.log(location.pathname.slice(0,20))
-    }, [address])
+    }, [address, chains, accountSwitch])
     
  
   const adminAccount = ADMIN_ACCOUNT
@@ -130,6 +130,8 @@ const Root = () => {
                       WALLET_LOOKUP.map((lWallet) => {
                           if(lWallet.id === connector.id){
                             return <Icon key={uuidv4()} icon={lWallet.icon}></Icon>
+                          } else {
+                            return ""
                           }
                       })
                     }
@@ -189,6 +191,8 @@ const Root = () => {
                           {CHAIN_LOOKUP.map((lchain) => {
                             if(lchain.id === chain.id){
                               return <Icon icon={lchain.icon}></Icon>
+                            } else {
+                              return ""
                             }
                           })
                           }

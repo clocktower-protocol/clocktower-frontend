@@ -227,7 +227,7 @@ const Subscriptions = () => {
    } catch(Err) {
        console.log(Err)
    }
-}, [account, address, provDetailsArray, publicClient])
+}, [address, provDetailsArray, publicClient])
 
 const getSubscriberSubs = useCallback(async () => {
     //checks if user is logged into account
@@ -295,7 +295,7 @@ const getSubscriberSubs = useCallback(async () => {
     } catch(Err) {
         console.log(Err)
     }
-},[account, address, publicClient, subscribedDetailsArray])
+},[address, publicClient, subscribedDetailsArray])
 
 const getSub = useCallback(async (editSubParams) => {
     await fetchToken()
@@ -414,7 +414,7 @@ useEffect(() =>{
 //called when link to be displayed in modal 
 useEffect(() => {
     console.log(linkDisplayed)
-    if(linkDisplayed !== "" && typeof linkDisplayed !== undefined){
+    if(linkDisplayed !== "" && (typeof linkDisplayed !== "undefined")){
         linkDisplayShow()
     }
 

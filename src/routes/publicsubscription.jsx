@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, FREQUENCY_LOOKUP, INFINITE_APPROVAL, TOKEN_LOOKUP, ZERO_ADDRESS} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL, ZERO_ADDRESS} from "../config"; 
 import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount} from 'wagmi'
 import { readContract} from 'wagmi/actions'
-import { parseAbiItem, formatEther, erc20Abi} from 'viem'
+import { parseAbiItem, erc20Abi} from 'viem'
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 import SubscriptionCards from "../components/SubscriptionCards";
@@ -24,13 +24,14 @@ const PublicSubscription = () => {
 
     const navigate = useNavigate()
 
-    const emptyDetails = {}
+   // const emptyDetails = {}
 
     const [subscription, setSubscription] = useState("")
-    const [details, setDetails] = useState(emptyDetails)
-    const [amount, setAmount] = useState(0)
-    const [frequencyName, setFrequencyName] = useState("Monthly")
-    const [tickerName, setTickerName] = useState("CLOCK")
+    
+    //const [details, setDetails] = useState(emptyDetails)
+    // const [amount, setAmount] = useState(0)
+    //const [frequencyName, setFrequencyName] = useState("Monthly")
+    //const [tickerName, setTickerName] = useState("CLOCK")
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [alertType, setAlertType] = useState("danger")
     const [subscribed, setIsSubscribed] = useState(false)
@@ -44,8 +45,8 @@ const PublicSubscription = () => {
     //alerts
     const [showToast, setShowToast] = useState(false)
     const [toastHeader, setToastHeader] = useState("")
-    const [toastBody, setToastBody] = useState("")
-    const [isAllowanceSet, setAllowance] = useState(false)
+   // const [toastBody, setToastBody] = useState("")
+   // const [isAllowanceSet, setAllowance] = useState(false)
     //const [allowanceBalance, setAllowanceBalance] = useState(0n)
    
    
@@ -61,6 +62,7 @@ const PublicSubscription = () => {
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
 
+        /*
         //looks up ticker for token
         const tickerLookup = (tokenAddress) => {
             return TOKEN_LOOKUP.map((token) => {
@@ -82,6 +84,7 @@ const PublicSubscription = () => {
             }
             })
         }
+        */
 
         const getSub = async () => {
             await fetchToken()
@@ -117,16 +120,16 @@ const PublicSubscription = () => {
                                     }
                             }
                             //adds latest details to details array
-                            setDetails(events[index].args)
+                            //setDetails(events[index].args)
                             const tempDetails = [events[index].args]
                             setFormattedDetails(tempDetails)
                         }       
                     }    
                 })
                 setSubscription(result)
-                setAmount(formatEther(result.amount))
-                setFrequencyName(frequencyLookup(result.frequency))
-                setTickerName(tickerLookup(result.token))
+               // setAmount(formatEther(result.amount))
+                //setFrequencyName(frequencyLookup(result.frequency))
+                //setTickerName(tickerLookup(result.token))
                 setToken(result.token)
                 const tempSub = [{subscription: result, status: 0, totalSubscribers: 0}]
                 setFormattedSub(tempSub)
@@ -178,7 +181,7 @@ const PublicSubscription = () => {
             }
         }
 
-        if(typeof account !== undefined){
+        if(typeof account !== "undefined"){
             getSub()
             isSubscribed()
             isProviderSame()
@@ -236,11 +239,11 @@ const PublicSubscription = () => {
         }
     
        
-    },[subscription, address, token])
+    },[subscription, address, token, writeContract])
 
     const sendToAccount = useCallback(() => 
             navigate('/account/'+address)
-    ,[navigate])
+    ,[navigate, address])
 
 
      //shows alert when waiting for transaction to finish

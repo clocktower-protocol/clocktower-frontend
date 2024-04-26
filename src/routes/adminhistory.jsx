@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState, useCallback, useEffect} from 'react';
 import {Alert} from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router-dom"
 import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT } from "../config"; 
@@ -24,14 +24,7 @@ const AdminHistory = () => {
     const [history, setHistory] = useState([emptyArray])
     const [title, setTitle] = useState([""])
 
-    //loads once
-    useEffect( () => {
-
-        getLogs()
-
-    }, []);
-
-    const getLogs = async () => {
+    const getLogs = useCallback(async () => {
 
         let logs = []
 
@@ -57,11 +50,18 @@ const AdminHistory = () => {
 
         setHistory(logs)
         
-    }
+    }, [a, isp, publicClient])
+
+    //loads once
+    useEffect( () => {
+
+        getLogs()
+
+    }, [getLogs]);
 
 
     //checks that user has logged in 
-    if(account != ADMIN_ACCOUNT) {
+    if(account !== ADMIN_ACCOUNT) {
         return (
             <Alert align="center" variant="danger">Must be Admin</Alert>
         )

@@ -389,7 +389,7 @@ const getProviderSubs = useCallback(async () => {
    } catch(Err) {
        console.log(Err)
    }
-}, [account, address, provDetailsArray, publicClient])
+}, [address, provDetailsArray, publicClient])
 
 const getSubscriberSubs = useCallback(async () => {
     //checks if user is logged into account
@@ -457,7 +457,7 @@ const getSubscriberSubs = useCallback(async () => {
     } catch(Err) {
         console.log(Err)
     }
-},[account, address, publicClient, subscribedDetailsArray])
+},[address, publicClient, subscribedDetailsArray])
 
 const getSub = useCallback(async (editSubParams) => {
     await fetchToken()
@@ -592,7 +592,7 @@ useEffect(() =>{
 //called when link to be displayed in modal 
 useEffect(() => {
     console.log(linkDisplayed)
-    if(linkDisplayed !== "" && typeof linkDisplayed !== undefined){
+    if(linkDisplayed !== "" && typeof linkDisplayed !== "undefined"){
         linkDisplayShow()
     }
 
@@ -872,20 +872,24 @@ const alertMaker = () => {
                             </Card>
                             </div>
                         </div>
-                        <p style={{display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize:"20px"}}>
-                                <b>Subscriptions</b>
-                        </p>
+                        
                         {a === account ?
-                        <div>
-                            <Row>
-                                
-                                <Col align="center">
-                                    <Button variant="outline-info" onClick = {() => createButtonClick()}>Create Subscription</Button>
-                                </Col>
-                                
-                            </Row>
-                        </div>
+                         <>
+                         <p style={{ display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize: "20px" }}>
+                                <b>Subscriptions</b>
+                            </p>
+                            <div>
+                                <Row>
+
+                                    <Col align="center">
+                                        <Button variant="outline-info" onClick={() => createButtonClick()}>Create Subscription</Button>
+                                    </Col>
+
+                                </Row>
+                            </div>
+                        </>
                          : ""}
+                         
                         {a === account ?
                         <div>    
                              <ButtonGroup aria-label="Basic example" style={{paddingLeft: "20px", paddingBottom: "20px"}}>

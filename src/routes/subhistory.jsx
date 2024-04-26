@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import { CLOCKTOWERSUB_ADDRESS} from "../config"; 
@@ -7,7 +7,7 @@ import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
 
 const SubHistory = () => {
-    const [account, isLoggedIn] = useOutletContext();
+    const [account] = useOutletContext();
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -19,14 +19,7 @@ const SubHistory = () => {
 
     let {id, t} = useParams();
 
-    useEffect(() => {
-        //gets subscriber events
-        
-       getLogs()
-
-    }, [account]);
-
-    const getLogs = async () => {
+    const getLogs = useCallback(async () => {
 
         const logs = await publicClient.getLogs({
             address: CLOCKTOWERSUB_ADDRESS,
@@ -37,7 +30,14 @@ const SubHistory = () => {
         })
 
         setHistoryArray(logs)
-    }
+    },[account, id, publicClient])
+
+    useEffect(() => {
+        //gets subscriber events
+        
+       getLogs()
+
+    }, [account, getLogs]);
 
       //checks that user has logged in 
      

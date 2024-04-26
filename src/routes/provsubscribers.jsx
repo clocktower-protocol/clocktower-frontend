@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
@@ -6,7 +6,7 @@ import ProvSubscribersTable from '../components/ProvSubscribersTable';
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
-/* global BigInt */
+
 const ProvSubscribers = () => {
 
     const [account] = useOutletContext();
@@ -19,17 +19,10 @@ const ProvSubscribers = () => {
     const [subscribersArray, setSubscribersArray] = useState(emptyArray)
     const [remainingCycles, setRemainingCycles] = useState(emptyArray)
 
-    //loads provider subscription list upon login
-    useEffect(() => {
-
-        getSubscribers()
-    }, [account]);
-
-   
-    const getSubscribers = async () => {
+    const getSubscribers = useCallback(async () => {
 
         //checks if user is logged into account
-        if(typeof account === undefined) {
+        if(typeof account === "undefined") {
             console.log("Not Logged in")
         return
         }    
@@ -68,7 +61,7 @@ const ProvSubscribers = () => {
             balance = Number(balance)
 
 
-            if(balance == 0) {
+            if(balance === 0) {
                 //feeBalance = 0
                 remainingCycles = Number(cycles)
                 remainingCyclesArray.push(remainingCycles)
@@ -86,10 +79,17 @@ const ProvSubscribers = () => {
 
         setSubscribersArray(subscribers)
         setRemainingCycles(remainingCyclesArray)
-    }
+    },[a, account, id])
+
+
+    //loads provider subscription list upon login
+    useEffect(() => {
+
+        getSubscribers()
+    }, [account, getSubscribers]);
 
     
-        if(p != account) {
+        if(p !== account) {
             return(
                 <Alert align="center" variant="info">Must be Provider Account to View</Alert>
             )

@@ -7,7 +7,7 @@ import { readContract } from 'wagmi/actions'
 import { useAccount } from "wagmi"
 import {formatEther} from 'viem'
 import {config} from '../wagmiconfig'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ERC20TOKEN_LOOKUP, TOKEN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, TOKEN_LOOKUP} from "../config"; 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';

@@ -225,7 +225,10 @@ const Root = () => {
               </Container>
       </Navbar>
       </div>
+      {/*
       <div key={"sideNav"} className="sideNav">
+                */}
+        {/*
         <div key={"sideNav2"} className="sideNav2">
         <Navbar key="navBar" bg="dark" variant="dark" expand="lg" style={{justifyContent: "center"}}>
         <Nav defaultActiveKey="/home" className="flex-column">
@@ -242,12 +245,15 @@ const Root = () => {
         </Nav>
         </Navbar>
         </div>
+        */}
         <div key={"mainDiv"} id="detail" className="mainDiv">
           
           {!loggedIn? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account]}/>}
         
         </div>
+      {/*
       </div>
+      */}
     </div>
   </>
   )

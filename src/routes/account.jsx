@@ -873,6 +873,7 @@ const alertMaker = () => {
                             </div>
                         </div>
                         
+                        {/*
                         {a === account ?
                          <>
                          <p style={{ display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize: "20px" }}>
@@ -971,6 +972,7 @@ const alertMaker = () => {
                                                 setEditSubParams = {setEditSubParams}
                                                 setLinkDisplayed = {setLinkDisplayed}
                                                 */
+                                               /*
                                                 setUnsubscribedSub = {setUnsubscribedSub}
                                                 isProvider = {false}
                                                 isLink = {false}
@@ -984,7 +986,9 @@ const alertMaker = () => {
                             </Tabs>
                         </div>
                         : ""}
+                        */}
                         </Stack>
+                        
                     </div>
                 </div>
         )

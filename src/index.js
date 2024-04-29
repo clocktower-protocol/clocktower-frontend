@@ -87,7 +87,7 @@ const router = createBrowserRouter([
           element: <AdminHistory />
         },
         {
-          path: "subscriptions",
+          path: "subscriptions/:t",
           element: <Subscriptions />
         }
       ]

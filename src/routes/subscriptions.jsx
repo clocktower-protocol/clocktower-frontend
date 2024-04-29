@@ -20,7 +20,13 @@ const Subscriptions = () => {
     const publicClient = usePublicClient()
 
     //gets passed url variables
-    let {a} = useParams();
+    let {t} = useParams();
+
+    //formats t if not set
+    if(typeof t === "undefined") {
+        t = "created"
+        console.log(t)
+    }
 
     //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
@@ -56,7 +62,7 @@ const Subscriptions = () => {
     const [linkDisplayed, setLinkDisplayed] = useState("")
     //page formatting 
     const [isTableView, setIsTableView] = useState(true)
-    const [tab, setTab] = useState('created')
+    const [tab, setTab] = useState(t)
 
 
     //WAGMI write contract hooks------------------------------
@@ -370,7 +376,7 @@ useEffect(() => {
         getProviderSubs()
         getSubscriberSubs()
     }
-},[a, getProviderSubs, getSubscriberSubs])
+},[getProviderSubs, getSubscriberSubs])
 
 //Hooks to catch object mutations------------------------
 useEffect(() => {

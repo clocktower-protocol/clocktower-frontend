@@ -39,7 +39,7 @@ const Root = () => {
     const navigate = useNavigate();
     const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
-    const handleOnClickSubscriptions = useCallback(() => navigate('/subscriptions', {replace: true}), [navigate]);
+    const handleOnClickSubscriptions = useCallback(() => navigate('/subscriptions/' + "created", {replace: true}), [navigate]);
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     const accountSwitch = useCallback((passedAddress) => navigate('/account/'+passedAddress), [navigate])

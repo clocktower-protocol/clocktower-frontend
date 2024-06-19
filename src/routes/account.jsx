@@ -820,32 +820,32 @@ const alertMaker = () => {
                                         <Col>
                                             <Stack gap={3}>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
-                                                    <ListGroup.Item variant="primary" style={{width:"150px", textAlign:"center"}}>Description</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
+                                                    <ListGroup.Item variant="primary" style={{width:"250px", textAlign:"center"}}>Description</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
-                                                    <ListGroup.Item variant="primary" style={{width:"150px", textAlign:"center"}}>Email</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.email === undefined || accountDetails.email === "") ? "---" : accountDetails.email}</ListGroup.Item>
+                                                    <ListGroup.Item variant="primary" style={{width:"250px", textAlign:"center"}}>Email</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.email === undefined || accountDetails.email === "") ? "---" : accountDetails.email}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">URL</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">URL</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
                                             </Col>
                                             <Col>
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'} variant="primary" style={{justifyContent:"center"}}>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">Company</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">Company</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">Misc</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.misc === undefined || accountDetails.misc === "") ? "---" : accountDetails.misc}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">Misc</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.misc === undefined || accountDetails.misc === "") ? "---" : accountDetails.misc}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}} variant="primary">Domain</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"150px", textAlign:"center"}}>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "---" : accountDetails.domain }</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">Domain</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "---" : accountDetails.domain }</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>
                                         </Col>

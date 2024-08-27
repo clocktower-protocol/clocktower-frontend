@@ -3,9 +3,11 @@ import {ReactComponent as HardhatLogo} from "./images/hardhat.svg"
 import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
 import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
 import {ReactComponent as BraveLogo} from "./images/brave.svg"
+import {ReactComponent as USDCLogo} from "./images/usdc.svg"
 
 /* global BigInt */
-export const CLOCKTOWERSUB_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+//export const CLOCKTOWERSUB_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+export const CLOCKTOWERSUB_ADDRESS = "0x69F94e46cbC82Ab02781ac4FaFc3580d21f1a888";
 
 //export const CLOCKTOKEN_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -42,9 +44,14 @@ export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const TOKEN_LOOKUP = [
   {
-    address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    address: "0xE0a1556ef66873d965A2F4caD06F051646BE6707",
     ticker: "CLOCK",
     icon: SepoliaLogo
+  }, 
+  {
+    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    ticker: "USDC",
+    icon: USDCLogo
   }
 ]
 
@@ -1259,3 +1266,4 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+

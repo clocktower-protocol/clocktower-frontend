@@ -183,7 +183,33 @@ export const SUBSCRIPTEVENT_LOOKUP = [
 
 export const CLOCKTOWERSUB_ABI = [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "callerFee_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "systemFee_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxRemits_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "allowSystemFee_",
+        "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "admin_",
+        "type": "address"
+      }
+    ],
     "stateMutability": "payable",
     "type": "constructor"
   },
@@ -393,6 +419,11 @@ export const CLOCKTOWERSUB_ABI = [
         "internalType": "uint256",
         "name": "minimum",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "decimals",
+        "type": "uint8"
       }
     ],
     "name": "addERC20Contract",
@@ -419,6 +450,11 @@ export const CLOCKTOWERSUB_ABI = [
         "internalType": "uint256",
         "name": "minimum",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "decimals",
+        "type": "uint8"
       },
       {
         "internalType": "bool",
@@ -1044,19 +1080,6 @@ export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "erc20Contract",
-        "type": "address"
-      }
-    ],
-    "name": "removeERC20Contract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "bool",
         "name": "status",
         "type": "bool"
@@ -1268,4 +1291,5 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "receive"
   }
 ]
+
 

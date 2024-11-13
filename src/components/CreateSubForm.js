@@ -21,6 +21,7 @@ const CreateSubForm = (props) => {
 
     const [dropdownTitle, setDropdownTitle] = useState("Select Token")
 
+    //const [decimals, setDecimals] = useState(6)
     const [token, setToken] = useState("-1")
     const [frequency, setFrequency] = useState("-1")
     const [dueDay, setDueDay] = useState(0)
@@ -41,9 +42,9 @@ const CreateSubForm = (props) => {
     const setTokenSelection = (token) => {
         console.log(token)
 
-        
+        console.log(token.decimals)
         setToken(token.address)
-
+        //setDecimals(token.decimals)
         setDropdownTitle(token.ticker)
         setTokenOutline("success")
 
@@ -51,14 +52,17 @@ const CreateSubForm = (props) => {
             setInvalidToken(true)
         } else {
             //sets abi and token minimum
+            
             TOKEN_LOOKUP.map((token2) => {
                 if(token2.address === token.address){
                     setTokenMinimum(token2.address)
                     setInvalidToken(false)
+
                     // props.setTokenABI(token.ABI)
                 }
                 return true
             })
+            
         }
     }
 
@@ -131,6 +135,7 @@ const CreateSubForm = (props) => {
 
     }
 
+    //FIXME:
     //gets token minimum from contract
     const setTokenMinimum = async (tokenAddress) => {
         await fetchToken()

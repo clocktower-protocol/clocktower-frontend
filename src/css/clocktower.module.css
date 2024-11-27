@@ -1,0 +1,29 @@
+:root {
+    --letter-spacing: 1.5px;
+    --font-family: "Satoshi", sans-serif;
+}
+
+@font-face {
+    font-family: "Satoshi";
+    src: url("../fonts/Satoshi-Medium.woff2") format("woff2");
+}
+
+.clocktower_brand {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+.account_button {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+    margin: "5px"; 
+    margin-left:"100px";
+}
+
+.subscriptions_button {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+    margin: "5px"; 
+    margin-left:"5px";
+}
+

@@ -9,6 +9,7 @@ import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
 import Icon from '../components/Icon'
 import { v4 as uuidv4 } from 'uuid';
 //import '../App.css'
+import styles from '../css/clocktower.module.css';
 
 //images
 //import {ReactComponent as HardhatLogo} from "../images/hardhat.svg"
@@ -171,12 +172,12 @@ const Root = () => {
           <Navbar key="navBar" bg="dark" variant="dark" expand="lg" >
             <Container key="navContainer1" style={{width: "250px"}}>
               <LinkContainer to="/" style={{paddingLeft: "20px"}}>
-                <Navbar.Brand key="navTitle">Clocktower</Navbar.Brand>
+                <Navbar.Brand key="navTitle"><div className={styles.clocktower_brand}>Clocktower</div></Navbar.Brand>
               </LinkContainer>
             </Container>
             <Container style={{justifyContent: "flex-start"}}>
-              <Button variant="outline-info" style={{margin: "5px", marginLeft:"100px"}} onClick={handleOnClickAccount}>Account</Button>{' '}
-              <Button variant="outline-info" style={{margin: "5px", marginLeft: "5px"}} onClick={handleOnClickSubscriptions}>Subscriptions</Button>{' '}
+              <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>{' '}
+              <Button variant="outline-info" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subscriptions</Button>{' '}
               <Button variant="outline-info" style={{margin: "5px"}} onClick={handleOnClickCalendar}>Calendar</Button>{' '}
               {account === adminAccount ?
               <Button variant="outline-info"  style={{margin: "5px"}} onClick={handleOnClickAdmin}>Admin</Button>

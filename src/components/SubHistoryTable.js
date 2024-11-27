@@ -5,6 +5,7 @@ import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs'
 import {TOKEN_LOOKUP} from "../config";
 import {formatEther} from 'viem'
+import styles from '../css/clocktower.module.css';
 /* global BigInt */
 const SubHistoryTable = (props) => {
 
@@ -40,7 +41,7 @@ const SubHistoryTable = (props) => {
         let ticker = tickerLookup(historyArray[i].args.token)
   
         row.push(
-            <td key={String(historyArray[i].args.subscriber)+1}><Link to={`../account/${historyArray[i].args.subscriber}`}>{historyArray[i].args.subscriber}</Link></td>, 
+            <td key={String(historyArray[i].args.subscriber)+1}>{historyArray[i].args.subscriber != "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].args.subscriber}`}>{historyArray[i].args.subscriber}</Link> : "N/A" }</td>, 
             <td key={String(historyArray[i].args.subEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].args.subscriptevent]}</td>,
             <td key={String(historyArray[i].args.timestamp)+3}>{formatDate}</td>,
             <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
@@ -51,7 +52,7 @@ const SubHistoryTable = (props) => {
       }
   
       tableTop.push(
-          <Table key="table" striped bordered hover size="sm" className="provTable">
+          <Table key="table" striped bordered hover size="sm" className={styles.history_table}>
             <thead key="tableHead">
               <tr key="headRow" align="center">
                 <th key="subHead">Subscriber</th>

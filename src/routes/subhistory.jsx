@@ -5,6 +5,7 @@ import { CLOCKTOWERSUB_ADDRESS} from "../config";
 import SubHistoryTable from '../components/SubHistoryTable';
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
+import styles from '../css/clocktower.module.css';
 
 const SubHistory = () => {
     const [account] = useOutletContext();
@@ -43,13 +44,13 @@ const SubHistory = () => {
      
         if(historyArray.length === 0) {
             return(
-                <Alert align="center" variant="info">Switch Back to Subscriber</Alert>
+                <Alert align="center" variant="info" className={styles.alerts}>Switch Back to Subscriber</Alert>
             )
         } else {
         return (
         <div>
             <div>
-                {historyArray.length > 0 ? <Alert align="center" variant="dark">Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
+                {historyArray.length > 0 ? <Alert align="center" variant="dark" className={styles.alerts}>Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
             </div>
             <div className="subTable">
                 <SubHistoryTable 

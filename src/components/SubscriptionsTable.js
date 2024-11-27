@@ -114,7 +114,7 @@ const SubscriptionsTable = (props) => {
             />
             }</td>,
             <td key={uuidv4()} className={styles.tablecell}>{detailsArray[i].description}</td>,
-            <td key={uuidv4()}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
+            <td key={uuidv4()}>{subAmount + " " + tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={uuidv4()}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
             <td key={uuidv4()}>{dueDay}</td>,
         )

@@ -5,6 +5,7 @@ import { CLOCKTOWERSUB_ADDRESS} from "../config";
 import SubHistoryTable from '../components/SubHistoryTable';
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
+import styles from '../css/clocktower.module.css';
 
 const ProvSubHistory = () => {
     const [account] = useOutletContext();
@@ -50,14 +51,14 @@ const ProvSubHistory = () => {
     //checks that user has logged in  
         if(historyArray[0].args.provider !== account) {
                 return(
-                    <Alert align="center" variant="info">Switch Back to Provider Account</Alert>
+                    <Alert align="center" variant="info" className={styles.alerts}>Switch Back to Provider Account</Alert>
                 )
         } else {
         
             return (
             <div>
                 <div>
-                    {historyArray.length > 0 ? <Alert align="center" variant="dark">Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
+                    {historyArray.length > 0 ? <Alert align="center" variant="dark" className={styles.alerts}>Subscription History</Alert> : <Alert align="center" variant="info" className={styles.alerts}>No Subscribers Yet</Alert>}
                 </div>
                 
                 <div className="subTable">

@@ -185,7 +185,7 @@ const SubscriptionCards = (props) => {
                                     <Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link>
                                     </div>
                                     : 
-                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "center"}}> 
+                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "center", paddingBottom: "5px"}}> 
                                     {String(Number(totalSubscribers) * Number(subAmount))}
                                     </div>}
                                     <div key={uuidv4()} style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}>
@@ -213,9 +213,9 @@ const SubscriptionCards = (props) => {
                         </ListGroup>
 
                         {props.isProvider && !props.isLink ?
-                        <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}}>
+                        <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <ListGroup.Item variant="info" style={{width: titleBarWidth, textAlign:"center", fontSize: "15px"}}>Pay Per Period</ListGroup.Item>
-                            <ListGroup.Item variant="light" style={{width: textBarWidth, textAlign:"center", fontSize: "15px"}}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
+                            <ListGroup.Item variant="light" style={{display: "flex", alignItems: "center", justifyContent: "center", width: textBarWidth, textAlign:"center", fontSize: "15px", height: "100%"}}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                         </ListGroup>
                         : <></>}
 

@@ -54,7 +54,7 @@
     letter-spacing: var(--letter-spacing);
 }
 .tester {
-    background-color: red;
+    background-color: #425169;
     height: 100%;
 }
 
@@ -116,3 +116,20 @@
     vertical-align: middle;
 }
 
+.subsmodal {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+/* History */
+
+.history_table {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+/* Alerts */ 
+.alerts {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}

@@ -482,12 +482,12 @@ return (
         </ToastContainer>
         <div>
             <div>
-                <Modal show={showLinkDisplay} size="lg" onHide={linkDisplayClose} centered>
+                <Modal show={showLinkDisplay} size="lg" onHide={linkDisplayClose} centered className={styles.subsmodal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Subscription Link</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Pass the following link to your potential subscribers: 
-                        <p></p> {linkDisplayed.slice(0,85)}<br></br>{linkDisplayed.slice(86,170)}
+                        <p></p> {linkDisplayed.slice(0,79)}<br></br>{linkDisplayed.slice(80,170)}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" 
@@ -507,7 +507,7 @@ return (
                 </Modal>
             </div>
             <div>
-                <Modal show={showCreateSub} size="xl" onHide={createSubHandleClose} centered>
+                <Modal show={showCreateSub} size="xl" onHide={createSubHandleClose} centered className={styles.subsmodal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Create Subscription</Modal.Title>
                     </Modal.Header>
@@ -519,7 +519,7 @@ return (
                 </Modal>
             </div>
             <div>
-                <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleClose} centered>
+                <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleClose} centered className={styles.subsmodal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Subscription</Modal.Title>
                     </Modal.Header>
@@ -567,7 +567,7 @@ return (
                     justify
                 >
                     <Tab eventKey="created" title="Created">
-                        <div className="provHistory">
+                        <div>
 
                 
                             {!isTableEmpty1(provSubscriptionArray) && isTableView ?

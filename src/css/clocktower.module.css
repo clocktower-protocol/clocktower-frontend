@@ -8,6 +8,7 @@
     src: url("../fonts/Satoshi-Medium.woff2") format("woff2");
 }
 
+/* Root */
 .clocktower_brand {
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
@@ -60,4 +61,33 @@
     height: 75px;
 }
 
+/* Subscriptions Route */
+
+.top_level_subscriptions_route {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+.subs_header_route {
+    display: flex; 
+    justify-content: center; 
+    align-content: center; 
+    margin: 5px; 
+    padding-top: 10px;
+    font-size: 20px;
+}
+
+.subs_topline_route {
+    margin-bottom: 25px;
+}
+
+.subs_table_card_button_route {
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+
+.subs_table_route {
+    padding-left: 10px;
+    padding-right: 20px;
+}
 

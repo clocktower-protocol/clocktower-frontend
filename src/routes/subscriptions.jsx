@@ -11,6 +11,7 @@ import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
 import SubscriptionCards from "../components/SubscriptionCards";
+import styles from '../css/clocktower.module.css';
 
 const Subscriptions = () => {
 
@@ -465,7 +466,7 @@ const isTableEmpty2 = (subscriptionArray2) => {
 
 return (
             
-    <div className="clockMeta">
+    <div className={styles.top_level_subscriptions_route}>
         <ToastContainer position="top-center">
             <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>
                     <Toast.Header style={{justifyContent: "space-between"}}>
@@ -479,7 +480,7 @@ return (
                     */}
             </Toast>
         </ToastContainer>
-        <div className="clockBody">
+        <div>
             <div>
                 <Modal show={showLinkDisplay} size="lg" onHide={linkDisplayClose} centered>
                     <Modal.Header closeButton>
@@ -534,10 +535,10 @@ return (
             <div>
 
             </div>
-            <p style={{display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize:"20px"}}>
+            <p className={styles.subs_header_route}>
                     <b>Subscriptions</b>
             </p>
-            <hr style={{marginBottom: "25px"}}></hr>
+            <hr className={styles.subs_topline_route}></hr>
             <Stack gap={3}>
             {//a === account ?
             <div>
@@ -553,7 +554,7 @@ return (
              }
             {//a === account ?
             <div>    
-                 <ButtonGroup aria-label="Basic example" style={{paddingLeft: "20px", paddingBottom: "20px"}}>
+                 <ButtonGroup aria-label="Basic example" className={styles.subs_table_card_button_route}>
                     <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
                     <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
                 </ButtonGroup>
@@ -571,7 +572,7 @@ return (
                 
                             {!isTableEmpty1(provSubscriptionArray) && isTableView ?
                             
-                            <div style={{paddingLeft: "10px", paddingRight: "20px"}}>
+                            <div className={styles.subs_table_route}>
                                 <SubscriptionsTable
                                     subscriptionArray = {provSubscriptionArray}
                                     isAdmin = {false}
@@ -609,7 +610,7 @@ return (
                        
                             
                             {!isTableEmpty2(subscribedSubsArray) && isTableView ?
-                            <div style={{paddingLeft: "10px", paddingRight: "20px"}}>
+                            <div className={styles.subs_table_route}>
                                 <SubscriptionsTable
                                     subscriptionArray = {subscribedSubsArray}
                                     detailsArray = {subscribedDetailsArray}

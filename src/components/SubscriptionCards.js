@@ -5,6 +5,7 @@ import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../con
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
 import { v4 as uuidv4 } from 'uuid'
+import styles from '../css/clocktower.module.css';
 //import dayjs from 'dayjs'
 //import advancedFormat from 'dayjs/plugin/advancedFormat'
 
@@ -164,8 +165,8 @@ const SubscriptionCards = (props) => {
                 <Card key={uuidv4()} style={{width: cardWidth, marginBottom:"20px"}}>
                     <Card.Body>
                         <Card.Title >
-                            <div key={uuidv4()} style={{display: "flex", flexGrow: "1", alignItems: "center", flexWrap: "wrap"}}>
-                            <Avatar style={{display: "flex", justifyContent: "start", flexGrow: "1"}}
+                            <div key={uuidv4()} style={{display: "flex", flexGrow: "1", flexBasis: "0", alignItems: "center", flexWrap: "wrap", width: "100%"}}>
+                            <Avatar style={{display: "flex", justifyContent: "start", flexGrow: "1", width: "33%"}}
                                 size={50}
                                 name={subscriptionArray[i].subscription.id}
                                 square={true}
@@ -173,21 +174,21 @@ const SubscriptionCards = (props) => {
                                 colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
                             />
                             
-                                <div key={uuidv4()} style={{display: "flex", justifyContent: "center", flexGrow: "1", paddingLeft:"28px", paddingRight: linkNamePadding}}>
+                                <div key={uuidv4()} style={{display: "flex", justifyContent: "center", flexGrow: "1", paddingRight: linkNamePadding, width: "33%"}}>
                                     {description}
                                 </div>
                                 {props.isProvider && !props.isLink ?
-                                <div key={uuidv4()} style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px", justifyContent: "flex-end"}}>
+                                <div key={uuidv4()} style={{display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "15px", justifyContent: "center", width: "34%"}}>
                                     
                                     {Number(totalSubscribers) > 0 ?
-                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "flex-end", paddingBottom:"5px", paddingRight:"35px"}}> 
+                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "center"}}> 
                                     <Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link>
                                     </div>
                                     : 
-                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "flex-end", paddingBottom:"5px", paddingRight:"35px"}}> 
+                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "center"}}> 
                                     {String(Number(totalSubscribers) * Number(subAmount))}
                                     </div>}
-                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "flex-end", paddingBottom:"5px"}}>
+                                    <div key={uuidv4()} style={{display: "flex", justifyContent: "center", paddingBottom:"5px"}}>
                                     {" Subscribers"}
                                     </div>
                                 </div>

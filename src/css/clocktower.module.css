@@ -53,8 +53,9 @@
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
 }
-.test {
+.tester {
     background-color: red;
+    height: 100%;
 }
 
 .navbar {
@@ -89,5 +90,29 @@
 .subs_table_route {
     padding-left: 10px;
     padding-right: 20px;
+}
+
+.top_level_create_sub {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+.dropdown_toggle_create_sub {
+    width: 100%; 
+    color: black; 
+    background-color: white; 
+    text-align: left;
+}
+
+.dropdown_menu_create_sub {
+    width: 100%;
+}
+
+.substable {
+    vertical-align: middle;
+}
+
+.tablerow {
+    vertical-align: middle;
 }
 

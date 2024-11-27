@@ -6,6 +6,7 @@ import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 import Icon from './Icon'
+import styles from '../css/clocktower.module.css';
 
 const CreateSubForm = (props) => {
 
@@ -294,7 +295,7 @@ const CreateSubForm = (props) => {
     }
 
     return (
-        <div>
+        <div className={styles.top_level_create_sub}>
         <Modal show={showTokenMenu} size="l" onHide={hideTokenMenu} >
             <Modal.Header closeButton>
                 <Modal.Title>Choose a Token</Modal.Title>
@@ -329,12 +330,12 @@ const CreateSubForm = (props) => {
             <Row>
             <Col>
             <Form.Label>Token *</Form.Label>
-                <Dropdown style={{width:"100%"}}>
-                    <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white", textAlign:"left"}}>
+                <Dropdown className={styles.dropdown_menu_create_sub}>
+                    <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white", textAlign:"left"}} className={styles.dropdown_toggle_create_sub}>
                         {dropdownTitle}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu style={{width:"100%"}}>
+                    <Dropdown.Menu className={styles.dropdown_menu_create_sub}>
                         {tokenPulldown3()}
                     </Dropdown.Menu>
             </Dropdown>

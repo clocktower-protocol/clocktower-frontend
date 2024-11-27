@@ -5,6 +5,7 @@ import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../con
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
 import { v4 as uuidv4 } from 'uuid'
+import styles from '../css/clocktower.module.css';
 
 const SubscriptionsTable = (props) => {
 
@@ -112,7 +113,7 @@ const SubscriptionsTable = (props) => {
               colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
             />
             }</td>,
-            <td key={uuidv4()}>{detailsArray[i].description}</td>,
+            <td key={uuidv4()} className={styles.tablecell}>{detailsArray[i].description}</td>,
             <td key={uuidv4()}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={uuidv4()}>{frequencyLookup(subscriptionArray[i].subscription.frequency)}</td>, 
             <td key={uuidv4()}>{dueDay}</td>,
@@ -165,12 +166,12 @@ const SubscriptionsTable = (props) => {
         
           
         
-        table.push(<tr align="center" key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)
+        table.push(<tr align="center" className={styles.tablerow} key={String(subscriptionArray[i].subscription.id)}>{row}</tr>)
       }
     }
 
     tableTop.push(
-        <Table key={uuidv4()} striped bordered hover size="sm" className="provTable" >
+        <Table key={uuidv4()} striped bordered hover size="sm" >
           <thead key={uuidv4()}>
             <tr key={uuidv4()} align="center">
                 {isAdmin

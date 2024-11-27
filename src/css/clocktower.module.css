@@ -16,14 +16,48 @@
 .account_button {
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
-    margin: "5px"; 
-    margin-left:"100px";
+    margin: 5px; 
+    margin-left: 100px;
 }
 
 .subscriptions_button {
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
-    margin: "5px"; 
-    margin-left:"5px";
+    margin: 5px; 
+    margin-left: 5px;
 }
+
+.calendar_button {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+    margin: 5px;
+}
+
+.wallet_button {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+.account_text_nav {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+.wallet_modal {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+.connect_wallet_alert {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+.test {
+    background-color: red;
+}
+
+.navbar {
+    height: 75px;
+}
+
 

@@ -117,7 +117,7 @@ const Root = () => {
    return (
         <>
         <div key={"root"}>
-          <Modal show={showWalletChoice} onHide={handleClose} >
+          <Modal show={showWalletChoice} onHide={handleClose} className={styles.wallet_modal} >
           <Modal.Header closeButton>
             <Modal.Title>Choose a Wallet</Modal.Title>
           </Modal.Header>
@@ -167,9 +167,9 @@ const Root = () => {
          
         </Modal>
         </div>
-        <div key={"topDiv"} className="topDiv">
+        <div key={"topDiv"}>
           <div key={"navBarKey"} className="navBar">
-          <Navbar key="navBar" bg="dark" variant="dark" expand="lg" >
+          <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar} >
             <Container key="navContainer1" style={{width: "250px"}}>
               <LinkContainer to="/" style={{paddingLeft: "20px"}}>
                 <Navbar.Brand key="navTitle"><div className={styles.clocktower_brand}>Clocktower</div></Navbar.Brand>
@@ -178,7 +178,7 @@ const Root = () => {
             <Container style={{justifyContent: "flex-start"}}>
               <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>{' '}
               <Button variant="outline-info" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subscriptions</Button>{' '}
-              <Button variant="outline-info" style={{margin: "5px"}} onClick={handleOnClickCalendar}>Calendar</Button>{' '}
+              <Button variant="outline-info" className={styles.calendar_button} onClick={handleOnClickCalendar}>Calendar</Button>{' '}
               {account === adminAccount ?
               <Button variant="outline-info"  style={{margin: "5px"}} onClick={handleOnClickAdmin}>Admin</Button>
               : ""}
@@ -221,7 +221,7 @@ const Root = () => {
                  }
                   
                   <Nav key="nav">
-                    {isConnected && !isDisconnected ? (<Navbar.Text>Account: {address.slice(0,5)+"..."+address.slice(37, 42)}</Navbar.Text>) : (<Button variant="outline-success" className = "walletButton" onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+                    {isConnected && !isDisconnected ? (<Navbar.Text className={styles.account_text_nav}>Account: {address.slice(0,5)+"..."+address.slice(37, 42)}</Navbar.Text>) : (<Button variant="outline-success" className={styles.wallet_button} onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
                   </Nav>
               </Container>
       </Navbar>
@@ -249,7 +249,7 @@ const Root = () => {
         */}
         <div key={"mainDiv"} id="detail" className="mainDiv">
           
-          {!loggedIn? <Alert align="center" variant="info">Please Connect Wallet</Alert>: <Outlet context={[account]}/>}
+          {!loggedIn? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>: <Outlet context={[account]}/>}
         
         </div>
       {/*

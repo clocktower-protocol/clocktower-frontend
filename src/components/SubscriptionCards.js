@@ -1,11 +1,11 @@
 import React from 'react';
-import {Button, Table, Card, Stack, Col, Row, ListGroup} from 'react-bootstrap';
+import {Button, Card, Stack, ListGroup} from 'react-bootstrap';
 import {Link, useNavigate} from "react-router-dom";
 import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../config";
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
 import { v4 as uuidv4 } from 'uuid'
-import styles from '../css/clocktower.module.css';
+//import styles from '../css/clocktower.module.css';
 //import dayjs from 'dayjs'
 //import advancedFormat from 'dayjs/plugin/advancedFormat'
 

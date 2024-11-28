@@ -1,7 +1,7 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
-import {Row, Col, Card, ListGroup, Button, Stack, Modal, Tabs, Tab, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
+import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -9,10 +9,10 @@ import {recoverMessageAddress, parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
 import EditAccountForm from "../components/EditAccountForm";
 import CreateSubForm from "../components/CreateSubForm";
-import SubscriptionsTable from "../components/SubscriptionsTable";
+//import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
-import SubscriptionCards from "../components/SubscriptionCards";
+//import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
 
 
@@ -76,8 +76,8 @@ const Account = () => {
     //display Link
     const [linkDisplayed, setLinkDisplayed] = useState("")
     //page formatting 
-    const [isTableView, setIsTableView] = useState(true)
-    const [tab, setTab] = useState('created')
+    //const [isTableView, setIsTableView] = useState(true)
+    //const [tab, setTab] = useState('created')
     //link functions
     //const navigate = useNavigate();
     //const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])

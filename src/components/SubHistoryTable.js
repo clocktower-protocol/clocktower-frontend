@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import {TOKEN_LOOKUP} from "../config";
 import {formatEther} from 'viem'
 import styles from '../css/clocktower.module.css';
-/* global BigInt */
+
 const SubHistoryTable = (props) => {
 
     const historyArray = props.historyArray

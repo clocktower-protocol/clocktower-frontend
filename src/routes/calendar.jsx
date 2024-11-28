@@ -16,6 +16,7 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
 import dayOfYear from 'dayjs/plugin/dayOfYear'
 import {fetchToken} from '../clockfunctions'
+import styles from '../css/clocktower.module.css';
 
 dayjs.extend(quarterOfYear)
 dayjs.extend(isLeapYear)
@@ -335,6 +336,7 @@ useEffect(() => {
 
 
     return (
+        <div className={styles.top_level_calendar}>
         <FullCalendar
             plugins={[ dayGridPlugin, bootstrap5Plugin ]}
             initialView="dayGridMonth"
@@ -344,6 +346,7 @@ useEffect(() => {
             eventMouseEnter={handleMouseEnter}
             eventMouseLeave={handleMouseLeave}
         />
+        </div>
     )
 }
 

@@ -147,6 +147,13 @@
     letter-spacing: var(--letter-spacing);
 }
 
+/* Calendar */
+.top_level_calendar {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+    margin: 20px;
+}
+
 /* Alerts */ 
 .alerts {
     font-family: var(--font-family); 

@@ -62,6 +62,13 @@
     height: 75px;
 }
 
+/* Account */
+
+.top_level_account {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
 /* Subscriptions Route */
 
 .top_level_subscriptions_route {
@@ -116,7 +123,19 @@
     vertical-align: middle;
 }
 
+/* Modals */
+
 .subsmodal {
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
+}
+
+.tight_text {
+    letter-spacing: 1px;
+}
+
+/* Public */
+.top_level_public {
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
 }

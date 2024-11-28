@@ -153,12 +153,16 @@ const SubscriptionCards = (props) => {
             let titleBarWidth = "140px"
             let linkNamePadding = "0px"
             let cardWidth = "500px"
+            let dynamicwidth1 = "33%"
+            let dynamicwidth2 = "33%"
             //dynamic name padding
             if(props.isLink) {
                 linkNamePadding = "78px"
-                titleBarWidth = "95px"
-                textBarWidth = "400px"
-                cardWidth = "550px"
+                titleBarWidth = "125px"
+                textBarWidth = "500px"
+                cardWidth = "650px"
+                dynamicwidth1 = "19%"
+                dynamicwidth2 = "81%"
             }
             
             cards.push(
@@ -166,7 +170,7 @@ const SubscriptionCards = (props) => {
                     <Card.Body>
                         <Card.Title >
                             <div key={uuidv4()} style={{display: "flex", flexGrow: "1", flexBasis: "0", alignItems: "center", flexWrap: "wrap", width: "100%"}}>
-                            <Avatar style={{display: "flex", justifyContent: "start", flexGrow: "1", width: "33%"}}
+                            <Avatar style={{display: "flex", justifyContent: "start", flexGrow: "1", width: dynamicwidth1}}
                                 size={50}
                                 name={subscriptionArray[i].subscription.id}
                                 square={true}
@@ -174,7 +178,7 @@ const SubscriptionCards = (props) => {
                                 colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
                             />
                             
-                                <div key={uuidv4()} style={{display: "flex", justifyContent: "center", flexGrow: "1", paddingRight: linkNamePadding, width: "33%"}}>
+                                <div key={uuidv4()} style={{display: "flex", justifyContent: "center", flexGrow: "1", paddingRight: linkNamePadding, width: dynamicwidth2}}>
                                     {description}
                                 </div>
                                 {props.isProvider && !props.isLink ?

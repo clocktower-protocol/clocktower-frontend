@@ -8,6 +8,8 @@ import { parseAbiItem, erc20Abi} from 'viem'
 import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 import SubscriptionCards from "../components/SubscriptionCards";
+import styles from '../css/clocktower.module.css';
+
 
 /* global BigInt */
 
@@ -274,7 +276,7 @@ const PublicSubscription = () => {
     //checks that user has logged in 
    
         return (
-            <div> 
+            <div className={styles.top_level_public}> 
                 {alertMaker()}
                 <ToastContainer position="top-center">
                 <   Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>

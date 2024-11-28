@@ -13,6 +13,8 @@ import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
 import SubscriptionCards from "../components/SubscriptionCards";
+import styles from '../css/clocktower.module.css';
+
 
 //TODO: getAccount() is called too many times need to cache result
 
@@ -651,7 +653,7 @@ const alertMaker = () => {
     
             return (
             
-                <div className="clockMeta">
+                <div className={styles.top_level_account}>
                     {/*
                     alertMaker()
             */}
@@ -670,15 +672,15 @@ const alertMaker = () => {
                     </ToastContainer>
                     <div className="clockBody">
                         <div>
-                            <Modal show={showEditWarn} onHide={editHandleClose} centered>
+                            <Modal show={showEditWarn} onHide={editHandleClose} centered className={styles.subsmodal}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Warning</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <p>
+                                    <p className={styles.tight_text}>
                                         All information saved to the account will be stored publically on the blockchain. 
                                     </p>
-                                    <p>
+                                    <p className={styles.tight_text}>
                                         This will help subscribers verify your information but your account will no longer be anonymous.
                                     </p>
                                 </Modal.Body>
@@ -689,11 +691,11 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={verifyShow} size="xl" onHide={verifyHandleClose} centered>
+                            <Modal show={verifyShow} size="xl" onHide={verifyHandleClose} centered className={styles.subsmodal}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Verify Domain</Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body>Create the following domain record: 
+                                <Modal.Body className={styles.tight_text}>Create the following domain record: 
                                     <p></p> Step 1: Use the copy button below to copy the hash 
                                     <p></p> {String(signMessageData).slice(0,85)}<br></br>{String(signMessageData).slice(86,170)}
                                     <p></p> Step 2: Create a new txt record at your domain registrar name "ct"
@@ -717,7 +719,7 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={showLinkDisplay} size="lg" onHide={linkDisplayClose} centered>
+                            <Modal show={showLinkDisplay} size="lg" onHide={linkDisplayClose} centered className={styles.subsmodal}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Subscription Link</Modal.Title>
                                 </Modal.Header>
@@ -742,7 +744,7 @@ const alertMaker = () => {
                             </Modal>
                         </div>
                         <div>
-                            <Modal show={showEditForm} size="xl" onHide={editFormHandleClose} centered>
+                            <Modal show={showEditForm} size="xl" onHide={editFormHandleClose} centered className={styles.subsmodal}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Edit Account</Modal.Title>
                                 </Modal.Header>
@@ -802,17 +804,17 @@ const alertMaker = () => {
                                             name={a}
                                             variant="pixel"
                                             colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
-                                        />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{a}
-                                    </Card.Title>
-                                   
+                                        />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {a}
+                                    </Card.Title>  
                                     <Stack gap={3}>
                                     <Row>
                                         <Col>
                                             <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                 <ListGroup.Item variant="primary" style={{width:"150px", textAlign:"center"}}>Status</ListGroup.Item>
                                                 {!isDomainVerified ?
-                                                <ListGroup.Item style={{width:"175px"}} variant="warning">Domain Unverified</ListGroup.Item>
-                                                : <ListGroup.Item style={{width:"175px"}} variant="success">Domain Verified</ListGroup.Item>}
+                                                <ListGroup.Item style={{width:"200px"}} variant="warning">Domain Unverified</ListGroup.Item>
+                                                : <ListGroup.Item style={{width:"200px"}} variant="success">Domain Verified</ListGroup.Item>}
                                             </ListGroup>
                                         </Col>
                                     </Row>

@@ -82,9 +82,11 @@ const Root = () => {
      
       console.log(chains)
       console.log("address loop")
+      console.log(account)
+      console.log(address)
       setAccount(address)
       //address reset
-      if(address !== undefined){
+      if(address !== undefined && address !== account){
         //checks/resets token
         fetchToken()
         setLoggedIn(true)

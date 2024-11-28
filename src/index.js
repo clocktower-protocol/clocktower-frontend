@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css';
 import reportWebVitals from './reportWebVitals';
-import {createBrowserRouter,RouterProvider} from "react-router-dom";
+import {createBrowserRouter,RouterProvider, BrowserRouter, Routes, Route} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from './errorPage';
 //import FutPaymentRoute from './timepayments/futurepayments';
@@ -103,10 +103,11 @@ const router = createBrowserRouter([
     },
   });
 
+  
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+/*
 root.render(
-  
   <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
@@ -118,6 +119,36 @@ root.render(
       </WagmiProvider>
   </React.StrictMode>
 );
+*/
+
+
+root.render(
+  <React.StrictMode>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Root />}>
+                <Route path="account/:a" element={<Account />} />
+                <Route path="provider/history/:id" element={<ProvSubHistory />} />
+                <Route path="history/:id" element={<ProvSubHistory />} />
+                <Route path="subscribers/:id/:a/:t/:p" element={<ProvSubscribers />} />
+                <Route path="public_subscription/:id/:f/:d" element={<PublicSubscription />} />
+                <Route path="subscription/:id" element={<SubHistory />} />
+                <Route path="editdetails/:id" element={<EditDetails />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="admin/" element={<Admin />} />
+                <Route path="admin/subscriptions/:t/:s" element={<AdminSubscriptions />} />
+                <Route path="admin/history/:a/:isp" element={<AdminHistory />} />
+                <Route path="subscriptions/:t" element={<Subscriptions />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </WagmiProvider>
+  </React.StrictMode>
+);
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

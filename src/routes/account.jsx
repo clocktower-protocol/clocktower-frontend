@@ -4,14 +4,14 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
-import { readContract } from 'wagmi/actions'
+//import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
-import {config} from '../wagmiconfig'
+//import {config} from '../wagmiconfig'
 import EditAccountForm from "../components/EditAccountForm";
-import CreateSubForm from "../components/CreateSubForm";
+//import CreateSubForm from "../components/CreateSubForm";
 //import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
-import EditDetailsForm2 from "../components/EditDetailsForm2";
+//import EditDetailsForm2 from "../components/EditDetailsForm2";
 //import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
 
@@ -39,8 +39,8 @@ const Account = () => {
     const [showEditWarn, setShowEditWarn] = useState(false);
     const [verifyShow, setVerifyShow] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false)
-    const [showCreateSub, setShowCreateSub] = useState(false)
-    const [showSubEditForm, setShowSubEditForm] = useState(false)
+    //const [showCreateSub, setShowCreateSub] = useState(false)
+    //const [showSubEditForm, setShowSubEditForm] = useState(false)
     const [showLinkDisplay, setShowLinkDisplay] = useState(false)
 
     //copy variables
@@ -53,26 +53,34 @@ const Account = () => {
     const [changedAccountDetails, setChangedAccountDetails] = useState({})
     const [accountDetails, setAccountDetails] = useState({})
     //table variables
-    let emptyArray = []
+    //let emptyArray = []
+    /*
     const [provDetailsArray, setProvDetailsArray] = useState(emptyArray)
     const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
     const [subscribedDetailsArray, setSubscribedDetailsArray] = useState(emptyArray)
     const [subscribedSubsArray, setSubscribedSubsArray] = useState(emptyArray)
+    */
     //passed back objects when calling wallet
+    /*
     const [cancelledSub, setCancelledSub] = useState({})
     const [changedCreateSub, setChangedCreateSub] = useState({})
     const [unsubscribedSub, setUnsubscribedSub] = useState({})
+    */
     //alerts
     //const [alertText2, setAlertText2] = useState("Test")
     //const [isAlertSet, setAlert2] = useState(false)
     const [showToast, setShowToast] = useState(false)
     const [toastHeader, setToastHeader] = useState("")
     //const [toastBody, setToastBody] = useState("")
+
     //editing subscription 
+    /*
     const [editSub, setEditSub] = useState({})
     const [preEditDetails, setPreEditDetails] = useState({})
     const [editSubParams, setEditSubParams] = useState({})
     const [editResult, setEditResult] = useState({})
+    */
+
     //display Link
     const [linkDisplayed, setLinkDisplayed] = useState("")
     //page formatting 
@@ -129,6 +137,8 @@ const Account = () => {
             isMounting.current = false
         }
     },[changedAccountDetails, writeContract])
+
+    /*
 
     //hook for calling wallet to create sub
     useEffect(() => {
@@ -199,6 +209,8 @@ const Account = () => {
         }
     },[editResult, writeContract])
 
+    */
+
     const verifyDomain = async (domain, provAddress) => {
 
         let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
@@ -244,6 +256,7 @@ const Account = () => {
         setShowEditForm(true)
     }
 
+    /*
     //turns on and off create susbcription modal
     const createSubHandleClose = () => setShowCreateSub(false)
     const createSubHandleShow = () => setShowCreateSub(true)
@@ -251,6 +264,7 @@ const Account = () => {
     //turns on and off subscription details edit modal
     const subEditDetailsHandleClose = () => setShowSubEditForm(false)
     const subEditDetailsHandleShow = () => setShowSubEditForm(true)
+    */
 
     //turns on and off link display modal
     const linkDisplayClose = () => {
@@ -267,9 +281,11 @@ const Account = () => {
         editHandleShow()
     }
 
+    /*
     const createButtonClick = () => {
         createSubHandleShow()
     }
+    */
 
     //gets account info
     const getAccount = useCallback(async () => {
@@ -324,6 +340,7 @@ const Account = () => {
         }
     },[a, address, publicClient])
 
+/*
 const getProviderSubs = useCallback(async () => {
         //checks if user is logged into account
        
@@ -503,6 +520,8 @@ const getSub = useCallback(async (editSubParams) => {
     })
 },[publicClient])
 
+*/
+
 
 
 //sets mounting bool to not mounting after initial load
@@ -516,12 +535,12 @@ useEffect(() => {
         //linkToMain()
     } else {
         getAccount()
-        getProviderSubs()
-        getSubscriberSubs()
+        //getProviderSubs()
+        //getSubscriberSubs()
     }
 
     //console.log("here")
-},[getAccount, getProviderSubs, getSubscriberSubs, address])
+},[getAccount, address])
 
 //changes data when passed account is switched
 useEffect(() => {
@@ -530,10 +549,10 @@ useEffect(() => {
         console.log("Account Switch")
         getAccount()
         setIsDomainVerified(false)
-        getProviderSubs()
-        getSubscriberSubs()
+        //getProviderSubs()
+        //getSubscriberSubs()
     }
-},[a, getAccount, getProviderSubs, getSubscriberSubs])
+},[a, getAccount])
 
 //shows alert when waiting for transaction to finish
 useEffect(() => {
@@ -564,14 +583,15 @@ useEffect(() => {
         //console.log("done")
         */
         editFormHandleClose()
-        createSubHandleClose()
+        //createSubHandleClose()
         getAccount()
-        getProviderSubs()
-        getSubscriberSubs()
+        //getProviderSubs()
+        //getSubscriberSubs()
         
     }
-},[getAccount, getProviderSubs, getSubscriberSubs, wait.isLoading, wait.isSuccess])
+},[getAccount, wait.isLoading, wait.isSuccess])
 
+/*
 //called when edit subscription button is pushed
 useEffect(() =>{
     if(JSON.stringify(editSubParams) !== '{}'
@@ -590,6 +610,7 @@ useEffect(() =>{
     }
 
 },[editSub])
+*/
 
 //called when link to be displayed in modal 
 useEffect(() => {
@@ -599,6 +620,8 @@ useEffect(() => {
     }
 
 },[linkDisplayed])
+
+/*
 
 const isTableEmpty1 = (subscriptionArray) => {
        
@@ -635,6 +658,7 @@ const isTableEmpty2 = (subscriptionArray2) => {
         }
     }
 }
+*/
 
  //Creates alert
  /*
@@ -760,6 +784,7 @@ const alertMaker = () => {
                                 </Modal.Body>
                             </Modal>
                         </div>
+                        {/*}
                         <div>
                             <Modal show={showCreateSub} size="xl" onHide={createSubHandleClose} centered>
                                 <Modal.Header closeButton>
@@ -786,6 +811,7 @@ const alertMaker = () => {
                                 </Modal.Body>
                             </Modal>
                         </div>
+                        */}
                         <div>
 
                         </div>

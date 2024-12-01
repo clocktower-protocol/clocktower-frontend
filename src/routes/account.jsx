@@ -4,15 +4,10 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
-//import { readContract } from 'wagmi/actions'
 import {recoverMessageAddress, parseAbiItem } from 'viem'
-//import {config} from '../wagmiconfig'
 import EditAccountForm from "../components/EditAccountForm";
-//import CreateSubForm from "../components/CreateSubForm";
-//import SubscriptionsTable from "../components/SubscriptionsTable";
 import {fetchToken} from '../clockfunctions'
-//import EditDetailsForm2 from "../components/EditDetailsForm2";
-//import SubscriptionCards from "../components/SubscriptionCards";
+
 import styles from '../css/clocktower.module.css';
 
 
@@ -39,8 +34,6 @@ const Account = () => {
     const [showEditWarn, setShowEditWarn] = useState(false);
     const [verifyShow, setVerifyShow] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false)
-    //const [showCreateSub, setShowCreateSub] = useState(false)
-    //const [showSubEditForm, setShowSubEditForm] = useState(false)
     const [showLinkDisplay, setShowLinkDisplay] = useState(false)
 
     //copy variables
@@ -52,44 +45,13 @@ const Account = () => {
     const [isDomainVerified, setIsDomainVerified] = useState(false)
     const [changedAccountDetails, setChangedAccountDetails] = useState({})
     const [accountDetails, setAccountDetails] = useState({})
-    //table variables
-    //let emptyArray = []
-    /*
-    const [provDetailsArray, setProvDetailsArray] = useState(emptyArray)
-    const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
-    const [subscribedDetailsArray, setSubscribedDetailsArray] = useState(emptyArray)
-    const [subscribedSubsArray, setSubscribedSubsArray] = useState(emptyArray)
-    */
-    //passed back objects when calling wallet
-    /*
-    const [cancelledSub, setCancelledSub] = useState({})
-    const [changedCreateSub, setChangedCreateSub] = useState({})
-    const [unsubscribedSub, setUnsubscribedSub] = useState({})
-    */
     //alerts
-    //const [alertText2, setAlertText2] = useState("Test")
-    //const [isAlertSet, setAlert2] = useState(false)
     const [showToast, setShowToast] = useState(false)
     const [toastHeader, setToastHeader] = useState("")
-    //const [toastBody, setToastBody] = useState("")
-
-    //editing subscription 
-    /*
-    const [editSub, setEditSub] = useState({})
-    const [preEditDetails, setPreEditDetails] = useState({})
-    const [editSubParams, setEditSubParams] = useState({})
-    const [editResult, setEditResult] = useState({})
-    */
 
     //display Link
     const [linkDisplayed, setLinkDisplayed] = useState("")
-    //page formatting 
-    //const [isTableView, setIsTableView] = useState(true)
-    //const [tab, setTab] = useState('created')
-    //link functions
-    //const navigate = useNavigate();
-    //const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
-
+    
     const msg = 'test'
 
     const { data, writeContract } = useWriteContract()
@@ -138,79 +100,6 @@ const Account = () => {
         }
     },[changedAccountDetails, writeContract])
 
-    /*
-
-    //hook for calling wallet to create sub
-    useEffect(() => {
-        //calls wallet
-        if(!isMounting.current && Object.keys(changedCreateSub).length !== 0) {
-            //sets toast
-            setToastHeader("Waiting on wallet transaction...")
-            setShowToast(true)
-            writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
-                abi: CLOCKTOWERSUB_ABI,
-                functionName: 'createSubscription',
-                args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
-            })
-        } else {
-            isMounting.current = false
-        }
-    },[changedCreateSub, writeContract])
-
-    //hook for calling wallet to cancel sub
-    useEffect(() => {
-        //calls wallet
-        if(Object.keys(cancelledSub).length !== 0) {
-            setToastHeader("Waiting on wallet transaction...")
-            setShowToast(true)
-            //cancelSubscription.write()
-            writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
-                abi: CLOCKTOWERSUB_ABI,
-                functionName: 'cancelSubscription',
-                args: [cancelledSub]
-            })
-        } else {
-            isMounting.current = false
-        }
-    },[cancelledSub, writeContract])
-
-    //hook for calling wallet to unsubscribe
-    useEffect(() => {
-        //calls wallet
-        if(Object.keys(unsubscribedSub).length !== 0) {
-            setToastHeader("Waiting on wallet transaction...")
-            setShowToast(true)
-            writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
-                abi: CLOCKTOWERSUB_ABI,
-                functionName: 'unsubscribe',
-                args: [unsubscribedSub]
-            })
-        }
-    },[unsubscribedSub, writeContract])
-
-    //hook for editing subscription
-    useEffect(() => {
-         //calls wallet
-         if(Object.keys(editResult).length !== 0) {
-            setToastHeader("Waiting on wallet transaction...")
-            setShowToast(true)
-            writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
-                abi: CLOCKTOWERSUB_ABI,
-                functionName: 'editDetails',
-                args: [editResult.details, editResult.id]
-            })
-
-            subEditDetailsHandleClose()
-
-        }
-    },[editResult, writeContract])
-
-    */
-
     const verifyDomain = async (domain, provAddress) => {
 
         let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
@@ -256,16 +145,6 @@ const Account = () => {
         setShowEditForm(true)
     }
 
-    /*
-    //turns on and off create susbcription modal
-    const createSubHandleClose = () => setShowCreateSub(false)
-    const createSubHandleShow = () => setShowCreateSub(true)
-
-    //turns on and off subscription details edit modal
-    const subEditDetailsHandleClose = () => setShowSubEditForm(false)
-    const subEditDetailsHandleShow = () => setShowSubEditForm(true)
-    */
-
     //turns on and off link display modal
     const linkDisplayClose = () => {
         setShowLinkDisplay(false)
@@ -280,12 +159,6 @@ const Account = () => {
     const editButtonClick = () => {
         editHandleShow()
     }
-
-    /*
-    const createButtonClick = () => {
-        createSubHandleShow()
-    }
-    */
 
     //gets account info
     const getAccount = useCallback(async () => {
@@ -340,189 +213,6 @@ const Account = () => {
         }
     },[a, address, publicClient])
 
-/*
-const getProviderSubs = useCallback(async () => {
-        //checks if user is logged into account
-       
-        if(typeof address === "undefined") {
-           console.log("Not Logged in")
-           return
-       }
-
-       //variable to pass scope so that the state can be set
-       let accountSubscriptions = []
-
-       await fetchToken()
-       try{
-       await readContract(config, {
-           address: CLOCKTOWERSUB_ADDRESS,
-           abi: CLOCKTOWERSUB_ABI,
-           functionName: 'getAccountSubscriptions',
-           args: [false, address]
-       })
-       .then(async function(result) {
-           accountSubscriptions = result
-
-           //loops through each subscription
-           for (let i = 0; i < accountSubscriptions.length; i++) {
-            
-               //console.log(i+1)
-               //console.log(address)
-               await publicClient.getLogs({
-                   address: CLOCKTOWERSUB_ADDRESS,
-                   event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-                   fromBlock: 0n,
-                   toBlock: 'latest',
-                   args: {id:[accountSubscriptions[i].subscription.id]}
-               }) 
-               .then(async function(events){
-               
-                
-                   //checks for latest update by getting highest timestamp
-                   if(events !== undefined) {
-                       
-                       let time = 0
-                       let index = 0
-                       
-                       if(events.length > 0)
-                       {
-                           for (var j = 0; j < events.length; j++) {
-                                   if(time < events[j].args.timestamp)
-                                   {
-                                       time = events[j].args.timestamp
-                                       index = j
-                                   }
-                           }
-                           //adds latest details to details array
-                           provDetailsArray[i] = events[index].args
-                       }    
-                       
-                   }
-                   
-               })
-               
-           }
-           setProvSubscriptionArray(accountSubscriptions)
-           setProvDetailsArray(provDetailsArray)
-       })
-   } catch(Err) {
-       console.log(Err)
-   }
-}, [address, provDetailsArray, publicClient])
-
-const getSubscriberSubs = useCallback(async () => {
-    //checks if user is logged into account
-   
-    if(typeof address === "undefined") {
-       console.log("Not Logged in")
-       return
-   }
-   
-   //variable to pass scope so that the state can be set
-   let accountSubscriptions = []
-
-   await fetchToken()
-   try{
-   await readContract(config, {
-       address: CLOCKTOWERSUB_ADDRESS,
-       abi: CLOCKTOWERSUB_ABI,
-       functionName: 'getAccountSubscriptions',
-       args: [true, address]
-   })
-   .then(async function(result) {
-       accountSubscriptions = result
-
-       //loops through each subscription
-       for (let i = 0; i < accountSubscriptions.length; i++) {
-           await publicClient.getLogs({
-               address: CLOCKTOWERSUB_ADDRESS,
-               event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-               fromBlock: 0n,
-               toBlock: 'latest',
-               args: {id:[accountSubscriptions[i].subscription.id]}
-           }) 
-           .then(async function(events){
-           
-                
-               //checks for latest update by getting highest timestamp
-               if(events !== undefined) {
-                   //console.log(events)
-                   
-                   let time = 0
-                   let index = 0
-                   
-                   if(events.length > 0)
-                   {
-                       for (var j = 0; j < events.length; j++) {
-                               if(time < events[j].args.timestamp)
-                               {
-                                   time = events[j].args.timestamp
-                                   index = j
-                               }
-                       }
-                       //adds latest details to details array
-                       subscribedDetailsArray[i] = events[index].args
-                   }    
-                   
-               }
-               
-           })
-           
-       }
-     //  console.log(accountSubscriptions)
-       setSubscribedSubsArray(accountSubscriptions)
-       setSubscribedDetailsArray(subscribedDetailsArray)
-   })
-    } catch(Err) {
-        console.log(Err)
-    }
-},[address, publicClient, subscribedDetailsArray])
-
-const getSub = useCallback(async (editSubParams) => {
-    await fetchToken()
-    await readContract(config, {
-        address: CLOCKTOWERSUB_ADDRESS,
-        abi: CLOCKTOWERSUB_ABI,
-        functionName: 'getSubByIndex',
-        args: [editSubParams.id, editSubParams.f, editSubParams.d]
-    })
-    .then(async function(result) {
-        await publicClient.getLogs({
-            address: CLOCKTOWERSUB_ADDRESS,
-            event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-            fromBlock: 0n,
-            toBlock: 'latest',
-            args: {id:[result.id]}
-        }) 
-        .then(async function(events){
-            //checks for latest update by getting highest timestamp
-            if(events !== undefined) {
-                
-                let time = 0
-                let index = 0
-                
-                if(events.length > 0)
-                {
-                    for (var j = 0; j < events.length; j++) {
-                            if(time < events[j].args.timestamp)
-                            {
-                                time = events[j].args.timestamp
-                                index = j
-                            }
-                    }
-                    //adds latest details to details array
-                    setPreEditDetails(events[index].args)
-                }       
-            }    
-        })
-        setEditSub(result)
-        //subEditDetailsHandleShow()
-    })
-},[publicClient])
-
-*/
-
-
 
 //sets mounting bool to not mounting after initial load
 useEffect(() => {
@@ -535,8 +225,6 @@ useEffect(() => {
         //linkToMain()
     } else {
         getAccount()
-        //getProviderSubs()
-        //getSubscriberSubs()
     }
 
     //console.log("here")
@@ -549,68 +237,24 @@ useEffect(() => {
         console.log("Account Switch")
         getAccount()
         setIsDomainVerified(false)
-        //getProviderSubs()
-        //getSubscriberSubs()
     }
 },[a, getAccount])
 
 //shows alert when waiting for transaction to finish
 useEffect(() => {
     if(wait.isLoading) {
-        /*
-        setAlertType("warning")
-
-       // setAlert(true)
-      //  setAlertText("Transaction Pending...")
-
-        setAlert2(true)
-        setAlertText2("Transaction Pending...")
-        */
         setToastHeader("Transaction Pending")
     }
 
     if(wait.isSuccess) {
 
-        //turns off alert
-      //  setAlert(false)
         setShowToast(false)
-
-        /*
-        setAlert2(false)
-        
-
-        setAlertType("danger")
-        //console.log("done")
-        */
         editFormHandleClose()
-        //createSubHandleClose()
         getAccount()
-        //getProviderSubs()
-        //getSubscriberSubs()
         
     }
 },[getAccount, wait.isLoading, wait.isSuccess])
 
-/*
-//called when edit subscription button is pushed
-useEffect(() =>{
-    if(JSON.stringify(editSubParams) !== '{}'
-    ){
-        //subEditDetailsHandleShow()
-        getSub(editSubParams)
-    }
-
-},[editSubParams, getSub])
-
-//called when subscription data is done loading
-useEffect(() =>{
-    if(Object.keys(editSub).length !== 0)
-    {
-        subEditDetailsHandleShow()
-    }
-
-},[editSub])
-*/
 
 //called when link to be displayed in modal 
 useEffect(() => {
@@ -621,77 +265,18 @@ useEffect(() => {
 
 },[linkDisplayed])
 
-/*
 
-const isTableEmpty1 = (subscriptionArray) => {
-       
-    //console.log(subscriptionArray)
-    let count = 0
-    if(subscriptionArray.length === 0){
-        return true
-    } else {
-       subscriptionArray.forEach(subscription => {
-           if(subscription.status !== 1) {count += 1}
-       })
-       if(count > 0) { return false } else {return true}
-    }
-       
-}
-
-const isTableEmpty2 = (subscriptionArray2) => {
-    let count = 0
-    //console.log(subscriptionArray2)
-    //console.log("check")
-    if(subscriptionArray2.length === 0){
-        return true
-    } else {
-        subscriptionArray2.forEach(subscription => {
-            //this checks for unsubscribes AND cancels
-            if(Number(subscription.status) === 0) {count += 1}
-        })
-        if(count > 0) { 
-            //setIsEmpty(false)
-            return false 
-        } else {
-        // setIsEmpty(true)
-            return true
-        }
-    }
-}
-*/
-
- //Creates alert
- /*
-const alertMaker = () => {
-    if(isAlertSet) {
-        return (
-            <div className="alertDiv">
-                <Alert variant={"danger"} align="center" onClose={() => setAlert2(false)} dismissible>{alertText2}</Alert>
-            </div>
-        )
-    }
-   // console.log(isAlertSet)
-}
-*/
-
-    
             return (
             
                 <div className={styles.top_level_account}>
-                    {/*
-                    alertMaker()
-            */}
+                  
                     <ToastContainer position="top-center">
                         <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>
                                 <Toast.Header style={{justifyContent: "space-between"}}>
                                     <Spinner animation="border" variant="info" />
                                     {toastHeader}
                                 </Toast.Header>
-                                {/*
-                                <Toast.Body style={{backgroundColor: "white", textAlign: "center"}}>
-                                    {toastBody}
-                                </Toast.Body>
-                                */}
+                        
                         </Toast>
                     </ToastContainer>
                     <div className="clockBody">
@@ -777,41 +362,11 @@ const alertMaker = () => {
 
                                         accountDetails = {accountDetails}
                                         setChangedAccountDetails = {setChangedAccountDetails}
-
-                                       // setAlert = {setAlert2}
-                                       // setAlertText = {setAlertText2}
                                     />
                                 </Modal.Body>
                             </Modal>
                         </div>
-                        {/*}
-                        <div>
-                            <Modal show={showCreateSub} size="xl" onHide={createSubHandleClose} centered>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Create Subscription</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    <CreateSubForm
-                                        setChangedCreateSub = {setChangedCreateSub}
-                                    />
-                                </Modal.Body>
-                            </Modal>
-                        </div>
-                        <div>
-                            <Modal show={showSubEditForm} size="xl" onHide={subEditDetailsHandleClose} centered>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Edit Subscription</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    <EditDetailsForm2
-                                        editSub = {editSub}
-                                        preEditDetails = {preEditDetails}
-                                        setEditResult = {setEditResult}
-                                    />
-                                </Modal.Body>
-                            </Modal>
-                        </div>
-                        */}
+                      
                         <div>
 
                         </div>
@@ -889,7 +444,6 @@ const alertMaker = () => {
                                             <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                 <Button variant="outline-info" onClick={async () => {
                                                     signMessage({message: msg})
-                                                    //verifyHandleShow()
                                                 }}>Verify Domain</Button>
                                             </ListGroup>
                                         </Col>
@@ -901,120 +455,6 @@ const alertMaker = () => {
                             </div>
                         </div>
                         
-                        {/*
-                        {a === account ?
-                         <>
-                         <p style={{ display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize: "20px" }}>
-                                <b>Subscriptions</b>
-                            </p>
-                            <div>
-                                <Row>
-
-                                    <Col align="center">
-                                        <Button variant="outline-info" onClick={() => createButtonClick()}>Create Subscription</Button>
-                                    </Col>
-
-                                </Row>
-                            </div>
-                        </>
-                         : ""}
-                         
-                        {a === account ?
-                        <div>    
-                             <ButtonGroup aria-label="Basic example" style={{paddingLeft: "20px", paddingBottom: "20px"}}>
-                                <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
-                                <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
-                            </ButtonGroup>
-                            <Tabs
-                                defaultActiveKey="created"
-                                activeKey={tab}
-                                onSelect={(k) => setTab(k)}
-                                id="account-tabs"
-                                className="mb-3"
-                                justify
-                            >
-                                <Tab eventKey="created" title="Created">
-                                    <div className="provHistory">
-
-                            
-                                        {!isTableEmpty1(provSubscriptionArray) && isTableView ?
-                                        
-                                        <div style={{paddingLeft: "10px", paddingRight: "20px"}}>
-                                            <SubscriptionsTable
-                                                subscriptionArray = {provSubscriptionArray}
-                                                isAdmin = {false}
-                                                role = {1}
-                                                detailsArray = {provDetailsArray}
-                                                setCancelledSub = {setCancelledSub}
-                                                subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                                                setEditSubParams = {setEditSubParams}
-                                                setLinkDisplayed = {setLinkDisplayed}
-                                            />
-                                        </div>
-                                        : <div></div>}
-                                        
-                                        {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
-                                        <div style={{justifyContent:"center", display:"flex"}}>
-                                            <SubscriptionCards
-                                                subscriptionArray = {provSubscriptionArray}
-                                                detailsArray = {provDetailsArray}
-                                                setCancelledSub = {setCancelledSub}
-                                                subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                                                setEditSubParams = {setEditSubParams}
-                                                setLinkDisplayed = {setLinkDisplayed}
-                                                isProvider = {true}
-                                                isLink = {false}
-                                                isSubscribed = {false}
-                                            />
-                                        </div>
-                                        : <div></div>}
-                                        
-                                    </div>
-                                </Tab>
-                               
-                                <Tab eventKey="subscribed" title="Subscribed To">
-                                    <div className="subHistory">
-                                   
-                                        
-                                        {!isTableEmpty2(subscribedSubsArray) && isTableView ?
-                                        <div style={{paddingLeft: "10px", paddingRight: "20px"}}>
-                                            <SubscriptionsTable
-                                                subscriptionArray = {subscribedSubsArray}
-                                                detailsArray = {subscribedDetailsArray}
-                                            // unsubscribe = {unsubscribe}
-                                                account = {account}
-                                                role = {2}
-                                                setUnsubscribedSub = {setUnsubscribedSub}
-                                            />
-                                        </div>
-                                        : <div></div>}
-
-                                        {!isTableEmpty2(subscribedSubsArray) && !isTableView ?
-                                        <div style={{justifyContent:"center", display:"flex"}}>
-                                            <SubscriptionCards
-                                                subscriptionArray = {subscribedSubsArray}
-                                                detailsArray = {subscribedDetailsArray}
-                                                /*
-                                                setCancelledSub = {setCancelledSub}
-                                                subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                                                setEditSubParams = {setEditSubParams}
-                                                setLinkDisplayed = {setLinkDisplayed}
-                                                */
-                                               /*
-                                                setUnsubscribedSub = {setUnsubscribedSub}
-                                                isProvider = {false}
-                                                isLink = {false}
-                                                isSubscribed = {false}
-                                            />
-                                        </div>
-                                        : <div></div>}
-                                        
-                                    </div>
-                                </Tab>        
-                            </Tabs>
-                        </div>
-                        : ""}
-                        */}
                         </Stack>
                         
                     </div>

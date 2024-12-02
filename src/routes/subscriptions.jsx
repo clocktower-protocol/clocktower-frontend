@@ -554,10 +554,94 @@ return (
              }
             {//a === account ?
             <div>    
-                 <ButtonGroup aria-label="Basic example" className={styles.subs_table_card_button_route}>
+                <ButtonGroup aria-label="Table or Card" className={styles.subs_table_card_button_route}>
                     <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
                     <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
                 </ButtonGroup>
+                <br></br>
+                <div style={{display:"flex", width:"100%", justifyContent:"space-between"}}>
+                    <ButtonGroup style={{flexGrow: "1"}} aria-label="Tab switcher" className={styles.subs_tabs}>
+                        <Button variant={tab === "created" ? "secondary" : "light"} onClick={() => {setTab("created")}}>Created</Button>
+                        <Button variant={tab !== "created" ? "secondary" : "light"} onClick={() => {setTab("subscribed")}}>Subscribed To</Button>
+                    </ButtonGroup>
+                </div>
+                
+        
+        {tab === "created" ?  <div>
+
+                
+        {!isTableEmpty1(provSubscriptionArray) && isTableView ?
+
+        <div className={styles.subs_table_route}>
+            <SubscriptionsTable
+                subscriptionArray = {provSubscriptionArray}
+                isAdmin = {false}
+                role = {1}
+                detailsArray = {provDetailsArray}
+                setCancelledSub = {setCancelledSub}
+                subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                setEditSubParams = {setEditSubParams}
+                setLinkDisplayed = {setLinkDisplayed}
+            />
+        </div>
+        : <div></div>}
+
+        {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
+        <div style={{justifyContent:"center", display:"flex"}}>
+            <SubscriptionCards
+                subscriptionArray = {provSubscriptionArray}
+                detailsArray = {provDetailsArray}
+                setCancelledSub = {setCancelledSub}
+                subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                setEditSubParams = {setEditSubParams}
+                setLinkDisplayed = {setLinkDisplayed}
+                isProvider = {true}
+                isLink = {false}
+                isSubscribed = {false}
+            />
+        </div>
+
+        : <div className="subHistory">
+                       
+                            
+        {!isTableEmpty2(subscribedSubsArray) && isTableView ?
+        <div className={styles.subs_table_route}>
+            <SubscriptionsTable
+                subscriptionArray = {subscribedSubsArray}
+                detailsArray = {subscribedDetailsArray}
+            // unsubscribe = {unsubscribe}
+                account = {account}
+                role = {2}
+                setUnsubscribedSub = {setUnsubscribedSub}
+            />
+        </div>
+        : <div></div>}
+
+        {!isTableEmpty2(subscribedSubsArray) && !isTableView ?
+        <div style={{justifyContent:"center", display:"flex"}}>
+            <SubscriptionCards
+                subscriptionArray = {subscribedSubsArray}
+                detailsArray = {subscribedDetailsArray}
+                /*
+                setCancelledSub = {setCancelledSub}
+                subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                setEditSubParams = {setEditSubParams}
+                setLinkDisplayed = {setLinkDisplayed}
+                */
+                setUnsubscribedSub = {setUnsubscribedSub}
+                isProvider = {false}
+                isLink = {false}
+                isSubscribed = {false}
+            />
+        </div>
+        : <div></div>}
+        
+    </div>}
+
+</div>
+        : <div></div> }
+                
+        {/*
                 <Tabs
                     defaultActiveKey="created"
                     activeKey={tab}
@@ -633,6 +717,7 @@ return (
                                     setEditSubParams = {setEditSubParams}
                                     setLinkDisplayed = {setLinkDisplayed}
                                     */
+                                   /*
                                     setUnsubscribedSub = {setUnsubscribedSub}
                                     isProvider = {false}
                                     isLink = {false}
@@ -644,6 +729,7 @@ return (
                         </div>
                     </Tab>        
                 </Tabs>
+                */}
             </div>
             //: ""
             }

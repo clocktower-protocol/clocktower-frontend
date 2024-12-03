@@ -48,7 +48,7 @@ const SubscriptionCards = (props) => {
         if(frequencyIndex === frequencyObject.index) {
         return frequencyObject.name2
         }
-       // return false
+        return undefined
     }).join('')
     }
 
@@ -63,12 +63,18 @@ const SubscriptionCards = (props) => {
         switch(stringArray.length){
             case 1:
             firstDigit = stringArray[0]
+            break
     
             case 2:
             firstDigit = stringArray[1]
+            break
 
             case 3:
             firstDigit = stringArray[2]
+            break
+
+            default:
+            firstDigit = stringArray[0]
         }
 
         //makes exclusion for 11,12 and 13 which need "th" ending
@@ -124,7 +130,7 @@ const SubscriptionCards = (props) => {
             let description = detailsArray[i].description
 
             //in abscence of description sets as "(No Description)"
-            if(typeof description !== undefined && description === ""){
+            if(typeof description !== "undefined" && description === ""){
                 description = "(No Description)"
             }
 

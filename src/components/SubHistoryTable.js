@@ -21,7 +21,7 @@ const SubHistoryTable = (props) => {
       });
 
       for(const ticker of tokenArray) {
-        if(ticker != false) {
+        if(ticker !== false) {
           return ticker
         }
       }
@@ -41,7 +41,7 @@ const SubHistoryTable = (props) => {
         let ticker = tickerLookup(historyArray[i].args.token)
   
         row.push(
-            <td key={String(historyArray[i].args.subscriber)+1}>{historyArray[i].args.subscriber != "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].args.subscriber}`}>{historyArray[i].args.subscriber}</Link> : "N/A" }</td>, 
+            <td key={String(historyArray[i].args.subscriber)+1}>{historyArray[i].args.subscriber !== "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].args.subscriber}`}>{historyArray[i].args.subscriber}</Link> : "N/A" }</td>, 
             <td key={String(historyArray[i].args.subEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].args.subscriptevent]}</td>,
             <td key={String(historyArray[i].args.timestamp)+3}>{formatDate}</td>,
             <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,

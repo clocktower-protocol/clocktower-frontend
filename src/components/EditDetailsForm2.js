@@ -27,7 +27,7 @@ const EditDetailsForm2 = (props) => {
         const array = TOKEN_LOOKUP.map((token) => {
             if(token.address === props.editSub.token) {
                 return token.ticker
-            } 
+            } else { return undefined}
         })
         return array[0]
     }
@@ -37,7 +37,7 @@ const EditDetailsForm2 = (props) => {
         return FREQUENCY_LOOKUP.map((frequency) => { 
             if(frequency.index === props.editSub.frequency){          
                 return frequency.name
-            } 
+            } else { return undefined}
         }).join("")
     }
 

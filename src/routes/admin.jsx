@@ -50,7 +50,7 @@ const Admin = () => {
     const getAllAccounts = async () => {
         
         //checks if user is logged into account
-        if(typeof account === undefined) {
+        if(typeof account === "undefined") {
             console.log("Not Logged in")
             return
         }
@@ -109,7 +109,7 @@ const Admin = () => {
 
 
     //checks that user has logged in 
-    if(account != ADMIN_ACCOUNT) {
+    if(account !== ADMIN_ACCOUNT) {
         return (
             <Alert align="center" variant="danger">Must be Admin</Alert>
         )

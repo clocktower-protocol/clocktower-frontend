@@ -16,7 +16,7 @@ import PublicSubscription from './routes/publicsubscription';
 import SubHistory from './routes/subhistory';
 import Admin from './routes/admin';
 import AdminSubscriptions from './routes/adminsubscriptions';
-import EditDetails from './routes/editdetails';
+//import EditDetails from './routes/editdetails';
 import AdminHistory from './routes/adminhistory';
 import Account from './routes/account';
 import Calendar from './routes/calendar';
@@ -138,7 +138,9 @@ root.render(
                 <Route path="subscribers/:id/:a/:t/:p" element={<ProvSubscribers />} />
                 <Route path="public_subscription/:id/:f/:d" element={<PublicSubscription />} />
                 <Route path="subscription/:id" element={<SubHistory />} />
+                {/*
                 <Route path="editdetails/:id" element={<EditDetails />} />
+                */}
                 <Route path="calendar" element={<Calendar />} />
                 <Route path="admin/" element={<Admin />} />
                 <Route path="admin/subscriptions/:t/:s" element={<AdminSubscriptions />} />

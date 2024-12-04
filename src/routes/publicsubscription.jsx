@@ -245,7 +245,7 @@ const PublicSubscription = () => {
 
     const sendToAccount = useCallback(() => 
             //navigate('/account/'+address)
-            navigate('/subscriptions/'+"subscribed")
+            navigate(`/subscriptions/subscribed`)
     ,[navigate, address])
 
 

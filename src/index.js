@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css';
 import reportWebVitals from './reportWebVitals';
-import {createBrowserRouter,RouterProvider, BrowserRouter, Routes, Route} from "react-router-dom";
+//import {createBrowserRouter,RouterProvider} from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from './errorPage';
 //import FutPaymentRoute from './timepayments/futurepayments';
@@ -36,6 +37,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient() 
 
+/*
 const router = createBrowserRouter([
     {
       path: "/",
@@ -102,6 +104,7 @@ const router = createBrowserRouter([
       v7_skipActionErrorRevalidation: true,
     },
   });
+  */
 
   
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -141,6 +144,7 @@ root.render(
                 <Route path="admin/subscriptions/:t/:s" element={<AdminSubscriptions />} />
                 <Route path="admin/history/:a/:isp" element={<AdminHistory />} />
                 <Route path="subscriptions/:t" element={<Subscriptions />} />
+                <Route path="*" element={<ErrorPage />} />
               </Route>
             </Routes>
           </BrowserRouter>

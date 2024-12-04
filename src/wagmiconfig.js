@@ -1,8 +1,9 @@
 import { createConfig, http } from 'wagmi'
-import { hardhat, sepolia } from 'wagmi/chains'
-import { injected, coinbaseWallet} from 'wagmi/connectors'
+import { hardhat } from 'wagmi/chains'
+//import { sepolia } from 'wagmi/chains'
+//import { injected, coinbaseWallet} from 'wagmi/connectors'
 
-let token = localStorage.getItem('clockAccess')
+//let token = localStorage.getItem('clockAccess')
 
 export const config = createConfig(
     {

@@ -2,7 +2,7 @@ import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
-//import {Tabs, Tab} from 'react-bootstrap';
+import {Tabs, Tab} from 'react-bootstrap';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
@@ -568,39 +568,42 @@ return (
                 </div>
                 
         
-        {tab === "created" ?  <div>
+        {tab === "created" ?  
+            <div>
 
-                
-        {!isTableEmpty1(provSubscriptionArray) && isTableView ?
+                    
+                {!isTableEmpty1(provSubscriptionArray) && isTableView ?
 
-        <div className={styles.subs_table_route}>
-            <SubscriptionsTable
-                subscriptionArray = {provSubscriptionArray}
-                isAdmin = {false}
-                role = {1}
-                detailsArray = {provDetailsArray}
-                setCancelledSub = {setCancelledSub}
-                subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                setEditSubParams = {setEditSubParams}
-                setLinkDisplayed = {setLinkDisplayed}
-            />
-        </div>
-        : <div></div>}
+                <div className={styles.subs_table_route}>
+                    <SubscriptionsTable
+                        subscriptionArray = {provSubscriptionArray}
+                        isAdmin = {false}
+                        role = {1}
+                        detailsArray = {provDetailsArray}
+                        setCancelledSub = {setCancelledSub}
+                        subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                        setEditSubParams = {setEditSubParams}
+                        setLinkDisplayed = {setLinkDisplayed}
+                    />
+                </div>
+                : <div></div>}
 
-        {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
-        <div style={{justifyContent:"center", display:"flex"}}>
-            <SubscriptionCards
-                subscriptionArray = {provSubscriptionArray}
-                detailsArray = {provDetailsArray}
-                setCancelledSub = {setCancelledSub}
-                subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                setEditSubParams = {setEditSubParams}
-                setLinkDisplayed = {setLinkDisplayed}
-                isProvider = {true}
-                isLink = {false}
-                isSubscribed = {false}
-            />
-        </div>
+                {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
+                <div style={{justifyContent:"center", display:"flex"}}>
+                    <SubscriptionCards
+                        subscriptionArray = {provSubscriptionArray}
+                        detailsArray = {provDetailsArray}
+                        setCancelledSub = {setCancelledSub}
+                        subEditDetailsHandleShow = {subEditDetailsHandleShow}
+                        setEditSubParams = {setEditSubParams}
+                        setLinkDisplayed = {setLinkDisplayed}
+                        isProvider = {true}
+                        isLink = {false}
+                        isSubscribed = {false}
+                    />
+                </div>
+                : <div></div>}
+            </div>
 
         : <div className="subHistory">
                        
@@ -639,10 +642,9 @@ return (
         
     </div>}
 
-</div>
-        : <div></div> }
+
                 
-        {/*
+    {/*
                 <Tabs
                     defaultActiveKey="created"
                     activeKey={tab}
@@ -718,7 +720,8 @@ return (
                                     setEditSubParams = {setEditSubParams}
                                     setLinkDisplayed = {setLinkDisplayed}
                                     */
-                                   /*
+                        
+                                    /*
                                     setUnsubscribedSub = {setUnsubscribedSub}
                                     isProvider = {false}
                                     isLink = {false}
@@ -730,7 +733,7 @@ return (
                         </div>
                     </Tab>        
                 </Tabs>
-                */}
+            */}
             </div>
             //: ""
             }

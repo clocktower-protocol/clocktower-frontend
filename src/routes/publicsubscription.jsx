@@ -246,7 +246,7 @@ const PublicSubscription = () => {
     const sendToAccount = useCallback(() => 
             //navigate('/account/'+address)
             navigate(`/subscriptions/subscribed`)
-    ,[navigate, address])
+    ,[navigate])
 
 
      //shows alert when waiting for transaction to finish
@@ -271,7 +271,7 @@ const PublicSubscription = () => {
                 sendToAccount()
             }
         }
-    },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, setAlert, setAlertText])
+    },[subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, setAlert, setAlertText, variables, subscribe])
    
     //checks that user has logged in 
    

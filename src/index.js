@@ -129,7 +129,12 @@ root.render(
   <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
+          <BrowserRouter  
+            future={{
+              v7_relativeSplatPath: true,
+              v7_startTransition: true
+            }}
+          >
             <Routes>
               <Route path="/" element={<Root />}>
                 <Route path="account/:a" element={<Account />} />

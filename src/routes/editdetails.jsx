@@ -99,7 +99,7 @@ const getDetails = async () => {
     }) 
     .then(async function(events){
         //checks for latest update by getting highest timestamp
-        if(events != undefined) {
+        if(events !== undefined) {
             let time = 0
             let index = 0
 
@@ -145,7 +145,7 @@ const getDetails = async () => {
     }
 
     //checks that user has logged in 
-        if(account != details.provider) {
+        if(account !== details.provider) {
             return (
                 <Alert align="center" variant="info">Unrecognized Subscription</Alert>
             )

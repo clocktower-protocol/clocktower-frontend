@@ -2,7 +2,7 @@ import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
-import {Tabs, Tab} from 'react-bootstrap';
+//import {Tabs, Tab} from 'react-bootstrap';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'

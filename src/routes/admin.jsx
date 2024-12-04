@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Tab, Tabs} from 'react-bootstrap';
 import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
@@ -26,28 +26,9 @@ const Admin = () => {
     const [allProviders, setAllProviders] = useState(emptyArray)
     const [allSubscribers, setAllSubscribers] = useState(emptyArray)
     const [callerHistory, setCallerHistory] = useState(emptyArray)
-    
-
-    //loads provider subscription list upon login
-    useEffect(() => {
-
-      
-    publicClient.getLogs({
-        address: CLOCKTOWERSUB_ADDRESS,
-        event: parseAbiItem('event CallerLog(uint40 timestamp, uint40 checkeday, address indexed caller, bool isfinished)'),
-        fromBlock: 0n,
-        toBlock: 'latest',
-    },function(error, events){ 
-        //console.log(events)
-        setCallerHistory(events)
-    })
-
-        getAllAccounts()
-
-    }, [account]);
 
    
-    const getAllAccounts = async () => {
+    const getAllAccounts = useCallback(async () => {
         
         //checks if user is logged into account
         if(typeof account === "undefined") {
@@ -105,7 +86,25 @@ const Admin = () => {
            // setAllAccounts(accounts)
         })
 
-    }
+    },[account])
+
+    //loads provider subscription list upon login
+    useEffect(() => {
+
+      
+        publicClient.getLogs({
+            address: CLOCKTOWERSUB_ADDRESS,
+            event: parseAbiItem('event CallerLog(uint40 timestamp, uint40 checkeday, address indexed caller, bool isfinished)'),
+            fromBlock: 0n,
+            toBlock: 'latest',
+        },function(error, events){ 
+            //console.log(events)
+            setCallerHistory(events)
+        })
+    
+            getAllAccounts()
+    
+        }, [account, getAllAccounts, publicClient]);
 
 
     //checks that user has logged in 

@@ -1,6 +1,6 @@
 import {JWT_SERVER} from './config'
 import axios from 'axios'
-import {jwtDecode} from 'jwt-decode'
+//import {jwtDecode} from 'jwt-decode'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 dayjs.extend(utc)

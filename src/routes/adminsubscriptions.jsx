@@ -78,6 +78,8 @@ const AdminSubscriptions = () => {
                 args: [subscriptions[i].subscription.id, s]
             })
 
+            const subIndex = i
+
             balance = Number(balance)
 
             if(balance === 0) {
@@ -125,7 +127,7 @@ const AdminSubscriptions = () => {
                             }
                         }
                        //adds latest details to details array
-                       detailsArray[i] = events[index].args
+                       detailsArray[subIndex] = events[index].args
                     }    
                 }
             })

@@ -96,7 +96,7 @@ const Root = () => {
         //accountSwitch(address)
       }
       console.log(location.pathname.slice(0,20))
-    }, [address, chains, accountSwitch])
+    }, [address, chains, accountSwitch, location, account])
     
  
   const adminAccount = ADMIN_ACCOUNT

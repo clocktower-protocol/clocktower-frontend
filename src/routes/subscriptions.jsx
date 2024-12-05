@@ -488,7 +488,7 @@ return (
                         <Modal.Title>Subscription Link</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Pass the following link to your potential subscribers: 
-                        <p></p> {linkDisplayed.slice(0,79)}<br></br>{linkDisplayed.slice(80,170)}
+                        <p></p> {linkDisplayed.slice(0,75)}<br></br>{linkDisplayed.slice(76,170)}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" 

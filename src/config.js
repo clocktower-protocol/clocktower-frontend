@@ -84,6 +84,16 @@ export const WALLET_LOOKUP = [
     name: "brave wallet",
     id: "com.brave.wallet",
     icon: BraveLogo
+  },
+  {
+    name: "coinbaseWallet",
+    id: "coinbaseWalletSDK",
+    icon: BraveLogo
+  },
+  {
+    name: "safe wallet",
+    id: "safe",
+    icon: BraveLogo
   }
 ]
 

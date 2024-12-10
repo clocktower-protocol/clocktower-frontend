@@ -1,6 +1,6 @@
 import {JWT_SERVER} from './config'
 import axios from 'axios'
-//import {jwtDecode} from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 dayjs.extend(utc)
@@ -8,7 +8,7 @@ dayjs.extend(utc)
 export const fetchToken = async () => {
     try{
       //if empty
-      if(localStorage.getItem("clockAccess") === null) {
+      if(localStorage.getItem("clockAccess") === null || typeof localStorage.getItem("clockAccess") === "undefined") {
         console.log("not set")
     
         let data = {
@@ -44,7 +44,8 @@ export const fetchToken = async () => {
             console.log(error.config);
           })
       } else {
-        /*
+        console.log("here")
+        //FIXME: needs to check if the token is malformed
         //checks if token has expired
         const savedToken = localStorage.getItem("clockAccess")
         const decodedToken = jwtDecode(savedToken)
@@ -94,9 +95,10 @@ export const fetchToken = async () => {
         }
         
         console.log("got existing token")
-        */
+        
       }
     } catch (error){
         console.error(error)
     }
+    console.log("after")
   }

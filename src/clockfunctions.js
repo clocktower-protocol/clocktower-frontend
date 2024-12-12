@@ -6,6 +6,7 @@ import utc from 'dayjs/plugin/utc'
 dayjs.extend(utc)
 
 export const fetchToken = async () => {
+  
     try{
       //if empty
       if(localStorage.getItem("clockAccess") === null || typeof localStorage.getItem("clockAccess") === "undefined") {
@@ -101,4 +102,5 @@ export const fetchToken = async () => {
         console.error(error)
     }
     console.log("after")
+    
   }

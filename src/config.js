@@ -220,7 +220,7 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "address"
       }
     ],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
@@ -396,10 +396,6 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "event"
   },
   {
-    "stateMutability": "payable",
-    "type": "fallback"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -546,7 +542,7 @@ export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [
       {
-        "internalType": "address payable",
+        "internalType": "address",
         "name": "newAddress",
         "type": "address"
       }
@@ -585,19 +581,25 @@ export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_fixed_fee",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "newSysFeeAddress",
+        "type": "address"
       }
     ],
-    "name": "changeSystemFee",
+    "name": "changeSysFeeReceiver",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "collectFees",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_sys_fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeSystemFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -644,7 +646,7 @@ export const CLOCKTOWERSUB_ABI = [
     ],
     "name": "createSubscription",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1084,19 +1086,6 @@ export const CLOCKTOWERSUB_ABI = [
     "inputs": [],
     "name": "remit",
     "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
-      }
-    ],
-    "name": "setExternalCallers",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -1152,7 +1141,7 @@ export const CLOCKTOWERSUB_ABI = [
     ],
     "name": "subscribe",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1233,7 +1222,7 @@ export const CLOCKTOWERSUB_ABI = [
     ],
     "name": "unsubscribe",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1295,11 +1284,9 @@ export const CLOCKTOWERSUB_ABI = [
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
   }
 ]
+
+
 
 

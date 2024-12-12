@@ -8,7 +8,7 @@ import { coinbaseWallet, safe} from 'wagmi/connectors'
 
 export const config = createConfig(
     {
-    chains: [hardhat],
+    chains: [hardhat],   
     connectors: [
       coinbaseWallet(),
       safe()

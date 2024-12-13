@@ -33,7 +33,6 @@ const Calendar = () => {
 
     const navigate = useNavigate()
     
-    //const [provSubscriptionArray, setProvSubscriptionArray] = useState(emptyArray)
     const [eventsArray, setEventsArray] = useState(emptyArray)
 
     //event handlers for tooltip
@@ -50,14 +49,6 @@ const Calendar = () => {
         navigate('/public_subscription/'+info.event.extendedProps.id+"/"+info.event.extendedProps.frequency+"/"+info.event.extendedProps.dueDay, {replace: false})
     }, [navigate])
     
-
-    /*
-    //loads provider subscription list upon login
-    useEffect(() => {
-        setCalEvents()
-       // setCalEvents(true)
-    }, [setCalEvents]);
-    */
 
     //converts dueDay and frequency to cal events
     const convertToCalEvents = useCallback((subscriptions, color, isSubscriber) => {

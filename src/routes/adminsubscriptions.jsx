@@ -58,9 +58,7 @@ const AdminSubscriptions = () => {
         })
         
         const cycles = 100n / ((fee % 10000n) / 100n)
-        console.log(cycles)
-
-
+    
         //calls contract 
         subscriptions =  await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
@@ -134,7 +132,7 @@ const AdminSubscriptions = () => {
             })
         }
 
-       // setFeeBalanceArray(feeBalances)
+       
         setFeeObjects(feeObjects)
         setTitleMessage(titleMessage)
         setSubscriptionArray(subscriptions)

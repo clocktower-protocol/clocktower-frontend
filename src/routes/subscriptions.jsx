@@ -2,7 +2,6 @@ import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
 import {Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
-//import {Tabs, Tab} from 'react-bootstrap';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
@@ -27,10 +26,8 @@ const Subscriptions = () => {
     //formats t if not set
     if(typeof t === "undefined") {
         t = "created"
-        console.log(t)
     }
 
-    //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
 
     const [account] = useOutletContext();
@@ -100,7 +97,6 @@ const Subscriptions = () => {
         if(Object.keys(cancelledSub).length !== 0) {
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
-            //cancelSubscription.write()
             writeContract({
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -273,7 +269,6 @@ const getSubscriberSubs = useCallback(async () => {
                 
                //checks for latest update by getting highest timestamp
                if(events !== undefined) {
-                   //console.log(events)
                    
                    let time = 0
                    let index = 0
@@ -296,7 +291,7 @@ const getSubscriberSubs = useCallback(async () => {
            })
            
        }
-     //  console.log(accountSubscriptions)
+     
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(subscribedDetailsArray)
    })
@@ -343,7 +338,6 @@ const getSub = useCallback(async (editSubParams) => {
             }    
         })
         setEditSub(result)
-        //subEditDetailsHandleShow()
     })
 },[publicClient])
 
@@ -357,24 +351,18 @@ useEffect(() => {
 
     //checks if user is logged into account
     if(typeof address === "undefined") {
-        //console.log("Not Logged in")
-        //linkToMain()
+        console.log("Not Logged in")
     } else {
-        //getAccount()
         getProviderSubs()
         getSubscriberSubs()
     }
 
-    //console.log("here")
 },[getProviderSubs, getSubscriberSubs, address])
 
 //changes data when passed account is switched
 useEffect(() => {
     //doesn't reload on initial load
     if(!isMounting.current){
-        console.log("Account Switch")
-        //getAccount()
-       // setIsDomainVerified(false)
         getProviderSubs()
         getSubscriberSubs()
     }
@@ -421,7 +409,6 @@ useEffect(() =>{
 
 //called when link to be displayed in modal 
 useEffect(() => {
-    console.log(linkDisplayed)
     if(linkDisplayed !== "" && (typeof linkDisplayed !== "undefined")){
         linkDisplayShow()
     }
@@ -431,7 +418,6 @@ useEffect(() => {
 //Methods to check if tables are empty--------------------------------
 const isTableEmpty1 = (subscriptionArray) => {
        
-    //console.log(subscriptionArray)
     let count = 0
     if(subscriptionArray.length === 0){
         return true
@@ -446,8 +432,7 @@ const isTableEmpty1 = (subscriptionArray) => {
 
 const isTableEmpty2 = (subscriptionArray2) => {
     let count = 0
-    //console.log(subscriptionArray2)
-    //console.log("check")
+    
     if(subscriptionArray2.length === 0){
         return true
     } else {
@@ -474,11 +459,6 @@ return (
                         <Spinner animation="border" variant="info" />
                         {toastHeader}
                     </Toast.Header>
-                    {/*
-                    <Toast.Body style={{backgroundColor: "white", textAlign: "center"}}>
-                        {toastBody}
-                    </Toast.Body>
-                    */}
             </Toast>
         </ToastContainer>
         <div>
@@ -541,7 +521,6 @@ return (
             </p>
             <hr className={styles.subs_topline_route}></hr>
             <Stack gap={3}>
-            {//a === account ?
             <div>
                 <Row>
                     
@@ -551,9 +530,7 @@ return (
                     
                 </Row>
             </div>
-             //: ""
-             }
-            {//a === account ?
+           
             <div>    
                 <ButtonGroup aria-label="Table or Card" className={styles.subs_table_card_button_route}>
                     <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
@@ -613,7 +590,6 @@ return (
             <SubscriptionsTable
                 subscriptionArray = {subscribedSubsArray}
                 detailsArray = {subscribedDetailsArray}
-            // unsubscribe = {unsubscribe}
                 account = {account}
                 role = {2}
                 setUnsubscribedSub = {setUnsubscribedSub}
@@ -626,12 +602,6 @@ return (
             <SubscriptionCards
                 subscriptionArray = {subscribedSubsArray}
                 detailsArray = {subscribedDetailsArray}
-                /*
-                setCancelledSub = {setCancelledSub}
-                subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                setEditSubParams = {setEditSubParams}
-                setLinkDisplayed = {setLinkDisplayed}
-                */
                 setUnsubscribedSub = {setUnsubscribedSub}
                 isProvider = {false}
                 isLink = {false}
@@ -642,101 +612,7 @@ return (
         
     </div>}
 
-
-                
-    {/*
-                <Tabs
-                    defaultActiveKey="created"
-                    activeKey={tab}
-                    onSelect={(k) => setTab(k)}
-                    id="account-tabs"
-                    className="mb-3"
-                    justify
-                >
-                    <Tab eventKey="created" title="Created">
-                        <div>
-
-                
-                            {!isTableEmpty1(provSubscriptionArray) && isTableView ?
-                            
-                            <div className={styles.subs_table_route}>
-                                <SubscriptionsTable
-                                    subscriptionArray = {provSubscriptionArray}
-                                    isAdmin = {false}
-                                    role = {1}
-                                    detailsArray = {provDetailsArray}
-                                    setCancelledSub = {setCancelledSub}
-                                    subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                                    setEditSubParams = {setEditSubParams}
-                                    setLinkDisplayed = {setLinkDisplayed}
-                                />
-                            </div>
-                            : <div></div>}
-                            
-                            {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
-                            <div style={{justifyContent:"center", display:"flex"}}>
-                                <SubscriptionCards
-                                    subscriptionArray = {provSubscriptionArray}
-                                    detailsArray = {provDetailsArray}
-                                    setCancelledSub = {setCancelledSub}
-                                    subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                                    setEditSubParams = {setEditSubParams}
-                                    setLinkDisplayed = {setLinkDisplayed}
-                                    isProvider = {true}
-                                    isLink = {false}
-                                    isSubscribed = {false}
-                                />
-                            </div>
-                            : <div></div>}
-                            
-                        </div>
-                    </Tab>
-                   
-                    <Tab eventKey="subscribed" title="Subscribed To">
-                        <div className="subHistory">
-                       
-                            
-                            {!isTableEmpty2(subscribedSubsArray) && isTableView ?
-                            <div className={styles.subs_table_route}>
-                                <SubscriptionsTable
-                                    subscriptionArray = {subscribedSubsArray}
-                                    detailsArray = {subscribedDetailsArray}
-                                // unsubscribe = {unsubscribe}
-                                    account = {account}
-                                    role = {2}
-                                    setUnsubscribedSub = {setUnsubscribedSub}
-                                />
-                            </div>
-                            : <div></div>}
-
-                            {!isTableEmpty2(subscribedSubsArray) && !isTableView ?
-                            <div style={{justifyContent:"center", display:"flex"}}>
-                                <SubscriptionCards
-                                    subscriptionArray = {subscribedSubsArray}
-                                    detailsArray = {subscribedDetailsArray}
-                                    /*
-                                    setCancelledSub = {setCancelledSub}
-                                    subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                                    setEditSubParams = {setEditSubParams}
-                                    setLinkDisplayed = {setLinkDisplayed}
-                                    */
-                        
-                                    /*
-                                    setUnsubscribedSub = {setUnsubscribedSub}
-                                    isProvider = {false}
-                                    isLink = {false}
-                                    isSubscribed = {false}
-                                />
-                            </div>
-                            : <div></div>}
-                            
-                        </div>
-                    </Tab>        
-                </Tabs>
-            */}
             </div>
-            //: ""
-            }
             </Stack>
         </div>
     </div>

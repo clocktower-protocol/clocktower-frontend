@@ -8,11 +8,8 @@ import {fetchToken} from '../clockfunctions'
 import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
 import Icon from '../components/Icon'
 import { v4 as uuidv4 } from 'uuid';
-//import '../App.css'
 import styles from '../css/clocktower.module.css';
 
-//images
-//import {ReactComponent as HardhatLogo} from "../images/hardhat.svg"
 
 import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain} from 'wagmi'
 
@@ -20,18 +17,14 @@ const Root = () => {
 
     const {address, isConnected, isDisconnected } = useAccount({config})
 
-    //const chains = useChains({config})
-    //const chainId = useChainId({config})
+    
     const { chains, switchChain } = useSwitchChain()
 
     //gets current url
     const location = useLocation();
 
-    //const [buttonClicked, setButtonClicked] = useState(false)
     const [account, setAccount] = useState("")
-    //const [alertText, setAlertText] = useState("")
-    //const [alert, setAlert] = useState(false)
-    //const [loggedIn, setLoggedIn] = useState(false)
+  
     const [loggedIn, setLoggedIn] = useState(false)
 
     const [showWalletChoice, setShowWalletChoice] = useState(false);
@@ -42,7 +35,6 @@ const Root = () => {
     const handleOnClickAccount = () => {navigate('/account/'+ account, {replace: true})}
     const handleOnClickSubscriptions = useCallback(() => navigate(`/subscriptions/created`, {replace: true}), [navigate]);
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
-    //const sendToAccountPage = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     const accountSwitch = useCallback((passedAddress) => navigate('/account/'+passedAddress), [navigate])
     const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
 
@@ -68,10 +60,7 @@ const Root = () => {
     useWatchPendingTransactions({
       onError(error) { 
         console.log('Error', error) 
-      }, 
-      onTransactions(transactions) {
-        console.log('New transactions!', transactions)
-      },
+      }
     })
 
     const { connect, connectors, isLoading, pendingConnector } = useConnect({config})
@@ -80,10 +69,6 @@ const Root = () => {
     
     useEffect(() => {
      
-      console.log(chains)
-      console.log("address loop")
-      console.log(account)
-      console.log(address)
       setAccount(address)
       //address reset
       if(address !== undefined && address !== account){
@@ -95,7 +80,6 @@ const Root = () => {
         }
         //accountSwitch(address)
       }
-      console.log(location.pathname.slice(0,20))
     }, [address, chains, accountSwitch, location, account])
     
  
@@ -105,15 +89,6 @@ const Root = () => {
   const walletButtonClick = () => {
     handleShow()
   }
-
-
-  /*
-  //checks if user is logged in 
-  const isLoggedIn = () => {
-    return(account === "-1" ? false : true) 
-  }
-  */
-  
 
   
    return (
@@ -143,17 +118,14 @@ const Root = () => {
                     <Button 
                       style={{width:"100%"}}
                       variant="info"
-                      //disabled={!connector2.ready}
                       key={uuidv4()}
                       onClick={() => {
-                      console.log(connector)
-                      //connect({ connector2 })
                       connect({connector})
                       handleClose()
                       }}
                     >
                       {connector.name}
-                      {//!connector2.ready && ' (unsupported)'
+                      {
                       }
                       {isLoading &&
                         connector.id === pendingConnector?.id &&
@@ -228,35 +200,11 @@ const Root = () => {
               </Container>
       </Navbar>
       </div>
-      {/*
-      <div key={"sideNav"} className="sideNav">
-                */}
-        {/*
-        <div key={"sideNav2"} className="sideNav2">
-        <Navbar key="navBar" bg="dark" variant="dark" expand="lg" style={{justifyContent: "center"}}>
-        <Nav defaultActiveKey="/home" className="flex-column">
-          
-          <div key={"sideButtons"} className='sideButtons'>
-          <Stack gap={3}>
-            <Button variant="outline-info" onClick={handleOnClickAccount}>Account</Button>{' '}
-            <Button variant="outline-info" onClick={handleOnClickCalendar}>Calendar</Button>{' '}
-            {account === adminAccount ?
-            <Button variant="outline-info" onClick={handleOnClickAdmin}>Admin</Button>
-            : ""}
-          </Stack>
-          </div>
-        </Nav>
-        </Navbar>
-        </div>
-        */}
         <div key={"mainDiv"} id="detail" className="mainDiv">
           
           {!loggedIn? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>: <Outlet context={[account]}/>}
         
         </div>
-      {/*
-      </div>
-      */}
     </div>
   </>
   )

@@ -32,8 +32,6 @@ const ProvSubHistory = () => {
                 args: {id: id}
             })
 
-            console.log(logs)
-
             setHistoryArray(logs)
     },[id, publicClient])
 
@@ -45,7 +43,6 @@ const ProvSubHistory = () => {
 
     }, [getLogs]);
 
-    //console.log(historyArray[0].args)
     //if(typeof historyArray[0].args !== "undefined") {
     if(historyArray.length > 0 && typeof historyArray[0].args !== "undefined") {
     //checks that user has logged in  

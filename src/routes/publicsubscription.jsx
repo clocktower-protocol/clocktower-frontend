@@ -26,14 +26,8 @@ const PublicSubscription = () => {
 
     const navigate = useNavigate()
 
-   // const emptyDetails = {}
-
     const [subscription, setSubscription] = useState("")
     
-    //const [details, setDetails] = useState(emptyDetails)
-    // const [amount, setAmount] = useState(0)
-    //const [frequencyName, setFrequencyName] = useState("Monthly")
-    //const [tickerName, setTickerName] = useState("CLOCK")
     const [token, setToken] = useState(ZERO_ADDRESS)
     const [alertType, setAlertType] = useState("danger")
     const [subscribed, setIsSubscribed] = useState(false)
@@ -47,10 +41,6 @@ const PublicSubscription = () => {
     //alerts
     const [showToast, setShowToast] = useState(false)
     const [toastHeader, setToastHeader] = useState("")
-   // const [toastBody, setToastBody] = useState("")
-   // const [isAllowanceSet, setAllowance] = useState(false)
-    //const [allowanceBalance, setAllowanceBalance] = useState(0n)
-   
    
     const { data, variables, writeContract } = useWriteContract()
 
@@ -63,30 +53,6 @@ const PublicSubscription = () => {
 
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
-
-        /*
-        //looks up ticker for token
-        const tickerLookup = (tokenAddress) => {
-            return TOKEN_LOOKUP.map((token) => {
-            if(token.address === tokenAddress) {
-                return token.ticker
-            } else {
-                return ""
-            }
-            })
-        }
-  
-        //looks up frequency
-        const frequencyLookup = (frequencyIndex) => {
-            return FREQUENCY_LOOKUP.map((frequencyObject) => {
-            if(frequencyIndex === frequencyObject.index) {
-                return frequencyObject.name
-            } else {
-                return ""
-            }
-            })
-        }
-        */
 
         const getSub = async () => {
             await fetchToken()
@@ -107,7 +73,6 @@ const PublicSubscription = () => {
                 .then(async function(events){
                     //checks for latest update by getting highest timestamp
                     if(events !== undefined) {
-                       // console.log(events)
                         
                         let time = 0
                         let index = 0
@@ -122,16 +87,12 @@ const PublicSubscription = () => {
                                     }
                             }
                             //adds latest details to details array
-                            //setDetails(events[index].args)
                             const tempDetails = [events[index].args]
                             setFormattedDetails(tempDetails)
                         }       
                     }    
                 })
                 setSubscription(result)
-               // setAmount(formatEther(result.amount))
-                //setFrequencyName(frequencyLookup(result.frequency))
-                //setTickerName(tickerLookup(result.token))
                 setToken(result.token)
                 const tempSub = [{subscription: result, status: 0, totalSubscribers: 0}]
                 setFormattedSub(tempSub)
@@ -244,7 +205,6 @@ const PublicSubscription = () => {
     },[subscription, address, token, writeContract])
 
     const sendToAccount = useCallback(() => 
-            //navigate('/account/'+address)
             navigate(`/subscriptions/subscribed`)
     ,[navigate])
 
@@ -255,7 +215,6 @@ const PublicSubscription = () => {
         if(subscribeWait.isLoading) {
         
             setToastHeader("Transaction Pending")
-            console.log("pending")
         }
 
         if(subscribeWait.isSuccess) {
@@ -284,49 +243,13 @@ const PublicSubscription = () => {
                                 <Spinner animation="border" variant="info" />
                                 {toastHeader}
                         </Toast.Header>
-                                {/*
-                                <Toast.Body style={{backgroundColor: "white", textAlign: "center"}}>
-                                    {toastBody}
-                                </Toast.Body>
-                                */}
                         </Toast>
              </ToastContainer>
-            {/*}
-                <div className="publicSub">
-                <Card style={{ width: '35rem' }}>
-                    <Card.Body>
-                        <Card.Title align="center">Subscription</Card.Title>
-                        <Card.Text align="center">
-                        {details.description}
-                        </Card.Text>
-                    </Card.Body>
-                    <ListGroup className="list-group-flush">
-                        <ListGroup.Item>Provider:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Link to={`../account/${subscription.provider}`}>{subscription.provider}</Link> </ListGroup.Item>
-                        <ListGroup.Item>Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{amount} {tickerName}</ListGroup.Item>
-                        <ListGroup.Item>Frequency: &nbsp;&nbsp;{frequencyName}</ListGroup.Item>
-                        <ListGroup.Item>Day Due: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subscription.dueDay}</ListGroup.Item>
-                        <ListGroup.Item>URL: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{details.url}</ListGroup.Item>
-                    </ListGroup>
-                    {(!subscribed && !isProvider) ?
-                    <Card.Body align="center">
-                        <Button onClick={subscribe}>Subscribe</Button>
-                    </Card.Body>
-                    : ""}
-                   
-                </Card>
-                </div>
-                 */}
+          
                 <div style={{justifyContent:"center", display:"flex", paddingTop:"30px"}}>
                     <SubscriptionCards
                         subscriptionArray = {formattedSub}
                         detailsArray = {formattedDetails}
-                        /*
-                        setCancelledSub = {setCancelledSub}
-                        subEditDetailsHandleShow = {subEditDetailsHandleShow}
-                        setEditSubParams = {setEditSubParams}
-                        setLinkDisplayed = {setLinkDisplayed}
-                        */
-                        //setUnsubscribedSub = {setUnsubscribedSub}
                         isProvider = {isProvider}
                         isLink = {true}
                         isSubscribed = {subscribed}

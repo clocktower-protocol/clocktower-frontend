@@ -4,7 +4,6 @@ import { Form, Button, Row, Col} from 'react-bootstrap';
 const EditAccountForm = (props) => {
 
     //variable to tell if forms are validated or not
-    //const [validated, setValidated] = useState(false);
     const [invalidDomain, setInvalidDomain] = useState(false)
     const [invalidUrl, setInvalidUrl] = useState(false)
     const [invalidCompany, setInvalidCompany] = useState(false)
@@ -48,7 +47,6 @@ const EditAccountForm = (props) => {
             if(event.target.value.length > 255) {
                 setInvalidDescription(true)
             } else {
-                console.log(event.target.value.length)
                 setInvalidDescription(false)
                 setDescription(event.target.value)
             }
@@ -121,17 +119,13 @@ const EditAccountForm = (props) => {
 
         if(event.target.value !== ""){
 
-            //(formDomain != ""){
-                //let regexDomain = new RegExp(/^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/)
-                //let regexDomain = new RegExp(/^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]{1,1}\.)*(xn--)?([a-z0-9][a-z0-9\-]{0,60}|[a-z0-9-]{1,30}\.[a-z]{2,})$/)
-                //eslint-disable-next-line
-                let regexDomain = new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/)
-                if(!regexDomain.test(event.target.value)) {
-                    setInvalidDomain(true)
-                } else {
-                    setInvalidDomain(false)
-                    setDomain(event.target.value)
-                }
+        let regexDomain = new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/)
+        if(!regexDomain.test(event.target.value)) {
+            setInvalidDomain(true)
+        } else {
+            setInvalidDomain(false)
+            setDomain(event.target.value)
+        }
         } else {
             setInvalidDomain(false)
             setDomain(event.target.value)

@@ -20,7 +20,6 @@ const ProvSubscribersTable = (props) => {
    
         let row = []
 
-        //let feeBalance = Web3.utils.fromWei(subscribersArray[i].feeBalance)
         let feeBalance = formatEther(subscribersArray[i].feeBalance)
   
         row.push(
@@ -30,7 +29,6 @@ const ProvSubscribersTable = (props) => {
         )     
         table.push(<tr align="center" key={String(subscribersArray[i])}>{row}</tr>)
       }
-   // }
 
     tableTop.push(
         <Table key="table" striped bordered hover className="provTable">

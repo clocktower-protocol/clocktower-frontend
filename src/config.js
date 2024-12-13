@@ -6,34 +6,11 @@ import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
 
 /* global BigInt */
-//export const CLOCKTOWERSUB_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 export const CLOCKTOWERSUB_ADDRESS = "0x69F94e46cbC82Ab02781ac4FaFc3580d21f1a888";
 
-//export const CLOCKTOKEN_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-
-/*This variable determines how public your frontend is. Currently there are four options
-
-LOCAL = You MUST provide your own node whose address must be provided
-below in LOCAL_NODE. 
-
-USER_INFURA = User provided Infura account url
-
-USER_ALCHEMY = User provided Alchmey account url
-
-BACKEND = User fully connects to our backend including databases. (Default)
-
-*/
-
-export const USER_LOCALITY = "LOCAL"
-
-export const LOCAL_NODE = ""
-
-export const USER_INFURA_PROVIDER = ""
-
-export const USER_ALCHEMY_PROVIDER = ""
 
 
 //**************************************************************************** 

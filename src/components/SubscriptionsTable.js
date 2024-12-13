@@ -68,8 +68,6 @@ const SubscriptionsTable = (props) => {
     let table = []
     let tableTop = []
 
-    //console.log(subscriptionArray.length)
-
     //loops through array to create table rows
     for(let i = 0; i < subscriptionArray.length; i++) {
      
@@ -92,8 +90,6 @@ const SubscriptionsTable = (props) => {
 
           dueDay = DAY_OF_WEEK_LOOKUP[index].name
         }
-
-       // console.log(subscriptionArray[i].subscription.amount)
 
         let subAmount = formatEther(String(subscriptionArray[i].subscription.amount))
 

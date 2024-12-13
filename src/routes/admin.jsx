@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Tab, Tabs} from 'react-bootstrap';
-import '../App.css';
 import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import ProvidersTable from '../components/ProvidersTable';
@@ -22,7 +21,6 @@ const Admin = () => {
     //creates empty array for table
     let emptyArray = [];
 
-    //const [allAccounts, setAllAccounts] = useState(emptyArray)
     const [allProviders, setAllProviders] = useState(emptyArray)
     const [allSubscribers, setAllSubscribers] = useState(emptyArray)
     const [callerHistory, setCallerHistory] = useState(emptyArray)
@@ -83,7 +81,6 @@ const Admin = () => {
             }
             setAllProviders(providers)
             setAllSubscribers(subscribers)
-           // setAllAccounts(accounts)
         })
 
     },[account])
@@ -98,7 +95,6 @@ const Admin = () => {
             fromBlock: 0n,
             toBlock: 'latest',
         },function(error, events){ 
-            //console.log(events)
             setCallerHistory(events)
         })
     

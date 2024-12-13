@@ -35,10 +35,8 @@ const ProvSubscribers = () => {
             functionName: 'callerFee',
         })
        
-        //const cycles = Math.round(1n / ((fee / 10000n) - 1n))
         const cycles = 100n / ((fee % 10000n) / 100n)
-        console.log(cycles)
-
+        
         let subscribers = []
 
         subscribers = await readContract(config, {
@@ -62,17 +60,14 @@ const ProvSubscribers = () => {
 
 
             if(balance === 0) {
-                //feeBalance = 0
                 remainingCycles = Number(cycles)
                 remainingCyclesArray.push(remainingCycles)
             } else {
-                //feeBalance = balance
-
+        
                 const remainingBalancePercent = (balance / a)
-                console.log(remainingBalancePercent)
 
                 remainingCycles = remainingBalancePercent * String(cycles)
-                console.log(remainingCycles)
+            
                 remainingCyclesArray.push(remainingCycles)
             }
         }

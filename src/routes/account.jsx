@@ -11,8 +11,6 @@ import {fetchToken} from '../clockfunctions'
 import styles from '../css/clocktower.module.css';
 
 
-//TODO: getAccount() is called too many times need to cache result
-
 const Account = () => {
 
     let isMounting = useRef(true)
@@ -23,12 +21,9 @@ const Account = () => {
     //gets passed url variables
     let {a} = useParams();
 
-    //const { address, connector: activeConnector } = useAccount()
     const { address } = useAccount()
 
     const [account] = useOutletContext();
-
-    //const [alertType, setAlertType] = useState("danger")
 
     //modal triggers
     const [showEditWarn, setShowEditWarn] = useState(false);
@@ -104,15 +99,13 @@ const Account = () => {
 
         let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
 
-        console.log(url)
-
         //checks dns record
          try {
             var response = await fetch(url);
                 
                 var json = await response.json();
                 if(json.Answer[0].data !== undefined){
-                    console.log(json.Answer[0].data);
+                   
                     //verifies signature
                     const dnsRecoveredAddress = await recoverMessageAddress({
                         message: msg,
@@ -120,7 +113,6 @@ const Account = () => {
                       })
                     if(dnsRecoveredAddress === provAddress) {
                         setIsDomainVerified(true)
-                        console.log("TRUE!")
                     }
                 }
             }
@@ -166,7 +158,6 @@ const Account = () => {
 
         //checks if user is logged into account
         if(typeof address === "undefined") {
-            console.log("Not Logged in")
             //linkToMain()
             return
         }
@@ -221,20 +212,17 @@ useEffect(() => {
 
     //checks if user is logged into account
     if(typeof address === "undefined") {
-        //console.log("Not Logged in")
         //linkToMain()
     } else {
         getAccount()
     }
 
-    //console.log("here")
 },[getAccount, address])
 
 //changes data when passed account is switched
 useEffect(() => {
     //doesn't reload on initial load
     if(!isMounting.current){
-        console.log("Account Switch")
         getAccount()
         setIsDomainVerified(false)
     }
@@ -258,7 +246,6 @@ useEffect(() => {
 
 //called when link to be displayed in modal 
 useEffect(() => {
-    console.log(linkDisplayed)
     if(linkDisplayed !== "" && typeof linkDisplayed !== "undefined"){
         linkDisplayShow()
     }

@@ -19,7 +19,6 @@ const EditDetailsForm2 = (props) => {
         } else {
             setAllValidated(false)
         }
-        //console.log(allValidated)
     },[invalidUrl, invalidDescription])
     
 
@@ -91,8 +90,6 @@ const EditDetailsForm2 = (props) => {
 
 
     const submitForm = async (event) => {
-
-       // console.log("test")
 
         const form = event.currentTarget
   

@@ -5,11 +5,7 @@ import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../con
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
 import { v4 as uuidv4 } from 'uuid'
-//import styles from '../css/clocktower.module.css';
-//import dayjs from 'dayjs'
-//import advancedFormat from 'dayjs/plugin/advancedFormat'
 
-//dayjs.extend(advancedFormat)
 
 const SubscriptionCards = (props) => {
 
@@ -151,7 +147,7 @@ const SubscriptionCards = (props) => {
                 }
 
                 paydayString = "Every " + DAY_OF_WEEK_LOOKUP[index].name
-                //console.log(subscriptionArray[i].subscription.dueDay)
+                
             }
 
             //dynamic styling based on if its on the link page or not

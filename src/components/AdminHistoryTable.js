@@ -6,14 +6,11 @@ import dayjs from 'dayjs'
 const AdminHistoryTable = (props) => {
 
     const providerHistory = props.providerHistory
-    //const isp = props.isp
 
     //checks for empty array
     if(!Array.isArray(providerHistory) || (providerHistory.length <= 0 || typeof providerHistory[0].args === "undefined")) {
      return
     }
-
-    console.log(providerHistory)
 
     let table = []
     let tableTop = []
@@ -26,16 +23,7 @@ const AdminHistoryTable = (props) => {
         let formatDate = dayjs.unix(Number(providerHistory[i].args.timestamp)).format('MM/DD/YYYY h:mm:s A')
         
         const event = SUBSCRIPTEVENT_LOOKUP[providerHistory[i].args.subscriptevent]
-        /*
-        let event = ""
-        if(isp === "true"){
-            event = PROVEVENT_LOOKUP[providerHistory[i].args.provevent]
-        } else {
-            event = SUBEVENT_LOOKUP[providerHistory[i].args.subevent]
-        }
-        */
-
-
+      
         row.push(
         <td key={String(providerHistory[i].args.id)}>{providerHistory[i].args.id.slice(0,10) + "..."}</td>,
         <td key={String(event)}>{event}</td>,

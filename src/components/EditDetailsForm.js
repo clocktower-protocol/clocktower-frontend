@@ -21,9 +21,6 @@ const EditDetailsForm = (props) => {
 
         //checks amount
         if(props.description.length > 255) {
-            console.log (
-                "Description too long"
-            )
             isCorrect = false
             props.setAlert(true)
             props.setAlertText("Description must be under 256 characters")

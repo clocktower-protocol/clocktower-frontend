@@ -10,7 +10,6 @@ import styles from '../css/clocktower.module.css';
 
 const CreateSubForm = (props) => {
 
-    //const [validated, setValidated] = useState(false)
     const [invalidToken, setInvalidToken] = useState(true)
     const [invalidFrequency, setInvalidFrequency] = useState(true)
     const [invalidDay, setInvalidDay] = useState(true)
@@ -22,7 +21,6 @@ const CreateSubForm = (props) => {
 
     const [dropdownTitle, setDropdownTitle] = useState("Select Token")
 
-    //const [decimals, setDecimals] = useState(6)
     const [token, setToken] = useState("-1")
     const [frequency, setFrequency] = useState("-1")
     const [dueDay, setDueDay] = useState(0)
@@ -41,9 +39,7 @@ const CreateSubForm = (props) => {
 
     //function that gets selected token
     const setTokenSelection = (token) => {
-        console.log(token)
-
-        console.log(token.decimals)
+       
         setToken(token.address)
         //setDecimals(token.decimals)
         setDropdownTitle(token.ticker)
@@ -52,14 +48,13 @@ const CreateSubForm = (props) => {
         if(token.address === "-1"){
             setInvalidToken(true)
         } else {
+
             //sets abi and token minimum
-            
             TOKEN_LOOKUP.map((token2) => {
                 if(token2.address === token.address){
                     setTokenMinimum(token2.address)
                     setInvalidToken(false)
 
-                    // props.setTokenABI(token.ABI)
                 }
                 return true
             })
@@ -78,17 +73,9 @@ const CreateSubForm = (props) => {
     },[invalidAmount, invalidUrl, invalidDay, invalidDescription, invalidFrequency, invalidToken])
     
 
-   // let ff = props.frequency
+   
     let ff = frequency
 
-    /*
-    //populates select info for token based on lookup object in config
-    const tokenPulldown = () => {
-        return TOKEN_LOOKUP.map((token) => {
-            return  <option value={token.address} key={token.address}>{ token.ticker}</option>
-        })
-    }
-    */
 
     const tokenPulldown2 = () => {
         return TOKEN_LOOKUP.map((token) => {
@@ -136,7 +123,6 @@ const CreateSubForm = (props) => {
 
     }
 
-    //FIXME:
     //gets token minimum from contract
     const setTokenMinimum = async (tokenAddress) => {
         await fetchToken()
@@ -149,47 +135,18 @@ const CreateSubForm = (props) => {
         .then(async function(result) {
             //gets token minimum
             setSelectedTokenMinimum(result[1])
-            console.log(formatEther(result[1]))
         })
     }
 
-    //event listeners
-    /*
-    const tokenChange = (event) => {
-
-        let tokenAddress = event.target.value
-
-        console.log(event)
-        //sets token
-        //props.setToken(event.target.value)
-        setToken(event.target.value)
-
-        if(event.target.value === "-1"){
-            setInvalidToken(true)
-        } else {
-            //sets abi and token minimum
-            TOKEN_LOOKUP.map((token) => {
-                if(token.address === tokenAddress){
-                    setTokenMinimum(token.address)
-                    setInvalidToken(false)
-                // props.setTokenABI(token.ABI)
-                }
-                return true
-            })
-        }
-    }
-    */
 
     const amountChange = (event) => {
 
         if((event.target.value > 0) && (event.target.value > formatEther(selectedTokenMinimum))) {
             let wei = parseEther(event.target.value)
             setInvalidAmount(false)
-            //props.setAmount(wei)
             setAmount(wei)
         } else {
             setInvalidAmount(true)
-          //  props.setAmount(0)
         }
     }
 
@@ -199,7 +156,6 @@ const CreateSubForm = (props) => {
         setInvalidDay(true)
 
         //sets frequency 
-        //props.setFrequency(event.target.value)
         setFrequency(event.target.value)
 
         if(Number(event.target.value) === -1) {
@@ -211,7 +167,6 @@ const CreateSubForm = (props) => {
  
      const dueDayChange = (event) => {
          //sets frequency 
-         //props.setDueDay(event.target.value)
         setDueDay(event.target.value)
 
         if(Number(event.target.value) === 0) {
@@ -228,13 +183,11 @@ const CreateSubForm = (props) => {
             } else {
                 setInvalidDescription(false)
                  //sets description
-                //props.setSubDescription(event.target.value)
                 setSubDescription(event.target.value)
             }
         } else {
             setInvalidDescription(false)
             //sets description
-            //props.setSubDescription(event.target.value)
             setSubDescription(event.target.value)
         }
      }
@@ -249,21 +202,17 @@ const CreateSubForm = (props) => {
             } else {
                 setInvalidUrl(false)
                  //sets url
-                //props.setSubUrl(event.target.value)
                 setSubUrl(event.target.value)
             }
         } else {
             setInvalidUrl(false)
             //sets description
-            //props.setSubUrl(event.target.value)
             setSubUrl(event.target.value)
         }
      }
 
 
     const submitForm = async (event) => {
-
-       // console.log("test")
 
         const form = event.currentTarget
   
@@ -305,28 +254,7 @@ const CreateSubForm = (props) => {
             </Modal.Body>
         </Modal>
         <Form className="mb-3" noValidate validated={allValidated}  onSubmit={submitForm}>
-            {/*
-            <Row>
-                <Col><Button onClick={() => tokenMenuShow()}>Choose Token</Button></Col>
-            </Row>
-    
-            <Row>
-                <Col>
-                <Form.Label>Token *</Form.Label>
-                <Dropdown style={{width:"100%"}}>
-                    <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{width:"100%", color:"black", backgroundColor:"white"}}>
-                        {dropdownTitle}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu style={{width:"100%"}}>
-                        {tokenPulldown3()}
-                    </Dropdown.Menu>
-                </Dropdown>
-                </Col>
-                <Col>
-                </Col>
-            </Row>
-            */}
+        
             <Row>
             <Col>
             <Form.Label>Token *</Form.Label>
@@ -339,18 +267,6 @@ const CreateSubForm = (props) => {
                         {tokenPulldown3()}
                     </Dropdown.Menu>
             </Dropdown>
-                {/*
-                    <Form.Group className="mb-3" controlId="tokenSelect" value={token} onChange={tokenChange}>
-                        <Form.Label>Token *</Form.Label>
-                        <Form.Select isValid={!invalidToken} isInvalid={invalidToken}>
-                            <option value={"-1"}>Select token</option>
-                            {tokenPulldown()}
-                        </Form.Select>
-                        <Form.Control.Feedback type="invalid">
-                            Please select a token
-                        </Form.Control.Feedback>
-                    </Form.Group>
-        */  }
                 </Col>
                 <Col>
                     <Form.Group  className="mb-3" controlId="formAmount" value={amount} onChange={amountChange}>

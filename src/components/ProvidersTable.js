@@ -27,8 +27,7 @@ const ProvidersTable = (props) => {
         )     
         table.push(<tr align="center" key={String(providersArray[i])}>{row}</tr>)
       }
-   // }
-
+   
     tableTop.push(
         <Table key="table" striped bordered hover className="provTable">
           <thead key="tableHead">
@@ -44,8 +43,6 @@ const ProvidersTable = (props) => {
         </Table>)
     
     return tableTop
-
-
 }
 
 export default ProvidersTable

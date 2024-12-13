@@ -15,7 +15,6 @@ const AdminHistory = () => {
     //gets public client for log lookup
     const publicClient = usePublicClient()
 
-    console.log(isp)
 
     //creates empty array for table
     let emptyArray = []

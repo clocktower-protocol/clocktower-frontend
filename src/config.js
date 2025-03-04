@@ -6,7 +6,7 @@ import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
 
 /* global BigInt */
-export const CLOCKTOWERSUB_ADDRESS = "0x69F94e46cbC82Ab02781ac4FaFc3580d21f1a888";
+export const CLOCKTOWERSUB_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
@@ -21,7 +21,7 @@ export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const TOKEN_LOOKUP = [
   {
-    address: "0xE0a1556ef66873d965A2F4caD06F051646BE6707",
+    address: "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
     ticker: "CLOCK",
     decimals: 18,
     icon: SepoliaLogo

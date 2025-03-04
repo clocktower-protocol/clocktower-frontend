@@ -305,16 +305,30 @@ const getSub = useCallback(async (editSubParams) => {
     await readContract(config, {
         address: CLOCKTOWERSUB_ADDRESS,
         abi: CLOCKTOWERSUB_ABI,
-        functionName: 'getSubByIndex',
-        args: [editSubParams.id, editSubParams.f, editSubParams.d]
+        //functionName: 'getSubByIndex',
+        functionName: 'idSubMap',
+        //args: [editSubParams.id, editSubParams.f, editSubParams.d]
+        args: [editSubParams.id]
     })
     .then(async function(result) {
+        //TODO: converts array to object
+        const resultSub = {
+            id: result[0],
+            amount: result[1],
+            provider: result[2].toLowerCase(),
+            token: result[3].toLowerCase(),
+            cancelled: result[4], 
+            frequency: result[5], 
+            dueDay: result[6]
+        }
         await publicClient.getLogs({
             address: CLOCKTOWERSUB_ADDRESS,
             event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
             fromBlock: 0n,
             toBlock: 'latest',
-            args: {id:[result.id]}
+            //args: {id:[result.id]}
+            //args: {id: result[0]}
+            args: {id: resultSub.id}
         }) 
         .then(async function(events){
             //checks for latest update by getting highest timestamp
@@ -337,7 +351,8 @@ const getSub = useCallback(async (editSubParams) => {
                 }       
             }    
         })
-        setEditSub(result)
+        //setEditSub(result)
+        setEditSub(resultSub)
     })
 },[publicClient])
 

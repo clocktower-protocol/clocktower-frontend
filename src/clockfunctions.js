@@ -8,6 +8,8 @@ dayjs.extend(utc)
 export const fetchToken = async () => {
   
     try{
+      //TURN OFF HERE if testing
+      /*
       //if empty
       if(localStorage.getItem("clockAccess") === null || typeof localStorage.getItem("clockAccess") === "undefined") {
         console.log("not set")
@@ -98,6 +100,7 @@ export const fetchToken = async () => {
         console.log("got existing token")
         
       }
+        */
     } catch (error){
         console.error(error)
     }

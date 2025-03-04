@@ -134,7 +134,7 @@ const CreateSubForm = (props) => {
         })
         .then(async function(result) {
             //gets token minimum
-            setSelectedTokenMinimum(result[1])
+            setSelectedTokenMinimum(result[3])
         })
     }
 

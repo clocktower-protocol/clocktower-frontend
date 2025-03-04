@@ -26,7 +26,9 @@ const EditDetailsForm2 = (props) => {
         const array = TOKEN_LOOKUP.map((token) => {
             if(token.address === props.editSub.token) {
                 return token.ticker
-            } else { return undefined}
+            } else { 
+                return undefined
+            }
         })
         return array[0]
     }

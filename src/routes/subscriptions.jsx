@@ -315,8 +315,8 @@ const getSub = useCallback(async (editSubParams) => {
         const resultSub = {
             id: result[0],
             amount: result[1],
-            provider: result[2].toLowerCase(),
-            token: result[3].toLowerCase(),
+            provider: result[2],
+            token: result[3],
             cancelled: result[4], 
             frequency: result[5], 
             dueDay: result[6]

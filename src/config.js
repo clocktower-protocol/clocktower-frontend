@@ -4,8 +4,11 @@ import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
 import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
 import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
+import { getAddress } from 'viem';
 
 /* global BigInt */
+
+//USE ONLY  CHECKSUMMED ADDRESSES BELOW
 export const CLOCKTOWERSUB_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -21,7 +24,7 @@ export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const TOKEN_LOOKUP = [
   {
-    address: "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+    address: getAddress("0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0"),
     ticker: "CLOCK",
     decimals: 18,
     icon: SepoliaLogo

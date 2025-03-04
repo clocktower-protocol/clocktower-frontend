@@ -157,6 +157,8 @@ const EditAccountForm = (props) => {
                 misc: misc
             }
 
+            console.log(formAccountDetails)
+
             props.setChangedAccountDetails(formAccountDetails)
             
         } else {

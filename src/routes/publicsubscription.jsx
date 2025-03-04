@@ -56,19 +56,31 @@ const PublicSubscription = () => {
 
         const getSub = async () => {
             await fetchToken()
+            //TODO:
             await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
-                functionName: 'getSubByIndex',
-                args: [id, f, d]
+                //functionName: 'getSubByIndex',
+                functionName: 'idSubMap',
+                //args: [id, f, d]
+                args: [id]
             })
             .then(async function(result) {
+                const resultSub = {
+                    id: result[0],
+                    amount: result[1],
+                    provider: result[2].toLowerCase(),
+                    token: result[3].toLowerCase(),
+                    cancelled: result[4], 
+                    frequency: result[5], 
+                    dueDay: result[6]
+                }
                 await publicClient.getLogs({
                     address: CLOCKTOWERSUB_ADDRESS,
                     event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
                     fromBlock: 0n,
                     toBlock: 'latest',
-                    args: {id:[result.id]}
+                    args: {id:[resultSub.id]}
                 }) 
                 .then(async function(events){
                     //checks for latest update by getting highest timestamp
@@ -92,9 +104,12 @@ const PublicSubscription = () => {
                         }       
                     }    
                 })
-                setSubscription(result)
-                setToken(result.token)
-                const tempSub = [{subscription: result, status: 0, totalSubscribers: 0}]
+                //setSubscription(result)
+                setSubscription(resultSub)
+                //setToken(result.token)
+                setToken(resultSub.token)
+                //const tempSub = [{subscription: result, status: 0, totalSubscribers: 0}]
+                const tempSub = [{subscription: resultSub, status: 0, totalSubscribers: 0}]
                 setFormattedSub(tempSub)
                 
             })
@@ -130,14 +145,28 @@ const PublicSubscription = () => {
      
         const isProviderSame = async () => {
             await fetchToken()
+            //TODO:
             let result = await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
-                functionName: 'getSubByIndex',
-                args: [id, f, d]
+                //functionName: 'getSubByIndex',
+                functionName: 'idSubMap',
+                //args: [id, f, d]
+                args: [id]
             })
 
-            if(result.provider === account) {
+            const resultSub = {
+                id: result[0],
+                amount: result[1],
+                provider: result[2].toLowerCase(),
+                token: result[3].toLowerCase(),
+                cancelled: result[4], 
+                frequency: result[5], 
+                dueDay: result[6]
+            }
+
+            //if(result.provider === account) {
+            if(resultSub.provider === account) {
                 setIsProvider(true)
             } else {
                 setIsProvider(false)

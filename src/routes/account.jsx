@@ -82,6 +82,7 @@ const Account = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
+            console.log(changedAccountDetails)
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({
@@ -158,6 +159,7 @@ const Account = () => {
 
         //checks if user is logged into account
         if(typeof address === "undefined") {
+            console.log("here")
             //linkToMain()
             return
         }
@@ -170,7 +172,7 @@ const Account = () => {
         try{
             await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
-                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain, string email, string misc)'),
+                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string indexed description, string company, string url, string domain, string email, string misc)'),
                 fromBlock: 0n,
                 toBlock: 'latest',
                 args: {provider: a}
@@ -193,6 +195,7 @@ const Account = () => {
                         }
                         //adds latest details to details array
                         accountDetails = events[index].args
+                        console.log(events[index].args)
                     }    
                     
                 }

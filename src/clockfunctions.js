@@ -104,6 +104,6 @@ export const fetchToken = async () => {
     } catch (error){
         console.error(error)
     }
-    console.log("after")
+    //console.log("after")
     
   }

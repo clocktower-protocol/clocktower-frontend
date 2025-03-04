@@ -7,6 +7,7 @@ import {config} from '../wagmiconfig'
 import {fetchToken} from '../clockfunctions'
 import Icon from './Icon'
 import styles from '../css/clocktower.module.css';
+import { v4 as uuidv4 } from 'uuid'
 
 const CreateSubForm = (props) => {
 
@@ -244,7 +245,7 @@ const CreateSubForm = (props) => {
     }
 
     return (
-        <div className={styles.top_level_create_sub}>
+        <div className={styles.top_level_create_sub} key={uuidv4()}>
         <Modal show={showTokenMenu} size="l" onHide={hideTokenMenu}>
             <Modal.Header closeButton>
                 <Modal.Title>Choose a Token</Modal.Title>

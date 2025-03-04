@@ -66,7 +66,7 @@ const Subscriptions = () => {
 
     //WAGMI write contract hooks------------------------------
 
-    const { data, writeContract } = useWriteContract()
+    const { data, writeContract, error } = useWriteContract()
 
     const wait = useWaitForTransactionReceipt({
         confirmations: 1,
@@ -76,7 +76,7 @@ const Subscriptions = () => {
     //hook for calling wallet to create sub
     useEffect(() => {
         //calls wallet
-        if(!isMounting.current && Object.keys(changedCreateSub).length !== 0) {
+        if(!isMounting.current && Object.keys(changedCreateSub).length !== 0 && (typeof(changedCreateSub) != undefined)) {
             //sets toast
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
@@ -241,6 +241,7 @@ const getSubscriberSubs = useCallback(async () => {
        return
    }
    
+  
    //variable to pass scope so that the state can be set
    let accountSubscriptions = []
 

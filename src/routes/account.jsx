@@ -195,7 +195,6 @@ const Account = () => {
                         }
                         //adds latest details to details array
                         accountDetails = events[index].args
-                        console.log(events[index].args)
                     }    
                     
                 }

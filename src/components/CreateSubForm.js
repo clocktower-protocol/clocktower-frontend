@@ -245,7 +245,7 @@ const CreateSubForm = (props) => {
     }
 
     return (
-        <div className={styles.top_level_create_sub} key={uuidv4()}>
+        <div className={styles.top_level_create_sub}>
         <Modal show={showTokenMenu} size="l" onHide={hideTokenMenu}>
             <Modal.Header closeButton>
                 <Modal.Title>Choose a Token</Modal.Title>

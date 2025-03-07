@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
 import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
@@ -173,7 +173,7 @@ const Account = () => {
             await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
                 event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string indexed description, string company, string url, string domain, string email, string misc)'),
-                fromBlock: 0n,
+                fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',
                 args: {provider: a}
             }) 

@@ -1,7 +1,7 @@
 import {React, useState, useCallback, useEffect} from 'react';
 import {Alert} from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router-dom"
-import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT } from "../config"; 
+import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT, EVENT_START_BLOCK } from "../config"; 
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
 import AdminHistoryTable from '../components/AdminHistoryTable';
@@ -31,7 +31,7 @@ const AdminHistory = () => {
             logs = await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
                 event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
-                fromBlock: 0n,
+                fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',
                 args: {provider: a}
             })
@@ -40,7 +40,7 @@ const AdminHistory = () => {
             logs = await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
                 event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
-                fromBlock: 0n,
+                fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',
                 args: {subscriber: a}
             })

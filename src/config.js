@@ -14,6 +14,7 @@ export const CLOCKTOWERSUB_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+export const EVENT_START_BLOCK = 0n
 
 
 //**************************************************************************** 

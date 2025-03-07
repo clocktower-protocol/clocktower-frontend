@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
 import SubscriptionsTable from '../components/SubscriptionsTable';
 import {usePublicClient} from 'wagmi'
 import { readContract } from 'wagmi/actions'
@@ -106,7 +106,7 @@ const AdminSubscriptions = () => {
             await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,
                 event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-                fromBlock: 0n,
+                fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',
                 args: filter
             }) 

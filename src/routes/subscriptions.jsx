@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
 import {Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -194,7 +194,7 @@ const Subscriptions = () => {
                await publicClient.getLogs({
                    address: CLOCKTOWERSUB_ADDRESS,
                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-                   fromBlock: 0n,
+                   fromBlock: EVENT_START_BLOCK,
                    toBlock: 'latest',
                    args: {id:[accountSubscriptions[i].subscription.id]}
                }) 
@@ -261,7 +261,7 @@ const getSubscriberSubs = useCallback(async () => {
            await publicClient.getLogs({
                address: CLOCKTOWERSUB_ADDRESS,
                event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-               fromBlock: 0n,
+               fromBlock: EVENT_START_BLOCK,
                toBlock: 'latest',
                args: {id:[accountSubscriptions[i].subscription.id]}
            }) 
@@ -325,7 +325,7 @@ const getSub = useCallback(async (editSubParams) => {
         await publicClient.getLogs({
             address: CLOCKTOWERSUB_ADDRESS,
             event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-            fromBlock: 0n,
+            fromBlock: EVENT_START_BLOCK,
             toBlock: 'latest',
             //args: {id:[result.id]}
             //args: {id: result[0]}

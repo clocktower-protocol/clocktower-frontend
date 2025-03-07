@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import { CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import { CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
 import SubHistoryTable from '../components/SubHistoryTable';
 import { usePublicClient } from 'wagmi'
 import { parseAbiItem } from 'viem'
@@ -25,7 +25,7 @@ const SubHistory = () => {
         const logs = await publicClient.getLogs({
             address: CLOCKTOWERSUB_ADDRESS,
             event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
-            fromBlock: 0n,
+            fromBlock: EVENT_START_BLOCK,
             toBlock: 'latest',
             args: {id: id, subscriber: account}
         })

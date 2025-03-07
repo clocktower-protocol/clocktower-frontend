@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Tab, Tabs} from 'react-bootstrap';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT, EVENT_START_BLOCK} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import ProvidersTable from '../components/ProvidersTable';
 import CallerHistoryTable from '../components/CallerHistoryTable';
@@ -92,7 +92,7 @@ const Admin = () => {
         publicClient.getLogs({
             address: CLOCKTOWERSUB_ADDRESS,
             event: parseAbiItem('event CallerLog(uint40 timestamp, uint40 checkeday, address indexed caller, bool isfinished)'),
-            fromBlock: 0n,
+            fromBlock: EVENT_START_BLOCK,
             toBlock: 'latest',
         },function(error, events){ 
             setCallerHistory(events)

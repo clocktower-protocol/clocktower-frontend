@@ -9,7 +9,7 @@ export const fetchToken = async () => {
   
     try{
       //TURN OFF HERE if testing
-      /*
+      
       //if empty
       if(localStorage.getItem("clockAccess") === null || typeof localStorage.getItem("clockAccess") === "undefined") {
         console.log("not set")
@@ -23,8 +23,9 @@ export const fetchToken = async () => {
           }
         })
         .then(function (response) {
-          console.log(response.data.token);
+          //console.log(response.data.token);
           //stores token in local storage
+          console.log(response.data.token)
           localStorage.setItem("clockAccess", response.data.token)
           console.log("token set")
         })
@@ -56,6 +57,7 @@ export const fetchToken = async () => {
         console.log("current utc time  " + dayjs().utc().unix())
         console.log("token expiry  " + decodedToken.exp)
         console.log("difference  " + (decodedToken.exp - dayjs().utc().unix()))
+        console.log(savedToken)
         console.log(decodedToken)
         console.log(typeof dayjs().utc().unix())
         //gets token if out of date
@@ -100,7 +102,7 @@ export const fetchToken = async () => {
         console.log("got existing token")
         
       }
-        */
+        //*/
     } catch (error){
         console.error(error)
     }

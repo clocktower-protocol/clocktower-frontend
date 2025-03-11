@@ -9,13 +9,14 @@ import { getAddress } from 'viem';
 /* global BigInt */
 
 //USE ONLY  CHECKSUMMED ADDRESSES BELOW
-export const CLOCKTOWERSUB_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+//export const CLOCKTOWERSUB_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+export const CLOCKTOWERSUB_ADDRESS = "0xc2f5Ae3Fc61d41cd8c5e4Afb929D99Ba46d6320F";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-export const EVENT_START_BLOCK = 0n
-
+//export const EVENT_START_BLOCK = 0n
+export const EVENT_START_BLOCK = 22967543n
 
 //**************************************************************************** 
 
@@ -31,7 +32,8 @@ export const TOKEN_LOOKUP = [
     icon: SepoliaLogo
   }, 
   {
-    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    //address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    address: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
     ticker: "USDC",
     decimals: 6,
     icon: USDCLogo
@@ -47,11 +49,19 @@ export const CHAIN_LOOKUP = [
     displayName: "Hardhat Network"
   }, 
   {
+    name: "baseSepolia",
+    id: 84532, 
+    icon: SepoliaLogo,
+    displayName: "Base Sepolia Network"
+  },
+  /*
+  {
     name: "sepolia",
     id: 11155111, 
     icon: SepoliaLogo,
     displayName: "Sepolia Network"
   }
+  */
 ]
 
 //supported Wallets

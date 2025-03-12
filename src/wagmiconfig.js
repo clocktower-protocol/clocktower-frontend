@@ -3,6 +3,7 @@ import { hardhat } from 'wagmi/chains'
 //import { sepolia } from 'wagmi/chains'
 import { baseSepolia } from 'wagmi/chains'
 import { coinbaseWallet, safe} from 'wagmi/connectors'
+import {fetchToken} from './clockfunctions'
 
 //let token = localStorage.getItem('clockAccess')
 
@@ -15,6 +16,8 @@ const getToken = () => {
     const token = localStorage.getItem('clockAccess');
     console.log('Retrieved Token:', token); // Debug
     return token || ''; // Fallback to empty string if null
+  } else {
+    fetchToken()
   }
   return ''; // Fallback for non-browser (e.g., SSR)
 };
@@ -33,6 +36,7 @@ export const config = createConfig(
         fetchOptions: { 
           headers: {
             'Authorization': `Bearer ${getToken()}`
+            //'Authorization': `Bearer ${token2}`
           }
         }
       })

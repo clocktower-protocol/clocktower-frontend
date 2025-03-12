@@ -142,7 +142,7 @@ const CreateSubForm = (props) => {
 
     const amountChange = (event) => {
 
-        if((event.target.value > 0) && (event.target.value > formatEther(selectedTokenMinimum))) {
+        if((Number(event.target.value) > 0) && (Number(event.target.value) > Number(formatEther(selectedTokenMinimum)))) {
             let wei = parseEther(event.target.value)
             setInvalidAmount(false)
             setAmount(wei)

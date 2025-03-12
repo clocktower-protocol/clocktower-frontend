@@ -4,20 +4,22 @@ import { hardhat } from 'wagmi/chains'
 import { baseSepolia } from 'wagmi/chains'
 import { coinbaseWallet, safe} from 'wagmi/connectors'
 import {fetchToken} from './clockfunctions'
+//import {jwtDecode} from 'jwt-decode'
 
 //let token = localStorage.getItem('clockAccess')
 
 //console.log(token)
 
 // Function to get token dynamically
-const getToken = () => {
+const getToken = async () => {
   // Check if in browser environment
   if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('clockAccess');
+    await fetchToken()
+    let token = localStorage.getItem('clockAccess');
     console.log('Retrieved Token:', token); // Debug
     return token || ''; // Fallback to empty string if null
   } else {
-    fetchToken()
+    await fetchToken()
   }
   return ''; // Fallback for non-browser (e.g., SSR)
 };
@@ -35,7 +37,7 @@ export const config = createConfig(
       [baseSepolia.id]: http('https://base-sepolia.g.alchemy.com/v2', {
         fetchOptions: { 
           headers: {
-            'Authorization': `Bearer ${getToken()}`
+            'Authorization': `Bearer ${await getToken()}`
             //'Authorization': `Bearer ${token2}`
           }
         }

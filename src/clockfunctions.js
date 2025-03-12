@@ -6,9 +6,12 @@ import utc from 'dayjs/plugin/utc'
 dayjs.extend(utc)
 
 export const fetchToken = async () => {
+
+
   
     try{
       //TURN OFF HERE if testing
+
 
       const callTokenServer = async () => {
         //gets token
@@ -54,7 +57,7 @@ export const fetchToken = async () => {
         console.log("not set")
     
         await callTokenServer()
-        
+
       } else {
         //FIXME: needs to check if the token is malformed
         //checks if token has expired
@@ -71,6 +74,8 @@ export const fetchToken = async () => {
         //console.log(typeOf decodedToken.exp)
         //gets token if out of date
         if(decodedToken.exp < dayjs().utc().unix()) {
+
+          console.log("token out of date")
 
           await callTokenServer()
 

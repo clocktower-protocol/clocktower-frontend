@@ -56,8 +56,13 @@ const AdminSubscriptions = () => {
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'callerFee',
         })
+
+         //converts fee to number 
+         let numFee = Number(fee)
+
+         //const cycles = 100n / ((fee % 10000n) / 100n)
+         const cycles = 100 / ((numFee % 10000) / 100)
         
-        const cycles = 100n / ((fee % 10000n) / 100n)
     
         //calls contract 
         subscriptions =  await readContract(config, {

@@ -64,12 +64,14 @@ export const fetchToken = async () => {
         const savedToken = localStorage.getItem("clockAccess")
         const decodedToken = jwtDecode(savedToken)
         
+        /*
         console.log("current utc time  " + dayjs().utc().unix())
         console.log("token expiry  " + decodedToken.exp)
         console.log("difference  " + (decodedToken.exp - dayjs().utc().unix()))
         console.log(savedToken)
         console.log(decodedToken)
         console.log(typeof dayjs().utc().unix())
+        */
 
         //console.log(typeOf decodedToken.exp)
         //gets token if out of date

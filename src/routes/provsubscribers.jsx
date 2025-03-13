@@ -34,8 +34,12 @@ const ProvSubscribers = () => {
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'callerFee',
         })
-       
-        const cycles = 100n / ((fee % 10000n) / 100n)
+
+        //converts fee to number 
+        let numFee = Number(fee)
+
+        //const cycles = 100n / ((fee % 10000n) / 100n)
+        const cycles = 100 / ((numFee % 10000) / 100)
         
         let subscribers = []
 
@@ -57,7 +61,6 @@ const ProvSubscribers = () => {
             //gets cycles
             let balance = element.feeBalance
             balance = Number(balance)
-
 
             if(balance === 0) {
                 remainingCycles = Number(cycles)
@@ -103,5 +106,6 @@ const ProvSubscribers = () => {
             )
         }
     }
+
 
 export default ProvSubscribers

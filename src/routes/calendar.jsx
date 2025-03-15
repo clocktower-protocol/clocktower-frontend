@@ -290,7 +290,7 @@ const Calendar = () => {
        //let accountSubscriptions = []
        let tempEventsArray = []
 
-       fetchToken()
+       //await fetchToken()
        try{
        await readContract(config, {
            address: CLOCKTOWERSUB_ADDRESS,

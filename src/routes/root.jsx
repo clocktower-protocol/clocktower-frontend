@@ -73,7 +73,7 @@ const Root = () => {
       //address reset
       if(address !== undefined && address !== account){
         //checks/resets token
-        fetchToken()
+        //await fetchToken()
         setLoggedIn(true)
         if(location.pathname.slice(0,20) !== "/public_subscription") {
           accountSwitch(address)

@@ -55,8 +55,7 @@ const PublicSubscription = () => {
     useEffect(() => {
 
         const getSub = async () => {
-            await fetchToken()
-            //TODO:
+            //await fetchToken()
             await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -116,7 +115,7 @@ const PublicSubscription = () => {
         }
 
         const isSubscribed = async () => {
-            await fetchToken()
+            //await fetchToken()
             let result = await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -144,8 +143,7 @@ const PublicSubscription = () => {
         }
      
         const isProviderSame = async () => {
-            await fetchToken()
-            //TODO:
+            //await fetchToken()
             let result = await readContract(config, {
                 address: CLOCKTOWERSUB_ADDRESS,
                 abi: CLOCKTOWERSUB_ABI,
@@ -201,7 +199,7 @@ const PublicSubscription = () => {
         setShowToast(true)
 
         //checks if user already has allowance
-        await fetchToken()
+        //await fetchToken()
         const allowanceBalance = await readContract(config, {
             address: token,
             abi: erc20Abi,

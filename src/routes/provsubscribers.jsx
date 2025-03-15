@@ -27,7 +27,7 @@ const ProvSubscribers = () => {
         return
         }    
 
-        await fetchToken()
+        //await fetchToken()
         //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
         let fee =  await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,

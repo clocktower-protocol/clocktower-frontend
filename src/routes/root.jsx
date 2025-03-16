@@ -160,7 +160,7 @@ const Root = () => {
             </Container>
             <Container key="navContainer" style={{justifyContent:"flex-end", gap:"50px"}}>
                   {chains.length > 1 ? 
-                  <NavDropdown title={<span className={styles.chain_pulldown}><Icon icon={CHAIN_LOOKUP[1].icon}></Icon> {chains[1].name} </span>} id="basic-nav-dropdown">
+                  <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon icon={CHAIN_LOOKUP[1].icon}></Icon> {chains[1].name} </span>} id="basic-nav-dropdown">
                     {chains.map((chain) => (
                         <NavDropdown.Item>
                     

@@ -28,7 +28,8 @@ export const fetchToken = async () => {
         .then(function (response) {
           console.log(response.data.token);
           //stores token in local storage
-          localStorage.setItem("clockAccess", response.data.token)
+          //localStorage.setItem("clockAccess", response.data.token)
+          sessionStorage.setItem("clockAccess", response.data.token)
           console.log("token set")
         })
         .catch(function (error) {
@@ -52,7 +53,8 @@ export const fetchToken = async () => {
       }
       
       //if empty
-      if(localStorage.getItem("clockAccess") === null || typeof localStorage.getItem("clockAccess") === "undefined") {
+      //if(localStorage.getItem("clockAccess") === null || typeof localStorage.getItem("clockAccess") === "undefined") {
+      if(sessionStorage.getItem("clockAccess") === null || typeof sessionStorage.getItem("clockAccess") === "undefined") {
         
         console.log("not set")
     
@@ -61,7 +63,8 @@ export const fetchToken = async () => {
       } else {
         //FIXME: needs to check if the token is malformed
         //checks if token has expired
-        const savedToken = localStorage.getItem("clockAccess")
+        //const savedToken = localStorage.getItem("clockAccess")
+        const savedToken = sessionStorage.getItem("clockAccess")
         const decodedToken = jwtDecode(savedToken)
         
         /*
@@ -78,6 +81,9 @@ export const fetchToken = async () => {
         if(decodedToken.exp < dayjs().utc().unix()) {
 
           console.log("token out of date")
+
+          //removes token
+          sessionStorage.removeItem("clockAccess")
 
           await callTokenServer()
 

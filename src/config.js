@@ -48,6 +48,7 @@ export const CHAIN_LOOKUP = [
     icon: SepoliaLogo,
     displayName: "Base Sepolia"
   },
+  
   {
     name: "hardhat",
     id: 31337,

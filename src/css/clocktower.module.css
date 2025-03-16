@@ -69,6 +69,14 @@
     letter-spacing: var(--letter-spacing);
 }
 
+.chain_pulldown2 {
+    background-color: white;
+}
+
+.chain_icon {
+    padding-right: 10px;
+}
+
 /* Account */
 
 .top_level_account {

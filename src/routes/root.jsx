@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useCallback} from 'react';
-import { Navbar, Container, Nav, Button, Row, Col, Modal, Stack, Alert, NavDropdown, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Row, Col, Modal, Stack, Alert, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
@@ -176,42 +176,27 @@ const Root = () => {
                   {chains.length > 1 ? 
                   <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown">
                     {chains.map((chain) => (
-                        <NavDropdown.Item>
+                        <NavDropdown.Item className={styles.chain_pulldown2}>
                     
                           {CHAIN_LOOKUP.map((lchain) => {
                             if(lchain.id === chain.id){
-                              return <Icon icon={lchain.icon}></Icon>
+                              return <Icon className={styles.chain_icon} icon={lchain.icon}></Icon>
                             } else {
                               return ""
                             }
                           })
                           }
                           
-                          <Button variant="outline-info" key={chain.id} onClick={() => 
-                                                                                {
-                                                                                //switchChain({ chainId: chain.id });
-                                                                                changeChain(chain.id);
-                                                                                }
-                                                                                 }>
+                          <Button variant="outline-info" key={chain.id} onClick={() => changeChain(chain.id)}> 
                             { chain.name }
                           </Button>
                         </NavDropdown.Item>
                       ))}
                   </NavDropdown>
                   : 
-                    <OverlayTrigger
-                      placement="left"
-                      delay={{ show: 250, hide: 400 }}
-                      overlay={
-                        <Tooltip id={`tooltip-1`}>
-                            {CHAIN_LOOKUP[0].displayName}
-                        </Tooltip>
-                      }
-                    >
                     <Navbar.Text>
-                      <Icon icon={CHAIN_LOOKUP[0].icon}></Icon>
+                      <span className={styles.chain_pulldown}>Chain: <Icon icon={CHAIN_LOOKUP[0].icon}></Icon> {CHAIN_LOOKUP[0].displayName} </span>
                     </Navbar.Text>
-                    </OverlayTrigger>
                  }
                   
                   <Nav key="nav">

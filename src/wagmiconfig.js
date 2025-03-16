@@ -15,7 +15,8 @@ const getToken = async () => {
   // Check if in browser environment
   if (typeof window !== 'undefined') {
     await fetchToken()
-    let token = localStorage.getItem('clockAccess');
+    //let token = localStorage.getItem('clockAccess');
+    let token = sessionStorage.getItem('clockAccess');
     console.log('Retrieved Token:', token); // Debug
     return token || ''; // Fallback to empty string if null
   } else {

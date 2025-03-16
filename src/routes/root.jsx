@@ -29,6 +29,8 @@ const Root = () => {
 
     const [showWalletChoice, setShowWalletChoice] = useState(false);
 
+    const { selectedChain, setSelectedChain} = useState(CHAIN_LOOKUP[0])
+
     //functions for links
     const navigate = useNavigate();
     const handleOnClickCalendar = useCallback(() => navigate('/calendar', {replace: true}), [navigate])
@@ -37,7 +39,6 @@ const Root = () => {
     const handleOnClickAdmin = useCallback(() => navigate('/admin', {replace: true}), [navigate]);
     const accountSwitch = useCallback((passedAddress) => navigate('/account/'+passedAddress), [navigate])
     const linkToMain = useCallback(() => navigate('/', {replace: true}), [navigate])
-
 
     const handleClose = () => {
       setShowWalletChoice(false);
@@ -159,7 +160,7 @@ const Root = () => {
             </Container>
             <Container key="navContainer" style={{justifyContent:"flex-end", gap:"50px"}}>
                   {chains.length > 1 ? 
-                  <NavDropdown title={chains[0].name} id="basic-nav-dropdown">
+                  <NavDropdown title={<span className={styles.chain_pulldown}><Icon icon={CHAIN_LOOKUP[1].icon}></Icon> {chains[1].name} </span>} id="basic-nav-dropdown">
                     {chains.map((chain) => (
                         <NavDropdown.Item>
                     
@@ -172,8 +173,8 @@ const Root = () => {
                           })
                           }
                           
-                          <Button variant="outline-info" key={chain.id} onClick={() => switchChain({ chainId: chain.id })}>
-                            {chain.name}
+                          <Button variant="outline-info" key={chain.id} onClick={() => switchChain({ chainId: chain.id }) }>
+                            { chain.name }
                           </Button>
                         </NavDropdown.Item>
                       ))}

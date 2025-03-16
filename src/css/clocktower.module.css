@@ -40,6 +40,7 @@
 }
 
 .account_text_nav {
+    color: #999999;
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
 }
@@ -60,6 +61,12 @@
 
 .navbar {
     height: 75px;
+}
+
+.chain_pulldown {
+    color: #999999;
+    font-family: var(--font-family); 
+    letter-spacing: var(--letter-spacing);
 }
 
 /* Account */

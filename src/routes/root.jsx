@@ -4,7 +4,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 import { Outlet, useNavigate, useLocation} from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
 import Icon from '../components/Icon'
 import { v4 as uuidv4 } from 'uuid';
@@ -29,7 +29,7 @@ const Root = () => {
 
     const [showWalletChoice, setShowWalletChoice] = useState(false);
 
-    const { selectedChain, setSelectedChain} = useState(CHAIN_LOOKUP[0])
+    const [ selectedChain, setSelectedChain] = useState(0)
 
     //functions for links
     const navigate = useNavigate();
@@ -91,6 +91,20 @@ const Root = () => {
     handleShow()
   }
 
+  const changeChain = function (chain_id) {
+
+    switchChain({ chainId: chain_id })
+
+    CHAIN_LOOKUP.map((lchain,  index) => {
+      if(lchain.id === chain_id){
+        return setSelectedChain(index)
+      } else {
+        return ""
+      }
+    })
+    
+
+  }
   
    return (
         <>
@@ -160,7 +174,7 @@ const Root = () => {
             </Container>
             <Container key="navContainer" style={{justifyContent:"flex-end", gap:"50px"}}>
                   {chains.length > 1 ? 
-                  <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon icon={CHAIN_LOOKUP[1].icon}></Icon> {chains[1].name} </span>} id="basic-nav-dropdown">
+                  <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown">
                     {chains.map((chain) => (
                         <NavDropdown.Item>
                     
@@ -173,7 +187,12 @@ const Root = () => {
                           })
                           }
                           
-                          <Button variant="outline-info" key={chain.id} onClick={() => switchChain({ chainId: chain.id }) }>
+                          <Button variant="outline-info" key={chain.id} onClick={() => 
+                                                                                {
+                                                                                //switchChain({ chainId: chain.id });
+                                                                                changeChain(chain.id);
+                                                                                }
+                                                                                 }>
                             { chain.name }
                           </Button>
                         </NavDropdown.Item>

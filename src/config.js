@@ -43,17 +43,17 @@ export const TOKEN_LOOKUP = [
 //supported chains (this needs to match the wagmiconfig)
 export const CHAIN_LOOKUP = [
   {
-    name: "hardhat",
-    id: 31337,
-    icon: HardhatLogo,
-    displayName: "Hardhat Network"
-  }, 
-  {
     name: "baseSepolia",
     id: 84532, 
     icon: SepoliaLogo,
-    displayName: "Base Sepolia Network"
+    displayName: "Base Sepolia"
   },
+  {
+    name: "hardhat",
+    id: 31337,
+    icon: HardhatLogo,
+    displayName: "Hardhat"
+  }, 
   /*
   {
     name: "sepolia",

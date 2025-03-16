@@ -6,7 +6,7 @@ import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import EditAccountForm from "../components/EditAccountForm";
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 
 import styles from '../css/clocktower.module.css';
 
@@ -168,7 +168,7 @@ const Account = () => {
         let accountDetails = {}
 
         //checks token
-        await fetchToken()
+        //await fetchToken()
         try{
             await publicClient.getLogs({
                 address: CLOCKTOWERSUB_ADDRESS,

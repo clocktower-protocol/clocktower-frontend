@@ -4,10 +4,10 @@ import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CL
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 import Icon from './Icon'
 import styles from '../css/clocktower.module.css';
-import { v4 as uuidv4 } from 'uuid'
+//import { v4 as uuidv4 } from 'uuid'
 
 const CreateSubForm = (props) => {
 
@@ -126,7 +126,7 @@ const CreateSubForm = (props) => {
 
     //gets token minimum from contract
     const setTokenMinimum = async (tokenAddress) => {
-        await fetchToken()
+       // await fetchToken()
         await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,

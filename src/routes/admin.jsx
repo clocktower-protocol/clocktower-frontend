@@ -9,7 +9,7 @@ import { usePublicClient } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 
 const Admin = () => {
 
@@ -39,7 +39,7 @@ const Admin = () => {
         let subscribers = []
         
         //gets all accounts
-        await fetchToken()
+        //await fetchToken()
         await readContract(config, {
             address: CLOCKTOWERSUB_ADDRESS,
             abi: CLOCKTOWERSUB_ABI,

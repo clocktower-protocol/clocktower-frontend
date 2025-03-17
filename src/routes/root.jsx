@@ -9,6 +9,7 @@ import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
 import Icon from '../components/Icon'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../css/clocktower.module.css';
+//import {fetchToken} from '../clockfunctions'
 
 
 import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain} from 'wagmi'
@@ -30,6 +31,8 @@ const Root = () => {
     const [showWalletChoice, setShowWalletChoice] = useState(false);
 
     const [ selectedChain, setSelectedChain] = useState(0)
+
+    //const [jwt, setJwt] = useState(sessionStorage.getItem("clockAccess"))
 
     //functions for links
     const navigate = useNavigate();
@@ -65,6 +68,19 @@ const Root = () => {
     })
 
     const { connect, connectors, isLoading, pendingConnector } = useConnect({config})
+
+    /*
+    //checks for jwt change
+    useEffect(() => {
+      async function getToken() {
+        await fetchToken()
+      }
+      getToken()
+      setJwt(sessionStorage.getItem("clockAccess"))
+      console.log("SET JWT")
+
+    },[jwt])
+    */
 
     //checks for account change
     

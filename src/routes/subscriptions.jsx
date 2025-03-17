@@ -8,7 +8,7 @@ import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
 import CreateSubForm from "../components/CreateSubForm";
 import SubscriptionsTable from "../components/SubscriptionsTable";
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 import EditDetailsForm2 from "../components/EditDetailsForm2";
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
@@ -66,7 +66,7 @@ const Subscriptions = () => {
 
     //WAGMI write contract hooks------------------------------
 
-    const { data, writeContract, error } = useWriteContract()
+    const { data, writeContract } = useWriteContract()
 
     const wait = useWaitForTransactionReceipt({
         confirmations: 1,
@@ -297,6 +297,7 @@ const getSubscriberSubs = useCallback(async () => {
        setSubscribedDetailsArray(subscribedDetailsArray)
    })
     } catch(Err) {
+        //await fetchToken()
         console.log(Err)
     }
 },[address, publicClient, subscribedDetailsArray])

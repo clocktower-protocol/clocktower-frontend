@@ -81,8 +81,9 @@ export const fetchToken = async () => {
         if(decodedToken.exp < dayjs().utc().unix()) {
 
           console.log("token out of date")
-
-          //removes token
+          
+          console.log(dayjs().utc().unix())
+          console.log(decodedToken.exp)
           sessionStorage.removeItem("clockAccess")
 
           await callTokenServer()

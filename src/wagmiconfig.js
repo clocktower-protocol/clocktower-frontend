@@ -1,4 +1,4 @@
-import { createConfig, http } from 'wagmi'
+import { createConfig, http, fallback} from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 //import { sepolia } from 'wagmi/chains'
 import { baseSepolia } from 'wagmi/chains'
@@ -35,13 +35,17 @@ export const config = createConfig(
     transports: { 
       [hardhat.id]: http('http://localhost:8545'),
       
-      [baseSepolia.id]: http('https://base-sepolia.g.alchemy.com/v2', {
-        fetchOptions: { 
-          headers: {
-            'Authorization': `Bearer ${await getToken()}`
-            //'Authorization': `Bearer ${token2}`
+      [baseSepolia.id]: fallback([
+      
+        http('https://base-sepolia.g.alchemy.com/v2', {
+          fetchOptions: { 
+            headers: {
+              'Authorization': `Bearer ${await getToken()}`
+              //'Authorization': `Bearer ${token2}`
+            }
           }
-        }
-      })
+        }),
+        http("https://sepolia.base.org") // Public RPC as a last resort
+      ]),
     }, 
 })

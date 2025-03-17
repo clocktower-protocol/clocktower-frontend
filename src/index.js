@@ -32,7 +32,7 @@ import {config} from './wagmiconfig'
 //import { InjectedConnector } from 'wagmi/connectors/injected'
 //import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 //import { coinbaseWallet, injected} from 'wagmi/connectors' 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query' 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 
 const queryClient = new QueryClient() 

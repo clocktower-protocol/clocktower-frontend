@@ -20,7 +20,7 @@ export const EVENT_START_BLOCK = 22967543n
 
 //**************************************************************************** 
 
-export const DOMAIN = "localhost:3000"
+export const DOMAIN = "https://clocktowerdev.com"
 
 export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 

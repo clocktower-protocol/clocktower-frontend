@@ -7,7 +7,7 @@ import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
 import Icon from './Icon'
 import styles from '../css/clocktower.module.css';
-//import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 const CreateSubForm = (props) => {
 
@@ -81,7 +81,7 @@ const CreateSubForm = (props) => {
     const tokenPulldown2 = () => {
         return TOKEN_LOOKUP.map((token) => {
             return (
-                <ListGroup.Item>
+                <ListGroup.Item key={uuidv4()}>
                      <Icon icon={token.icon}></Icon>{token.ticker}
                 </ListGroup.Item>
             )
@@ -91,7 +91,7 @@ const CreateSubForm = (props) => {
     const tokenPulldown3 = () => {
         return TOKEN_LOOKUP.map((token) => {
             return (
-                <Dropdown.Item onClick={() => setTokenSelection(token)}>
+                <Dropdown.Item onClick={() => setTokenSelection(token)} key={uuidv4()}>
                      <Icon icon={token.icon}></Icon>{token.ticker}
                 </Dropdown.Item>
             )

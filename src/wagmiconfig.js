@@ -1,15 +1,16 @@
-import { createConfig, http, fallback} from 'wagmi'
+import { createConfig, http} from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 //import { sepolia } from 'wagmi/chains'
 import { baseSepolia } from 'wagmi/chains'
 import { coinbaseWallet, safe} from 'wagmi/connectors'
-import {fetchToken} from './clockfunctions'
+//import {fetchToken} from './clockfunctions'
 //import {jwtDecode} from 'jwt-decode'
 
 //let token = localStorage.getItem('clockAccess')
 
 //console.log(token)
 
+/*
 // Function to get token dynamically
 const getToken = async () => {
   // Check if in browser environment
@@ -24,6 +25,7 @@ const getToken = async () => {
   }
   return ''; // Fallback for non-browser (e.g., SSR)
 };
+*/
 
 export const config = createConfig(
     {
@@ -35,7 +37,9 @@ export const config = createConfig(
     transports: { 
       [hardhat.id]: http('http://localhost:8545'),
       
-      [baseSepolia.id]: fallback([
+      [baseSepolia.id]: 
+      /*
+      fallback([
       
         http('https://base-sepolia.g.alchemy.com/v2', {
           fetchOptions: { 
@@ -47,5 +51,15 @@ export const config = createConfig(
         }),
         http("https://sepolia.base.org") // Public RPC as a last resort
       ]),
-    }, 
+      */
+     http('https://clocktowerdev.com/alchemy', {
+      fetchOptions: { 
+        headers: {
+          'Content-Type' : 'application/json'
+          //'Authorization': `Bearer ${token2}`
+        }
+      }
+    }),
+    } 
+    
 })

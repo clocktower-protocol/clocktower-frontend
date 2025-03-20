@@ -50,6 +50,7 @@ const CreateSubForm = (props) => {
             setInvalidToken(true)
         } else {
 
+            /*
             //sets abi and token minimum
             TOKEN_LOOKUP.map((token2) => {
                 if(token2.address === token.address){
@@ -59,6 +60,14 @@ const CreateSubForm = (props) => {
                 }
                 return true
             })
+            */
+            const matchingToken = TOKEN_LOOKUP.find((token2) => 
+                token2.address === token.address
+            );
+            if (matchingToken) {
+                setTokenMinimum(matchingToken.address);
+                setInvalidToken(false);
+            }
             
         }
     }

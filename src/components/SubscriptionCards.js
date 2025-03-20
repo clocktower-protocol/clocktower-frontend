@@ -24,6 +24,12 @@ const SubscriptionCards = (props) => {
    
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
+        return TOKEN_LOOKUP.find((token) => 
+            token.address === tokenAddress
+        )?.ticker || false;
+    }
+    /*
+    const tickerLookup = (tokenAddress) => {
     let tokenArray =  TOKEN_LOOKUP.map((token) => {
         if(token.address === tokenAddress) {
         return token.ticker
@@ -37,8 +43,11 @@ const SubscriptionCards = (props) => {
         }
     }
     }
+    */
+
   
     //looks up frequency
+    /*
     const frequencyLookup = (frequencyIndex) => {
     return FREQUENCY_LOOKUP.map((frequencyObject) => {
         if(frequencyIndex === frequencyObject.index) {
@@ -47,6 +56,12 @@ const SubscriptionCards = (props) => {
         return undefined
     }).join('')
     }
+    */
+    const frequencyLookup = (frequencyIndex) => {
+        return FREQUENCY_LOOKUP.find((frequencyObject) => 
+            frequencyIndex === frequencyObject.index
+        )?.name2 || '';
+    };
 
     //returns ending string for day value in English
     const dayEndString = (dayString) => {

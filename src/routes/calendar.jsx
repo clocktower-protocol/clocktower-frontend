@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
 import dayOfYear from 'dayjs/plugin/dayOfYear'
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 import styles from '../css/clocktower.module.css';
 
 dayjs.extend(quarterOfYear)
@@ -59,14 +59,21 @@ const Calendar = () => {
         //loops through each subscription
         for (let i = 0; i < accountSubscriptions.length; i++) {
 
+            /*
             //gets token ticker
             let ticker = TOKEN_LOOKUP.map((token) => {
                 if(token.address === accountSubscriptions[i].subscription.token){
+                 console.log(token.ticker)
                 return token.ticker
                 } else {
                     return ""
                 }
             })
+            */
+            let ticker = TOKEN_LOOKUP.find((token) => 
+                token.address === accountSubscriptions[i].subscription.token
+            )?.ticker || "";
+            console.log(ticker);
 
             //gets total 
             let total = ""
@@ -108,12 +115,12 @@ const Calendar = () => {
                         //adds the days to the next event
                         let nextEvent = now.add(difference, 'day')
                         //saves info to array
-                        tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                        tempEventsArray.push({title: total + " " + ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         //increments event by a week for the next two years and saves to array
                         for (let j = 0; j < 105; j++) {
                             nextEvent = nextEvent.add(7, 'd')
                             //eventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD')})
-                            tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
+                            tempEventsArray.push({title: total + " " + ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
                         break
                     //monthly

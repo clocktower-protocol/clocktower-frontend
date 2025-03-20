@@ -22,6 +22,7 @@ const EditDetailsForm2 = (props) => {
     },[invalidUrl, invalidDescription])
     
 
+    /*
     const fetchTokenTicker = () => {
         const array = TOKEN_LOOKUP.map((token) => {
             if(token.address === props.editSub.token) {
@@ -32,8 +33,15 @@ const EditDetailsForm2 = (props) => {
         })
         return array[0]
     }
+    */
+    const fetchTokenTicker = () => {
+        return TOKEN_LOOKUP.find((token) => 
+            token.address === props.editSub.token
+        )?.ticker;
+    };
 
 
+    /*
     const fetchFrequency = () => {
         return FREQUENCY_LOOKUP.map((frequency) => { 
             if(frequency.index === props.editSub.frequency){          
@@ -41,6 +49,12 @@ const EditDetailsForm2 = (props) => {
             } else { return undefined}
         }).join("")
     }
+    */
+    const fetchFrequency = () => {
+        return FREQUENCY_LOOKUP.find((frequency) => 
+            frequency.index === props.editSub.frequency
+        )?.name || "";
+    };
 
 
     const fetchDueDay = () => {

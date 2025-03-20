@@ -11,6 +11,7 @@ const SubHistoryTable = (props) => {
 
     const historyArray = props.historyArray
 
+    /*
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
       let tokenArray =  TOKEN_LOOKUP.map((token) => {
@@ -26,6 +27,13 @@ const SubHistoryTable = (props) => {
         }
       }
     }
+    */
+    const tickerLookup = (tokenAddress) => {
+      const matchingToken = TOKEN_LOOKUP.find((token) => 
+          token.address === tokenAddress
+      );
+      return matchingToken ? matchingToken.ticker : false;
+    };
 
     let table = []
     let tableTop = []
@@ -43,7 +51,7 @@ const SubHistoryTable = (props) => {
         let subAmount = -1
 
         //FIXME: this is a hack until the contract is fixed
-        if(historyArray[i].args.subscriptevent == 2 || historyArray[i].args.subscriptevent == 5) {
+        if(historyArray[i].args.subscriptevent === 2 || historyArray[i].args.subscriptevent === 5) {
           subAmount = eighteenDecimalAmount
           //console.log(historyArray[i].args.amount)
           //console.log(subAmount)

@@ -111,6 +111,7 @@ const Root = () => {
 
     switchChain({ chainId: chain_id })
 
+    
     CHAIN_LOOKUP.map((lchain,  index) => {
       if(lchain.id === chain_id){
         return setSelectedChain(index)
@@ -118,7 +119,7 @@ const Root = () => {
         return ""
       }
     })
-    
+
 
   }
   

@@ -34,6 +34,7 @@ const SubscriptionsTable = (props) => {
       bySubscriber = props.bySubscriber
     }
 
+    /*
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
       let tokenArray =  TOKEN_LOOKUP.map((token) => {
@@ -49,7 +50,15 @@ const SubscriptionsTable = (props) => {
         }
       }
     }
+    */
+    //looks up ticker for token
+    const tickerLookup = (tokenAddress) => {
+        return TOKEN_LOOKUP.find((token) => 
+            token.address === tokenAddress
+        )?.ticker || false;
+    }
 
+    /*
     //looks up frequency
     const frequencyLookup = (frequencyIndex) => {
       return FREQUENCY_LOOKUP.map((frequencyObject) => {
@@ -59,6 +68,13 @@ const SubscriptionsTable = (props) => {
         return false
       })
     }
+    */
+
+    const frequencyLookup = (frequencyIndex) => {
+        return FREQUENCY_LOOKUP.find((frequencyObject) => 
+            frequencyIndex === frequencyObject.index
+        )?.name2 || '';
+    };
 
      //checks for empty array
     if(!Array.isArray(subscriptionArray) || (subscriptionArray.length <= 0)) {

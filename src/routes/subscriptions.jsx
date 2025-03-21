@@ -62,6 +62,8 @@ const Subscriptions = () => {
     //page formatting 
     const [isTableView, setIsTableView] = useState(true)
     const [tab, setTab] = useState(t)
+    //spinner
+    const [isLoading, setIsLoading] = useState(true)
 
 
     //WAGMI write contract hooks------------------------------
@@ -227,6 +229,7 @@ const Subscriptions = () => {
            }
            setProvSubscriptionArray(accountSubscriptions)
            setProvDetailsArray(provDetailsArray)
+           setIsLoading(false)
        })
    } catch(Err) {
        console.log(Err)
@@ -567,7 +570,6 @@ return (
 
                     
                 {!isTableEmpty1(provSubscriptionArray) && isTableView ?
-
                 <div className={styles.subs_table_route}>
                     <SubscriptionsTable
                         subscriptionArray = {provSubscriptionArray}
@@ -580,9 +582,10 @@ return (
                         setLinkDisplayed = {setLinkDisplayed}
                     />
                 </div>
-                : <div></div>}
+                : isLoading ? (<div className={styles.tablespinner}><Spinner animation="grow" variant="info" /></div>) :
+                (<div></div>)} 
 
-                {!isTableEmpty1(provSubscriptionArray) && !isTableView ?
+                {!isTableEmpty1(provSubscriptionArray) && !isTableView && !isLoading ?
                 <div style={{justifyContent:"center", display:"flex"}}>
                     <SubscriptionCards
                         subscriptionArray = {provSubscriptionArray}
@@ -612,7 +615,8 @@ return (
                 setUnsubscribedSub = {setUnsubscribedSub}
             />
         </div>
-        : <div></div>}
+        : isLoading ? (<div className={styles.tablespinner}><Spinner animation="grow" variant="info" /></div>) :
+        (<div></div>)} 
 
         {!isTableEmpty2(subscribedSubsArray) && !isTableView ?
         <div style={{justifyContent:"center", display:"flex"}}>

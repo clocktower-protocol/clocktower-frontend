@@ -145,6 +145,14 @@
     vertical-align: middle;
 }
 
+.tablespinner {
+    display: flex; 
+    justify-content: center; 
+    width: 100%;
+    align-content: center;
+    padding-top: 50px;
+}
+
 /* Modals */
 
 .subsmodal {

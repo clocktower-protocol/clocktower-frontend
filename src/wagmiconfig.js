@@ -1,4 +1,4 @@
-import { createConfig, http} from 'wagmi'
+import { createConfig, http, fallback} from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 //import { sepolia } from 'wagmi/chains'
 import { baseSepolia } from 'wagmi/chains'
@@ -38,9 +38,9 @@ export const config = createConfig(
       [hardhat.id]: http('http://localhost:8545'),
       
       [baseSepolia.id]: 
-      /*
-      fallback([
       
+      fallback([
+      /*
         http('https://base-sepolia.g.alchemy.com/v2', {
           fetchOptions: { 
             headers: {
@@ -52,14 +52,23 @@ export const config = createConfig(
         http("https://sepolia.base.org") // Public RPC as a last resort
       ]),
       */
-     http('https://clocktowerdev.com/alchemy', {
-      fetchOptions: { 
-        headers: {
-          'Content-Type' : 'application/json'
-          //'Authorization': `Bearer ${token2}`
+      http('https://clocktowerdev.com/alchemy', {
+        fetchOptions: { 
+          headers: {
+            'Content-Type' : 'application/json'
+            //'Authorization': `Bearer ${token2}`
+          }
         }
-      }
-    }),
+      }),
+      http('https://clocktowerdev.com/infura', {
+        fetchOptions: { 
+          headers: {
+            'Content-Type' : 'application/json'
+            //'Authorization': `Bearer ${token2}`
+          }
+        }
+      }),
+    ]),
     } 
     
 })

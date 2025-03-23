@@ -151,7 +151,7 @@ const CreateSubForm = (props) => {
 
     const amountChange = (event) => {
 
-        if((Number(event.target.value) > 0) && (Number(event.target.value) > Number(formatEther(selectedTokenMinimum)))) {
+        if((Number(event.target.value) > 0) && (Number(event.target.value) >= Number(formatEther(selectedTokenMinimum)))) {
             let wei = parseEther(event.target.value)
             setInvalidAmount(false)
             setAmount(wei)
@@ -283,7 +283,7 @@ const CreateSubForm = (props) => {
                         <Form.Label>Amount *</Form.Label>
                         <Form.Control required type="input" placeholder="amount" isInvalid={invalidAmount} isValid={!invalidAmount}/>
                         <Form.Control.Feedback type="invalid">
-                            Must be greater than token minimum {selectedTokenMinimum !== "-1" ? "of " + formatEther(String(selectedTokenMinimum)) : ""}
+                            Must be greater than or equal to token minimum {selectedTokenMinimum !== "-1" ? "of " + formatEther(String(selectedTokenMinimum)) : ""}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

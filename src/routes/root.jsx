@@ -69,6 +69,8 @@ const Root = () => {
 
     const { connect, connectors, isLoading, pendingConnector } = useConnect({config})
 
+    console.log(process.env.REACT_APP_TRANSPORT1)
+
     /*
     //checks for jwt change
     useEffect(() => {

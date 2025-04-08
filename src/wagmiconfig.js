@@ -52,7 +52,7 @@ export const config = createConfig(
         http("https://sepolia.base.org") // Public RPC as a last resort
       ]),
       */
-      http('https://clocktowerdev.com/alchemy', {
+      http(process.env.REACT_APP_TRANSPORT1, {
         fetchOptions: { 
           headers: {
             'Content-Type' : 'application/json'
@@ -60,7 +60,7 @@ export const config = createConfig(
           }
         }
       }),
-      http('https://clocktowerdev.com/infura', {
+      http(process.env.REACT_APP_TRANSPORT2, {
         fetchOptions: { 
           headers: {
             'Content-Type' : 'application/json'

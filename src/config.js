@@ -4,7 +4,7 @@ import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
 import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
 import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
-import { getAddress } from 'viem';
+//import { getAddress } from 'viem';
 
 /* global BigInt */
 
@@ -23,17 +23,19 @@ export const EVENT_START_BLOCK = 22967543n
 
 //**************************************************************************** 
 
-export const DOMAIN = "https://app.clocktowerdev.com"
+//export const DOMAIN = "https://app.clocktowerdev.com"
 
 export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const TOKEN_LOOKUP = [
+  /*
   {
     address: getAddress("0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0"),
     ticker: "CLOCK",
     decimals: 18,
     icon: SepoliaLogo
   }, 
+  */
   {
     //address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     address: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",

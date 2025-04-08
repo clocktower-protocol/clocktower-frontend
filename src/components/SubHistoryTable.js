@@ -44,13 +44,11 @@ const SubHistoryTable = (props) => {
         
         let row = []
        
-        //FIXME:
         //convert amount to human readable
        // let eighteenDecimalAmount = historyArray[i].args.amount / (10n ** 6n)
 
-        let subAmount = -1
+        let subAmount = -1        
 
-        //FIXME: this is a hack until the contract is fixed
         /*
         if(historyArray[i].args.subscriptevent === 2 || historyArray[i].args.subscriptevent === 5) {
           subAmount = eighteenDecimalAmount
@@ -63,7 +61,7 @@ const SubHistoryTable = (props) => {
           //console.log(subAmount)
         //}
         //let subAmount = formatEther(eighteenDecimalAmount)
-        let formatDate = dayjs.unix(historyArray[i].args.timestamp).format('MM/DD/YYYY h:mm:s A')
+        let formatDate = dayjs.unix(historyArray[i].args.timestamp).format('MM/DD/YYYY h:mm:ss A')
         let ticker = tickerLookup(historyArray[i].args.token)
   
         row.push(

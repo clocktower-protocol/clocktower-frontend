@@ -2,7 +2,7 @@ import { createConfig, http, fallback} from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 //import { sepolia } from 'wagmi/chains'
 import { baseSepolia } from 'wagmi/chains'
-import { coinbaseWallet, safe} from 'wagmi/connectors'
+import { coinbaseWallet, safe, metaMask} from 'wagmi/connectors'
 //import {fetchToken} from './clockfunctions'
 //import {jwtDecode} from 'jwt-decode'
 
@@ -31,6 +31,7 @@ export const config = createConfig(
     {
     chains: [hardhat, baseSepolia],   
     connectors: [
+      metaMask(),
       coinbaseWallet(),
       safe()
     ],
@@ -52,7 +53,8 @@ export const config = createConfig(
         http("https://sepolia.base.org") // Public RPC as a last resort
       ]),
       */
-      http(process.env.REACT_APP_TRANSPORT1, {
+     // http(process.env.REACT_APP_TRANSPORT1, {
+     http("https://clocktowerdev.com/alchemy", {
         fetchOptions: { 
           headers: {
             'Content-Type' : 'application/json'
@@ -60,7 +62,8 @@ export const config = createConfig(
           }
         }
       }),
-      http(process.env.REACT_APP_TRANSPORT2, {
+      //http(process.env.REACT_APP_TRANSPORT2, {
+        http("https://clocktowerdev.com/infura", {
         fetchOptions: { 
           headers: {
             'Content-Type' : 'application/json'

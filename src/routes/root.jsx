@@ -14,12 +14,15 @@ import styles from '../css/clocktower.module.css';
 
 import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain} from 'wagmi'
 
+
 const Root = () => {
 
-    const {address, isConnected, isDisconnected } = useAccount({config})
+    const {address, isConnected, isDisconnected, chainId } = useAccount({config})
 
     
     const { chains, switchChain } = useSwitchChain()
+
+    //const chainId = useChainId();
 
     //gets current url
     const location = useLocation();
@@ -69,7 +72,10 @@ const Root = () => {
 
     const { connect, connectors, isLoading, pendingConnector } = useConnect({config})
 
-    console.log(process.env.REACT_APP_TRANSPORT1)
+    console.log(chainId)
+    
+    //gets supported chains
+    const supportedChainIds = config.chains.map(chain => chain.id);
 
     /*
     //checks for jwt change
@@ -125,6 +131,7 @@ const Root = () => {
 
   }
   
+  //makes sure user is on approved chain
    return (
         <>
         <div key={"root"}>
@@ -226,12 +233,23 @@ const Root = () => {
       </div>
         <div key={"mainDiv"} id="detail" className="mainDiv">
           
-          {!loggedIn? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>: <Outlet context={[account]}/>}
+          {!loggedIn ? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>
+          
+          : supportedChainIds.includes(chainId) ? (
+           
+          <Outlet context={[account]}/>
+
+          )
+
+          : (<div className="alertDiv">
+                  <Alert variant="danger" align="center">Please Connect Back to Supported Chain</Alert>
+                  </div>)}
         
         </div>
     </div>
   </>
   )
+
 
 }
 

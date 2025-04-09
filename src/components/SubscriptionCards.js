@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Card, Stack, ListGroup} from 'react-bootstrap';
 import {Link, useNavigate} from "react-router-dom";
-import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP} from "../config";
+import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../config";
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
 import { v4 as uuidv4 } from 'uuid'
@@ -265,7 +265,7 @@ const SubscriptionCards = (props) => {
                             {props.isProvider && !props.isLink ?
                             <>
                             <Button style ={{width: "100%"}} type="submit" variant="outline-secondary" onClick={() => navigate(`../history/${subscriptionArray[i].subscription.id}`)}>History</Button>
-                            <Button style={{ width: "100%", padding: '5px' }} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${process.env.REACT_APP_DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
+                            <Button style={{ width: "100%", padding: '5px' }} type="submit" variant="outline-secondary" onClick={() => props.setLinkDisplayed(`${DOMAIN}/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button>
                             <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.setEditSubParams({ id: subscriptionArray[i].subscription.id, f: subscriptionArray[i].subscription.frequency, d: subscriptionArray[i].subscription.dueDay })}>Edit</Button>
                             <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.setCancelledSub(subscriptionArray[i].subscription)}>Cancel</Button>
                             </>

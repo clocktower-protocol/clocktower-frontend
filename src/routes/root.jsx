@@ -200,13 +200,13 @@ const Root = () => {
             </Container>
             <Container key="navContainer" style={{justifyContent:"flex-end", gap:"50px"}}>
                   {chains.length > 1 ? 
-                  <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown">
+                  <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown">
                     {chains.map((chain) => (
-                        <NavDropdown.Item className={styles.chain_pulldown2}>
+                        <NavDropdown.Item key={uuidv4()} className={styles.chain_pulldown2}>
                     
                           {CHAIN_LOOKUP.map((lchain) => {
                             if(lchain.id === chain.id){
-                              return <Icon className={styles.chain_icon} icon={lchain.icon}></Icon>
+                              return <Icon key={uuidv4()} className={styles.chain_icon} icon={lchain.icon}></Icon>
                             } else {
                               return ""
                             }
@@ -221,7 +221,7 @@ const Root = () => {
                   </NavDropdown>
                   : 
                     <Navbar.Text>
-                      <span className={styles.chain_pulldown}>Chain: <Icon icon={CHAIN_LOOKUP[0].icon}></Icon> {CHAIN_LOOKUP[0].displayName} </span>
+                      <span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[0].icon}></Icon> {CHAIN_LOOKUP[0].displayName} </span>
                     </Navbar.Text>
                  }
                   

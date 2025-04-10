@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 
-module.exports = function override(config) {
+module.exports = function override(config, env) {
     const fallback = config.resolve.fallback || {};
     config.ignoreWarnings = [/Failed to parse source map/];
     Object.assign(fallback, {
@@ -20,5 +20,22 @@ module.exports = function override(config) {
             Buffer: ['buffer', 'Buffer']
         })
     ])
+
+    /*
+    if (env === 'development') {
+        config.devtool = 'cheap-module-source-map';
+        config.output = {
+          ...config.output,
+          devtoolModuleFilenameTemplate: 'webpack://[resource-path]',
+        };
+        // Ensure source maps are written to disk
+        config.devServer = {
+          ...(config.devServer || {}),
+          devMiddleware: {
+            writeToDisk: true, // Write bundle and source map files to disk
+          },
+        };
+      }
+        */
     return config;
 }

@@ -78,7 +78,7 @@ const Subscriptions = () => {
     //hook for calling wallet to create sub
     useEffect(() => {
         //calls wallet
-        if(!isMounting.current && Object.keys(changedCreateSub).length !== 0 && (typeof(changedCreateSub) != undefined)) {
+        if(!isMounting.current && Object.keys(changedCreateSub).length !== 0 && (typeof(changedCreateSub) != "undefined")) {
             //sets toast
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)

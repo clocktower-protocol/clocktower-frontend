@@ -6,7 +6,7 @@ import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAcc
 import { readContract} from 'wagmi/actions'
 import { parseAbiItem, erc20Abi} from 'viem'
 import {config} from '../wagmiconfig'
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
 

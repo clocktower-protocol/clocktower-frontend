@@ -5,7 +5,7 @@ import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config";
 import ProvSubscribersTable from '../components/ProvSubscribersTable';
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
-import {fetchToken} from '../clockfunctions'
+//import {fetchToken} from '../clockfunctions'
 
 const ProvSubscribers = () => {
 

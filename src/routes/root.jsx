@@ -93,17 +93,20 @@ const Root = () => {
     //checks for account change
     
     useEffect(() => {
+
+
+      //|| location.pathname.slice(0,8) !== "/history"
      
       setAccount(address)
       //address reset
       if(address !== undefined && address !== account){
-        //checks/resets token
-        //await fetchToken()
+        
+        //checks does not redirect if user is accessing public link address or is back button on etherscan transactions
         setLoggedIn(true)
-        if(location.pathname.slice(0,20) !== "/public_subscription") {
+        if((location.pathname.slice(0,20) !== "/public_subscription") && (location.pathname.slice(0,8) !== "/history")) {
           accountSwitch(address)
         }
-        //accountSwitch(address)
+    
       }
     }, [address, chains, accountSwitch, location, account])
     
@@ -243,7 +246,7 @@ const Root = () => {
 
           : (<div className="alertDiv">
                   <Alert variant="danger" align="center">Please Connect Back to Supported Chain</Alert>
-                  </div>)}
+            </div>)}
         
         </div>
     </div>

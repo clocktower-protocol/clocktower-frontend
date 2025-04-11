@@ -4,6 +4,7 @@ import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
 import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
 import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
+import {ReactComponent as CBWLogo} from "./images/cbw.svg"
 //import { getAddress } from 'viem';
 
 /* global BigInt */
@@ -51,14 +52,16 @@ export const CHAIN_LOOKUP = [
     name: "baseSepolia",
     id: 84532, 
     icon: SepoliaLogo,
-    displayName: "Base Sepolia"
+    displayName: "Base Sepolia",
+    explorerUrl: "https://sepolia.basescan.org/"
   },
   
   {
     name: "hardhat",
     id: 31337,
     icon: HardhatLogo,
-    displayName: "Hardhat"
+    displayName: "Hardhat",
+    explorerUrl: ""
   }, 
   /*
   {
@@ -73,8 +76,8 @@ export const CHAIN_LOOKUP = [
 //supported Wallets
 export const WALLET_LOOKUP = [
   {
-    name: "metamask",
-    id: "io.metamask",
+    name: "metaMask",
+    id: "metaMaskSDK",
     icon: MetamaskLogo
   },
   {
@@ -85,7 +88,7 @@ export const WALLET_LOOKUP = [
   {
     name: "coinbaseWallet",
     id: "coinbaseWalletSDK",
-    icon: BraveLogo
+    icon: CBWLogo
   },
   {
     name: "safe wallet",

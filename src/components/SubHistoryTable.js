@@ -3,13 +3,18 @@ import {Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs'
-import {TOKEN_LOOKUP} from "../config";
+import {TOKEN_LOOKUP, CHAIN_LOOKUP} from "../config";
 import {formatEther} from 'viem'
 import styles from '../css/clocktower.module.css';
+import {useAccount} from 'wagmi'
+import {config} from '../wagmiconfig'
 
 const SubHistoryTable = (props) => {
 
     const historyArray = props.historyArray
+
+    //gets chainId
+    const { chainId } = useAccount({config})
 
     /*
     //looks up ticker for token
@@ -28,6 +33,13 @@ const SubHistoryTable = (props) => {
       }
     }
     */
+    //gets explorer url from chain lookup
+    const chain = CHAIN_LOOKUP.find((chain) =>
+      chain.id === chainId
+    )
+
+    console.log(chain.explorerUrl)
+
     const tickerLookup = (tokenAddress) => {
       const matchingToken = TOKEN_LOOKUP.find((token) => 
           token.address === tokenAddress
@@ -43,6 +55,9 @@ const SubHistoryTable = (props) => {
     for(let i = 0; i < historyArray.length; i++) {
         
         let row = []
+
+        console.log(historyArray[i].transactionHash)
+        console.log(chainId)
        
         //convert amount to human readable
        // let eighteenDecimalAmount = historyArray[i].args.amount / (10n ** 6n)
@@ -66,6 +81,7 @@ const SubHistoryTable = (props) => {
   
         row.push(
             <td key={String(historyArray[i].args.subscriber)+1}>{historyArray[i].args.subscriber !== "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].args.subscriber}`}>{historyArray[i].args.subscriber}</Link> : "N/A" }</td>, 
+            <td key={String(historyArray[i].transactionHash)}>{<a href={`${chain.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>}</td>,
             <td key={String(historyArray[i].args.subEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].args.subscriptevent]}</td>,
             <td key={String(historyArray[i].args.timestamp)+3}>{formatDate}</td>,
             <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
@@ -80,6 +96,7 @@ const SubHistoryTable = (props) => {
             <thead key="tableHead">
               <tr key="headRow" align="center">
                 <th key="subHead">Subscriber</th>
+                <th key="txHead">TX</th>
                 <th key="eventHead">Event Type</th>
                 <th key="dateHead">Timestamp</th>
                 <th key="amountHead">Amount</th>

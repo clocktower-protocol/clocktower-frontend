@@ -238,7 +238,7 @@ const Root = () => {
           
           {!loggedIn ? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>
           
-          : supportedChainIds.includes(chainId) ? (
+          : supportedChainIds.includes(chainId) && typeof chainId !== "undefined"  ? (
            
           <Outlet context={[account]}/>
 

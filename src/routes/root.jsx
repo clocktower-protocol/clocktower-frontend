@@ -236,9 +236,9 @@ const Root = () => {
       </div>
         <div key={"mainDiv"} id="detail" className="mainDiv">
           
-          {!loggedIn ? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>
+          {!loggedIn || (!loggedIn && typeof chainId !== "undefined") ? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>
           
-          : supportedChainIds.includes(chainId) && typeof chainId !== "undefined"  ? (
+          : supportedChainIds.includes(chainId) ? (
            
           <Outlet context={[account]}/>
 

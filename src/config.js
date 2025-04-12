@@ -1,11 +1,21 @@
 //imported svg images
+
 import {ReactComponent as HardhatLogo} from "./images/hardhat.svg"
 import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
 import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
 import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
 import {ReactComponent as CBWLogo} from "./images/cbw.svg"
+
+/*
+import HardhatLogo from "./images/hardhat.svg"
+import SepoliaLogo from "./images/ethereum.svg"
+import MetamaskLogo from "./images/metamask.svg"
+import BraveLogo from "./images/brave.svg"
+import USDCLogo from "./images/usdc.svg"
+import CBWLogo from "./images/cbw.svg"
 //import { getAddress } from 'viem';
+*/
 
 /* global BigInt */
 

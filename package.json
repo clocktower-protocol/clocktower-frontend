@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "/",
+  "type": "module",
   "dependencies": {
     "@ethereumjs/util": "^9.0.0",
     "@fullcalendar/bootstrap5": "^6.1.10",
@@ -27,13 +28,13 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.26.2",
     "react-router-bootstrap": "^0.26.2",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^6.26.2",
     "typescript": "^5.0.2",
     "usehooks-ts": "^3.1.0",
     "uuid": "^11.0.3",
     "viem": "^2.7.11",
+    "vite-plugin-svgr": "^4.3.0",
     "wagmi": "^2.13.0",
     "web-vitals": "^4.2.4"
   },
@@ -43,10 +44,9 @@
     }
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
     "lint": "eslint --fix src/**/*.js src/**/*.jsx src/*.js src/*.jsx"
   },
   "eslintConfig": {
@@ -69,6 +69,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.25.9",
+    "@vitejs/plugin-react": "^4.3.4",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
@@ -76,9 +77,9 @@
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
-    "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "url": "^0.11.1"
+    "url": "^0.11.1",
+    "vite": "^6.2.6"
   }
 }

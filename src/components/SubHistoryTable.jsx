@@ -38,7 +38,7 @@ const SubHistoryTable = (props) => {
       chain.id === chainId
     )
 
-    console.log(chain.explorerUrl)
+   // console.log(chain.explorerUrl)
 
     const tickerLookup = (tokenAddress) => {
       const matchingToken = TOKEN_LOOKUP.find((token) => 
@@ -56,8 +56,8 @@ const SubHistoryTable = (props) => {
         
         let row = []
 
-        console.log(historyArray[i].transactionHash)
-        console.log(chainId)
+        //console.log(historyArray[i].transactionHash)
+        //console.log(chainId)
        
         //convert amount to human readable
        // let eighteenDecimalAmount = historyArray[i].args.amount / (10n ** 6n)

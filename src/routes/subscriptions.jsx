@@ -13,9 +13,20 @@ import EditDetailsForm2 from "../components/EditDetailsForm2";
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
 
+// subscriptionCache.js
+export const subscriptionCache = {
+    provSubscriptionArray: [],
+    provDetailsArray: [],
+    subSubscriptionArray: [],
+    subDetailsArray: [],
+    isCached: false,
+    address: ""
+};
+
 const Subscriptions = () => {
 
     let isMounting = useRef(true)
+
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -176,8 +187,22 @@ const Subscriptions = () => {
            return
        }
 
+        // Use cached data if available
+        if (subscriptionCache.isCached) {
+            console.log("Using cached data");
+            setProvSubscriptionArray(subscriptionCache.provSubscriptionArray);
+            setProvDetailsArray(subscriptionCache.provDetailsArray);
+            setIsLoading(false)
+            return;
+        }
+
+       console.log("here")
+
        //variable to pass scope so that the state can be set
        let accountSubscriptions = []
+
+       //temp details array
+       let tempDetailsArray = [];
 
        //await fetchToken()
        try{
@@ -219,7 +244,7 @@ const Subscriptions = () => {
                                    }
                            }
                            //adds latest details to details array
-                           provDetailsArray[i] = events[index].args
+                           tempDetailsArray[i] = events[index].args
                        }    
                        
                    }
@@ -227,14 +252,21 @@ const Subscriptions = () => {
                })
                
            }
+
+            // Update cache
+            subscriptionCache.provSubscriptionArray = accountSubscriptions;
+            subscriptionCache.provDetailsArray = tempDetailsArray;
+            subscriptionCache.isCached = true;
+            //subscriptionCache.address = address;
+
            setProvSubscriptionArray(accountSubscriptions)
-           setProvDetailsArray(provDetailsArray)
+           setProvDetailsArray(tempDetailsArray)
            setIsLoading(false)
        })
    } catch(Err) {
        console.log(Err)
    }
-}, [address, provDetailsArray, publicClient])
+}, [address, publicClient])
 
 const getSubscriberSubs = useCallback(async () => {
     //checks if user is logged into account
@@ -243,10 +275,21 @@ const getSubscriberSubs = useCallback(async () => {
        console.log("Not Logged in")
        return
    }
+
+     // Use cached data if available
+     if (subscriptionCache.isCached) {
+        console.log("Using cached data");
+        setSubscribedSubsArray(subscriptionCache.subSubscriptionArray);
+        setSubscribedDetailsArray(subscriptionCache.subDetailsArray);
+        return;
+    }
    
   
    //variable to pass scope so that the state can be set
    let accountSubscriptions = []
+
+   //temp details array
+   let tempDetailsArray = [];
 
    //await fetchToken()
    try{
@@ -287,7 +330,7 @@ const getSubscriberSubs = useCallback(async () => {
                                }
                        }
                        //adds latest details to details array
-                       subscribedDetailsArray[i] = events[index].args
+                       tempDetailsArray[i] = events[index].args
                    }    
                    
                }
@@ -295,15 +338,20 @@ const getSubscriberSubs = useCallback(async () => {
            })
            
        }
+
+        // Update cache
+        subscriptionCache.subSubscriptionArray = accountSubscriptions;
+        subscriptionCache.subDetailsArray = tempDetailsArray;
+        subscriptionCache.isCached = true;
      
        setSubscribedSubsArray(accountSubscriptions)
-       setSubscribedDetailsArray(subscribedDetailsArray)
+       setSubscribedDetailsArray(tempDetailsArray)
    })
     } catch(Err) {
         //await fetchToken()
         console.log(Err)
     }
-},[address, publicClient, subscribedDetailsArray])
+},[address, publicClient])
 
 const getSub = useCallback(async (editSubParams) => {
     //await fetchToken()
@@ -364,7 +412,7 @@ const getSub = useCallback(async (editSubParams) => {
 
 //Page hooks------------------------------
 
-//sets mounting bool to not mounting after initial load
+//changes data when passed account is switched
 useEffect(() => {
     isMounting.current = true
 
@@ -373,14 +421,29 @@ useEffect(() => {
     if(typeof address === "undefined") {
         console.log("Not Logged in")
     } else {
+
+       // console.log(address)
+       //console.log(subscriptionCache.address)
+        console.log(address)
+        //clears cache on address change
+        if(address !== subscriptionCache.address){
+            console.log(subscriptionCache.address)
+            // Reset cache
+            subscriptionCache.provSubscriptionArray = [];
+            subscriptionCache.provDetailsArray = [];
+            subscriptionCache.isCached = false;
+            subscriptionCache.address = address
+        }
+
         getProviderSubs()
         getSubscriberSubs()
     }
 
 },[getProviderSubs, getSubscriberSubs, address])
 
-//changes data when passed account is switched
+//changes data when not mounting
 useEffect(() => {
+
     //doesn't reload on initial load
     if(!isMounting.current){
         getProviderSubs()
@@ -395,6 +458,11 @@ useEffect(() => {
     }
 
     if(wait.isSuccess) {
+
+        // Reset cache
+        subscriptionCache.provSubscriptionArray = [];
+        subscriptionCache.provDetailsArray = [];
+        subscriptionCache.isCached = false;
 
         //turns off alert
         setShowToast(false)

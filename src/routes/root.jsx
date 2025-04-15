@@ -72,7 +72,7 @@ const Root = () => {
 
     const { connect, connectors, isLoading, pendingConnector } = useConnect({config})
 
-    console.log(chainId)
+    //console.log(chainId)
     
     //gets supported chains
     const supportedChainIds = config.chains.map(chain => chain.id);

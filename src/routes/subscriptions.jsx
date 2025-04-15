@@ -431,6 +431,8 @@ useEffect(() => {
             // Reset cache
             subscriptionCache.provSubscriptionArray = [];
             subscriptionCache.provDetailsArray = [];
+            subscriptionCache.subSubscriptionArray = []
+            subscriptionCache.subDetailsArray = []
             subscriptionCache.isCached = false;
             subscriptionCache.address = address
         }
@@ -462,6 +464,8 @@ useEffect(() => {
         // Reset cache
         subscriptionCache.provSubscriptionArray = [];
         subscriptionCache.provDetailsArray = [];
+        subscriptionCache.subSubscriptionArray = []
+        subscriptionCache.subDetailsArray = []
         subscriptionCache.isCached = false;
 
         //turns off alert

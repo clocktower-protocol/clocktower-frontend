@@ -7,7 +7,7 @@ import { readContract } from 'wagmi/actions'
 import { useAccount } from "wagmi"
 import {formatEther} from 'viem'
 import {config} from '../wagmiconfig'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, TOKEN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, TOKEN_LOOKUP, CHAIN_LOOKUP} from "../config"; 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
@@ -27,7 +27,7 @@ const Calendar = () => {
 
     const [account] = useOutletContext();
 
-    const { address } = useAccount()
+    const { address, chainId } = useAccount()
 
     let emptyArray = []
 
@@ -293,6 +293,9 @@ const Calendar = () => {
            return
        }
 
+       //gets contract address from whatever chain is selected
+       const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
        //variable to pass scope so that the state can be set
        //let accountSubscriptions = []
        let tempEventsArray = []
@@ -300,7 +303,7 @@ const Calendar = () => {
        //await fetchToken()
        try{
        await readContract(config, {
-           address: CLOCKTOWERSUB_ADDRESS,
+           address: contractAddress,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',
            args: [false, account]
@@ -309,7 +312,7 @@ const Calendar = () => {
         
             tempEventsArray = convertToCalEvents(result, "green", false)
             await readContract(config, {
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'getAccountSubscriptions',
                 args: [true, account]

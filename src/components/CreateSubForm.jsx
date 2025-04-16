@@ -1,8 +1,9 @@
 import {React, useState, useEffect} from 'react';
 import { Form, Button, Row, Col, Modal, ListGroup, Dropdown} from 'react-bootstrap';
-import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP} from '../config';
+import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ADDRESS, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP, CHAIN_LOOKUP} from '../config';
 import {parseEther, formatEther} from 'viem'
 import { readContract } from 'wagmi/actions'
+import {useAccount} from 'wagmi'
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
 import Icon from './Icon'
@@ -10,6 +11,8 @@ import styles from '../css/clocktower.module.css';
 import { v4 as uuidv4 } from 'uuid'
 
 const CreateSubForm = (props) => {
+
+    const { chainId } = useAccount()
 
     const [invalidToken, setInvalidToken] = useState(true)
     const [invalidFrequency, setInvalidFrequency] = useState(true)
@@ -135,9 +138,11 @@ const CreateSubForm = (props) => {
 
     //gets token minimum from contract
     const setTokenMinimum = async (tokenAddress) => {
-       // await fetchToken()
+
+       const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+       
         await readContract(config, {
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'approvedERC20',
             args: [tokenAddress]

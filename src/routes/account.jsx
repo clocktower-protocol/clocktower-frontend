@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
 import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
@@ -21,7 +21,11 @@ const Account = () => {
     //gets passed url variables
     let {a} = useParams();
 
-    const { address } = useAccount()
+    const { address, chainId } = useAccount()
+
+    //gets address
+    const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId);
+    
 
     const [account] = useOutletContext();
 
@@ -80,13 +84,16 @@ const Account = () => {
 
     //hook for account form changes
     useEffect(() => {
+
+        //gets contract address
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
         //calls wallet
         if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
             console.log(changedAccountDetails)
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'editProvDetails',
                 args: [changedAccountDetails]
@@ -167,11 +174,12 @@ const Account = () => {
         //variable to pass scope so that the state can be set
         let accountDetails = {}
 
-        //checks token
-        //await fetchToken()
+        //gets contract address
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
         try{
             await publicClient.getLogs({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string indexed description, string company, string url, string domain, string email, string misc)'),
                 fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',

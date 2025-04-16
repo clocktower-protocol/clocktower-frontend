@@ -1,8 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, CHAIN_LOOKUP} from "../config"; 
 import ProvSubscribersTable from '../components/ProvSubscribersTable';
+import { useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
@@ -12,6 +13,8 @@ const ProvSubscribers = () => {
     const [account] = useOutletContext();
 
     let {id, a, t, p} = useParams();
+
+    const { chainId} = useAccount()
 
     //creates empty array for table
     const emptyArray = [];
@@ -27,10 +30,12 @@ const ProvSubscribers = () => {
         return
         }    
 
-        //await fetchToken()
+        //gets contract address from whatever chain is selected
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
         //calculates remaining cycles until feeBalance is filled (assumes fee is same for all subs otherwise put in loop)
         let fee =  await readContract(config, {
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'callerFee',
         })
@@ -44,7 +49,7 @@ const ProvSubscribers = () => {
         let subscribers = []
 
         subscribers = await readContract(config, {
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'getSubscribersById',
             args: [id]

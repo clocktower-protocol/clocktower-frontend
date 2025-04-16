@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
 import SubscriptionsTable from '../components/SubscriptionsTable';
-import {usePublicClient} from 'wagmi'
+import {usePublicClient, useAccount} from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
@@ -17,6 +17,8 @@ const AdminSubscriptions = () => {
     const publicClient = usePublicClient()
 
     let {t,s} = useParams();
+
+    const { chainId } = useAccount()
 
     //creates empty array for table
     let emptySubscriptionArray = [];
@@ -49,10 +51,12 @@ const AdminSubscriptions = () => {
         let feeBalance
         let remainingCycles
 
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
         //const cycles = Math.round(1 / ((fee / 10000) - 1))
         //await fetchToken()
         let fee =  await readContract(config, {
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'callerFee',
         })
@@ -66,7 +70,7 @@ const AdminSubscriptions = () => {
     
         //calls contract 
         subscriptions =  await readContract(config, {
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'getAccountSubscriptions',
             args: [isSubscriber, s]
@@ -75,7 +79,7 @@ const AdminSubscriptions = () => {
          //gets fee balance and remaining cycles
         for (var i = 0; i < subscriptions.length; i++) {
             let balance =  await readContract(config, {
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'feeBalance',
                 args: [subscriptions[i].subscription.id, s]
@@ -109,7 +113,7 @@ const AdminSubscriptions = () => {
 
             
             await publicClient.getLogs({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
                 fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',

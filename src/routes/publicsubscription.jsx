@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL, ZERO_ADDRESS, EVENT_START_BLOCK} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL, ZERO_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
 import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount} from 'wagmi'
 import { readContract} from 'wagmi/actions'
 import { parseAbiItem, erc20Abi} from 'viem'
@@ -15,7 +15,7 @@ import styles from '../css/clocktower.module.css';
 
 const PublicSubscription = () => {
 
-    const { address } = useAccount()
+    const { address, chainId } = useAccount()
 
     //gets public client for log lookup
     const publicClient = usePublicClient()
@@ -55,9 +55,12 @@ const PublicSubscription = () => {
     useEffect(() => {
 
         const getSub = async () => {
-            //await fetchToken()
+
+            //gets contract address from whatever chain is selected
+            const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
             await readContract(config, {
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 //functionName: 'getSubByIndex',
                 functionName: 'idSubMap',
@@ -75,7 +78,7 @@ const PublicSubscription = () => {
                     dueDay: result[6]
                 }
                 await publicClient.getLogs({
-                    address: CLOCKTOWERSUB_ADDRESS,
+                    address: contractAddress,
                     event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
                     fromBlock: EVENT_START_BLOCK,
                     toBlock: 'latest',
@@ -115,9 +118,12 @@ const PublicSubscription = () => {
         }
 
         const isSubscribed = async () => {
-            //await fetchToken()
+            
+            //gets contract address from whatever chain is selected
+            const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
             let result = await readContract(config, {
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'getSubscribersById',
                 args: [id]
@@ -143,9 +149,12 @@ const PublicSubscription = () => {
         }
      
         const isProviderSame = async () => {
-            //await fetchToken()
+            
+            //gets contract address from whatever chain is selected
+            const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
             let result = await readContract(config, {
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 //functionName: 'getSubByIndex',
                 functionName: 'idSubMap',
@@ -199,12 +208,15 @@ const PublicSubscription = () => {
         setShowToast(true)
 
         //checks if user already has allowance
-        //await fetchToken()
+
+        //gets contract address from whatever chain is selected
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
         const allowanceBalance = await readContract(config, {
             address: token,
             abi: erc20Abi,
             functionName: 'allowance',
-            args: [address, CLOCKTOWERSUB_ADDRESS]
+            args: [address, contractAddress]
         })
         
         if(BigInt(allowanceBalance) < 100000000000000000000000n) {
@@ -214,14 +226,14 @@ const PublicSubscription = () => {
                 address: token,
                 abi: erc20Abi,
                 functionName: 'approve',
-                args: [CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL]
+                args: [contractAddress, INFINITE_APPROVAL]
             })
            
         } else {
 
             //subscribes
             writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'subscribe',
                 args: [subscription]

@@ -63,7 +63,8 @@ export const CHAIN_LOOKUP = [
     id: 84532, 
     icon: SepoliaLogo,
     displayName: "Base Sepolia",
-    explorerUrl: "https://sepolia.basescan.org/"
+    explorerUrl: "https://sepolia.basescan.org/",
+    contractAddress: "0x4873d87Ad98edd3E82ED904964e937D696721Cb4"
   },
   
   {
@@ -71,7 +72,8 @@ export const CHAIN_LOOKUP = [
     id: 31337,
     icon: HardhatLogo,
     displayName: "Hardhat",
-    explorerUrl: ""
+    explorerUrl: "",
+    contractAddress: ""
   }, 
   /*
   {

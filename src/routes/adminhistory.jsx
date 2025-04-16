@@ -1,8 +1,8 @@
 import {React, useState, useCallback, useEffect} from 'react';
 import {Alert} from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router-dom"
-import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT, EVENT_START_BLOCK } from "../config"; 
-import { usePublicClient } from 'wagmi'
+import { CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
+import { usePublicClient, useAccount } from 'wagmi'
 import { parseAbiItem } from 'viem'
 import AdminHistoryTable from '../components/AdminHistoryTable';
 
@@ -15,6 +15,8 @@ const AdminHistory = () => {
     //gets public client for log lookup
     const publicClient = usePublicClient()
 
+    const { chainId } = useAccount()
+
 
     //creates empty array for table
     let emptyArray = []
@@ -25,11 +27,13 @@ const AdminHistory = () => {
 
     const getLogs = useCallback(async () => {
 
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
         let logs = []
 
         if(isp === "true"){
             logs = await publicClient.getLogs({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
                 fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',
@@ -38,7 +42,7 @@ const AdminHistory = () => {
             setTitle("Provider: ")    
         } else {
             logs = await publicClient.getLogs({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
                 fromBlock: EVENT_START_BLOCK,
                 toBlock: 'latest',

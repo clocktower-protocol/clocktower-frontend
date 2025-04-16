@@ -1,17 +1,19 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Tab, Tabs} from 'react-bootstrap';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT, EVENT_START_BLOCK} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import ProvidersTable from '../components/ProvidersTable';
 import CallerHistoryTable from '../components/CallerHistoryTable';
 import SubscribersTable from '../components/SubscribersTable';
-import { usePublicClient } from 'wagmi'
+import { usePublicClient, useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
 
 const Admin = () => {
+
+    const { chainId} = useAccount()
 
     const [account] = useOutletContext();
 
@@ -33,6 +35,10 @@ const Admin = () => {
             console.log("Not Logged in")
             return
         }
+
+        //gets contract address from whatever chain is selected
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
         //variable to pass scope so that the state can be set
         let accounts = []
         let providers = []
@@ -41,7 +47,7 @@ const Admin = () => {
         //gets all accounts
         //await fetchToken()
         await readContract(config, {
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'getTotalSubscribers'
         })
@@ -52,14 +58,14 @@ const Admin = () => {
             //iterates through each subscriber
             for (let i = 0; i < totalSubscribers; i++) {
                 await readContract(config, {
-                    address: CLOCKTOWERSUB_ADDRESS,
+                    address: contractAddress,
                     abi: CLOCKTOWERSUB_ABI,
                     functionName: 'accountLookup',
                     args: [i]
                 })
                 .then(async function(address) {
                     await readContract(config, {
-                        address: CLOCKTOWERSUB_ADDRESS,
+                        address: contractAddress,
                         abi: CLOCKTOWERSUB_ABI,
                         functionName: 'getAccount',
                         args: [address]
@@ -88,9 +94,11 @@ const Admin = () => {
     //loads provider subscription list upon login
     useEffect(() => {
 
+        //gets contract address from whatever chain is selected
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
       
         publicClient.getLogs({
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             event: parseAbiItem('event CallerLog(uint40 timestamp, uint40 checkeday, address indexed caller, bool isfinished)'),
             fromBlock: EVENT_START_BLOCK,
             toBlock: 'latest',

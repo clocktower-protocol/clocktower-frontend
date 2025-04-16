@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import { CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
+import { CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
 import SubHistoryTable from '../components/SubHistoryTable';
-import { usePublicClient } from 'wagmi'
+import { usePublicClient, useAccount } from 'wagmi'
 import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
 
@@ -20,10 +20,15 @@ const SubHistory = () => {
 
     let {id, t} = useParams();
 
+    const { chainId } = useAccount()
+
     const getLogs = useCallback(async () => {
 
+        //gets contract address from whatever chain is selected
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
         const logs = await publicClient.getLogs({
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
             fromBlock: EVENT_START_BLOCK,
             toBlock: 'latest',

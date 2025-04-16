@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
 import {Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
@@ -39,7 +39,7 @@ const Subscriptions = () => {
         t = "created"
     }
 
-    const { address } = useAccount()
+    const { address, chainId } = useAccount()
 
     const [account] = useOutletContext();
 
@@ -90,11 +90,15 @@ const Subscriptions = () => {
     useEffect(() => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedCreateSub).length !== 0 && (typeof(changedCreateSub) != "undefined")) {
+
+            //gets contract address from whatever chain is selected
+            const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
             //sets toast
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'createSubscription',
                 args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
@@ -108,10 +112,14 @@ const Subscriptions = () => {
     useEffect(() => {
         //calls wallet
         if(Object.keys(cancelledSub).length !== 0) {
+
+            //gets contract address from whatever chain is selected
+            const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'cancelSubscription',
                 args: [cancelledSub]
@@ -125,10 +133,14 @@ const Subscriptions = () => {
     useEffect(() => {
         //calls wallet
         if(Object.keys(unsubscribedSub).length !== 0) {
+
+            //gets contract address from whatever chain is selected
+            const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'unsubscribe',
                 args: [unsubscribedSub]
@@ -140,10 +152,13 @@ const Subscriptions = () => {
     useEffect(() => {
          //calls wallet
          if(Object.keys(editResult).length !== 0) {
+
+            //gets contract address from whatever chain is selected
+            const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({
-                address: CLOCKTOWERSUB_ADDRESS,
+                address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'editDetails',
                 args: [editResult.details, editResult.id]
@@ -198,6 +213,9 @@ const Subscriptions = () => {
 
        console.log("here")
 
+       //gets contract address from whatever chain is selected
+        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
        //variable to pass scope so that the state can be set
        let accountSubscriptions = []
 
@@ -207,7 +225,7 @@ const Subscriptions = () => {
        //await fetchToken()
        try{
        await readContract(config, {
-           address: CLOCKTOWERSUB_ADDRESS,
+           address: contractAddress,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',
            args: [false, address]
@@ -219,7 +237,7 @@ const Subscriptions = () => {
            for (let i = 0; i < accountSubscriptions.length; i++) {
             
                await publicClient.getLogs({
-                   address: CLOCKTOWERSUB_ADDRESS,
+                   address: contractAddress,
                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
                    fromBlock: EVENT_START_BLOCK,
                    toBlock: 'latest',
@@ -291,10 +309,12 @@ const getSubscriberSubs = useCallback(async () => {
    //temp details array
    let tempDetailsArray = [];
 
-   //await fetchToken()
+   //gets contract address from whatever chain is selected
+    const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
    try{
    await readContract(config, {
-       address: CLOCKTOWERSUB_ADDRESS,
+       address: contractAddress,
        abi: CLOCKTOWERSUB_ABI,
        functionName: 'getAccountSubscriptions',
        args: [true, address]
@@ -305,7 +325,7 @@ const getSubscriberSubs = useCallback(async () => {
        //loops through each subscription
        for (let i = 0; i < accountSubscriptions.length; i++) {
            await publicClient.getLogs({
-               address: CLOCKTOWERSUB_ADDRESS,
+               address: contractAddress,
                event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
                fromBlock: EVENT_START_BLOCK,
                toBlock: 'latest',
@@ -354,9 +374,12 @@ const getSubscriberSubs = useCallback(async () => {
 },[address, publicClient])
 
 const getSub = useCallback(async (editSubParams) => {
-    //await fetchToken()
+
+    //gets contract address from whatever chain is selected
+    const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+
     await readContract(config, {
-        address: CLOCKTOWERSUB_ADDRESS,
+        address: contractAddress,
         abi: CLOCKTOWERSUB_ABI,
         //functionName: 'getSubByIndex',
         functionName: 'idSubMap',
@@ -375,7 +398,7 @@ const getSub = useCallback(async (editSubParams) => {
             dueDay: result[6]
         }
         await publicClient.getLogs({
-            address: CLOCKTOWERSUB_ADDRESS,
+            address: contractAddress,
             event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
             fromBlock: EVENT_START_BLOCK,
             toBlock: 'latest',

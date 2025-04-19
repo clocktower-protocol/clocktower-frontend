@@ -1,6 +1,6 @@
 # Clocktower Frontend
 
-A frontend for use the clocktower protocol
+A frontend for the clocktower protocol
 
 
 ## Includes the following features:
@@ -9,6 +9,6 @@ A frontend for use the clocktower protocol
 
  - Multichain / Multiwallet support
 
- - Easy to create subsriptions and subscribing
+ - Easy to create subsriptions and to subscribe
 
  - Calendar 

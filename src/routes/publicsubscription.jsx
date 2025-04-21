@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate} from "react-router-dom";
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, INFINITE_APPROVAL, ZERO_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, INFINITE_APPROVAL, ZERO_ADDRESS, CHAIN_LOOKUP} from "../config"; 
 import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount} from 'wagmi'
 import { readContract} from 'wagmi/actions'
 import { parseAbiItem, erc20Abi} from 'viem'
@@ -58,6 +58,7 @@ const PublicSubscription = () => {
 
             //gets contract address from whatever chain is selected
             const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+            const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
             await readContract(config, {
                 address: contractAddress,
@@ -80,7 +81,7 @@ const PublicSubscription = () => {
                 await publicClient.getLogs({
                     address: contractAddress,
                     event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-                    fromBlock: EVENT_START_BLOCK,
+                    fromBlock: startBlock,
                     toBlock: 'latest',
                     args: {id:[resultSub.id]}
                 }) 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Tab, Tabs} from 'react-bootstrap';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, ADMIN_ACCOUNT, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, ADMIN_ACCOUNT, CHAIN_LOOKUP} from "../config"; 
 import { useOutletContext } from "react-router-dom";
 import ProvidersTable from '../components/ProvidersTable';
 import CallerHistoryTable from '../components/CallerHistoryTable';
@@ -96,11 +96,12 @@ const Admin = () => {
 
         //gets contract address from whatever chain is selected
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-      
+        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+
         publicClient.getLogs({
             address: contractAddress,
             event: parseAbiItem('event CallerLog(uint40 timestamp, uint40 checkeday, address indexed caller, bool isfinished)'),
-            fromBlock: EVENT_START_BLOCK,
+            fromBlock: startBlock,
             toBlock: 'latest',
         },function(error, events){ 
             setCallerHistory(events)

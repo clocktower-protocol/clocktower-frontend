@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP} from "../config"; 
 import SubscriptionsTable from '../components/SubscriptionsTable';
 import {usePublicClient, useAccount} from 'wagmi'
 import { readContract } from 'wagmi/actions'
@@ -52,6 +52,7 @@ const AdminSubscriptions = () => {
         let remainingCycles
 
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
         //const cycles = Math.round(1 / ((fee / 10000) - 1))
         //await fetchToken()
@@ -115,7 +116,7 @@ const AdminSubscriptions = () => {
             await publicClient.getLogs({
                 address: contractAddress,
                 event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-                fromBlock: EVENT_START_BLOCK,
+                fromBlock: startBlock,
                 toBlock: 'latest',
                 args: filter
             }) 

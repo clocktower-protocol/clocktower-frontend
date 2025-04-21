@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
-import {CLOCKTOWERSUB_ABI, CLOCKTOWERSUB_ADDRESS, EVENT_START_BLOCK, CHAIN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP} from "../config"; 
 import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
@@ -176,12 +176,13 @@ const Account = () => {
 
         //gets contract address
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
         try{
             await publicClient.getLogs({
                 address: contractAddress,
                 event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string indexed description, string company, string url, string domain, string email, string misc)'),
-                fromBlock: EVENT_START_BLOCK,
+                fromBlock: startBlock,
                 toBlock: 'latest',
                 args: {provider: a}
             }) 

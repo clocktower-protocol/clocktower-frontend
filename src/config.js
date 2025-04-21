@@ -25,13 +25,13 @@ import CBWLogo from "./images/cbw.svg"
 //export const CLOCKTOWERSUB_ADDRESS = "0xc2f5Ae3Fc61d41cd8c5e4Afb929D99Ba46d6320F";
 //export const CLOCKTOWERSUB_ADDRESS = "0xc3d67Fc82F856D36BE91A664Df529cf709f0AE7e";
 //export const CLOCKTOWERSUB_ADDRESS = "0x5F67A60C2B74D66C3d126EB515fCA9A38cD37B87";
-export const CLOCKTOWERSUB_ADDRESS = "0x4873d87Ad98edd3E82ED904964e937D696721Cb4";
+//export const CLOCKTOWERSUB_ADDRESS = "0x4873d87Ad98edd3E82ED904964e937D696721Cb4";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
 export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 //export const EVENT_START_BLOCK = 0n
-export const EVENT_START_BLOCK = 22967543n
+//export const EVENT_START_BLOCK = 22967543n
 
 //**************************************************************************** 
 
@@ -65,7 +65,8 @@ export const CHAIN_LOOKUP = [
     icon: SepoliaLogo,
     displayName: "Base Sepolia",
     explorerUrl: "https://sepolia.basescan.org/",
-    contractAddress: "0x4873d87Ad98edd3E82ED904964e937D696721Cb4"
+    contractAddress: "0x4873d87Ad98edd3E82ED904964e937D696721Cb4",
+    start_block: 22967543n
   },
   
   {
@@ -74,7 +75,8 @@ export const CHAIN_LOOKUP = [
     icon: HardhatLogo,
     displayName: "Hardhat",
     explorerUrl: "",
-    contractAddress: ""
+    contractAddress: "",
+    start_block: 0n
   }, 
   /*
   {

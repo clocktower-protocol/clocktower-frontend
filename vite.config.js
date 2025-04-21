@@ -10,6 +10,7 @@ export default defineConfig(() => {
             host: true
         },
         build: {
+            manifest: true, // Generate manifest.json
             outDir: 'build',
         },
         plugins: [react(), 

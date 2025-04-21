@@ -35,7 +35,7 @@ export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 
 //**************************************************************************** 
 
-export const DOMAIN = "https://app.clocktowerdev.com"
+export const DOMAIN = "https://app.clocktower.finance"
 
 export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 

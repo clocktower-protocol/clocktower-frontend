@@ -140,14 +140,14 @@ const Root = () => {
         <div key={"root"}>
           <Modal show={showWalletChoice} onHide={handleClose} className={styles.wallet_modal} >
           <Modal.Header closeButton>
-            <Modal.Title>Choose a Wallet</Modal.Title>
+            <Modal.Title className="w-100 text-center">Choose a Wallet</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Container>
               <Stack gap={3}>
               {connectors.map((connector) => (
               <Row key={uuidv4()}  >
-                  <Col key={uuidv4()} md="auto" >
+                  <Col key={uuidv4()} md="auto">
                     {
                       WALLET_LOOKUP.map((lWallet) => {
                           if(lWallet.id === connector.id){

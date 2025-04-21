@@ -6,6 +6,7 @@ import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
 import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
 import {ReactComponent as CBWLogo} from "./images/cbw.svg"
+import {ReactComponent as WCLogo} from "./images/walletconnect.svg"
 
 /*
 import HardhatLogo from "./images/hardhat.svg"
@@ -103,9 +104,9 @@ export const WALLET_LOOKUP = [
     icon: CBWLogo
   },
   {
-    name: "safe wallet",
-    id: "safe",
-    icon: BraveLogo
+    name: "walletConnect",
+    id: "walletConnect",
+    icon: WCLogo
   }
 ]
 

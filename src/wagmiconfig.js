@@ -36,7 +36,7 @@ export const config = createConfig(
     connectors: [
       metaMask(),
       coinbaseWallet(),
-      walletConnect({ projectId }),
+      //walletConnect({ projectId }),
     ],
     transports: { 
       [hardhat.id]: http('http://localhost:8545'),

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css';
 import reportWebVitals from './reportWebVitals';
 //import {createBrowserRouter,RouterProvider} from "react-router-dom-dom";
-import {BrowserRouter, Routes, Route, Outlet} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Outlet, HashRouter} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from './errorPage';
 //import FutPaymentRoute from './timepayments/futurepayments';
@@ -127,6 +127,14 @@ root.render(
   </React.StrictMode>
 );
 */
+/*
+ <BrowserRouter  
+            future={{
+              v7_relativeSplatPath: true,
+              v7_startTransition: true
+            }}
+          >
+*/
 
 
 
@@ -134,12 +142,7 @@ root.render(
   <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter  
-            future={{
-              v7_relativeSplatPath: true,
-              v7_startTransition: true
-            }}
-          >
+         <HashRouter>
             <Routes>
                 <Route path="/" element={<Root />}>
                   <Route path="account/:a" element={<Account />} />
@@ -159,7 +162,7 @@ root.render(
                   <Route path="*" element={<ErrorPage />} />
                 </Route>
             </Routes>
-          </BrowserRouter>
+          </HashRouter>
         </QueryClientProvider>
       </WagmiProvider>
   </React.StrictMode>

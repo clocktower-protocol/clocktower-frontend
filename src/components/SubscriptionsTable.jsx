@@ -159,7 +159,7 @@ const SubscriptionsTable = (props) => {
         if(role === 1 && Number(totalSubscribers) === 0) {
           row.push(
             //<td key={String(subscriptionArray[i].subscription.id)+5}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
-            <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${process.env.DOMAIN}/#/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
+            <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed(`${DOMAIN}/#/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
             <td key={uuidv4()}>{Number(totalSubscribers)}</td>,
             <td key={uuidv4()}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
             <td key={uuidv4()}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,

@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "ESNext",
+      "moduleResolution": "node",
+      "strict": true,
+      "jsx": "preserve", // For React projects
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "allowJs": true, // Allow JavaScript files
+      "checkJs": false, // Optionally type-check JS files
+      "outDir": "./build",
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["src/*"] // Optional: for alias support
+      }
+    },
+    "include": ["src/**/*", "vite.config.ts", "src/types/**/*"],
+    "exclude": ["node_modules", "build"]
+  }

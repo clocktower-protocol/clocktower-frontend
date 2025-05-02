@@ -27,7 +27,7 @@ const Account = () => {
     const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId);
     
 
-    const [account] = useOutletContext();
+    const [account] = useOutletContext<[string]>();
 
     //modal triggers
     const [showEditWarn, setShowEditWarn] = useState(false);
@@ -103,7 +103,7 @@ const Account = () => {
         }
     },[changedAccountDetails, writeContract])
 
-    const verifyDomain = async (domain, provAddress) => {
+    const verifyDomain = async (domain: string, provAddress: string) => {
 
         let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
 
@@ -269,7 +269,7 @@ useEffect(() => {
                 <div className={styles.top_level_account}>
                   
                     <ToastContainer position="top-center">
-                        <Toast animation="true" onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>
+                        <Toast animation={true} onClose={() => setShowToast(false)} show={showToast} delay={20000} autohide>
                                 <Toast.Header style={{justifyContent: "space-between"}}>
                                     <Spinner animation="border" variant="info" />
                                     {toastHeader}

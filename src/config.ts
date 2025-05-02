@@ -1,5 +1,5 @@
 //imported svg images
-
+import { FC, SVGProps } from 'react';
 import {ReactComponent as HardhatLogo} from "./images/hardhat.svg"
 import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
 import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
@@ -57,8 +57,17 @@ export const TOKEN_LOOKUP = [
   }
 ]
 
+interface Chain {
+  name: string;
+  id: number;
+  icon: FC<SVGProps<SVGSVGElement>>;
+  displayName: string;
+  explorerUrl: string;
+  contractAddress: string;
+  start_block: bigint;
+}
 //supported chains (this needs to match the wagmiconfig)
-export const CHAIN_LOOKUP = [
+export const CHAIN_LOOKUP: Chain[] = [
   {
     name: "baseSepolia",
     id: 84532, 

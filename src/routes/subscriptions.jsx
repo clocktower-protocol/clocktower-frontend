@@ -9,7 +9,7 @@ import {config} from '../wagmiconfig'
 import CreateSubForm from "../components/CreateSubForm";
 import SubscriptionsTable from "../components/SubscriptionsTable";
 //import {fetchToken} from '../clockfunctions'
-import EditDetailsForm2 from "../components/EditDetailsForm2";
+import EditDetailsForm2 from "../components/EditDetailsForm";
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
 

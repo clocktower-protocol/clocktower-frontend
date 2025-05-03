@@ -324,6 +324,9 @@ const CreateSubForm = (props) => {
                         <Form.Control.Feedback type="invalid">
                             Description must be under 255 characters
                         </Form.Control.Feedback>
+                        <Form.Control.Feedback type="valid">
+                            Note: Description will be publically added to the chain logs
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
                 <Col>
@@ -332,6 +335,9 @@ const CreateSubForm = (props) => {
                         <Form.Control type="input" placeholder="url" isInvalid={invalidUrl} isValid={!invalidUrl}/>
                         <Form.Control.Feedback type="invalid">
                             Please provide a valid URL.
+                        </Form.Control.Feedback>
+                        <Form.Control.Feedback type="valid">
+                            Note: URL will be publically added to the chain logs
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

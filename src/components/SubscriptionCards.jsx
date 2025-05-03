@@ -150,10 +150,14 @@ const SubscriptionCards = (props) => {
 
             //builds payday string
             let paydayString = ""
+
+            //warning payday string
+            let warnPaydayString = ""
             
             //checks if this is a weekday frequency or not
             if(subscriptionArray[i].subscription.frequency > 0){
                 paydayString = dayEndString(String(subscriptionArray[i].subscription.dueDay)) + " Day of the " + frequencyLookup(subscriptionArray[i].subscription.frequency)
+                warnPaydayString = "on the " + paydayString
             } else {
                 //weekly
                 let index = subscriptionArray[i].subscription.dueDay
@@ -162,6 +166,7 @@ const SubscriptionCards = (props) => {
                 }
 
                 paydayString = "Every " + DAY_OF_WEEK_LOOKUP[index].name
+                warnPaydayString = paydayString
                 
             }
 
@@ -280,7 +285,14 @@ const SubscriptionCards = (props) => {
                                 :
                                     <>
                                     {!props.isSubscribed && !props.isProvider ?    
-                                        <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.subscribe()}>Subscribe</Button>
+                                        <>
+                                            <Stack gap={3}>
+                                            <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.subscribe()}>Subscribe</Button>
+                                            <ListGroup horizontal={'sm'} style={{display: "flex", justifyContent: "center"}} >
+                                                <ListGroup.Item variant="light" style={{width: "100%", textAlign:"center", fontSize: "15px"}}>Clicking subscribe will charge your wallet {warnPaydayString.toLowerCase()}</ListGroup.Item>
+                                            </ListGroup>
+                                            </Stack>
+                                        </>
                                     :
                                         <>
                                         </>

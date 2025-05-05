@@ -7,6 +7,7 @@ import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"
 import {ReactComponent as CBWLogo} from "./images/cbw.svg"
 import {ReactComponent as WCLogo} from "./images/walletconnect.svg"
+import { Address } from 'viem'
 
 /*
 import HardhatLogo from "./images/hardhat.svg"
@@ -63,7 +64,7 @@ interface Chain {
   icon: FC<SVGProps<SVGSVGElement>>;
   displayName: string;
   explorerUrl: string;
-  contractAddress: string;
+  contractAddress: Address;
   start_block: bigint;
 }
 //supported chains (this needs to match the wagmiconfig)
@@ -84,7 +85,7 @@ export const CHAIN_LOOKUP: Chain[] = [
     icon: HardhatLogo,
     displayName: "Hardhat",
     explorerUrl: "",
-    contractAddress: "",
+    contractAddress: ZERO_ADDRESS,
     start_block: 0n
   }, 
   /*

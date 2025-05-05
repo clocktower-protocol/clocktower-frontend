@@ -1,12 +1,13 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
-import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP} from "../config"; 
+import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP, ZERO_ADDRESS} from "../config"; 
 import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
-import {recoverMessageAddress, parseAbiItem } from 'viem'
+import {recoverMessageAddress, parseAbiItem, Address, PublicClient, getAddress, isAddress, zeroAddress } from 'viem'
 import EditAccountForm from "../components/EditAccountForm";
 //import {fetchToken} from '../clockfunctions'
+import { AccountDetails } from '../types/contract';
 
 import styles from '../css/clocktower.module.css';
 
@@ -20,6 +21,12 @@ const Account = () => {
 
     //gets passed url variables
     let {a} = useParams();
+
+    // Convert a to Address
+    let providerAddress: Address | undefined;
+    if (a && isAddress(a)) {
+        providerAddress = getAddress(a); // Normalize to checksum address
+    }
 
     const { address, chainId } = useAccount()
 
@@ -86,7 +93,12 @@ const Account = () => {
     useEffect(() => {
 
         //gets contract address
-        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+        const chain = CHAIN_LOOKUP.find(item => item.id === chainId)
+        // Check if the chain exists
+        if (!chain) {
+             throw new Error(`No chain found for chainId: ${chainId}`);
+        }
+        const contractAddress: Address = chain.contractAddress
         //calls wallet
         if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
             console.log(changedAccountDetails)
@@ -172,11 +184,32 @@ const Account = () => {
         }
 
         //variable to pass scope so that the state can be set
-        let accountDetails = {}
+        let accountDetails: AccountDetails = {
+            provider: zeroAddress,
+            timestamp: 0,
+            description: "",
+            company: "",
+            url: "",
+            domain: "",
+            email: "",
+            misc: ""
+
+        }
 
         //gets contract address
-        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+        const chain = CHAIN_LOOKUP.find(item => item.id === chainId)
+        // Check if the chain exists
+        if (!chain) {
+             throw new Error(`No chain found for chainId: ${chainId}`);
+        }
+        const contractAddress = chain.contractAddress
+        const startBlock = chain.start_block
+
+        // Check if publicClient is defined
+        if (!publicClient) {
+            console.error('Public client not available');
+            return;
+        }
 
         try{
             await publicClient.getLogs({
@@ -184,7 +217,7 @@ const Account = () => {
                 event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string indexed description, string company, string url, string domain, string email, string misc)'),
                 fromBlock: startBlock,
                 toBlock: 'latest',
-                args: {provider: a}
+                args: {provider: providerAddress}
             }) 
             .then(async function(events){
                  //checks for latest update by getting highest timestamp
@@ -207,7 +240,7 @@ const Account = () => {
                     }    
                     
                 }
-                verifyDomain(accountDetails.domain, a)
+                verifyDomain(accountDetails.domain, String(providerAddress))
                 setAccountDetails(accountDetails)
             })
         } catch(Err) {

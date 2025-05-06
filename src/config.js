@@ -65,7 +65,7 @@ export const CHAIN_LOOKUP = [
     icon: SepoliaLogo,
     displayName: "Base Sepolia",
     explorerUrl: "https://sepolia.basescan.org/",
-    contractAddress: "0x4873d87Ad98edd3E82ED904964e937D696721Cb4",
+    contractAddress: "0xdBf5d8346648299C4A0499cB2496FBD9dA6D1052",
     start_block: 22967543n
   },
   
@@ -659,6 +659,31 @@ export const CLOCKTOWERSUB_ABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint40",
+        "name": "timestamp",
+        "type": "uint40"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "subscriber",
+        "type": "address"
+      }
+    ],
+    "name": "UList",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
     "outputs": [
@@ -905,6 +930,19 @@ export const CLOCKTOWERSUB_ABI = [
       }
     ],
     "name": "changeSystemFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "cleanUnsubscribeList",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1377,6 +1415,25 @@ export const CLOCKTOWERSUB_ABI = [
   {
     "inputs": [],
     "name": "getTotalSubscribers",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getUnsubscribedLength",
     "outputs": [
       {
         "internalType": "uint256",

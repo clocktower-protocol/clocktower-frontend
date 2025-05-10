@@ -90,6 +90,7 @@ const Account = () => {
         //calls wallet
         if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
             console.log(changedAccountDetails)
+            
             setToastHeader("Waiting on wallet transaction...")
             setShowToast(true)
             writeContract({
@@ -98,6 +99,7 @@ const Account = () => {
                 functionName: 'editProvDetails',
                 args: [changedAccountDetails]
             })
+            
         } else {
             isMounting.current = false
         }
@@ -181,7 +183,7 @@ const Account = () => {
         try{
             await publicClient.getLogs({
                 address: contractAddress,
-                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string indexed description, string company, string url, string domain, string email, string misc)'),
+                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain, string email, string misc)'),
                 fromBlock: startBlock,
                 toBlock: 'latest',
                 args: {provider: a}
@@ -204,6 +206,7 @@ const Account = () => {
                         }
                         //adds latest details to details array
                         accountDetails = events[index].args
+                        console.log(accountDetails)
                     }    
                     
                 }
@@ -402,15 +405,15 @@ useEffect(() => {
                                             <Stack gap={3}>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                     <ListGroup.Item variant="primary" style={{width:"250px", textAlign:"center"}}>Description</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"350px", textAlign:"center"}}>{(accountDetails.description === undefined || accountDetails.description === "") ? "---" : accountDetails.description}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                     <ListGroup.Item variant="primary" style={{width:"250px", textAlign:"center"}}>Email</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.email === undefined || accountDetails.email === "") ? "---" : accountDetails.email}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"350px", textAlign:"center"}}>{(accountDetails.email === undefined || accountDetails.email === "") ? "---" : accountDetails.email}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                     <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">URL</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"350px", textAlign:"center"}}>{(accountDetails.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
                                             </Col>
@@ -418,15 +421,15 @@ useEffect(() => {
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'} variant="primary" style={{justifyContent:"center"}}>
                                                     <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">Company</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"350px", textAlign:"center"}}>{(accountDetails.company === undefined || accountDetails.company === "") ? "---" : accountDetails.company}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                     <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">Misc</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.misc === undefined || accountDetails.misc === "") ? "---" : accountDetails.misc}</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"350px", textAlign:"center"}}>{(accountDetails.misc === undefined || accountDetails.misc === "") ? "---" : accountDetails.misc}</ListGroup.Item>
                                                 </ListGroup>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                     <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">Domain</ListGroup.Item>
-                                                    <ListGroup.Item style={{width:"250px", textAlign:"center"}}>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "---" : accountDetails.domain }</ListGroup.Item>
+                                                    <ListGroup.Item style={{width:"350px", textAlign:"center"}}>{(accountDetails.domain === undefined || accountDetails.domain === "") ? "---" : accountDetails.domain }</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>
                                         </Col>

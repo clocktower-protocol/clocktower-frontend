@@ -49,6 +49,7 @@ const EditAccountForm = (props) => {
             } else {
                 setInvalidDescription(false)
                 setDescription(event.target.value)
+                console.log(event.target.value)
             }
         } else {
             setDescription(event.target.value)
@@ -149,14 +150,13 @@ const EditAccountForm = (props) => {
         
         if(form.checkValidity() === true && !invalidDomain && !invalidUrl && !invalidCompany && !invalidDescription && !invalidEmail && !invalidMisc) {
             const formAccountDetails = {
-                domain: domain,
-                url: url,
-                company: company,
                 description: description,
+                company: company,
+                url: url,
+                domain: domain,
                 email: email,
                 misc: misc
             }
-
             console.log(formAccountDetails)
 
             props.setChangedAccountDetails(formAccountDetails)

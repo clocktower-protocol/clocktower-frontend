@@ -26,6 +26,7 @@ import CBWLogo from "./images/cbw.svg"
 //export const CLOCKTOWERSUB_ADDRESS = "0xc3d67Fc82F856D36BE91A664Df529cf709f0AE7e";
 //export const CLOCKTOWERSUB_ADDRESS = "0x5F67A60C2B74D66C3d126EB515fCA9A38cD37B87";
 //export const CLOCKTOWERSUB_ADDRESS = "0x4873d87Ad98edd3E82ED904964e937D696721Cb4";
+//0xdBf5d8346648299C4A0499cB2496FBD9dA6D1052
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
@@ -65,7 +66,7 @@ export const CHAIN_LOOKUP = [
     icon: SepoliaLogo,
     displayName: "Base Sepolia",
     explorerUrl: "https://sepolia.basescan.org/",
-    contractAddress: "0xdBf5d8346648299C4A0499cB2496FBD9dA6D1052",
+    contractAddress: "0x046aF9a97c223dee4b0ADF65CA10163f08e23309",
     start_block: 22967543n
   },
   
@@ -495,7 +496,7 @@ export const CLOCKTOWERSUB_ABI = [
         "type": "uint40"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "string",
         "name": "description",
         "type": "string"

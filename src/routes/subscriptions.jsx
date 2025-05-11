@@ -76,6 +76,15 @@ const Subscriptions = () => {
     //spinner
     const [isLoading, setIsLoading] = useState(true)
 
+    //dynamically sets the tab
+    useEffect(() => {
+        if (t === "created" || t === "subscribed") {
+          setTab(t);
+        } else {
+          setTab("created"); // Default to "created" for invalid t
+        }
+    }, [t]);
+
 
     //WAGMI write contract hooks------------------------------
 
@@ -89,7 +98,8 @@ const Subscriptions = () => {
     //hook for calling wallet to create sub
     useEffect(() => {
         //calls wallet
-        if(!isMounting.current && Object.keys(changedCreateSub).length !== 0 && (typeof(changedCreateSub) != "undefined")) {
+       // if(!isMounting.current && Object.keys(changedCreateSub).length !== 0 && (typeof(changedCreateSub) != "undefined")) {
+        if (Object.keys(changedCreateSub).length > 0) {
 
             //gets contract address from whatever chain is selected
             const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress

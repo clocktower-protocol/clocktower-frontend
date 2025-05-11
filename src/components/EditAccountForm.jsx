@@ -20,6 +20,8 @@ const EditAccountForm = (props) => {
     const [email, setEmail] = useState("")
     const [misc, setMisc] = useState("")
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     
     useEffect(() => {
         //if this is an edit it sets the initial values
@@ -148,7 +150,9 @@ const EditAccountForm = (props) => {
         event.preventDefault();
         event.stopPropagation();
         
-        if(form.checkValidity() === true && !invalidDomain && !invalidUrl && !invalidCompany && !invalidDescription && !invalidEmail && !invalidMisc) {
+        //if(form.checkValidity() === true && !invalidDomain && !invalidUrl && !invalidCompany && !invalidDescription && !invalidEmail && !invalidMisc) {
+        if (allValidated && !isSubmitting) {
+            setIsSubmitting(true);
             const formAccountDetails = {
                 description: description,
                 company: company,
@@ -158,6 +162,14 @@ const EditAccountForm = (props) => {
                 misc: misc
             }
             console.log(formAccountDetails)
+
+            try {
+                await props.setChangedAccountDetails(formAccountDetails);
+                console.log("change Account Details called successfully");
+              } catch (error) {
+                console.error("Error in set Account Details:", error);
+                setIsSubmitting(false); // Re-enable button on error
+              }            
 
             props.setChangedAccountDetails(formAccountDetails)
             
@@ -246,7 +258,11 @@ const EditAccountForm = (props) => {
                 </Col>
             </Row>
             <Row>
-                <Col align="center"><Button type="submit" disabled={!allValidated}>Submit</Button></Col>
+                <Col align="center">
+                    <Button type="submit" disabled={isSubmitting || !allValidated}>
+                        {isSubmitting ? "Submitting..." : "Submit"}
+                    </Button>
+                </Col>
             </Row>
         </Form>
     )

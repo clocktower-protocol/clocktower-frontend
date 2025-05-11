@@ -32,6 +32,8 @@ const CreateSubForm = (props) => {
     const [subDescription, setSubDescription] = useState("")
     const [subUrl, setSubUrl] = useState("")
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     //modal control
     const [showTokenMenu, setShowTokenMenu] = useState(false);
 
@@ -42,7 +44,7 @@ const CreateSubForm = (props) => {
     
 
     //function that gets selected token
-    const setTokenSelection = (token) => {
+    const setTokenSelection = async (token) => {
        
         setToken(token.address)
         //setDecimals(token.decimals)
@@ -68,7 +70,7 @@ const CreateSubForm = (props) => {
                 token2.address === token.address
             );
             if (matchingToken) {
-                setTokenMinimum(matchingToken.address);
+                await setTokenMinimum(matchingToken.address);
                 setInvalidToken(false);
             }
             
@@ -226,7 +228,7 @@ const CreateSubForm = (props) => {
         }
      }
 
-
+     /*
     const submitForm = async (event) => {
 
         const form = event.currentTarget
@@ -257,6 +259,52 @@ const CreateSubForm = (props) => {
             return
         }
     }
+    */
+
+    const submitForm = async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      
+        if (allValidated && !isSubmitting) {
+        
+            setIsSubmitting(true);
+          const formCreateDetails = {
+            domain: "",
+            url: subUrl,
+            email: "",
+            phone: "",
+            description: subDescription,
+          };
+      
+          const formCreateObject = {
+            amount: amount,
+            token: token,
+            details: formCreateDetails,
+            frequency: frequency,
+            dueDay: dueDay,
+          };
+
+          try {
+            await props.setChangedCreateSub(formCreateObject);
+            console.log("setChangedCreateSub called successfully");
+          } catch (error) {
+            console.error("Error in setChangedCreateSub:", error);
+            setIsSubmitting(false); // Re-enable button on error
+          }
+      
+          //console.log("Submitting form with data:", formCreateObject);
+          //props.setChangedCreateSub(formCreateObject);
+        } else {
+          console.log("Form not valid:", {
+            invalidAmount,
+            invalidUrl,
+            invalidDescription,
+            invalidToken,
+            invalidFrequency,
+            invalidDay,
+          });
+        }
+      };
 
     return (
         <div className={styles.top_level_create_sub}>
@@ -343,7 +391,11 @@ const CreateSubForm = (props) => {
                 </Col>
             </Row>
             <Row>
-                <Col align="center"><Button type="submit" disabled={!allValidated}>Submit</Button></Col>
+                <Col align="center">
+                    <Button type="submit" disabled={isSubmitting || !allValidated}>
+                        {isSubmitting ? "Submitting..." : "Submit"}
+                    </Button>
+                </Col>
             </Row>
         </Form>
         </div>

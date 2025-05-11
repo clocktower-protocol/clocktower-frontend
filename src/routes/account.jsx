@@ -88,7 +88,8 @@ const Account = () => {
         //gets contract address
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
         //calls wallet
-        if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
+        //if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
+        if (Object.keys(changedAccountDetails).length > 0) {
             console.log(changedAccountDetails)
             
             setToastHeader("Waiting on wallet transaction...")

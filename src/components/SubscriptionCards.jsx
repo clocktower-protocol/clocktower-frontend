@@ -17,6 +17,9 @@ const SubscriptionCards = (props) => {
 
     const navigate = useNavigate();
 
+    //gets domain 
+    const hostname = window.location.hostname
+
      //checks for empty array
     if(!Array.isArray(subscriptionArray) || (subscriptionArray.length <= 0)) {
         return

@@ -76,6 +76,8 @@ const Subscriptions = () => {
     //spinner
     const [isLoading, setIsLoading] = useState(true)
 
+    const [checked, setChecked] = useState(false)
+
     //dynamically sets the tab
     useEffect(() => {
         if (t === "created" || t === "subscribed") {

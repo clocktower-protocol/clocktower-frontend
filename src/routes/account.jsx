@@ -234,12 +234,12 @@ const Account = () => {
                 setAccountDetails(accountDetails)
             })
             */
-            //console.log(typeof(a))
+           // console.log(a)
             const result = await apolloClient.query({
                 query: GET_LATEST_PROV_DETAILS,
-                variables: { provider: a, first: 1 }
+                variables: { provider: a.toLowerCase(), first: 1 }
               });
-            const accountDetails = result.data.provDetailsLogs[0];
+            const accountDetails = result.data.provDetailsLogs[0]
             console.log(result)
             verifyDomain(accountDetails.domain, a)
             setAccountDetails(accountDetails)

@@ -12,6 +12,8 @@ import SubscriptionsTable from "../components/SubscriptionsTable";
 import EditDetailsForm2 from "../components/EditDetailsForm";
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
+import { gql } from '@apollo/client';
+import { apolloClient } from '../apolloclient';
 
 // subscriptionCache.js
 export const subscriptionCache = {
@@ -77,6 +79,22 @@ const Subscriptions = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const [checked, setChecked] = useState(false)
+
+    // Query for DetailsLog events
+    const GET_LATEST_DETAILS_LOG = gql`
+        query GetLatestDetailsLog($subscriptionId: Bytes!, $first: Int!) {
+            detailsLogs(where: { id: $subscriptionId }, first: $first, orderBy: timestamp, orderDirection: desc) {
+                id
+                provider
+                timestamp
+                url
+                description
+                blockNumber
+                blockTimestamp
+                transactionHash
+            }
+        }
+    `;
 
     //dynamically sets the tab
     useEffect(() => {
@@ -223,8 +241,6 @@ const Subscriptions = () => {
             return;
         }
 
-       console.log("here")
-
        //gets contract address from whatever chain is selected
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
         const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
@@ -249,6 +265,7 @@ const Subscriptions = () => {
            //loops through each subscription
            for (let i = 0; i < accountSubscriptions.length; i++) {
             
+            /*
                await publicClient.getLogs({
                    address: contractAddress,
                    event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -281,6 +298,14 @@ const Subscriptions = () => {
                    }
                    
                })
+            */
+            console.log(accountSubscriptions[i].subscription.id.toLowerCase())
+            const result = await apolloClient.query({
+                    query: GET_LATEST_DETAILS_LOG,
+                    variables: { subscriptionId: accountSubscriptions[i].subscription.id.toLowerCase(), first: 1 }
+            });
+            console.log(result)
+            tempDetailsArray[i] = result.data.provDetailsLogs[0];
                
            }
 
@@ -338,6 +363,7 @@ const getSubscriberSubs = useCallback(async () => {
 
        //loops through each subscription
        for (let i = 0; i < accountSubscriptions.length; i++) {
+        /*
            await publicClient.getLogs({
                address: contractAddress,
                event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -370,6 +396,14 @@ const getSubscriberSubs = useCallback(async () => {
                }
                
            })
+        */
+           console.log(accountSubscriptions[i].subscription.id.toLowerCase())
+           const result = await apolloClient.query({
+                   query: GET_LATEST_DETAILS_LOG,
+                   variables: { subscriptionId: accountSubscriptions[i].subscription.id.toLowerCase(), first: 1 }
+           });
+           console.log(result)
+           tempDetailsArray[i] = result.data.provDetailsLogs[0];
            
        }
 

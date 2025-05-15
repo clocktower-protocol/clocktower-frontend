@@ -83,8 +83,8 @@ const Subscriptions = () => {
     // Query for DetailsLog events
     const GET_LATEST_DETAILS_LOG = gql`
         query GetLatestDetailsLog($subscriptionId: Bytes!, $first: Int!) {
-            detailsLogs(where: { id: $subscriptionId }, first: $first, orderBy: timestamp, orderDirection: desc) {
-                id
+            detailsLogs(where: {internal_id: $subscriptionId}, first: $first, orderBy: timestamp, orderDirection: desc) {
+                internal_id
                 provider
                 timestamp
                 url
@@ -262,6 +262,8 @@ const Subscriptions = () => {
        .then(async function(result) {
            accountSubscriptions = result
 
+           //console.log(accountSubscriptions)
+
            //loops through each subscription
            for (let i = 0; i < accountSubscriptions.length; i++) {
             
@@ -299,13 +301,11 @@ const Subscriptions = () => {
                    
                })
             */
-            console.log(accountSubscriptions[i].subscription.id.toLowerCase())
             const result = await apolloClient.query({
                     query: GET_LATEST_DETAILS_LOG,
                     variables: { subscriptionId: accountSubscriptions[i].subscription.id.toLowerCase(), first: 1 }
             });
-            console.log(result)
-            tempDetailsArray[i] = result.data.provDetailsLogs[0];
+            tempDetailsArray[i] = result.data.detailsLogs[0];
                
            }
 
@@ -397,13 +397,11 @@ const getSubscriberSubs = useCallback(async () => {
                
            })
         */
-           console.log(accountSubscriptions[i].subscription.id.toLowerCase())
-           const result = await apolloClient.query({
-                   query: GET_LATEST_DETAILS_LOG,
-                   variables: { subscriptionId: accountSubscriptions[i].subscription.id.toLowerCase(), first: 1 }
-           });
-           console.log(result)
-           tempDetailsArray[i] = result.data.provDetailsLogs[0];
+        const result2 = await apolloClient.query({
+                query: GET_LATEST_DETAILS_LOG,
+                variables: { subscriptionId: accountSubscriptions[i].subscription.id.toLowerCase(), first: 1 }
+        });
+        tempDetailsArray[i] = result2.data.detailsLogs[0];
            
        }
 
@@ -446,6 +444,7 @@ const getSub = useCallback(async (editSubParams) => {
             frequency: result[5], 
             dueDay: result[6]
         }
+        /*
         await publicClient.getLogs({
             address: contractAddress,
             event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -476,6 +475,13 @@ const getSub = useCallback(async (editSubParams) => {
                 }       
             }    
         })
+        */
+        const result3 = await apolloClient.query({
+            query: GET_LATEST_DETAILS_LOG,
+            variables: { subscriptionId: resultSub.id.toLowerCase(), first: 1 }
+        });
+        setPreEditDetails(result3.data.detailsLogs[0])
+        
         //setEditSub(result)
         setEditSub(resultSub)
     })
@@ -496,7 +502,7 @@ useEffect(() => {
 
        // console.log(address)
        //console.log(subscriptionCache.address)
-        console.log(address)
+        //console.log(address)
         //clears cache on address change
         if(address !== subscriptionCache.address){
             console.log(subscriptionCache.address)

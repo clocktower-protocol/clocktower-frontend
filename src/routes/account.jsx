@@ -7,6 +7,9 @@ import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionRece
 import {recoverMessageAddress, parseAbiItem } from 'viem'
 import EditAccountForm from "../components/EditAccountForm";
 //import {fetchToken} from '../clockfunctions'
+import { gql } from '@apollo/client';
+import { apolloClient } from '../apolloclient';
+
 
 import styles from '../css/clocktower.module.css';
 
@@ -166,6 +169,21 @@ const Account = () => {
     //gets account info
     const getAccount = useCallback(async () => {
 
+        const GET_LATEST_PROV_DETAILS = gql`
+            query GetLatestProvDetails($provider: Bytes!, $first: Int!) {
+                provDetailsLogs(where: { provider: $provider }, first: $first, orderBy: timestamp, orderDirection: desc) {
+                    provider
+                    timestamp
+                    description
+                    company
+                    url
+                    domain
+                    email
+                    misc
+                }
+            }
+        `;
+
 
         //checks if user is logged into account
         if(typeof address === "undefined") {
@@ -182,6 +200,7 @@ const Account = () => {
         const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
         try{
+            /*
             await publicClient.getLogs({
                 address: contractAddress,
                 event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain, string email, string misc)'),
@@ -214,6 +233,16 @@ const Account = () => {
                 verifyDomain(accountDetails.domain, a)
                 setAccountDetails(accountDetails)
             })
+            */
+            //console.log(typeof(a))
+            const result = await apolloClient.query({
+                query: GET_LATEST_PROV_DETAILS,
+                variables: { provider: a, first: 1 }
+              });
+            const accountDetails = result.data.provDetailsLogs[0];
+            console.log(result)
+            verifyDomain(accountDetails.domain, a)
+            setAccountDetails(accountDetails)
         } catch(Err) {
             console.log(Err)
         }

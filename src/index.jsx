@@ -33,6 +33,8 @@ import {config} from './wagmiconfig'
 //import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 //import { coinbaseWallet, injected} from 'wagmi/connectors' 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ApolloProvider } from '@apollo/client'
+import { apolloClient } from './apolloclient'
 
 
 const queryClient = new QueryClient() 
@@ -142,27 +144,29 @@ root.render(
   <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-         <HashRouter>
-            <Routes>
-                <Route path="/" element={<Root />}>
-                  <Route path="account/:a" element={<Account />} />
-                  <Route path="provider/history/:id" element={<ProvSubHistory />} />
-                  <Route path="history/:id" element={<ProvSubHistory />} />
-                  <Route path="subscribers/:id/:a/:t/:p" element={<ProvSubscribers />} />
-                  <Route path="public_subscription/:id/:f/:d" element={<PublicSubscription />} />
-                  <Route path="subscription/:id" element={<SubHistory />} />
-                  {/*
-                  <Route path="editdetails/:id" element={<EditDetails />} />
-                  */}
-                  <Route path="calendar" element={<Calendar />} />
-                  <Route path="admin/" element={<Admin />} />
-                  <Route path="admin/subscriptions/:t/:s" element={<AdminSubscriptions />} />
-                  <Route path="admin/history/:a/:isp" element={<AdminHistory />} />
-                  <Route path="subscriptions/:t" element={<Subscriptions />} />
-                  <Route path="*" element={<ErrorPage />} />
-                </Route>
-            </Routes>
-          </HashRouter>
+          <ApolloProvider client={apolloClient}>
+            <HashRouter>
+              <Routes>
+                  <Route path="/" element={<Root />}>
+                    <Route path="account/:a" element={<Account />} />
+                    <Route path="provider/history/:id" element={<ProvSubHistory />} />
+                    <Route path="history/:id" element={<ProvSubHistory />} />
+                    <Route path="subscribers/:id/:a/:t/:p" element={<ProvSubscribers />} />
+                    <Route path="public_subscription/:id/:f/:d" element={<PublicSubscription />} />
+                    <Route path="subscription/:id" element={<SubHistory />} />
+                    {/*
+                    <Route path="editdetails/:id" element={<EditDetails />} />
+                    */}
+                    <Route path="calendar" element={<Calendar />} />
+                    <Route path="admin/" element={<Admin />} />
+                    <Route path="admin/subscriptions/:t/:s" element={<AdminSubscriptions />} />
+                    <Route path="admin/history/:a/:isp" element={<AdminHistory />} />
+                    <Route path="subscriptions/:t" element={<Subscriptions />} />
+                    <Route path="*" element={<ErrorPage />} />
+                  </Route>
+              </Routes>
+            </HashRouter>
+          </ApolloProvider>
         </QueryClientProvider>
       </WagmiProvider>
   </React.StrictMode>

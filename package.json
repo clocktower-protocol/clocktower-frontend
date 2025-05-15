@@ -5,6 +5,7 @@
   "homepage": "/",
   "type": "module",
   "dependencies": {
+    "@apollo/client": "^3.13.8",
     "@ethereumjs/util": "^9.0.0",
     "@fullcalendar/bootstrap5": "^6.1.10",
     "@fullcalendar/core": "^6.1.10",
@@ -23,6 +24,7 @@
     "bootstrap-icons": "^1.11.3",
     "boring-avatars": "^1.10.1",
     "dayjs": "^1.11.6",
+    "graphql": "^16.11.0",
     "jwt-decode": "^4.0.0",
     "npm": "^11.3.0",
     "react": "^19.1.0",

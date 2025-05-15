@@ -6,6 +6,8 @@ import SubHistoryTable from '../components/SubHistoryTable';
 import { usePublicClient, useAccount} from 'wagmi'
 import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
+import { gql } from '@apollo/client';
+import { apolloClient } from '../apolloclient';
 
 const ProvSubHistory = () => {
     const [account] = useOutletContext();
@@ -22,6 +24,23 @@ const ProvSubHistory = () => {
 
     let {id, t} = useParams();
 
+    const GET_LATEST_SUBLOG = gql`
+        query GetSubLog($subscriptionId: Bytes!) {
+            subLogs(where: {internal_id: $subscriptionId}, orderBy: timestamp, orderDirection: desc) {
+                internal_id
+                provider
+                subscriber
+                timestamp
+                amount
+                token
+                subScriptEvent
+                blockNumber
+                blockTimestamp
+                transactionHash
+            }
+        }
+    `;
+
 
     const getLogs = useCallback(async () => {
 
@@ -29,6 +48,7 @@ const ProvSubHistory = () => {
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
         const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
+        /*
         //looks up provider from contract
             const logs = await publicClient.getLogs({
                 address: contractAddress,
@@ -37,8 +57,16 @@ const ProvSubHistory = () => {
                 toBlock: 'latest',
                 args: {id: id}
             })
+        */
+        
+        const result = await apolloClient.query({
+                            query: GET_LATEST_SUBLOG,
+                            variables: { subscriptionId: id.toLowerCase()}
+                    });
+        const logs = result.data.subLogs;
+        //console.log(logs)
 
-            setHistoryArray(logs)
+        setHistoryArray(logs)
     },[id, publicClient])
 
     //loads once
@@ -50,9 +78,9 @@ const ProvSubHistory = () => {
     }, [getLogs]);
 
     //if(typeof historyArray[0].args !== "undefined") {
-    if(historyArray.length > 0 && typeof historyArray[0].args !== "undefined") {
+    if(historyArray.length > 0 && typeof historyArray[0] !== "undefined") {
     //checks that user has logged in  
-        if(historyArray[0].args.provider !== account) {
+        if(historyArray[0].provider !== account.toLowerCase()) {
                 return(
                     <Alert align="center" variant="info" className={styles.alerts}>Switch Back to Provider Account</Alert>
                 )

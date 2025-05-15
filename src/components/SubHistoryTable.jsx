@@ -13,6 +13,8 @@ const SubHistoryTable = (props) => {
 
     const historyArray = props.historyArray
 
+    console.log("here")
+
     //gets chainId
     const { chainId } = useAccount({config})
 
@@ -50,7 +52,9 @@ const SubHistoryTable = (props) => {
     let table = []
     let tableTop = []
 
-  if(historyArray.length > 0 && typeof historyArray[0].args !== "undefined") {
+    console.log(historyArray)
+
+  if(historyArray.length > 0 && typeof historyArray[0] !== "undefined") {
     //loops through array to create table rows
     for(let i = 0; i < historyArray.length; i++) {
         
@@ -72,22 +76,22 @@ const SubHistoryTable = (props) => {
           console.log(eighteenDecimalAmount)
         } else {
         */
-          subAmount = formatEther(historyArray[i].args.amount)
+          subAmount = formatEther(historyArray[i].amount)
           //console.log(subAmount)
         //}
         //let subAmount = formatEther(eighteenDecimalAmount)
-        let formatDate = dayjs.unix(historyArray[i].args.timestamp).format('MM/DD/YYYY h:mm:ss A')
-        let ticker = tickerLookup(historyArray[i].args.token)
+        let formatDate = dayjs.unix(historyArray[i].timestamp).format('MM/DD/YYYY h:mm:ss A')
+        let ticker = tickerLookup(historyArray[i].token)
   
         row.push(
-            <td key={String(historyArray[i].args.subscriber)+1}>{historyArray[i].args.subscriber !== "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].args.subscriber}`}>{historyArray[i].args.subscriber}</Link> : "N/A" }</td>, 
+            <td key={String(historyArray[i].subscriber)+1}>{historyArray[i].subscriber !== "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].subscriber}`}>{historyArray[i].subscriber}</Link> : "N/A" }</td>, 
             <td key={String(historyArray[i].transactionHash)}>{<a href={`${chain.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>}</td>,
-            <td key={String(historyArray[i].args.subEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].args.subscriptevent]}</td>,
-            <td key={String(historyArray[i].args.timestamp)+3}>{formatDate}</td>,
+            <td key={String(historyArray[i].subEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].subscriptevent]}</td>,
+            <td key={String(historyArray[i].timestamp)+3}>{formatDate}</td>,
             <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
             )
           
-        table.push(<tr align="center" key={String(historyArray[i].args.subscriber)+i}>{row}</tr>)
+        table.push(<tr align="center" key={String(historyArray[i].subscriber)+i}>{row}</tr>)
     
       }
   

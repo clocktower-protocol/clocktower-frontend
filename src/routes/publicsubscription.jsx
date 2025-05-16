@@ -9,6 +9,8 @@ import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
+import { gql } from '@apollo/client';
+import { apolloClient } from '../apolloclient';
 
 
 /* global BigInt */
@@ -50,6 +52,22 @@ const PublicSubscription = () => {
         hash: data,
     })
 
+     // Query for DetailsLog events
+    const GET_LATEST_DETAILS_LOG = gql`
+        query GetLatestDetailsLog($subscriptionId: Bytes!, $first: Int!) {
+            detailsLogs(where: {internal_id: $subscriptionId}, first: $first, orderBy: timestamp, orderDirection: desc) {
+                internal_id
+                provider
+                timestamp
+                url
+                description
+                blockNumber
+                blockTimestamp
+                transactionHash
+            }
+        }
+    `;
+
 
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
@@ -78,6 +96,7 @@ const PublicSubscription = () => {
                     frequency: result[5], 
                     dueDay: result[6]
                 }
+                /*
                 await publicClient.getLogs({
                     address: contractAddress,
                     event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -107,6 +126,16 @@ const PublicSubscription = () => {
                         }       
                     }    
                 })
+                */
+                const result2 = await apolloClient.query({
+                    query: GET_LATEST_DETAILS_LOG,
+                    variables: { subscriptionId: resultSub.id.toLowerCase(), first: 1 }
+                });
+                const tempDetails= [result2.data.detailsLogs[0]]
+                setFormattedDetails(tempDetails)
+
+                console.log(tempDetails)
+
                 //setSubscription(result)
                 setSubscription(resultSub)
                 //setToken(result.token)

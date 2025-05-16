@@ -19,6 +19,8 @@ const ProvSubHistory = () => {
 
     //creates empty array for table
     let emptySubscriptionArray = [];
+
+    const lowerAccount = account.toLowerCase()
    
     const [historyArray, setHistoryArray] = useState([emptySubscriptionArray])
 
@@ -80,7 +82,7 @@ const ProvSubHistory = () => {
     //if(typeof historyArray[0].args !== "undefined") {
     if(historyArray.length > 0 && typeof historyArray[0] !== "undefined") {
     //checks that user has logged in  
-        if(historyArray[0].provider !== account.toLowerCase()) {
+        if(historyArray[0].provider !== lowerAccount) {
                 return(
                     <Alert align="center" variant="info" className={styles.alerts}>Switch Back to Provider Account</Alert>
                 )

@@ -8,6 +8,8 @@ import { readContract } from 'wagmi/actions'
 import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
+import { gql } from '@apollo/client';
+import { apolloClient } from '../apolloclient';
 
 const AdminSubscriptions = () => {
 
@@ -28,6 +30,37 @@ const AdminSubscriptions = () => {
     const [titleMessage, setTitleMessage] = useState("Subscribed To:")
     const [feeObjects, setFeeObjects] = useState(emptySubscriptionArray)
     const [isSubscriber, setIsSubscriber] = useState(true)
+
+     // Query for DetailsLog events
+    const GET_LATEST_DETAILS_PROVIDER_LOG = gql`
+        query GetLatestDetailsLog($userAddress: Bytes!, $first: Int!) {
+            detailsLogs(where: {provider: $userAddress}, first: $first, orderBy: timestamp, orderDirection: desc) {
+                internal_id
+                provider
+                timestamp
+                url
+                description
+                blockNumber
+                blockTimestamp
+                transactionHash
+            }
+        }
+    `;
+
+    const GET_LATEST_DETAILS_SUBSCRIBER_LOG = gql`
+    query GetLatestDetailsLog($userAddress: Bytes!, $first: Int!) {
+        detailsLogs(where: {subscriber: $userAddress}, first: $first, orderBy: timestamp, orderDirection: desc) {
+            internal_id
+            provider
+            timestamp
+            url
+            description
+            blockNumber
+            blockTimestamp
+            transactionHash
+        }
+    }
+    `;
 
 
     const getSubsByAccount = useCallback(async (t, s) => {
@@ -106,13 +139,16 @@ const AdminSubscriptions = () => {
 
             //get description from logs
           
+            /*
             let filter = {provider: subscriptions[i].subscription.provider}
             //changes filter based on if its provider or subscriber
             if(isSubscriber) {
              filter = {subscriber: subscriptions[i].subscription.subscriber }
             }
-
+            */
             
+
+            /*            
             await publicClient.getLogs({
                 address: contractAddress,
                 event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
@@ -140,7 +176,24 @@ const AdminSubscriptions = () => {
                     }    
                 }
             })
-        }
+            */
+            
+            if(isSubscriber) {
+                const result = await apolloClient.query({
+                    query: GET_LATEST_DETAILS_PROVIDER_LOG,
+                    variables: { userAddress: subscriptions[i].subscription.provider, first: 1 }
+                });
+                detailsArray[subIndex] = result.data.detailsLogs[0]
+
+            } else {
+                const result = await apolloClient.query({
+                    query: GET_LATEST_DETAILS_SUBSCRIBER_LOG,
+                    variables: { userAddress: subscriptions[i].subscription.subscriber, first: 1 }
+                });
+                detailsArray[subIndex] = result.data.detailsLogs[0]
+            }
+            
+}
 
        
         setFeeObjects(feeObjects)

@@ -1,13 +1,14 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
 import dayjs from 'dayjs'
+import { v4 as uuidv4 } from 'uuid'
 
 const CallerHistoryTable = (props) => {
 
 const callerHistory = props.callerHistory
 
     //checks for empty array
-    if(!Array.isArray(callerHistory) || (callerHistory.length <= 0) || typeof callerHistory[0].args === "undefined") {
+    if(!Array.isArray(callerHistory) || (callerHistory.length <= 0) || typeof callerHistory[0] === "undefined") {
      return
  }
 
@@ -19,15 +20,15 @@ const callerHistory = props.callerHistory
 
      let row = []
 
-     let formatDate = dayjs.unix(callerHistory[i].returnValues.timestamp).format('MM/DD/YYYY h:mm:s A')
+     let formatDate = dayjs.unix(callerHistory[i].timestamp).format('MM/DD/YYYY h:mm:s A')
 
 
      row.push(
-       <td key={String(callerHistory[i])+1}>{callerHistory[i].args.caller}</td>,
-       <td key={String(callerHistory[i])+2}>{formatDate}</td>,
-       <td key={String(callerHistory[i])+3}>{callerHistory[i].args.checkedDay}</td>
+       <td key={uuidv4()}>{callerHistory[i].caller}</td>,
+       <td key={uuidv4()}>{formatDate}</td>,
+       <td key={uuidv4()}>{callerHistory[i].checkedDay}</td>
      )     
-     table.push(<tr align="center" key={String(callerHistory[i])}>{row}</tr>)
+     table.push(<tr align="center" key={uuidv4()}>{row}</tr>)
    }
 
  tableTop.push(

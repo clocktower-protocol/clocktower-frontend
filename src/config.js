@@ -30,7 +30,7 @@ import CBWLogo from "./images/cbw.svg"
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2,255))
-export const ADMIN_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+export const ADMIN_ACCOUNT = "0xeaB2c4C12eac9EC14EA615E721c9d0D9027Fa85a"
 //export const EVENT_START_BLOCK = 0n
 //export const EVENT_START_BLOCK = 22967543n 
 

@@ -2,13 +2,14 @@ import React from 'react';
 import {Table} from 'react-bootstrap';
 import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs'
+import { v4 as uuidv4 } from 'uuid'
 
 const AdminHistoryTable = (props) => {
 
     const providerHistory = props.providerHistory
 
     //checks for empty array
-    if(!Array.isArray(providerHistory) || (providerHistory.length <= 0 || typeof providerHistory[0].args === "undefined")) {
+    if(!Array.isArray(providerHistory) || (providerHistory.length <= 0 || typeof providerHistory[0] === "undefined")) {
      return
     }
 
@@ -20,17 +21,17 @@ const AdminHistoryTable = (props) => {
 
         let row = []
 
-        let formatDate = dayjs.unix(Number(providerHistory[i].args.timestamp)).format('MM/DD/YYYY h:mm:s A')
+        let formatDate = dayjs.unix(Number(providerHistory[i].timestamp)).format('MM/DD/YYYY h:mm:s A')
         
-        const event = SUBSCRIPTEVENT_LOOKUP[providerHistory[i].args.subscriptevent]
+        const event = SUBSCRIPTEVENT_LOOKUP[providerHistory[i].subScriptEvent]
       
         row.push(
-        <td key={String(providerHistory[i].args.id)}>{providerHistory[i].args.id.slice(0,10) + "..."}</td>,
-        <td key={String(event)}>{event}</td>,
-        <td key={String(formatDate)}>{formatDate}</td>,
+        <td key={uuidv4()}>{String(providerHistory[i].internal_id).slice(0,10) + "..."}</td>,
+        <td key={uuidv4()}>{event}</td>,
+        <td key={uuidv4()}>{formatDate}</td>,
         )     
         
-        table.push(<tr align="center" key={String(providerHistory[i].args.timestamp)+i}>{row}</tr>)
+        table.push(<tr align="center" key={String(providerHistory[i].timestamp)+i}>{row}</tr>)
     }
 
     tableTop.push(

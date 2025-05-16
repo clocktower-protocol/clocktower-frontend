@@ -6,6 +6,8 @@ import SubHistoryTable from '../components/SubHistoryTable';
 import { usePublicClient, useAccount } from 'wagmi'
 import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
+import { gql } from '@apollo/client';
+import { apolloClient } from '../apolloclient';
 
 const SubHistory = () => {
     const [account] = useOutletContext();
@@ -22,12 +24,30 @@ const SubHistory = () => {
 
     const { chainId } = useAccount()
 
+    const GET_LATEST_SUBLOG = gql`
+        query GetSubLog($subscriptionId: Bytes!, $subscriber: Bytes!) {
+            subLogs(where: {internal_id: $subscriptionId, subscriber: $subscriber}, orderBy: timestamp, orderDirection: asc) {
+                internal_id
+                provider
+                subscriber
+                timestamp
+                amount
+                token
+                subScriptEvent
+                blockNumber
+                blockTimestamp
+                transactionHash
+            }
+        }
+    `;
+
     const getLogs = useCallback(async () => {
 
         //gets contract address from whatever chain is selected
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
         const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
+        /*
         const logs = await publicClient.getLogs({
             address: contractAddress,
             event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
@@ -35,6 +55,15 @@ const SubHistory = () => {
             toBlock: 'latest',
             args: {id: id, subscriber: account}
         })
+        */
+
+        const result = await apolloClient.query({
+            query: GET_LATEST_SUBLOG,
+            variables: { subscriptionId: id.toLowerCase(), subscriber: account.toLowerCase()}
+        });
+        const logs = result.data.subLogs;
+
+        console.log(logs)
 
         setHistoryArray(logs)
     },[account, id, publicClient])
@@ -59,10 +88,12 @@ const SubHistory = () => {
                 {historyArray.length > 0 ? <Alert align="center" variant="dark" className={styles.alerts}>Subscription History</Alert> : <Alert align="center" variant="info">No Subscribers Yet</Alert>}
             </div>
             <div className="subTable">
+                
                 <SubHistoryTable 
                     historyArray = {historyArray}
                     ticker = {t}
                 />
+    
             </div>
          
         </div>

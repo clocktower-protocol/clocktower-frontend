@@ -16,6 +16,7 @@ import { gql } from '@apollo/client';
 import { apolloClient } from '../apolloclient';
 
 // subscriptionCache.js
+/*
 export const subscriptionCache = {
     provSubscriptionArray: [],
     provDetailsArray: [],
@@ -24,6 +25,7 @@ export const subscriptionCache = {
     isCached: false,
     address: ""
 };
+*/
 
 const Subscriptions = () => {
 
@@ -232,6 +234,7 @@ const Subscriptions = () => {
            return
        }
 
+       /*
         // Use cached data if available
         if (subscriptionCache.isCached) {
             console.log("Using cached data");
@@ -240,6 +243,7 @@ const Subscriptions = () => {
             setIsLoading(false)
             return;
         }
+        */
 
        //gets contract address from whatever chain is selected
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
@@ -309,11 +313,13 @@ const Subscriptions = () => {
                
            }
 
+           /*
             // Update cache
             subscriptionCache.provSubscriptionArray = accountSubscriptions;
             subscriptionCache.provDetailsArray = tempDetailsArray;
             subscriptionCache.isCached = true;
             //subscriptionCache.address = address;
+           */
 
            setProvSubscriptionArray(accountSubscriptions)
            setProvDetailsArray(tempDetailsArray)
@@ -332,6 +338,7 @@ const getSubscriberSubs = useCallback(async () => {
        return
    }
 
+    /*
      // Use cached data if available
      if (subscriptionCache.isCached) {
         console.log("Using cached data");
@@ -339,6 +346,7 @@ const getSubscriberSubs = useCallback(async () => {
         setSubscribedDetailsArray(subscriptionCache.subDetailsArray);
         return;
     }
+    */
    
   
    //variable to pass scope so that the state can be set
@@ -406,9 +414,11 @@ const getSubscriberSubs = useCallback(async () => {
        }
 
         // Update cache
+        /*
         subscriptionCache.subSubscriptionArray = accountSubscriptions;
         subscriptionCache.subDetailsArray = tempDetailsArray;
         subscriptionCache.isCached = true;
+        */
      
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(tempDetailsArray)
@@ -504,6 +514,7 @@ useEffect(() => {
        //console.log(subscriptionCache.address)
         //console.log(address)
         //clears cache on address change
+        /*
         if(address !== subscriptionCache.address){
             console.log(subscriptionCache.address)
             // Reset cache
@@ -514,6 +525,7 @@ useEffect(() => {
             subscriptionCache.isCached = false;
             subscriptionCache.address = address
         }
+        */
 
         getProviderSubs()
         getSubscriberSubs()
@@ -540,11 +552,13 @@ useEffect(() => {
     if(wait.isSuccess) {
 
         // Reset cache
+        /*
         subscriptionCache.provSubscriptionArray = [];
         subscriptionCache.provDetailsArray = [];
         subscriptionCache.subSubscriptionArray = []
         subscriptionCache.subDetailsArray = []
         subscriptionCache.isCached = false;
+        */
 
         //turns off alert
         setShowToast(false)

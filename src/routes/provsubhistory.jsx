@@ -26,7 +26,7 @@ const ProvSubHistory = () => {
 
     const GET_LATEST_SUBLOG = gql`
         query GetSubLog($subscriptionId: Bytes!) {
-            subLogs(where: {internal_id: $subscriptionId}, orderBy: timestamp, orderDirection: desc) {
+            subLogs(where: {internal_id: $subscriptionId}, orderBy: timestamp, orderDirection: asc) {
                 internal_id
                 provider
                 subscriber

@@ -13,8 +13,6 @@ const SubHistoryTable = (props) => {
 
     const historyArray = props.historyArray
 
-    console.log("here")
-
     //gets chainId
     const { chainId } = useAccount({config})
 
@@ -52,8 +50,6 @@ const SubHistoryTable = (props) => {
     let table = []
     let tableTop = []
 
-    console.log(historyArray)
-
   if(historyArray.length > 0 && typeof historyArray[0] !== "undefined") {
     //loops through array to create table rows
     for(let i = 0; i < historyArray.length; i++) {
@@ -86,7 +82,7 @@ const SubHistoryTable = (props) => {
         row.push(
             <td key={String(historyArray[i].subscriber)+1}>{historyArray[i].subscriber !== "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].subscriber}`}>{historyArray[i].subscriber}</Link> : "N/A" }</td>, 
             <td key={String(historyArray[i].transactionHash)}>{<a href={`${chain.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>}</td>,
-            <td key={String(historyArray[i].subEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].subscriptevent]}</td>,
+            <td key={String(historyArray[i].subScriptEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].subScriptEvent]}</td>,
             <td key={String(historyArray[i].timestamp)+3}>{formatDate}</td>,
             <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
             )

@@ -22,6 +22,8 @@ const SubscriptionsTable = (props) => {
 
     const detailsArray = props.detailsArray
 
+    //console.log(detailsArray)
+
     let bySubscriber = true
     const role = props.role
 

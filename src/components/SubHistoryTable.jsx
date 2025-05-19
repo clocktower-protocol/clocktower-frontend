@@ -16,6 +16,8 @@ const SubHistoryTable = (props) => {
     //gets chainId
     const { chainId } = useAccount({config})
 
+    //console.log(historyArray.length)
+
     /*
     //looks up ticker for token
     const tickerLookup = (tokenAddress) => {
@@ -54,40 +56,44 @@ const SubHistoryTable = (props) => {
     //loops through array to create table rows
     for(let i = 0; i < historyArray.length; i++) {
         
-        let row = []
+        if(typeof historyArray[i].amount !== "undefined") {
+          let row = []
 
-        //console.log(historyArray[i].transactionHash)
-        //console.log(chainId)
-       
-        //convert amount to human readable
-       // let eighteenDecimalAmount = historyArray[i].args.amount / (10n ** 6n)
+          //console.log(historyArray[i].transactionHash)
+          //console.log(chainId)
+        
+          //convert amount to human readable
+        // let eighteenDecimalAmount = historyArray[i].args.amount / (10n ** 6n)
 
-        let subAmount = -1        
+          let subAmount = -1   
 
-        /*
-        if(historyArray[i].args.subscriptevent === 2 || historyArray[i].args.subscriptevent === 5) {
-          subAmount = eighteenDecimalAmount
-          //console.log(historyArray[i].args.amount)
-          //console.log(subAmount)
-          console.log(eighteenDecimalAmount)
-        } else {
-        */
-          subAmount = formatEther(historyArray[i].amount)
-          //console.log(subAmount)
-        //}
-        //let subAmount = formatEther(eighteenDecimalAmount)
-        let formatDate = dayjs.unix(historyArray[i].timestamp).format('MM/DD/YYYY h:mm:ss A')
-        let ticker = tickerLookup(historyArray[i].token)
-  
-        row.push(
-            <td key={String(historyArray[i].subscriber)+1}>{historyArray[i].subscriber !== "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].subscriber}`}>{historyArray[i].subscriber}</Link> : "N/A" }</td>, 
-            <td key={String(historyArray[i].transactionHash)}>{<a href={`${chain.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>}</td>,
-            <td key={String(historyArray[i].subScriptEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].subScriptEvent]}</td>,
-            <td key={String(historyArray[i].timestamp)+3}>{formatDate}</td>,
-            <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
-            )
-          
-        table.push(<tr align="center" key={String(historyArray[i].subscriber)+i}>{row}</tr>)
+          /*
+          if(historyArray[i].args.subscriptevent === 2 || historyArray[i].args.subscriptevent === 5) {
+            subAmount = eighteenDecimalAmount
+            //console.log(historyArray[i].args.amount)
+            //console.log(subAmount)
+            console.log(eighteenDecimalAmount)
+          } else {
+          */
+            subAmount = formatEther(historyArray[i].amount)
+            //console.log(historyArray[i].amount)
+          //}
+          //let subAmount = formatEther(eighteenDecimalAmount)
+          let formatDate = dayjs.unix(historyArray[i].timestamp).format('MM/DD/YYYY h:mm:ss A')
+          let ticker = tickerLookup(historyArray[i].token)
+    
+          row.push(
+              <td key={String(historyArray[i].subscriber)+1}>{historyArray[i].subscriber !== "0x0000000000000000000000000000000000000000" ? <Link to={`../account/${historyArray[i].subscriber}`}>{historyArray[i].subscriber}</Link> : "N/A" }</td>, 
+              <td key={String(historyArray[i].transactionHash)}>{<a href={`${chain.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>}</td>,
+              <td key={String(historyArray[i].subScriptEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].subScriptEvent]}</td>,
+              <td key={String(historyArray[i].timestamp)+3}>{formatDate}</td>,
+              <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
+            
+              )
+            
+          table.push(<tr align="center" key={String(historyArray[i].subscriber)+i}>{row}</tr>)
+
+        }
     
       }
   

@@ -63,8 +63,6 @@ const SubHistory = () => {
         });
         const logs = result.data.subLogs;
 
-        console.log(logs)
-
         setHistoryArray(logs)
     },[account, id, publicClient])
 
@@ -89,11 +87,12 @@ const SubHistory = () => {
             </div>
             <div className="subTable">
                 
+                
                 <SubHistoryTable 
                     historyArray = {historyArray}
                     ticker = {t}
                 />
-    
+            
             </div>
          
         </div>

@@ -419,6 +419,8 @@ const getSubscriberSubs = useCallback(async () => {
         subscriptionCache.subDetailsArray = tempDetailsArray;
         subscriptionCache.isCached = true;
         */
+
+       //console.log(tempDetailsArray)
      
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(tempDetailsArray)

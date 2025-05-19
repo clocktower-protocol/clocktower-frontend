@@ -93,6 +93,7 @@ const Account = () => {
         //calls wallet
         //if(!isMounting.current && Object.keys(changedAccountDetails).length !== 0) {
         if (Object.keys(changedAccountDetails).length > 0) {
+            
             console.log(changedAccountDetails)
             
             setToastHeader("Waiting on wallet transaction...")
@@ -248,7 +249,7 @@ const Account = () => {
                 domainString = accountDetails.domain
             }
 
-            console.log(result)
+           // console.log(result)
             verifyDomain(domainString, a)
             setAccountDetails(accountDetails)
         } catch(Err) {

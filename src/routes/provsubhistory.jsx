@@ -26,7 +26,7 @@ const ProvSubHistory = () => {
 
     let {id, t} = useParams();
 
-    const GET_LATEST_SUBLOG = gql`
+    const GET_SUBLOGS = gql`
         query GetSubLog($subscriptionId: Bytes!) {
             subLogs(where: {internal_id: $subscriptionId}, orderBy: timestamp, orderDirection: asc) {
                 internal_id
@@ -62,11 +62,11 @@ const ProvSubHistory = () => {
         */
         
         const result = await apolloClient.query({
-                            query: GET_LATEST_SUBLOG,
+                            query: GET_SUBLOGS,
                             variables: { subscriptionId: id.toLowerCase()}
                     });
         const logs = result.data.subLogs;
-        //console.log(logs)
+        console.log(logs)
 
         setHistoryArray(logs)
     },[id, publicClient])
@@ -95,11 +95,13 @@ const ProvSubHistory = () => {
                 </div>
                 
                 <div className="subTable">
+                
                     <SubHistoryTable 
                         historyArray = {historyArray}
                         ticker = {t}
                         isProvider = {true}
                     />
+                     
                 </div>
             </div>
             )

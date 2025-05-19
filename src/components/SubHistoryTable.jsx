@@ -87,7 +87,7 @@ const SubHistoryTable = (props) => {
               <td key={String(historyArray[i].transactionHash)}>{<a href={`${chain.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>}</td>,
               <td key={String(historyArray[i].subScriptEvent)+2}>{SUBSCRIPTEVENT_LOOKUP[historyArray[i].subScriptEvent]}</td>,
               <td key={String(historyArray[i].timestamp)+3}>{formatDate}</td>,
-              <td key={String(subAmount)+4}>{Number(subAmount).toFixed(2)}&nbsp;&nbsp;{ticker}</td>,
+              <td key={String(subAmount)+4}>{historyArray[i].subScriptEvent !== 7 && historyArray[i].subScriptEvent !== 6 ? Number(subAmount).toFixed(2) : "N/A"}&nbsp;&nbsp;{ticker}</td>,
             
               )
             

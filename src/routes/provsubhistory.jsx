@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useOutletContext, useParams} from "react-router-dom";
 import {Alert} from 'react-bootstrap';
-import { CHAIN_LOOKUP} from "../config"; 
+//import { CHAIN_LOOKUP} from "../config"; 
 import SubHistoryTable from '../components/SubHistoryTable';
 import { usePublicClient, useAccount} from 'wagmi'
-import { parseAbiItem } from 'viem'
+//import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
 import { gql } from '@apollo/client';
 import { apolloClient } from '../apolloclient';
@@ -28,7 +28,7 @@ const ProvSubHistory = () => {
 
     const GET_SUBLOGS = gql`
         query GetSubLog($subscriptionId: Bytes!) {
-            subLogs(where: {internal_id: $subscriptionId}, orderBy: timestamp, orderDirection: asc) {
+            subLogs(where: {internal_id: $subscriptionId}, orderBy: timestamp, orderDirection: desc) {
                 internal_id
                 provider
                 subscriber
@@ -46,20 +46,6 @@ const ProvSubHistory = () => {
 
     const getLogs = useCallback(async () => {
 
-        //gets contract address from whatever chain is selected
-        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
-
-        /*
-        //looks up provider from contract
-            const logs = await publicClient.getLogs({
-                address: contractAddress,
-                event: parseAbiItem('event SubLog(bytes32 indexed id, address indexed provider, address indexed subscriber, uint40 timestamp, uint256 amount, address token, uint8 subscriptevent)'),
-                fromBlock: startBlock,
-                toBlock: 'latest',
-                args: {id: id}
-            })
-        */
         
         const result = await apolloClient.query({
                             query: GET_SUBLOGS,

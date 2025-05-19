@@ -4,7 +4,7 @@ import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP} from "../config";
 import {Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
 import { readContract } from 'wagmi/actions'
-import { parseAbiItem } from 'viem'
+//import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
 import CreateSubForm from "../components/CreateSubForm";
 import SubscriptionsTable from "../components/SubscriptionsTable";
@@ -15,17 +15,6 @@ import styles from '../css/clocktower.module.css';
 import { gql } from '@apollo/client';
 import { apolloClient } from '../apolloclient';
 
-// subscriptionCache.js
-/*
-export const subscriptionCache = {
-    provSubscriptionArray: [],
-    provDetailsArray: [],
-    subSubscriptionArray: [],
-    subDetailsArray: [],
-    isCached: false,
-    address: ""
-};
-*/
 
 const Subscriptions = () => {
 
@@ -110,12 +99,18 @@ const Subscriptions = () => {
 
     //WAGMI write contract hooks------------------------------
 
-    const { data, writeContract } = useWriteContract()
+    const { data: hash, writeContract } = useWriteContract()
 
+    /*
     const wait = useWaitForTransactionReceipt({
         confirmations: 1,
         hash: data
     })
+    */
+    const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+        hash,
+        confirmations: 1,
+    });
 
     //hook for calling wallet to create sub
     useEffect(() => {
@@ -234,77 +229,34 @@ const Subscriptions = () => {
            return
        }
 
-       /*
-        // Use cached data if available
-        if (subscriptionCache.isCached) {
-            console.log("Using cached data");
-            setProvSubscriptionArray(subscriptionCache.provSubscriptionArray);
-            setProvDetailsArray(subscriptionCache.provDetailsArray);
-            setIsLoading(false)
-            return;
-        }
-        */
-
        //gets contract address from whatever chain is selected
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+        //const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
        //variable to pass scope so that the state can be set
-       let accountSubscriptions = []
+       //let accountSubscriptions = []
 
        //temp details array
-       let tempDetailsArray = [];
+       //let tempDetailsArray = [];
 
        //await fetchToken()
        try{
-       await readContract(config, {
+       const accountSubscriptions = await readContract(config, {
            address: contractAddress,
            abi: CLOCKTOWERSUB_ABI,
            functionName: 'getAccountSubscriptions',
-           args: [false, address]
+           args: [false, address],
+           cacheTime: 0
        })
-       .then(async function(result) {
-           accountSubscriptions = result
+       //.then(async function(result) {
+           //accountSubscriptions = result
 
            //console.log(accountSubscriptions)
 
+           /*
            //loops through each subscription
            for (let i = 0; i < accountSubscriptions.length; i++) {
-            
-            /*
-               await publicClient.getLogs({
-                   address: contractAddress,
-                   event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-                   fromBlock: startBlock,
-                   toBlock: 'latest',
-                   args: {id:[accountSubscriptions[i].subscription.id]}
-               }) 
-               .then(async function(events){
-               
-                
-                   //checks for latest update by getting highest timestamp
-                   if(events !== undefined) {
-                       
-                       let time = 0
-                       let index = 0
-                       
-                       if(events.length > 0)
-                       {
-                           for (var j = 0; j < events.length; j++) {
-                                   if(time < events[j].args.timestamp)
-                                   {
-                                       time = events[j].args.timestamp
-                                       index = j
-                                   }
-                           }
-                           //adds latest details to details array
-                           tempDetailsArray[i] = events[index].args
-                       }    
-                       
-                   }
-                   
-               })
-            */
+        
             const result = await apolloClient.query({
                     query: GET_LATEST_DETAILS_LOG,
                     variables: { subscriptionId: accountSubscriptions[i].subscription.id.toLowerCase(), first: 1 }
@@ -312,23 +264,25 @@ const Subscriptions = () => {
             tempDetailsArray[i] = result.data.detailsLogs[0];
                
            }
-
-           /*
-            // Update cache
-            subscriptionCache.provSubscriptionArray = accountSubscriptions;
-            subscriptionCache.provDetailsArray = tempDetailsArray;
-            subscriptionCache.isCached = true;
-            //subscriptionCache.address = address;
            */
+            const tempDetailsArray = await Promise.all(
+                accountSubscriptions.map(async (sub) => {
+                    const result = await apolloClient.query({
+                        query: GET_LATEST_DETAILS_LOG,
+                        variables: { subscriptionId: sub.subscription.id.toLowerCase(), first: 1 },
+                    });
+                return result.data.detailsLogs[0];
+            })
+    );
 
            setProvSubscriptionArray(accountSubscriptions)
            setProvDetailsArray(tempDetailsArray)
            setIsLoading(false)
-       })
+      // })
    } catch(Err) {
        console.log(Err)
    }
-}, [address, publicClient])
+}, [address, publicClient, chainId, config,])
 
 const getSubscriberSubs = useCallback(async () => {
     //checks if user is logged into account
@@ -337,74 +291,33 @@ const getSubscriberSubs = useCallback(async () => {
        console.log("Not Logged in")
        return
    }
-
-    /*
-     // Use cached data if available
-     if (subscriptionCache.isCached) {
-        console.log("Using cached data");
-        setSubscribedSubsArray(subscriptionCache.subSubscriptionArray);
-        setSubscribedDetailsArray(subscriptionCache.subDetailsArray);
-        return;
-    }
-    */
    
   
    //variable to pass scope so that the state can be set
-   let accountSubscriptions = []
+   //let accountSubscriptions = []
 
    //temp details array
-   let tempDetailsArray = [];
+   //let tempDetailsArray = [];
 
    //gets contract address from whatever chain is selected
     const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-    const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+    //const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
    try{
-   await readContract(config, {
+   const accountSubscriptions = await readContract(config, {
        address: contractAddress,
        abi: CLOCKTOWERSUB_ABI,
        functionName: 'getAccountSubscriptions',
-       args: [true, address]
+       args: [true, address],
+       cacheTime: 0
    })
+   /*
    .then(async function(result) {
        accountSubscriptions = result
 
        //loops through each subscription
        for (let i = 0; i < accountSubscriptions.length; i++) {
-        /*
-           await publicClient.getLogs({
-               address: contractAddress,
-               event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-               fromBlock: startBlock,
-               toBlock: 'latest',
-               args: {id:[accountSubscriptions[i].subscription.id]}
-           }) 
-           .then(async function(events){
-           
-                
-               //checks for latest update by getting highest timestamp
-               if(events !== undefined) {
-                   
-                   let time = 0
-                   let index = 0
-                   
-                   if(events.length > 0)
-                   {
-                       for (var j = 0; j < events.length; j++) {
-                               if(time < events[j].args.timestamp)
-                               {
-                                   time = events[j].args.timestamp
-                                   index = j
-                               }
-                       }
-                       //adds latest details to details array
-                       tempDetailsArray[i] = events[index].args
-                   }    
-                   
-               }
-               
-           })
-        */
+   
         const result2 = await apolloClient.query({
                 query: GET_LATEST_DETAILS_LOG,
                 variables: { subscriptionId: accountSubscriptions[i].subscription.id.toLowerCase(), first: 1 }
@@ -412,30 +325,32 @@ const getSubscriberSubs = useCallback(async () => {
         tempDetailsArray[i] = result2.data.detailsLogs[0];
            
        }
+    */
 
-        // Update cache
-        /*
-        subscriptionCache.subSubscriptionArray = accountSubscriptions;
-        subscriptionCache.subDetailsArray = tempDetailsArray;
-        subscriptionCache.isCached = true;
-        */
-
-       //console.log(tempDetailsArray)
+     const tempDetailsArray = await Promise.all(
+      accountSubscriptions.map(async (sub) => {
+        const result = await apolloClient.query({
+          query: GET_LATEST_DETAILS_LOG,
+          variables: { subscriptionId: sub.subscription.id.toLowerCase(), first: 1 },
+        });
+        return result.data.detailsLogs[0];
+      })
+    );
      
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(tempDetailsArray)
-   })
+   //})
     } catch(Err) {
         //await fetchToken()
         console.log(Err)
     }
-},[address, publicClient])
+},[address, publicClient, chainId, config,])
 
 const getSub = useCallback(async (editSubParams) => {
 
     //gets contract address from whatever chain is selected
     const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-    const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+    //const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
     await readContract(config, {
         address: contractAddress,
@@ -456,38 +371,7 @@ const getSub = useCallback(async (editSubParams) => {
             frequency: result[5], 
             dueDay: result[6]
         }
-        /*
-        await publicClient.getLogs({
-            address: contractAddress,
-            event: parseAbiItem('event DetailsLog(bytes32 indexed id, address indexed provider, uint40 indexed timestamp, string url, string description)'),
-            fromBlock: startBlock,
-            toBlock: 'latest',
-            //args: {id:[result.id]}
-            //args: {id: result[0]}
-            args: {id: resultSub.id}
-        }) 
-        .then(async function(events){
-            //checks for latest update by getting highest timestamp
-            if(events !== undefined) {
-                
-                let time = 0
-                let index = 0
-                
-                if(events.length > 0)
-                {
-                    for (var j = 0; j < events.length; j++) {
-                            if(time < events[j].args.timestamp)
-                            {
-                                time = events[j].args.timestamp
-                                index = j
-                            }
-                    }
-                    //adds latest details to details array
-                    setPreEditDetails(events[index].args)
-                }       
-            }    
-        })
-        */
+     
         const result3 = await apolloClient.query({
             query: GET_LATEST_DETAILS_LOG,
             variables: { subscriptionId: resultSub.id.toLowerCase(), first: 1 }
@@ -512,23 +396,6 @@ useEffect(() => {
         console.log("Not Logged in")
     } else {
 
-       // console.log(address)
-       //console.log(subscriptionCache.address)
-        //console.log(address)
-        //clears cache on address change
-        /*
-        if(address !== subscriptionCache.address){
-            console.log(subscriptionCache.address)
-            // Reset cache
-            subscriptionCache.provSubscriptionArray = [];
-            subscriptionCache.provDetailsArray = [];
-            subscriptionCache.subSubscriptionArray = []
-            subscriptionCache.subDetailsArray = []
-            subscriptionCache.isCached = false;
-            subscriptionCache.address = address
-        }
-        */
-
         getProviderSubs()
         getSubscriberSubs()
     }
@@ -547,20 +414,16 @@ useEffect(() => {
 
 //Hooks to catch object mutations------------------------
 useEffect(() => {
-    if(wait.isLoading) {
+    //if(wait.isLoading) {
+    if(isConfirming) {
+        console.log("Transaction is confirming...");
         setToastHeader("Transaction Pending")
     }
 
-    if(wait.isSuccess) {
+    //if(wait.isSuccess) {
+    if(isConfirmed) {
 
-        // Reset cache
-        /*
-        subscriptionCache.provSubscriptionArray = [];
-        subscriptionCache.provDetailsArray = [];
-        subscriptionCache.subSubscriptionArray = []
-        subscriptionCache.subDetailsArray = []
-        subscriptionCache.isCached = false;
-        */
+        console.log("Transaction confirmed, fetching subscriptions...");
 
         //turns off alert
         setShowToast(false)
@@ -568,11 +431,11 @@ useEffect(() => {
         //editFormHandleClose()
         createSubHandleClose()
         //getAccount()
-        getProviderSubs()
-        getSubscriberSubs()
+        getProviderSubs().then(() => console.log("Provider subs updated"));
+        getSubscriberSubs().then(() => console.log("Subscriber subs updated"));
         
     }
-},[getProviderSubs, getSubscriberSubs, wait.isLoading, wait.isSuccess])
+},[getProviderSubs, getSubscriberSubs, isConfirmed, isConfirming])
 
 //called when edit subscription button is pushed
 useEffect(() =>{

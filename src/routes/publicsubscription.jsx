@@ -48,7 +48,7 @@ const PublicSubscription = () => {
 
     
     const subscribeWait = useWaitForTransactionReceipt({
-        confirmations: 1,
+        confirmations: 2,
         hash: data,
     })
 

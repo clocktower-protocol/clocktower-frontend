@@ -59,7 +59,7 @@ const Account = () => {
     const { data, writeContract } = useWriteContract()
 
     const wait = useWaitForTransactionReceipt({
-        confirmations: 1,
+        confirmations: 2,
         hash: data
     })
 

@@ -109,7 +109,7 @@ const Subscriptions = () => {
     */
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
         hash,
-        confirmations: 1,
+        confirmations: 2,
     });
 
     //hook for calling wallet to create sub
@@ -172,6 +172,8 @@ const Subscriptions = () => {
                 functionName: 'unsubscribe',
                 args: [unsubscribedSub]
             })
+        } else {
+            isMounting.current = false
         }
     },[unsubscribedSub, writeContract])
 
@@ -193,6 +195,8 @@ const Subscriptions = () => {
 
             subEditDetailsHandleClose()
 
+        } else {
+            isMounting.current = false
         }
     },[editResult, writeContract])
 
@@ -336,6 +340,8 @@ const getSubscriberSubs = useCallback(async () => {
         return result.data.detailsLogs[0];
       })
     );
+
+    console.log(accountSubscriptions)
      
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(tempDetailsArray)
@@ -390,7 +396,7 @@ const getSub = useCallback(async (editSubParams) => {
 useEffect(() => {
     isMounting.current = true
 
-
+    console.log("mounting")
     //checks if user is logged into account
     if(typeof address === "undefined") {
         console.log("Not Logged in")
@@ -405,6 +411,7 @@ useEffect(() => {
 //changes data when not mounting
 useEffect(() => {
 
+    console.log("not mounting")
     //doesn't reload on initial load
     if(!isMounting.current){
         getProviderSubs()
@@ -414,26 +421,29 @@ useEffect(() => {
 
 //Hooks to catch object mutations------------------------
 useEffect(() => {
-    //if(wait.isLoading) {
     if(isConfirming) {
         console.log("Transaction is confirming...");
         setToastHeader("Transaction Pending")
     }
 
-    //if(wait.isSuccess) {
     if(isConfirmed) {
-
         console.log("Transaction confirmed, fetching subscriptions...");
-
-        //turns off alert
         setShowToast(false)
-
-        //editFormHandleClose()
         createSubHandleClose()
-        //getAccount()
-        getProviderSubs().then(() => console.log("Provider subs updated"));
-        getSubscriberSubs().then(() => console.log("Subscriber subs updated"));
+        setUnsubscribedSub({})  // Reset unsubscribedSub state
         
+        // Force a refresh of the data
+        setIsLoading(true)  // Show loading state
+        Promise.all([
+            getProviderSubs(),
+            getSubscriberSubs()
+        ]).then(() => {
+            console.log("All subscriptions refreshed");
+            setIsLoading(false)
+        }).catch(error => {
+            console.error("Error refreshing subscriptions:", error);
+            setIsLoading(false)
+        });
     }
 },[getProviderSubs, getSubscriberSubs, isConfirmed, isConfirming])
 
@@ -480,20 +490,23 @@ const isTableEmpty1 = (subscriptionArray) => {
 }
 
 const isTableEmpty2 = (subscriptionArray2) => {
+    console.log("Checking if table is empty:", subscriptionArray2);
     let count = 0
     
     if(subscriptionArray2.length === 0){
+        console.log("Table is empty - no subscriptions");
         return true
     } else {
         subscriptionArray2.forEach(subscription => {
-            //this checks for unsubscribes AND cancels
-            if(Number(subscription.status) === 0) {count += 1}
+            // Check for ACTIVE subscriptions (status === 0)
+            if(Number(subscription.status) === 0) {
+                count += 1
+            }
         })
+        console.log("Active subscriptions count:", count);
         if(count > 0) { 
-            //setIsEmpty(false)
             return false 
         } else {
-        // setIsEmpty(true)
             return true
         }
     }

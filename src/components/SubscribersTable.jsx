@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-
+import { v4 as uuidv4 } from 'uuid'
 
 const SubscribersTable = (props) => {
 
@@ -21,11 +21,11 @@ const SubscribersTable = (props) => {
         let row = []
 
         row.push(
-          <td key={String(subscribersArray[i])+1}>{subscribersArray[i].accountAddress}</td>,
-          <td key={String(subscribersArray[i])+2}><Link to={`history/${subscribersArray[i].accountAddress}/${false}`}>History</Link></td>,
-          <td key={String(subscribersArray[i])+3}><Link to={`subscriptions/${"subscriber"}/${subscribersArray[i].accountAddress}`}>Subscriptions</Link></td>
+          <td key={uuidv4()}>{subscribersArray[i].accountAddress}</td>,
+          <td key={uuidv4()}><Link to={`history/${subscribersArray[i].accountAddress}/${false}`}>History</Link></td>,
+          <td key={uuidv4()}><Link to={`subscriptions/${"subscriber"}/${subscribersArray[i].accountAddress}`}>Subscriptions</Link></td>
         )     
-        table.push(<tr align="center" key={String(subscribersArray[i])}>{row}</tr>)
+        table.push(<tr align="center" key={uuidv4()}>{row}</tr>)
       }
    // }
 

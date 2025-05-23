@@ -27,7 +27,7 @@ const Account = () => {
     const { address, chainId } = useAccount()
 
     //gets address
-    const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId);
+    //const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId);
     
 
     const [account] = useOutletContext();
@@ -56,11 +56,11 @@ const Account = () => {
     
     const msg = 'test'
 
-    const { data, writeContract } = useWriteContract()
+    const { data: hash, writeContract } = useWriteContract()
 
-    const wait = useWaitForTransactionReceipt({
+    const { isLoading: isConfirming, isSuccess: isConfirmed }  = useWaitForTransactionReceipt({
         confirmations: 2,
-        hash: data
+        hash
     })
 
 
@@ -169,7 +169,6 @@ const Account = () => {
 
     //gets account info
     const getAccount = useCallback(async () => {
-
         const GET_LATEST_PROV_DETAILS = gql`
             query GetLatestProvDetails($provider: Bytes!, $first: Int!) {
                 provDetailsLogs(where: { provider: $provider }, first: $first, orderBy: timestamp, orderDirection: desc) {
@@ -185,71 +184,25 @@ const Account = () => {
             }
         `;
 
-
-        //checks if user is logged into account
         if(typeof address === "undefined") {
             console.log("here")
-            //linkToMain()
             return
         }
 
-        //variable to pass scope so that the state can be set
-        let accountDetails = {}
-
-        //gets contract address
-        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
-
-        try{
-            /*
-            await publicClient.getLogs({
-                address: contractAddress,
-                event: parseAbiItem('event ProvDetailsLog(address indexed provider, uint40 indexed timestamp, string description, string company, string url, string domain, string email, string misc)'),
-                fromBlock: startBlock,
-                toBlock: 'latest',
-                args: {provider: a}
-            }) 
-            .then(async function(events){
-                 //checks for latest update by getting highest timestamp
-                 if(events !== undefined) {
-                        
-                    let time = 0
-                    let index = 0
-                    
-                    if(events.length > 0)
-                    {
-                        for (var j = 0; j < events.length; j++) {
-                                if(time < events[j].args.timestamp)
-                                {
-                                    time = events[j].args.timestamp
-                                    index = j
-                                }
-                        }
-                        //adds latest details to details array
-                        accountDetails = events[index].args
-                        console.log(accountDetails)
-                    }    
-                    
-                }
-                verifyDomain(accountDetails.domain, a)
-                setAccountDetails(accountDetails)
-            })
-            */
-           // console.log(a)
+        try {
             const result = await apolloClient.query({
                 query: GET_LATEST_PROV_DETAILS,
-                variables: { provider: a.toLowerCase(), first: 1 }
-              });
+                variables: { provider: a.toLowerCase(), first: 1 },
+                fetchPolicy: 'network-only'
+            });
+            
             const accountDetails = result.data.provDetailsLogs[0]
-
             let domainString = ""
             
-            //checks if domain is set
             if(accountDetails?.domain) {
                 domainString = accountDetails.domain
             }
 
-           // console.log(result)
             verifyDomain(domainString, a)
             setAccountDetails(accountDetails)
         } catch(Err) {
@@ -283,18 +236,25 @@ useEffect(() => {
 
 //shows alert when waiting for transaction to finish
 useEffect(() => {
-    if(wait.isLoading) {
+    if (isConfirming) {
         setToastHeader("Transaction Pending")
+        setShowToast(true)
     }
 
-    if(wait.isSuccess) {
-
-        setShowToast(false)
+    if (isConfirmed) {
+        //setShowToast(false)
         editFormHandleClose()
-        getAccount()
+        setToastHeader("Fetching Data")
         
+        const delayAndRefresh = async () => {
+            // Wait 2 seconds for subgraph indexing
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            await getAccount();
+        };
+        delayAndRefresh();
+        setShowToast(false)
     }
-},[getAccount, wait.isLoading, wait.isSuccess])
+}, [isConfirming, isConfirmed, getAccount, editFormHandleClose])
 
 
 //called when link to be displayed in modal 

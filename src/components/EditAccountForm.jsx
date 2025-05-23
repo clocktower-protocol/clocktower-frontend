@@ -29,7 +29,16 @@ const EditAccountForm = (props) => {
         setCompany(props.accountDetails?.company || '')
         setUrl(props.accountDetails?.url || '')
         setDomain(props.accountDetails?.domain || '')
-    },[props.accountDetails?.description, props.accountDetails?.company, props.accountDetails?.url, props.accountDetails?.domain])
+        setEmail(props.accountDetails?.email || '')
+        setMisc(props.accountDetails?.misc || '')
+    },[
+        props.accountDetails?.description, 
+        props.accountDetails?.company, 
+        props.accountDetails?.url, 
+        props.accountDetails?.domain,
+        props.accountDetails?.email,
+        props.accountDetails?.misc
+    ])
 
     useEffect(() => {
 

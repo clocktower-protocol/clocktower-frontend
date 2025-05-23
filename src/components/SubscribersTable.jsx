@@ -22,8 +22,8 @@ const SubscribersTable = (props) => {
 
         row.push(
           <td key={uuidv4()}>{subscribersArray[i].accountAddress}</td>,
-          <td key={uuidv4()}><Link to={`history/${subscribersArray[i].accountAddress}/${false}`}>History</Link></td>,
-          <td key={uuidv4()}><Link to={`subscriptions/${"subscriber"}/${subscribersArray[i].accountAddress}`}>Subscriptions</Link></td>
+          <td key={uuidv4()}><Link to={`../admin/history/${subscribersArray[i].accountAddress}/${false}`}>History</Link></td>,
+          <td key={uuidv4()}><Link to={`../admin/subscriptions/${"subscriber"}/${subscribersArray[i].accountAddress}`}>Subscriptions</Link></td>
         )     
         table.push(<tr align="center" key={uuidv4()}>{row}</tr>)
       }

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css';
 import reportWebVitals from './reportWebVitals';
 //import {createBrowserRouter,RouterProvider} from "react-router-dom-dom";
-import {BrowserRouter, Routes, Route, Outlet, HashRouter} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Outlet, HashRouter, createHashRouter, RouterProvider} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from './errorPage';
 //import FutPaymentRoute from './timepayments/futurepayments';
@@ -111,7 +111,68 @@ const router = createBrowserRouter([
   });
   */
   
-
+const router = createHashRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "account/:a",
+        element: <Account />,
+      },
+      {
+        path: "provider/history/:id",
+        element: <ProvSubHistory />,
+      },
+      {
+        path: "history/:id",
+        element: <ProvSubHistory />,
+      },
+      {
+        path: "subscribers/:id/:a/:t/:p",
+        element: <ProvSubscribers />
+      },
+      {
+        path: "public_subscription/:id/:f/:d",
+        element: <PublicSubscription />,
+      },
+      {
+        path: "subscription/:id",
+        element: <SubHistory />
+      },
+      {
+        path: "calendar",
+        element: <Calendar />
+      },
+      {
+        path: "admin/",
+        element: <Admin />
+      },
+      {
+        path: "admin/subscriptions/:t/:s",
+        element: <AdminSubscriptions />
+      },
+      {
+        path: "admin/history/:a/:isp",
+        element: <AdminHistory />
+      },
+      {
+        path: "subscriptions/:t",
+        element: <Subscriptions />
+      }
+    ]
+  }
+], {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+    v7_partialHydration: true,
+    v7_skipActionErrorRevalidation: true,
+  },
+});
   
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -145,7 +206,13 @@ root.render(
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <ApolloProvider client={apolloClient}>
-            <HashRouter>
+            {/*
+            <HashRouter
+              future={{
+                v7_startTransition: true, // Enables React's startTransition for state updates
+                v7_relativeSplatPath: true, // Changes relative path handling for splat routes
+              }}
+            >
               <Routes>
                   <Route path="/" element={<Root />}>
                     <Route path="account/:a" element={<Account />} />
@@ -157,6 +224,7 @@ root.render(
                     {/*
                     <Route path="editdetails/:id" element={<EditDetails />} />
                     */}
+                    {/*
                     <Route path="calendar" element={<Calendar />} />
                     <Route path="admin/" element={<Admin />} />
                     <Route path="admin/subscriptions/:t/:s" element={<AdminSubscriptions />} />
@@ -166,6 +234,8 @@ root.render(
                   </Route>
               </Routes>
             </HashRouter>
+            */}
+            <RouterProvider router={router} />
           </ApolloProvider>
         </QueryClientProvider>
       </WagmiProvider>

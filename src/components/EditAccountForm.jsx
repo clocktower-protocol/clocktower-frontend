@@ -25,11 +25,11 @@ const EditAccountForm = (props) => {
     
     useEffect(() => {
         //if this is an edit it sets the initial values
-        setDescription(props.accountDetails.description)
-        setCompany(props.accountDetails.company)
-        setUrl(props.accountDetails.url)
-        setDomain(props.accountDetails.domain)
-    },[props.accountDetails.description, props.accountDetails.company, props.accountDetails.url, props.accountDetails.domain])
+        setDescription(props.accountDetails?.description || '')
+        setCompany(props.accountDetails?.company || '')
+        setUrl(props.accountDetails?.url || '')
+        setDomain(props.accountDetails?.domain || '')
+    },[props.accountDetails?.description, props.accountDetails?.company, props.accountDetails?.url, props.accountDetails?.domain])
 
     useEffect(() => {
 
@@ -154,12 +154,12 @@ const EditAccountForm = (props) => {
         if (allValidated && !isSubmitting) {
             setIsSubmitting(true);
             const formAccountDetails = {
-                description: description,
-                company: company,
-                url: url,
-                domain: domain,
-                email: email,
-                misc: misc
+                description: description || '',
+                company: company || '',
+                url: url || '',
+                domain: domain || '',
+                email: email || '',
+                misc: misc || ''
             }
             console.log(formAccountDetails)
 

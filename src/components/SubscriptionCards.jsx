@@ -141,11 +141,11 @@ const SubscriptionCards = (props) => {
                 totalSubscribers = subscriptionArray[i].totalSubscribers
             }
 
-            let description = detailsArray[i].description
+            let description = detailsArray[i]?.description || '---'
 
             //in abscence of description sets as "(No Description)"
-            if(typeof description !== "undefined" && description === ""){
-                description = "(No Description)"
+            if(description === ""){
+                description = "---"
             }
 
             //formats subscription amount

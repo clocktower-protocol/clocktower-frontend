@@ -399,8 +399,14 @@ useEffect(() => {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <EditAccountForm
-
-                                        accountDetails = {accountDetails}
+                                        accountDetails = {{
+                                            description: accountDetails?.description || '',
+                                            company: accountDetails?.company || '',
+                                            url: accountDetails?.url || '',
+                                            domain: accountDetails?.domain || '',
+                                            email: accountDetails?.email || '',
+                                            misc: accountDetails?.misc || ''
+                                        }}
                                         setChangedAccountDetails = {setChangedAccountDetails}
                                     />
                                 </Modal.Body>

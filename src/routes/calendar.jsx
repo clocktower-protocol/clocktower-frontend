@@ -73,7 +73,7 @@ const Calendar = () => {
             let ticker = TOKEN_LOOKUP.find((token) => 
                 token.address === accountSubscriptions[i].subscription.token
             )?.ticker || "";
-            console.log(ticker);
+            //console.log(ticker);
 
             //gets total 
             let total = ""

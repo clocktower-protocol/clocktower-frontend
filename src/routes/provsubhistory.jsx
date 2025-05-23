@@ -52,7 +52,7 @@ const ProvSubHistory = () => {
                             variables: { subscriptionId: id.toLowerCase()}
                     });
         const logs = result.data.subLogs;
-        console.log(logs)
+        //console.log(logs)
 
         setHistoryArray(logs)
     },[id, publicClient])

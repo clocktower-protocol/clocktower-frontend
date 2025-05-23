@@ -341,7 +341,7 @@ const getSubscriberSubs = useCallback(async () => {
       })
     );
 
-    console.log(accountSubscriptions)
+    //console.log(accountSubscriptions)
      
        setSubscribedSubsArray(accountSubscriptions)
        setSubscribedDetailsArray(tempDetailsArray)
@@ -396,10 +396,10 @@ const getSub = useCallback(async (editSubParams) => {
 useEffect(() => {
     isMounting.current = true
 
-    console.log("mounting")
+    //console.log("mounting")
     //checks if user is logged into account
     if(typeof address === "undefined") {
-        console.log("Not Logged in")
+        //console.log("Not Logged in")
     } else {
 
         getProviderSubs()
@@ -411,7 +411,7 @@ useEffect(() => {
 //changes data when not mounting
 useEffect(() => {
 
-    console.log("not mounting")
+    //console.log("not mounting")
     //doesn't reload on initial load
     if(!isMounting.current){
         getProviderSubs()

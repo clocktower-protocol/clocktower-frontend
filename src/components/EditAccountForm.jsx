@@ -51,7 +51,7 @@ const EditAccountForm = (props) => {
             } else {
                 setInvalidDescription(false)
                 setDescription(event.target.value)
-                console.log(event.target.value)
+                //console.log(event.target.value)
             }
         } else {
             setDescription(event.target.value)

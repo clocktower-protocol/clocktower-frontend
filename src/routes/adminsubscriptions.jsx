@@ -178,7 +178,7 @@ const AdminSubscriptions = () => {
             })
             */
             
-            if(isSubscriber) {
+            if(!isSubscriber) {
                 const result = await apolloClient.query({
                     query: GET_LATEST_DETAILS_PROVIDER_LOG,
                     variables: { userAddress: subscriptions[i].subscription.provider, first: 1 }

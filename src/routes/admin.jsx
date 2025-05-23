@@ -91,8 +91,6 @@ const Admin = () => {
         for(let i = 0; i < uniqueProviders.length; i++) {
             //console.log(uniqueProviders[i])
             
-            //FIXME:
-            /*
             await readContract(config, {
                 address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
@@ -103,11 +101,11 @@ const Admin = () => {
                 providers.push(mapAccount)
                 accounts.push(mapAccount)
             })
-            */
+            
             
         }
 
-        //setAllProviders(providers)
+        setAllProviders(providers)
 
          //iterates through all subscribers and gets account info
          for(let i = 0; i < uniqueSubscribers.length; i++) {

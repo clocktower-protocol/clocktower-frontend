@@ -1,7 +1,6 @@
 import {React, useState, useEffect, useCallback} from 'react';
 import { Navbar, Container, Nav, Button, Row, Col, Modal, Stack, Alert, NavDropdown} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap'
-import { Outlet, useNavigate, useLocation} from "react-router-dom";
+import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
@@ -189,9 +188,11 @@ const Root = () => {
           <div key={"navBarKey"} className="navBar">
           <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar} >
             <Container key="navContainer1" style={{width: "250px"}}>
-              <LinkContainer to="/" style={{paddingLeft: "20px"}}>
-                <Navbar.Brand key="navTitle"><div className={styles.clocktower_brand}>Clocktower</div></Navbar.Brand>
-              </LinkContainer>
+              <Link to="/" style={{paddingLeft: "20px", textDecoration: 'none'}}>
+                <Navbar.Brand key="navTitle">
+                  <div className={styles.clocktower_brand}>Clocktower</div>
+                </Navbar.Brand>
+              </Link>
             </Container>
             <Container style={{justifyContent: "flex-start"}}>
               <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>{' '}

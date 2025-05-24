@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.css';
 import reportWebVitals from './reportWebVitals';
 //import {createBrowserRouter,RouterProvider} from "react-router-dom-dom";
-import {createHashRouter, RouterProvider} from "react-router-dom";
+import {createHashRouter, RouterProvider} from "react-router";
 import Root from "./routes/root";
 import ErrorPage from './errorPage';
 //import FutPaymentRoute from './timepayments/futurepayments';

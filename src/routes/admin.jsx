@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import {Alert, Tab, Tabs} from 'react-bootstrap';
 import {CLOCKTOWERSUB_ABI, ADMIN_ACCOUNT, CHAIN_LOOKUP} from "../config"; 
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router";
 import ProvidersTable from '../components/ProvidersTable';
 import CallerHistoryTable from '../components/CallerHistoryTable';
 import SubscribersTable from '../components/SubscribersTable';

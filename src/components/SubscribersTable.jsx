@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 import { v4 as uuidv4 } from 'uuid'
 
 const SubscribersTable = (props) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs'
 import {TOKEN_LOOKUP, CHAIN_LOOKUP} from "../config";

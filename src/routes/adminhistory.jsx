@@ -1,6 +1,6 @@
 import {React, useState, useCallback, useEffect} from 'react';
 import {Alert} from 'react-bootstrap';
-import { useParams, useOutletContext } from "react-router-dom"
+import { useParams, useOutletContext } from "react-router"
 import { ADMIN_ACCOUNT, CHAIN_LOOKUP} from "../config"; 
 import { usePublicClient, useAccount } from 'wagmi'
 import { parseAbiItem } from 'viem'

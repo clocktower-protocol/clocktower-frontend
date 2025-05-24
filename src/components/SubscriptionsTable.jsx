@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Table} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../config";
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"

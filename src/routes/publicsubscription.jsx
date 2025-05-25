@@ -4,7 +4,7 @@ import { useOutletContext, useParams, useNavigate} from "react-router";
 import {CLOCKTOWERSUB_ABI, INFINITE_APPROVAL, ZERO_ADDRESS, CHAIN_LOOKUP} from "../config"; 
 import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount} from 'wagmi'
 import { readContract} from 'wagmi/actions'
-import { parseAbiItem, erc20Abi} from 'viem'
+import { erc20Abi} from 'viem'
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
 import SubscriptionCards from "../components/SubscriptionCards";
@@ -12,8 +12,6 @@ import styles from '../css/clocktower.module.css';
 import { gql } from '@apollo/client';
 import { apolloClient } from '../apolloclient';
 
-
-/* global BigInt */
 
 const PublicSubscription = () => {
 
@@ -76,7 +74,7 @@ const PublicSubscription = () => {
 
             //gets contract address from whatever chain is selected
             const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-            const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+            //const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
             await readContract(config, {
                 address: contractAddress,
@@ -216,7 +214,7 @@ const PublicSubscription = () => {
             isProviderSame()
         }
 
-    }, [account, d, f, id, publicClient, setAlert, setAlertText]);
+    }, [account, d, f, id, publicClient, setAlert, setAlertText, GET_LATEST_DETAILS_LOG, chainId]);
     
      //Creates alert
      const alertMaker = () => {
@@ -271,7 +269,7 @@ const PublicSubscription = () => {
         }
     
        
-    },[subscription, address, token, writeContract])
+    },[subscription, address, token, writeContract, chainId])
 
     const sendToAccount = useCallback(() => 
             navigate(`/subscriptions/subscribed`)

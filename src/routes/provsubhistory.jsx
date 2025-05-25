@@ -3,7 +3,7 @@ import { useOutletContext, useParams} from "react-router";
 import {Alert} from 'react-bootstrap';
 //import { CHAIN_LOOKUP} from "../config"; 
 import SubHistoryTable from '../components/SubHistoryTable';
-import { usePublicClient, useAccount} from 'wagmi'
+//import { usePublicClient } from 'wagmi'
 //import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
 import { gql } from '@apollo/client';
@@ -13,9 +13,9 @@ const ProvSubHistory = () => {
     const [account] = useOutletContext();
 
     //gets public client for log lookup
-    const publicClient = usePublicClient()
+    //const publicClient = usePublicClient()
 
-    const { chainId } = useAccount()
+    //const { chainId } = useAccount()
 
     //creates empty array for table
     let emptySubscriptionArray = [];
@@ -55,7 +55,7 @@ const ProvSubHistory = () => {
         //console.log(logs)
 
         setHistoryArray(logs)
-    },[id, publicClient])
+    },[id, GET_SUBLOGS])
 
     //loads once
     useEffect( () => {

@@ -3,20 +3,21 @@ import { useOutletContext, useParams} from "react-router";
 import {Alert} from 'react-bootstrap';
 import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP} from "../config"; 
 import SubscriptionsTable from '../components/SubscriptionsTable';
-import {usePublicClient, useAccount} from 'wagmi'
+import { useAccount} from 'wagmi'
 import { readContract } from 'wagmi/actions'
-import { parseAbiItem } from 'viem'
+//import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
 import { gql } from '@apollo/client';
 import { apolloClient } from '../apolloclient';
+//import { chai } from 'globals';
 
 const AdminSubscriptions = () => {
 
     const [account] = useOutletContext();
 
     //gets public client for log lookup
-    const publicClient = usePublicClient()
+   // const publicClient = usePublicClient()
 
     let {t,s} = useParams();
 
@@ -85,7 +86,7 @@ const AdminSubscriptions = () => {
         let remainingCycles
 
         const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+        //const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
         //const cycles = Math.round(1 / ((fee / 10000) - 1))
         //await fetchToken()
@@ -201,7 +202,7 @@ const AdminSubscriptions = () => {
         setSubscriptionArray(subscriptions)
         setDetailsArray(detailsArray)
        
-    },[account, detailsArray, publicClient])
+    },[account, detailsArray, GET_LATEST_DETAILS_PROVIDER_LOG, GET_LATEST_DETAILS_SUBSCRIBER_LOG, chainId])
 
     //loads provider subscription list upon login
     useEffect(() => {

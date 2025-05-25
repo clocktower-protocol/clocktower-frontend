@@ -3,8 +3,8 @@ import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP} from "../config"; 
 import {Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner} from 'react-bootstrap';
 import Avatar from "boring-avatars"
-import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
-import {recoverMessageAddress, parseAbiItem } from 'viem'
+import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import {recoverMessageAddress } from 'viem'
 import EditAccountForm from "../components/EditAccountForm";
 //import {fetchToken} from '../clockfunctions'
 import { gql } from '@apollo/client';
@@ -19,7 +19,7 @@ const Account = () => {
     let isMounting = useRef(true)
 
     //gets public client for log lookup
-    const publicClient = usePublicClient()
+    //const publicClient = usePublicClient()
 
     //gets passed url variables
     let {a} = useParams();
@@ -108,7 +108,7 @@ const Account = () => {
         } else {
             isMounting.current = false
         }
-    },[changedAccountDetails, writeContract])
+    },[changedAccountDetails, writeContract, chainId])
 
     const verifyDomain = async (domain, provAddress) => {
 
@@ -146,7 +146,7 @@ const Account = () => {
     const verifyHandleShow = () => setVerifyShow(true);
 
     //turns on and off edit account form modal
-    const editFormHandleClose = () => setShowEditForm(false)
+    const editFormHandleClose = useCallback(() => setShowEditForm(false), [])
     const editFormHandleShow = () => {
         setShowEditWarn(false)
         setShowEditForm(true)
@@ -208,7 +208,7 @@ const Account = () => {
         } catch(Err) {
             console.log(Err)
         }
-    },[a, address, publicClient])
+    },[a, address])
 
 
 //sets mounting bool to not mounting after initial load
@@ -307,7 +307,7 @@ useEffect(() => {
                                 <Modal.Body className={styles.tight_text}>Create the following domain record: 
                                     <p></p> Step 1: Use the copy button below to copy the hash 
                                     <p></p> {String(signMessageData).slice(0,85)}<br></br>{String(signMessageData).slice(86,170)}
-                                    <p></p> Step 2: Create a new txt record at your domain registrar name "ct"
+                                    <p></p> Step 2: Create a new txt record at your domain registrar name &quot;ct&quot;
                                     <p></p> Step 3: Paste hash into data field of new record
                                 </Modal.Body>
                                 <Modal.Footer>

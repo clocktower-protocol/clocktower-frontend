@@ -2,7 +2,7 @@ import { useOutletContext, useParams } from "react-router";
 import React, {useEffect, useState , useRef, useCallback} from 'react'
 import {CLOCKTOWERSUB_ABI, CHAIN_LOOKUP} from "../config"; 
 import {Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup} from 'react-bootstrap';
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { readContract } from 'wagmi/actions'
 //import { parseAbiItem } from 'viem'
 import {config} from '../wagmiconfig'
@@ -22,7 +22,7 @@ const Subscriptions = () => {
 
 
     //gets public client for log lookup
-    const publicClient = usePublicClient()
+    //const publicClient = usePublicClient()
 
     //gets passed url variables
     let {t} = useParams();
@@ -69,7 +69,7 @@ const Subscriptions = () => {
     //spinner
     const [isLoading, setIsLoading] = useState(true)
 
-    const [checked, setChecked] = useState(false)
+    //const [checked, setChecked] = useState(false)
 
     // Query for DetailsLog events
     const GET_LATEST_DETAILS_LOG = gql`
@@ -133,7 +133,7 @@ const Subscriptions = () => {
         } else {
             isMounting.current = false
         }
-    },[changedCreateSub, writeContract])
+    },[changedCreateSub, writeContract, chainId])
 
     //hook for calling wallet to cancel sub
     useEffect(() => {
@@ -154,7 +154,7 @@ const Subscriptions = () => {
         } else {
             isMounting.current = false
         }
-    },[cancelledSub, writeContract])
+    },[cancelledSub, writeContract, chainId])
 
     //hook for calling wallet to unsubscribe
     useEffect(() => {
@@ -175,7 +175,7 @@ const Subscriptions = () => {
         } else {
             isMounting.current = false
         }
-    },[unsubscribedSub, writeContract])
+    },[unsubscribedSub, writeContract, chainId])
 
     //hook for editing subscription
     useEffect(() => {
@@ -198,7 +198,7 @@ const Subscriptions = () => {
         } else {
             isMounting.current = false
         }
-    },[editResult, writeContract])
+    },[editResult, writeContract, chainId])
 
     //MODAL Control--------------------------------
 
@@ -286,7 +286,7 @@ const Subscriptions = () => {
    } catch(Err) {
        console.log(Err)
    }
-}, [address, publicClient, chainId, config,])
+}, [address, chainId, GET_LATEST_DETAILS_LOG])
 
 const getSubscriberSubs = useCallback(async () => {
     //checks if user is logged into account
@@ -350,7 +350,7 @@ const getSubscriberSubs = useCallback(async () => {
         //await fetchToken()
         console.log(Err)
     }
-},[address, publicClient, chainId, config,])
+},[address, chainId, GET_LATEST_DETAILS_LOG])
 
 const getSub = useCallback(async (editSubParams) => {
 
@@ -387,7 +387,7 @@ const getSub = useCallback(async (editSubParams) => {
         //setEditSub(result)
         setEditSub(resultSub)
     })
-},[publicClient])
+},[ GET_LATEST_DETAILS_LOG, chainId])
 
 
 //Page hooks------------------------------

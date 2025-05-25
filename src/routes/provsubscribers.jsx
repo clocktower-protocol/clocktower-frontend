@@ -82,7 +82,7 @@ const ProvSubscribers = () => {
 
         setSubscribersArray(subscribers)
         setRemainingCycles(remainingCyclesArray)
-    },[a, account, id])
+    },[a, account, id, chainId])
 
 
     //loads provider subscription list upon login

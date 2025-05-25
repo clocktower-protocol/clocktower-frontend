@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { Form, Button, Row, Col, Modal, ListGroup, Dropdown} from 'react-bootstrap';
 import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP, CHAIN_LOOKUP} from '../config';
 import {parseEther, formatEther} from 'viem'

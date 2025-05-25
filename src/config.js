@@ -18,7 +18,6 @@ import CBWLogo from "./images/cbw.svg"
 //import { getAddress } from 'viem';
 */
 
-/* global BigInt */
 
 //USE ONLY  CHECKSUMMED ADDRESSES BELOW
 //export const CLOCKTOWERSUB_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";

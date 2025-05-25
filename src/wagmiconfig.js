@@ -2,12 +2,12 @@ import { createConfig, http, fallback} from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 //import { sepolia } from 'wagmi/chains'
 import { baseSepolia } from 'wagmi/chains'
-import { coinbaseWallet, metaMask, walletConnect} from 'wagmi/connectors'
+import { coinbaseWallet, metaMask } from 'wagmi/connectors'
 //import {fetchToken} from './clockfunctions'
 //import {jwtDecode} from 'jwt-decode'
 const transport1 = import.meta.env.VITE_TRANSPORT1
 const transport2 = import.meta.env.VITE_TRANSPORT2
-const projectId = import.meta.env.VITE_WALLETCONNECTID
+//const projectId = import.meta.env.VITE_WALLETCONNECTID
 
 //let token = localStorage.getItem('clockAccess')
 

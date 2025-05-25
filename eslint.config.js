@@ -5,15 +5,14 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
+  js.configs.recommended,
   {
     files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"],
-    plugins: { 
-      js,
-      "react": pluginReact,
+    plugins: {
+      react: pluginReact,
       "react-hooks": pluginReactHooks
     },
-    extends: ["js/recommended"],
-    languageOptions: { 
+    languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.es2021
@@ -26,11 +25,22 @@ export default defineConfig([
         }
       }
     },
+    settings: {
+      react: {
+        version: "detect"
+      }
+    },
     rules: {
-      "react/react-in-jsx-scope": "off", // Not needed in Vite projects
+      ...pluginReact.configs.recommended.rules,
+      ...pluginReact.configs["jsx-runtime"].rules,
+      "react/react-in-jsx-scope": "off",
       "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn"
+      "react-hooks/exhaustive-deps": "warn",
+      "react/prop-types": "off",
+      "no-unused-vars": ["error", {
+        "varsIgnorePattern": "^[A-Z]",
+        "argsIgnorePattern": "^_"
+      }]
     }
-  },
-  pluginReact.configs.flat.recommended
+  }
 ]);

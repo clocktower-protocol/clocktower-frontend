@@ -1,9 +1,9 @@
 import {React, useState, useCallback, useEffect} from 'react';
 import {Alert} from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router"
-import { ADMIN_ACCOUNT, CHAIN_LOOKUP} from "../config"; 
-import { usePublicClient, useAccount } from 'wagmi'
-import { parseAbiItem } from 'viem'
+import { ADMIN_ACCOUNT } from "../config"; 
+//import { usePublicClient, useAccount } from 'wagmi'
+//import { parseAbiItem } from 'viem'
 import AdminHistoryTable from '../components/AdminHistoryTable';
 import { gql } from '@apollo/client';
 import { apolloClient } from '../apolloclient';
@@ -15,9 +15,9 @@ const AdminHistory = () => {
     let {a, isp} = useParams();
 
     //gets public client for log lookup
-    const publicClient = usePublicClient()
+    //const publicClient = usePublicClient()
 
-    const { chainId } = useAccount()
+    //const { chainId } = useAccount()
 
 
     //creates empty array for table
@@ -66,8 +66,8 @@ const AdminHistory = () => {
 
     const getLogs = useCallback(async () => {
 
-        const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
-        const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
+        //const contractAddress = CHAIN_LOOKUP.find(item => item.id === chainId).contractAddress
+        //const startBlock = CHAIN_LOOKUP.find(item => item.id === chainId).start_block
 
         let logs = []
 
@@ -118,7 +118,7 @@ const AdminHistory = () => {
 
         setHistory(logs)
         
-    }, [a, isp, publicClient])
+    }, [a, isp, PROVIDER_HISTORY_QUERY, SUBSCRIBER_HISTORY_QUERY])
 
     //loads once
     useEffect( () => {

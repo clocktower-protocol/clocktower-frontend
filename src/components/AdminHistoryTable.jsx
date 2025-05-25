@@ -1,4 +1,3 @@
-import React from 'react';
 import {Table} from 'react-bootstrap';
 import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs'

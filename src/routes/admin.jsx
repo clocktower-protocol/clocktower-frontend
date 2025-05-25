@@ -174,7 +174,7 @@ const Admin = () => {
         */
         
 
-    },[account])
+    },[account, ALL_PROVIDERS_QUERY, ALL_SUBCRIBERS_QUERY, chainId])
 
     //loads caller list upon login
     useEffect(() =>  {
@@ -210,7 +210,7 @@ const Admin = () => {
             //getAllAccounts()
             fetchAllCallers()
     
-        }, [account, getAllAccounts, publicClient]);
+        }, [account, getAllAccounts, publicClient, ALL_CALLERS_QUERY]);
 
 
     //checks that user has logged in 

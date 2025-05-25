@@ -1,4 +1,3 @@
-
 import { useOutletContext, useNavigate } from "react-router";
 import {React, useEffect, useState, useCallback }from 'react'
 import FullCalendar from '@fullcalendar/react'
@@ -35,14 +34,16 @@ const Calendar = () => {
     
     const [eventsArray, setEventsArray] = useState(emptyArray)
 
+    
     //event handlers for tooltip
-    const handleMouseEnter = (info) => {
+    const handleMouseEnter = (_info) => {
         
     }
 
-    const handleMouseLeave = (info) => {
+    const handleMouseLeave = (_info) => {
         
     }
+    
     
     //link functions
     const eventClick = useCallback((info) => {
@@ -97,7 +98,7 @@ const Calendar = () => {
                 //creates calendar events based on frequency and dueDay
                 switch (frequency) {
                     //weekly
-                    case 0:
+                    case 0: {
                         //adjusts for Sunday being 7
                         if(dueDay === 7) {
                             dueDay = 0
@@ -122,9 +123,10 @@ const Calendar = () => {
                             //eventsArray.push({title: accountSubscriptions[i].subscription.id, date: nextEvent.format('YYYY-MM-DD')})
                             tempEventsArray.push({title: total + " " + ticker, extendedProps: accountSubscriptions[i].subscription, date: nextEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
-                        break
+                        break;
+                    }
                     //monthly
-                    case 1:
+                    case 1: {
                         let year
                         let month
                         let monthEvent
@@ -153,10 +155,10 @@ const Calendar = () => {
                             monthEvent = monthEvent.add(1, 'M')
                             tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: monthEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
-                        break
+                        break;
+                    }
                     //quarterly
-                    case 2: 
-
+                    case 2: {
                         //converts now to quarter day (1 -- 90)
                         let maxMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
                         const leapMaxMonthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -254,9 +256,10 @@ const Calendar = () => {
                                 }
                             }
                         }
-                        break
+                        break;
+                    }
                     //yearly
-                    case 3:
+                    case 3: {
                         let y = now.year()
                         //checks if current day of year is after dueDay
                         if(now.dayOfYear() > dueDay) {
@@ -273,11 +276,10 @@ const Calendar = () => {
                             //pushs date to array
                             tempEventsArray.push({title: total+" "+ticker, extendedProps: accountSubscriptions[i].subscription, date: yearEvent.format('YYYY-MM-DD'), backgroundColor: color})
                         }
-
-                        break
+                        break;
+                    }
                     default: 
-                        break
-                    
+                        break;
                 }
             }
        }
@@ -328,7 +330,7 @@ const Calendar = () => {
    } catch(Err) {
        console.log(Err)
    }
-},[account, address, convertToCalEvents])
+},[account, address, convertToCalEvents, chainId])
 
 useEffect(() => {
     setCalEvents()

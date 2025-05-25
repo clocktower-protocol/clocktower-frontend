@@ -153,7 +153,7 @@ const EditAccountForm = (props) => {
    
     const submitForm = async (event) => {
 
-        const form = event.currentTarget
+        //const form = event.currentTarget
 
         
         event.preventDefault();

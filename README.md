@@ -9,6 +9,6 @@ A frontend for the clocktower protocol
 
  - Multichain / Multiwallet support
 
- - Easy to create subsriptions and to subscribe
+ - Easy to create subscriptions and to subscribe
 
  - Calendar 

@@ -186,55 +186,57 @@ const Root = () => {
         </div>
         <div key={"topDiv"}>
           <div key={"navBarKey"} className="navBar">
-          <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar} >
-            <Container key="navContainer1" style={{width: "250px"}}>
-              <Link to="/" style={{paddingLeft: "20px", textDecoration: 'none'}}>
-                <Navbar.Brand key="navTitle">
-                  <div className={styles.clocktower_brand}>Clocktower</div>
-                </Navbar.Brand>
-              </Link>
-            </Container>
-            <Container style={{justifyContent: "flex-start"}}>
-              <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>{' '}
-              <Button variant="outline-info" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subscriptions</Button>{' '}
-              <Button variant="outline-info" className={styles.calendar_button} onClick={handleOnClickCalendar}>Calendar</Button>{' '}
-              {account === adminAccount ?
-              <Button variant="outline-info"  style={{margin: "5px"}} onClick={handleOnClickAdmin}>Admin</Button>
-              : ""}
-            </Container>
-            <Container key="navContainer" style={{justifyContent:"flex-end", gap:"50px"}}>
+          <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar}>
+            <Container fluid>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
+                <div style={{ flex: '0 0 200px', display: 'flex', alignItems: 'center' }}>
+                  <Link to="/" style={{ textDecoration: 'none' }}>
+                    <Navbar.Brand key="navTitle" style={{ margin: 0, padding: 0 }}>
+                      <div className={styles.clocktower_brand}>Clocktower</div>
+                    </Navbar.Brand>
+                  </Link>
+                </div>
+                <div style={{ flex: '1', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft: '20px' }}>
+                  <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
+                  <Button variant="outline-info" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subscriptions</Button>
+                  <Button variant="outline-info" className={styles.calendar_button} onClick={handleOnClickCalendar}>Calendar</Button>
+                  {account === adminAccount && <Button variant="outline-info" style={{margin: "5px"}} onClick={handleOnClickAdmin}>Admin</Button>}
+                </div>
+                <div style={{ flex: '0 0 400px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px', paddingRight: '20px' }}>
                   {chains.length > 1 ? 
-                  <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown">
-                    {chains.map((chain) => (
+                    <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown" style={{ marginRight: 'auto' }}>
+                      {chains.map((chain) => (
                         <NavDropdown.Item key={uuidv4()} className={styles.chain_pulldown2}>
-                    
                           {CHAIN_LOOKUP.map((lchain) => {
                             if(lchain.id === chain.id){
                               return <Icon key={uuidv4()} className={styles.chain_icon} icon={lchain.icon}></Icon>
                             } else {
                               return ""
                             }
-                          })
-                          }
-                          
+                          })}
                           <Button variant="outline-info" key={chain.id} onClick={() => changeChain(chain.id)}> 
                             { chain.name }
                           </Button>
                         </NavDropdown.Item>
                       ))}
-                  </NavDropdown>
-                  : 
-                    <Navbar.Text>
+                    </NavDropdown>
+                    : 
+                    <Navbar.Text style={{ margin: 0, whiteSpace: 'nowrap', marginRight: 'auto' }}>
                       <span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[0].icon}></Icon> {CHAIN_LOOKUP[0].displayName} </span>
                     </Navbar.Text>
-                 }
-                  
-                  <Nav key="nav">
-                    {isConnected && !isDisconnected ? (<Navbar.Text className={styles.account_text_nav}>Account: {address.slice(0,5)+"..."+address.slice(37, 42)}</Navbar.Text>) : (<Button variant="outline-success" className={styles.wallet_button} onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)}
+                  }
+                  <Nav key="nav" style={{ margin: 0, whiteSpace: 'nowrap' }}>
+                    {isConnected && !isDisconnected ? 
+                      (<Navbar.Text className={styles.account_text_nav} style={{ margin: 0 }}>Account: {address.slice(0,5)+"..."+address.slice(37, 42)}</Navbar.Text>) 
+                      : 
+                      (<Button variant="outline-success" className={styles.wallet_button} onClick = {() => walletButtonClick()}>Sign in Wallet</Button>)
+                    }
                   </Nav>
-              </Container>
-      </Navbar>
-      </div>
+                </div>
+              </div>
+            </Container>
+          </Navbar>
+          </div>
         <div key={"mainDiv"} id="detail" className="mainDiv">
           
           {!loggedIn || (!loggedIn && typeof chainId !== "undefined") ? <Alert align="center" variant="info" className={styles.connect_wallet_alert}>Please Connect Wallet</Alert>

@@ -259,6 +259,11 @@ const PublicSubscription = () => {
            
         } else {
 
+            if(!showToast) {
+                setToastHeader("Waiting on wallet transaction...")
+                setShowToast(true)
+            }
+
             //subscribes
             writeContract({
                 address: contractAddress,

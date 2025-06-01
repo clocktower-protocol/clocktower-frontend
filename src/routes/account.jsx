@@ -54,7 +54,7 @@ const Account = () => {
     //display Link
     const [linkDisplayed, setLinkDisplayed] = useState("")
     
-    const msg = 'test'
+    const msg = 'clocktower_is_awesome'
 
     const { data: hash, writeContract } = useWriteContract()
 
@@ -111,29 +111,31 @@ const Account = () => {
     },[changedAccountDetails, writeContract, chainId])
 
     const verifyDomain = async (domain, provAddress) => {
-
-        let url = "https://dns.google/resolve?name=ct." + domain + "&type=TXT"
+        let url = `https://cloudflare-dns.com/dns-query?name=ct.${domain}&type=TXT`
 
         //checks dns record
          try {
-            var response = await fetch(url);
+            var response = await fetch(url, {
+                headers: {
+                    'Accept': 'application/dns-json'
+                }
+            });
                 
-                var json = await response.json();
-                if(json.Answer[0].data !== undefined){
-                   
-                    //verifies signature
-                    const dnsRecoveredAddress = await recoverMessageAddress({
-                        message: msg,
-                        signature: json.Answer[0].data,
-                      })
-                    if(dnsRecoveredAddress === provAddress) {
-                        setIsDomainVerified(true)
-                    }
+            var json = await response.json();
+            if(json.Answer && json.Answer[0]?.data) {
+                //verifies signature
+                const dnsRecoveredAddress = await recoverMessageAddress({
+                    message: msg,
+                    signature: json.Answer[0].data,
+                })
+                if(dnsRecoveredAddress === provAddress) {
+                    setIsDomainVerified(true)
                 }
             }
-             catch(Err) {
-                console.log(Err)
-            }
+        }
+        catch(Err) {
+            console.log(Err)
+        }
     }
 
     //turns on and off edit warning modal
@@ -373,9 +375,6 @@ useEffect(() => {
                             </Modal>
                         </div>
                       
-                        <div>
-
-                        </div>
                         <Stack gap={3}>
                         <div>  
                             <p style={{display: "flex", justifyContent: "center", alignContent: "center", margin: "5px", fontSize:"20px"}}>
@@ -421,8 +420,10 @@ useEffect(() => {
                                                     <ListGroup.Item style={{width:"350px", textAlign:"center"}}>{(accountDetails?.url === undefined || accountDetails.url === "") ? "---" : accountDetails.url}</ListGroup.Item>
                                                 </ListGroup>
                                             </Stack>  
-                                            </Col>
-                                            <Col>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
                                             <Stack gap={3}>     
                                                 <ListGroup horizontal={'lg'} variant="primary" style={{justifyContent:"center"}}>
                                                     <ListGroup.Item style={{width:"250px", textAlign:"center"}} variant="primary">Company</ListGroup.Item>

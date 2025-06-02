@@ -1,5 +1,8 @@
 {
     "name": "clocktower-frontend",
     "pages_build_output_dir": "build",
-    "compatibility_date": "2025-06-02"
+    "compatibility_date": "2025-06-02",
+    "engines": {
+      "node": ">=18.18.0"
+    }
   }

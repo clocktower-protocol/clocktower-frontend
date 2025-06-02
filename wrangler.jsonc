@@ -2,7 +2,7 @@
     "name": "clocktower-frontend",
     "pages_build_output_dir": "build",
     "compatibility_date": "2025-04-17",
-    "env": {
+    "vars": {
         "NODE_VERSION": "22.16.0"
     }
 }

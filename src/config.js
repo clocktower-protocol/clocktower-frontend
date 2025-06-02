@@ -43,7 +43,7 @@ export const DOMAIN = "https://app.clocktower.finance"
 export const JWT_SERVER = "https://clocktowerdev.com/api/requesttoken"
 
 export const TOKEN_LOOKUP = [
-  /*
+  /* 
   {
     address: getAddress("0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0"),
     ticker: "CLOCK",

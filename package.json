@@ -4,9 +4,6 @@
   "private": true,
   "homepage": "/",
   "type": "module",
-  "engines": {
-    "node": ">=20.0.0"
-  },
   "dependencies": {
     "@apollo/client": "^3.13.8",
     "@fullcalendar/bootstrap5": "^6.1.10",

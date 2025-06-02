@@ -205,40 +205,9 @@ root.render(
   <React.StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <ApolloProvider client={apolloClient}>
-            {/*
-            <HashRouter
-              future={{
-                v7_startTransition: true, // Enables React's startTransition for state updates
-                v7_relativeSplatPath: true, // Changes relative path handling for splat routes
-              }}
-            >
-              <Routes>
-                  <Route path="/" element={<Root />}>
-                    <Route path="account/:a" element={<Account />} />
-                    <Route path="provider/history/:id" element={<ProvSubHistory />} />
-                    <Route path="history/:id" element={<ProvSubHistory />} />
-                    <Route path="subscribers/:id/:a/:t/:p" element={<ProvSubscribers />} />
-                    <Route path="public_subscription/:id/:f/:d" element={<PublicSubscription />} />
-                    <Route path="subscription/:id" element={<SubHistory />} />
-                    {/*
-                    <Route path="editdetails/:id" element={<EditDetails />} />
-                    */}
-                    {/*
-                    <Route path="calendar" element={<Calendar />} />
-                    <Route path="admin/" element={<Admin />} />
-                    <Route path="admin/subscriptions/:t/:s" element={<AdminSubscriptions />} />
-                    <Route path="admin/history/:a/:isp" element={<AdminHistory />} />
-                    <Route path="subscriptions/:t" element={<Subscriptions />} />
-                    <Route path="*" element={<ErrorPage />} />
-                  </Route>
-              </Routes>
-            </HashRouter>
-            */}
-            <RouterProvider router={router} future={{
-              v7_startTransition: true,
-            }} />
-          </ApolloProvider>
+          <RouterProvider router={router} future={{
+            v7_startTransition: true,
+          }} />
         </QueryClientProvider>
       </WagmiProvider>
   </React.StrictMode>

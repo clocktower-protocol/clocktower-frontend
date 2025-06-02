@@ -12,11 +12,20 @@ import styles from '../css/clocktower.module.css';
 
 
 import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain} from 'wagmi'
+import { apolloClient, createApolloClient } from '../apolloclient';
+import { ApolloProvider } from '@apollo/client';
 
 
 const Root = () => {
 
     const {address, isConnected, isDisconnected, chainId } = useAccount({config})
+    const [client, setClient] = useState(() => createApolloClient(chainId));
+
+    useEffect(() => {
+        if (chainId) {
+            setClient(createApolloClient(chainId));
+        }
+    }, [chainId]);
 
     
     const { chains, switchChain } = useSwitchChain()
@@ -135,7 +144,7 @@ const Root = () => {
   
   //makes sure user is on approved chain
    return (
-        <>
+        <ApolloProvider client={client}>
         <div key={"root"}>
           <Modal show={showWalletChoice} onHide={handleClose} className={styles.wallet_modal} >
           <Modal.Header closeButton>
@@ -253,7 +262,7 @@ const Root = () => {
         
         </div>
     </div>
-  </>
+  </ApolloProvider>
   )
 
 

@@ -8,6 +8,7 @@ import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
 import Icon from '../components/Icon'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../css/clocktower.module.css';
+import ThemeToggle from '../components/ThemeToggle';
 //import {fetchToken} from '../clockfunctions'
 
 
@@ -234,6 +235,7 @@ const Root = () => {
                       <span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[0].icon}></Icon> {CHAIN_LOOKUP[0].displayName} </span>
                     </Navbar.Text>
                   }
+                  <ThemeToggle />
                   <Nav key="nav" style={{ margin: 0, whiteSpace: 'nowrap' }}>
                     {isConnected && !isDisconnected ? 
                       (<Navbar.Text className={styles.account_text_nav} style={{ margin: 0 }}>Account: {address.slice(0,5)+"..."+address.slice(37, 42)}</Navbar.Text>) 

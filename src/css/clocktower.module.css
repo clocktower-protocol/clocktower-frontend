@@ -1,6 +1,43 @@
 :root {
+    /* Light mode variables */
+    --background-primary: #ffffff;
+    --background-secondary: #f8f9fa;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --accent-color: #0d6efd;
     --letter-spacing: 1.5px;
     --font-family: "Satoshi", sans-serif;
+}
+
+[data-bs-theme="dark"] {
+    /* Dark mode variables */
+    --background-primary: #212529;
+    --background-secondary: #343a40;
+    --text-primary: #f8f9fa;
+    --text-secondary: #adb5bd;
+    --border-color: #495057;
+    --accent-color: #0d6efd;
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    background-color: var(--background-secondary);
 }
 
 @font-face {

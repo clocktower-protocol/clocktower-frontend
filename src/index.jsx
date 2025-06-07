@@ -35,6 +35,7 @@ import {config} from './wagmiconfig'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from './apolloclient'
+import { ThemeProvider } from './context/ThemeContext'
 
 
 const queryClient = new QueryClient() 
@@ -203,6 +204,7 @@ root.render(
 
 root.render(
   <React.StrictMode>
+    <ThemeProvider>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} future={{
@@ -210,6 +212,7 @@ root.render(
           }} />
         </QueryClientProvider>
       </WagmiProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

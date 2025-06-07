@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Stack, ListGroup} from 'react-bootstrap';
+import {Button, Card, Stack, ListGroup, Carousel} from 'react-bootstrap';
 import {Link, useNavigate} from "react-router";
 import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../config";
 import {formatEther} from 'viem'
@@ -313,7 +313,23 @@ const SubscriptionCards = (props) => {
     }
 
     return (
-        <div>{cards}</div>
+        <div className="d-flex justify-content-center w-100 px-3">
+            <Carousel 
+                interval={null} 
+                controls={true} 
+                indicators={true}
+                className="w-100"
+                style={{ maxWidth: '800px' }}
+            >
+                {cards.map((card, index) => (
+                    <Carousel.Item key={uuidv4()}>
+                        <div className="d-flex justify-content-center">
+                            {card}
+                        </div>
+                    </Carousel.Item>
+                ))}
+            </Carousel>
+        </div>
     )
 }
 

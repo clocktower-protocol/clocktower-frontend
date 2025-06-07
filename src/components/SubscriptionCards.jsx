@@ -313,16 +313,16 @@ const SubscriptionCards = (props) => {
     }
 
     return (
-        <div className="d-flex justify-content-center w-100 px-3">
+        <div className="d-flex justify-content-center w-100 px-3 pb-5">
             <Carousel 
                 interval={null} 
                 controls={true} 
                 indicators={true}
-                className="w-100"
+                className="w-100 position-relative"
                 style={{ maxWidth: '800px' }}
             >
                 {cards.map((card, index) => (
-                    <Carousel.Item key={uuidv4()}>
+                    <Carousel.Item key={uuidv4()} className="pb-5">
                         <div className="d-flex justify-content-center">
                             {card}
                         </div>

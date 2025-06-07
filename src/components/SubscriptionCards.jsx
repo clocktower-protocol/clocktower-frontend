@@ -5,6 +5,7 @@ import {TOKEN_LOOKUP, FREQUENCY_LOOKUP, DAY_OF_WEEK_LOOKUP, DOMAIN} from "../con
 import {formatEther} from 'viem'
 import Avatar from "boring-avatars"
 import { v4 as uuidv4 } from 'uuid'
+import styles from '../css/clocktower.module.css';
 
 
 const SubscriptionCards = (props) => {
@@ -319,7 +320,13 @@ const SubscriptionCards = (props) => {
                 controls={true} 
                 indicators={true}
                 className="w-100 position-relative"
-                style={{ maxWidth: '800px' }}
+                style={{ 
+                    maxWidth: '800px',
+                    '--bs-carousel-indicator-bg': 'var(--text-secondary)',
+                    '--bs-carousel-indicator-active-bg': 'var(--text-primary)',
+                    '--bs-carousel-indicator-opacity': '0.5',
+                    '--bs-carousel-indicator-active-opacity': '1'
+                }}
             >
                 {cards.map((card, index) => (
                     <Carousel.Item key={uuidv4()} className="pb-5">

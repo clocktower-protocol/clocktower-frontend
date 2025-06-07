@@ -36,6 +36,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from './apolloclient'
 import { ThemeProvider } from './context/ThemeContext'
+import './css/clocktower.module.css';
 
 
 const queryClient = new QueryClient() 

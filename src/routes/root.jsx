@@ -127,22 +127,36 @@ const Root = () => {
     handleShow()
   }
 
+  /**
+   * Handles chain switching in both the wallet and UI
+   * @param {number} chain_id - The ID of the chain to switch to
+   */
   const changeChain = function (chain_id) {
-
+    // Switch the chain in the wallet using wagmi
     switchChain({ chainId: chain_id })
 
-    
-    CHAIN_LOOKUP.map((lchain,  index) => {
-      if(lchain.id === chain_id){
-        return setSelectedChain(index)
-      } else {
-        return ""
-      }
-    })
-
-
+    // Find the index of the selected chain and update UI state
+    const chainIndex = CHAIN_LOOKUP.findIndex((lchain) => lchain.id === chain_id);
+    if (chainIndex !== -1) {
+      setSelectedChain(chainIndex);
+    }
   }
   
+  /**
+   * Effect to keep the UI in sync with the wallet's chain
+   * This ensures the navbar shows the correct chain even when
+   * the user changes chains directly in their wallet
+   */
+  useEffect(() => {
+    if (chainId) {
+      CHAIN_LOOKUP.forEach((lchain, index) => {
+        if (lchain.id === chainId) {
+          setSelectedChain(index);
+        }
+      });
+    }
+  }, [chainId]);
+
   //makes sure user is on approved chain
    return (
         <ApolloProvider client={client}>

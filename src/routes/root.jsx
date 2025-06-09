@@ -1,10 +1,10 @@
 import {React, useState, useEffect, useCallback} from 'react';
 import { Navbar, Container, Nav, Button, Row, Col, Modal, Stack, Alert, NavDropdown} from 'react-bootstrap';
 import { Outlet, useNavigate, useLocation, Link } from "react-router";
-import {ADMIN_ACCOUNT} from "../config"
+//import {ADMIN_ACCOUNT} from "../config"
 import {config} from '../wagmiconfig'
 //import {fetchToken} from '../clockfunctions'
-import { CHAIN_LOOKUP, WALLET_LOOKUP } from '../config';
+import { CHAIN_LOOKUP, WALLET_LOOKUP, ADMIN_ACCOUNT } from '../config';
 import Icon from '../components/Icon'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../css/clocktower.module.css';

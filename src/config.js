@@ -1,7 +1,7 @@
 //imported svg images
 
 import {ReactComponent as HardhatLogo} from "./images/hardhat.svg"
-import {ReactComponent as SepoliaLogo} from "./images/ethereum.svg"
+import {ReactComponent as SepoliaLogo} from "./images/base_sepolia.svg"
 import {ReactComponent as MetamaskLogo} from "./images/metamask.svg"
 import {ReactComponent as BraveLogo} from "./images/brave.svg"
 import {ReactComponent as USDCLogo} from "./images/usdc.svg"

@@ -16,6 +16,8 @@ const SubHistoryTable = (props) => {
     //gets chainId
     const { chainId } = useAccount({config})
 
+    const isProvider = props.isProvider
+
     //console.log(historyArray.length)
 
     /*
@@ -55,6 +57,16 @@ const SubHistoryTable = (props) => {
   if(historyArray.length > 0 && typeof historyArray[0] !== "undefined") {
     //loops through array to create table rows
     for(let i = 0; i < historyArray.length; i++) {
+
+        if(isProvider) {
+          if(historyArray[i].subScriptEvent === 5) {
+            continue
+          }
+        } else {
+          if(historyArray[i].subScriptEvent === 2) {
+            continue
+          }
+        }
         
         if(typeof historyArray[i].amount !== "undefined") {
           let row = []
@@ -94,6 +106,7 @@ const SubHistoryTable = (props) => {
           table.push(<tr align="center" key={String(historyArray[i].subscriber)+i}>{row}</tr>)
 
         }
+      
     
       }
   

@@ -77,6 +77,7 @@ const SubHistory = () => {
                 <SubHistoryTable 
                     historyArray = {historyArray}
                     ticker = {t}
+                    isProvider = {false}
                 />
             
             </div>

@@ -101,13 +101,18 @@
 }
 
 .chain_pulldown {
-    color: #999999;
+    color: var(--text-secondary);
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
 }
 
 .chain_pulldown2 {
-    background-color: white;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+}
+
+.chain_pulldown2:hover {
+    background-color: var(--background-secondary);
 }
 
 .chain_icon {

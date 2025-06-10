@@ -314,29 +314,35 @@ const SubscriptionCards = (props) => {
     }
 
     return (
-        <div className="d-flex justify-content-center w-100 px-3 pb-5">
-            <Carousel 
-                interval={null} 
-                controls={true} 
-                indicators={true}
-                className="w-100 position-relative"
-                style={{ 
-                    maxWidth: '800px',
-                    '--bs-carousel-indicator-bg': 'var(--text-secondary)',
-                    '--bs-carousel-indicator-active-bg': 'var(--text-primary)',
-                    '--bs-carousel-indicator-opacity': '0.5',
-                    '--bs-carousel-indicator-active-opacity': '1'
-                }}
-            >
-                {cards.map((card, index) => (
-                    <Carousel.Item key={uuidv4()} className="pb-5">
-                        <div className="d-flex justify-content-center">
-                            {card}
-                        </div>
-                    </Carousel.Item>
-                ))}
-            </Carousel>
-        </div>
+        props.isLink ? (
+            <div className="d-flex justify-content-center w-100 px-3 pb-5">
+                {cards}
+            </div>
+        ) : (
+            <div className="d-flex justify-content-center w-100 px-3 pb-5">
+                <Carousel 
+                    interval={null} 
+                    controls={true} 
+                    indicators={true}
+                    className="w-100 position-relative"
+                    style={{ 
+                        maxWidth: '800px',
+                        '--bs-carousel-indicator-bg': 'var(--text-secondary)',
+                        '--bs-carousel-indicator-active-bg': 'var(--text-primary)',
+                        '--bs-carousel-indicator-opacity': '0.5',
+                        '--bs-carousel-indicator-active-opacity': '1'
+                    }}
+                >
+                    {cards.map((card, index) => (
+                        <Carousel.Item key={uuidv4()} className="pb-5">
+                            <div className="d-flex justify-content-center">
+                                {card}
+                            </div>
+                        </Carousel.Item>
+                    ))}
+                </Carousel>
+            </div>
+        )
     )
 }
 

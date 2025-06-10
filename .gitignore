@@ -29,3 +29,5 @@ yarn-error.log*
 *.vsix
 
 .wrangler.toml
+
+/.wrangler/

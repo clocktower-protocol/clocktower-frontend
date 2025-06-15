@@ -532,7 +532,6 @@ const Subscriptions: React.FC = () => {
                                             subscriptionArray={provSubscriptionArray}
                                             detailsArray={provDetailsArray}
                                             setCancelledSub={setCancelledSub}
-                                            subEditDetailsHandleShow={subEditDetailsHandleShow}
                                             setEditSubParams={setEditSubParams}
                                             setLinkDisplayed={setLinkDisplayed}
                                             isProvider={true}

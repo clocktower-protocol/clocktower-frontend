@@ -80,6 +80,6 @@ export interface FormattedSubscription {
 
 export interface SubView {
     subscription: Subscription;
-    status: number;         // Status enum in Solidity
-    totalSubscribers: bigint; // uint256 in Solidity
+    status: number;
+    totalSubscribers?: number;
 }

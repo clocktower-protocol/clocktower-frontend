@@ -90,7 +90,7 @@ const ProvSubscribers: React.FC = () => {
                 <ProvSubscribersTable 
                     subscribersArray={subscribersArray}
                     remainingCycles={remainingCycles}
-                    ticker={t}
+                    ticker={t || ''}
                 />
             </div>
         </div>

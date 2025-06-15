@@ -1,4 +1,4 @@
-import { useOutletContext, useParams } from "react-router";
+import { useParams } from "react-router";
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { CLOCKTOWERSUB_ABI, CHAIN_LOOKUP } from "../config"; 
 import { Row, Col, Button, Stack, Modal, Toast, ToastContainer, Spinner, ButtonGroup } from 'react-bootstrap';
@@ -18,7 +18,6 @@ const Subscriptions: React.FC = () => {
     let isMounting = useRef(true);
     const { t } = useParams<{ t: string }>();
     const { address, chainId } = useAccount();
-    const [account] = useOutletContext<[string]>();
 
     // Modal triggers
     const [showCreateSub, setShowCreateSub] = useState(false);
@@ -518,7 +517,6 @@ const Subscriptions: React.FC = () => {
                                             role={1}
                                             detailsArray={provDetailsArray}
                                             setCancelledSub={setCancelledSub}
-                                            subEditDetailsHandleShow={subEditDetailsHandleShow}
                                             setEditSubParams={setEditSubParams}
                                             setLinkDisplayed={setLinkDisplayed}
                                         />
@@ -547,7 +545,6 @@ const Subscriptions: React.FC = () => {
                                     <SubscriptionsTable
                                         subscriptionArray={subscribedSubsArray}
                                         detailsArray={subscribedDetailsArray}
-                                        account={account}
                                         role={2}
                                         setUnsubscribedSub={setUnsubscribedSub}
                                     />

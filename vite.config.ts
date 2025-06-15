@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import svgr from 'vite-plugin-svgr'
+import svgr from 'vite-plugin-svgr';
 //import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(() => {
@@ -16,16 +16,16 @@ export default defineConfig(() => {
             svgr({ 
                 svgrOptions: {
                     exportType: 'named', // Ensure named exports like ReactComponent
-                  },
-                  include: '**/*.svg', // Process all SVG files
+                },
+                include: '**/*.svg', // Process all SVG files
             }),
             /*
             visualizer({
                 open: true, // Open the visualizer in your browser after build
                 filename: 'build/stats.html', // Output to build directory
-              }),
+            }),
             */
         ],
         base: './', // Ensures relative paths for assets
     };
-});
+}); 

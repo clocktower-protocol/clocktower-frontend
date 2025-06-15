@@ -337,7 +337,9 @@ const Account: React.FC = () => {
                                     email: accountDetails?.email || '',
                                     misc: accountDetails?.misc || ''
                                 }}
-                                setChangedAccountDetails={setChangedAccountDetails}
+                                setChangedAccountDetails={async (details: AccountDetails) => {
+                                    setChangedAccountDetails(details);
+                                }}
                             />
                         </Modal.Body>
                     </Modal>

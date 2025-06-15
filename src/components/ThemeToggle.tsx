@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { useTheme } from '../context/ThemeContext';
 import { BsSun, BsMoon } from 'react-icons/bs';
 
-const ThemeToggle = () => {
+const ThemeToggle: React.FC = () => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (

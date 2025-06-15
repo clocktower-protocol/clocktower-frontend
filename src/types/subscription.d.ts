@@ -24,6 +24,7 @@ export interface Subscription {
     cancelled: boolean;       // bool in Solidity
     frequency: number;        // Frequency enum in Solidity
     dueDay: number;          // uint16 in Solidity
+    subscriber?: `0x${string}`; // address (optional)
 }
 
 export type SubscriptionResult = [
@@ -51,4 +52,10 @@ export interface FormattedSubscription {
     subscription: Subscription;
     status: number;
     totalSubscribers: number;
+}
+
+export interface SubView {
+    subscription: Subscription;
+    status: number; // Status enum
+    totalSubscribers: bigint; // uint256
 } 

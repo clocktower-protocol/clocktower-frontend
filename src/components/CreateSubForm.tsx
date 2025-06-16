@@ -227,10 +227,10 @@ const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
                     <Form.Group className="mb-3" controlId="formSubToken">
                         <Form.Label>Token:</Form.Label>
                         <Dropdown>
-                            <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{ width: "100%" }}>
+                            <Dropdown.Toggle variant={tokenOutline} id="dropdown-basic" style={{ width: "100%", textAlign: "left" }}>
                                 {dropdownTitle}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu>
+                            <Dropdown.Menu style={{ width: "100%" }}>
                                 {tokenPulldown3()}
                             </Dropdown.Menu>
                         </Dropdown>

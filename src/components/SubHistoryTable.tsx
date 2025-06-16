@@ -36,11 +36,11 @@ const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
         //loops through array to create table rows
         for (let i = 0; i < historyArray.length; i++) {
             if (isProvider) {
-                if (historyArray[i].subScriptEvent === "5") {
+                if (Number(historyArray[i].subScriptEvent) === 5) {
                     continue;
                 }
             } else {
-                if (historyArray[i].subScriptEvent === "2") {
+                if (Number(historyArray[i].subScriptEvent) === 2) {
                     continue;
                 }
             }
@@ -66,7 +66,7 @@ const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
                     </td>,
                     <td key={String(historyArray[i].timestamp)+3} className="text-center">{formatDate}</td>,
                     <td key={String(subAmount)+4} className="text-center">
-                        {historyArray[i].subScriptEvent !== "7" && historyArray[i].subScriptEvent !== "6" ? 
+                        {Number(historyArray[i].subScriptEvent) !== 7 && Number(historyArray[i].subScriptEvent) !== 6 ? 
                             Number(subAmount).toFixed(2) 
                             : "N/A"
                         }&nbsp;&nbsp;{ticker}

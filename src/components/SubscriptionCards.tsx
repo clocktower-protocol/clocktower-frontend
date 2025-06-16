@@ -137,8 +137,6 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
 
                 paydayString = "Every " + DAY_OF_WEEK_LOOKUP[index].name.charAt(0).toUpperCase() + DAY_OF_WEEK_LOOKUP[index].name.slice(1);
                 warnPaydayString = "every " + DAY_OF_WEEK_LOOKUP[index].name.charAt(0).toUpperCase() + DAY_OF_WEEK_LOOKUP[index].name.slice(1);
-
-                console.log(warnPaydayString)
             }
 
             //dynamic styling based on if its on the link page or not

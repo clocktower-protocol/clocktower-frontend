@@ -52,20 +52,20 @@ const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
                 let ticker = tickerLookup(historyArray[i].token);
         
                 row.push(
-                    <td key={String(historyArray[i].subscriber)+1}>
+                    <td key={String(historyArray[i].subscriber)+1} className="text-center">
                         {historyArray[i].subscriber !== "0x0000000000000000000000000000000000000000" ? 
                             <Link to={`../account/${historyArray[i].subscriber}`}>{historyArray[i].subscriber}</Link> 
                             : "N/A"
                         }
                     </td>, 
-                    <td key={String(historyArray[i].transactionHash)}>
+                    <td key={String(historyArray[i].transactionHash)} className="text-center">
                         <a href={`${chain?.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>
                     </td>,
-                    <td key={String(historyArray[i].subScriptEvent)+2}>
+                    <td key={String(historyArray[i].subScriptEvent)+2} className="text-center">
                         {SUBSCRIPTEVENT_LOOKUP[Number(historyArray[i].subScriptEvent)]}
                     </td>,
-                    <td key={String(historyArray[i].timestamp)+3}>{formatDate}</td>,
-                    <td key={String(subAmount)+4}>
+                    <td key={String(historyArray[i].timestamp)+3} className="text-center">{formatDate}</td>,
+                    <td key={String(subAmount)+4} className="text-center">
                         {historyArray[i].subScriptEvent !== "7" && historyArray[i].subScriptEvent !== "6" ? 
                             Number(subAmount).toFixed(2) 
                             : "N/A"
@@ -81,11 +81,11 @@ const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
             <Table key="table" striped bordered hover size="sm" className={styles.history_table}>
                 <thead key="tableHead">
                     <tr key="headRow">
-                        <th key="subHead">Subscriber</th>
-                        <th key="txHead">TX</th>
-                        <th key="eventHead">Event Type</th>
-                        <th key="dateHead">Timestamp</th>
-                        <th key="amountHead">Amount</th>
+                        <th key="subHead" className="text-center">Subscriber</th>
+                        <th key="txHead" className="text-center">TX</th>
+                        <th key="eventHead" className="text-center">Event Type</th>
+                        <th key="dateHead" className="text-center">Timestamp</th>
+                        <th key="amountHead" className="text-center">Amount</th>
                     </tr>
                 </thead>
                 <tbody key="tableBody">

@@ -61,7 +61,7 @@ const SubHistory: React.FC = () => {
     //checks that user has logged in 
     if (historyArray.length === 0) {
         return (
-            <Alert variant="info" className={styles.alerts}>
+            <Alert variant="info" className={`${styles.alerts} text-center`}>
                 Switch Back to Subscriber
             </Alert>
         );
@@ -71,11 +71,11 @@ const SubHistory: React.FC = () => {
         <div>
             <div>
                 {historyArray.length > 0 ? (
-                    <Alert variant="dark" className={styles.alerts}>
+                    <Alert variant="dark" className={`${styles.alerts} text-center`}>
                         Subscription History
                     </Alert>
                 ) : (
-                    <Alert variant="info">
+                    <Alert variant="info" className={`${styles.alerts} text-center`}>
                         No Subscribers Yet
                     </Alert>
                 )}

@@ -135,8 +135,10 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                     index = 0;
                 }
 
-                paydayString = "Every " + DAY_OF_WEEK_LOOKUP[index].name;
-                warnPaydayString = paydayString;
+                paydayString = "Every " + DAY_OF_WEEK_LOOKUP[index].name.charAt(0).toUpperCase() + DAY_OF_WEEK_LOOKUP[index].name.slice(1);
+                warnPaydayString = "every " + DAY_OF_WEEK_LOOKUP[index].name.charAt(0).toUpperCase() + DAY_OF_WEEK_LOOKUP[index].name.slice(1);
+
+                console.log(warnPaydayString)
             }
 
             //dynamic styling based on if its on the link page or not
@@ -256,7 +258,7 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                                                     <Stack gap={3}>
                                                         <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.subscribe?.()}>Subscribe</Button>
                                                         <ListGroup horizontal={'sm'} style={{ display: "flex", justifyContent: "center" }} >
-                                                            <ListGroup.Item variant="light" style={{ width: "100%", textAlign: "center", fontSize: "15px" }}>Clicking subscribe will charge your wallet {warnPaydayString.toLowerCase()}</ListGroup.Item>
+                                                            <ListGroup.Item variant="light" style={{ width: "100%", textAlign: "center", fontSize: "15px" }}>Clicking subscribe will charge your wallet {warnPaydayString}</ListGroup.Item>
                                                         </ListGroup>
                                                     </Stack>
                                                 </>

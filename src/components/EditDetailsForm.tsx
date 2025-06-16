@@ -93,7 +93,7 @@ const EditDetailsForm: React.FC<EditDetailsFormProps> = (props) => {
             };
 
             const formEditResult: SubscriptionEditResult = {
-                details: JSON.stringify(formEditDetails),
+                details: formEditDetails,
                 id: props.editSub.id
             };
 

@@ -171,6 +171,8 @@ const Subscriptions: React.FC = () => {
             }
             const contractAddress = chainConfig.contractAddress as `0x${string}`;
 
+            console.log(editResult);
+
             setToastHeader("Waiting on wallet transaction...");
             setShowToast(true);
             writeContract({

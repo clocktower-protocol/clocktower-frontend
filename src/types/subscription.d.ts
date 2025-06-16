@@ -44,7 +44,7 @@ export interface SubscriptionEditParams {
 }
 
 export interface SubscriptionEditResult {
-    details: string;    // string in Solidity
+    details: Details;    // Changed from string to Details
     id: `0x${string}`;  // bytes32 in Solidity
 }
 

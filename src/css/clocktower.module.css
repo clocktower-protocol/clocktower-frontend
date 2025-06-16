@@ -224,6 +224,19 @@
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);
     margin: 20px;
+    height: calc(100vh - 115px); /* Account for navbar height (75px) and margins (40px) */
+    width: calc(100% - 40px); /* Account for left and right margins */
+}
+
+/* Make the calendar fill its container */
+.top_level_calendar :global(.fc) {
+    height: 100%;
+    width: 100%;
+}
+
+/* Make the calendar view fill the container */
+.top_level_calendar :global(.fc-view-harness) {
+    height: calc(100% - 50px) !important; /* Account for header height */
 }
 
 /* Alerts */ 

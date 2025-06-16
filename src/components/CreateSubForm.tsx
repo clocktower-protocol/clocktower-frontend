@@ -248,7 +248,7 @@ const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
                             onChange={amountChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Must be greater than or equal to token minimum {selectedTokenMinimum && selectedTokenMinimum !== BigInt(0) ? "of " + formatEther(selectedTokenMinimum) : ""}
+                            {token !== "-1" ? `Must be greater than or equal to token minimum ${selectedTokenMinimum && selectedTokenMinimum !== BigInt(0) ? "of " + formatEther(selectedTokenMinimum) : ""}` : "Please enter a valid amount"}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

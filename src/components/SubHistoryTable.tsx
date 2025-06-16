@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'react-bootstrap';
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs';
 import { TOKEN_LOOKUP, CHAIN_LOOKUP } from "../config";
@@ -19,8 +19,25 @@ interface SubHistoryTableProps {
 const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
     const { historyArray, isProvider } = props;
     const { chainId } = useAccount({ config });
+    const navigate = useNavigate();
 
     const chain = CHAIN_LOOKUP.find((chain) => chain.id === chainId);
+
+    // Handle browser back button
+    useEffect(() => {
+        const handlePopState = () => {
+            navigate('../subscriptions/subscribed');
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        
+        // Push a new state to the history stack
+        window.history.pushState(null, '', window.location.href);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate]);
 
     const tickerLookup = (tokenAddress: string): string | false => {
         const matchingToken = TOKEN_LOOKUP.find((token) => 

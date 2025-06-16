@@ -20,13 +20,6 @@ interface Token {
     icon: React.ComponentType;
 }
 
-interface ApprovedToken {
-    tokenAddress: `0x${string}`;
-    decimals: number;
-    paused: boolean;
-    minimum: bigint;
-}
-
 const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
     const { chainId } = useAccount();
 
@@ -130,16 +123,18 @@ const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'approvedERC20',
             args: [tokenAddress]
-        }) as ApprovedToken;
+        }) as [`0x${string}`, number, boolean, bigint];
 
-        setSelectedTokenMinimum(result.minimum);
+        setSelectedTokenMinimum(result[3]);
     };
 
     const amountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if ((Number(event.target.value) > 0) && (Number(event.target.value) >= Number(formatEther(selectedTokenMinimum)))) {
-            const wei = parseEther(event.target.value);
+        const inputValue = event.target.value;
+        const inputAmount = parseEther(inputValue);
+        
+        if (inputAmount > BigInt(0) && inputAmount >= selectedTokenMinimum) {
             setInvalidAmount(false);
-            setAmount(wei);
+            setAmount(inputAmount);
         } else {
             setInvalidAmount(true);
         }
@@ -253,7 +248,7 @@ const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
                             onChange={amountChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Amount must be greater than 0 and greater than minimum
+                            Must be greater than or equal to token minimum {selectedTokenMinimum && selectedTokenMinimum !== BigInt(0) ? "of " + formatEther(selectedTokenMinimum) : ""}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>

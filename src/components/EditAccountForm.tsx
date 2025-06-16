@@ -266,11 +266,13 @@ const EditAccountForm: React.FC<EditAccountFormProps> = (props) => {
                     </Form.Group>
                 </Col>
             </Row>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Group className="mb-3 text-center" controlId="formBasicCheckbox">
                 <Form.Check 
                     type="checkbox" 
-                    label="I confirm that all the information provided is accurate" 
+                    label="I understand that this information will be permanently and publicly associated with this account" 
                     onChange={checkChange}
+                    className="d-flex justify-content-center align-items-center"
+                    style={{ gap: '0.5rem' }}
                 />
             </Form.Group>
             <Button variant="primary" type="submit" disabled={!allValidated || isSubmitting}>

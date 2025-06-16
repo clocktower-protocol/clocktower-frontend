@@ -20,6 +20,13 @@ interface Token {
     icon: React.ComponentType;
 }
 
+interface ApprovedToken {
+    tokenAddress: `0x${string}`;
+    decimals: number;
+    paused: boolean;
+    minimum: bigint;
+}
+
 const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
     const { chainId } = useAccount();
 
@@ -123,9 +130,9 @@ const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
             abi: CLOCKTOWERSUB_ABI,
             functionName: 'approvedERC20',
             args: [tokenAddress]
-        }) as [boolean, string, string, bigint];
+        }) as ApprovedToken;
 
-        setSelectedTokenMinimum(result[3]);
+        setSelectedTokenMinimum(result.minimum);
     };
 
     const amountChange = (event: React.ChangeEvent<HTMLInputElement>) => {

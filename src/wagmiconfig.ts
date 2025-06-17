@@ -13,19 +13,28 @@ export const config: Config = createConfig({
       coinbaseWallet(),
     ],
     transports: { 
-      [hardhat.id]: http('http://localhost:8545'),
+      [hardhat.id]: http('http://localhost:8545', {
+        fetchOptions: {
+          headers: {
+            'Content-Type': 'application/json',
+            'chain-id': hardhat.id.toString()
+          }
+        }
+      }),
       [baseSepolia.id]: fallback([
         http(transport1, {
           fetchOptions: { 
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'chain-id': baseSepolia.id.toString()
             }
           }
         }),
         http(transport2, {
           fetchOptions: { 
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'chain-id': baseSepolia.id.toString()
             }
           }
         }),

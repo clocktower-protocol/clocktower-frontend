@@ -141,32 +141,33 @@ const Root: React.FC = () => {
                 <div key={"navBarKey"} className="navBar">
                     <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar}>
                         <Container fluid>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
-                                <div style={{ flex: '0 0 200px', display: 'flex', alignItems: 'center' }}>
-                                    <Link to="/" style={{ textDecoration: 'none' }}>
-                                        <Navbar.Brand key="navTitle" style={{ margin: 0, padding: 0 }}>
-                                            <div className={styles.clocktower_brand}>Clocktower</div>
-                                        </Navbar.Brand>
-                                    </Link>
-                                </div>
-                                
+                            <Navbar.Brand>
+                                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div className={styles.clocktower_brand}>Clocktower</div>
+                                </Link>
+                            </Navbar.Brand>
+                            
+                            <Navbar.Toggle aria-controls="navbar-nav" className="d-lg-none" />
+                            
+                            <Navbar.Collapse id="navbar-nav">
                                 {/* Desktop Navigation */}
-                                <div className="d-none d-lg-flex" style={{ flex: '1', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft: '20px' }}>
+                                <Nav className="d-none d-lg-flex me-auto">
                                     <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
                                     <Button variant="outline-info" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subscriptions</Button>
                                     <Button variant="outline-info" className={styles.calendar_button} onClick={handleOnClickCalendar}>Calendar</Button>
                                     {account === adminAccount && <Button variant="outline-info" style={{ margin: "5px" }} onClick={handleOnClickAdmin}>Admin</Button>}
-                                </div>
+                                </Nav>
                                 
                                 {/* Mobile Navigation */}
-                                <div className="d-lg-none" style={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '5px' }}>
-                                    <Button variant="outline-info" size="sm" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
-                                    <Button variant="outline-info" size="sm" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subs</Button>
-                                    <Button variant="outline-info" size="sm" className={styles.calendar_button} onClick={handleOnClickCalendar}>Cal</Button>
-                                    {account === adminAccount && <Button variant="outline-info" size="sm" style={{ margin: "2px" }} onClick={handleOnClickAdmin}>Admin</Button>}
-                                </div>
+                                <Nav className="d-lg-none me-auto mb-2 mb-lg-0">
+                                    <Nav.Link onClick={handleOnClickAccount}>Account</Nav.Link>
+                                    <Nav.Link onClick={handleOnClickSubscriptions}>Subscriptions</Nav.Link>
+                                    <Nav.Link onClick={handleOnClickCalendar}>Calendar</Nav.Link>
+                                    {account === adminAccount && <Nav.Link onClick={handleOnClickAdmin}>Admin</Nav.Link>}
+                                </Nav>
                                 
-                                <div className="d-none d-md-flex" style={{ flex: '0 0 400px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px', paddingRight: '20px' }}>
+                                {/* Desktop Right Side */}
+                                <Nav className="d-none d-lg-flex align-items-center" style={{ gap: '20px', paddingRight: '20px' }}>
                                     {chains.length > 1 ?
                                         <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown" style={{ marginRight: 'auto' }}>
                                             {chains.map((chain) => (
@@ -197,20 +198,40 @@ const Root: React.FC = () => {
                                             (<Button variant="outline-success" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in Wallet</Button>)
                                         }
                                     </Nav>
-                                </div>
+                                </Nav>
                                 
                                 {/* Mobile Right Side */}
-                                <div className="d-md-none" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <Nav className="d-lg-none align-items-center">
                                     <ThemeToggle />
-                                    <Nav key="nav" style={{ margin: 0, whiteSpace: 'nowrap' }}>
-                                        {isConnected && !isDisconnected ?
-                                            (<Navbar.Text className={styles.account_text_nav} style={{ margin: 0, fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
-                                            :
-                                            (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
-                                        }
+                                    {isConnected && !isDisconnected ?
+                                        (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
+                                        :
+                                        (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
+                                    }
+                                </Nav>
+                                
+                                {/* Mobile Chain Dropdown */}
+                                {chains.length > 1 && (
+                                    <Nav className="d-lg-none mb-2">
+                                        <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="mobile-chain-dropdown">
+                                            {chains.map((chain) => (
+                                                <NavDropdown.Item key={uuidv4()} className={styles.chain_pulldown2}>
+                                                    {CHAIN_LOOKUP.map((lchain) => {
+                                                        if (lchain.id === chain.id) {
+                                                            return <Icon key={uuidv4()} className={styles.chain_icon} icon={lchain.icon}></Icon>;
+                                                        } else {
+                                                            return "";
+                                                        }
+                                                    })}
+                                                    <Button variant="outline-info" key={chain.id} onClick={() => changeChain(chain.id)}>
+                                                        {chain.name}
+                                                    </Button>
+                                                </NavDropdown.Item>
+                                            ))}
+                                        </NavDropdown>
                                     </Nav>
-                                </div>
-                            </div>
+                                )}
+                            </Navbar.Collapse>
                         </Container>
                     </Navbar>
                 </div>

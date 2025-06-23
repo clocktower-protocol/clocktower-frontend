@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Table, Pagination, Form, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router";
 import { SUBSCRIPTEVENT_LOOKUP } from '../config';
 import dayjs from 'dayjs';
@@ -20,6 +20,8 @@ const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
     const { historyArray, isProvider } = props;
     const { chainId } = useAccount({ config });
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
 
     const chain = CHAIN_LOOKUP.find((chain) => chain.id === chainId);
 
@@ -46,73 +48,180 @@ const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
         return matchingToken ? matchingToken.ticker : false;
     };
 
-    let table: React.ReactElement[] = [];
-    let tableTop: React.ReactElement[] = [];
-
-    if (historyArray.length > 0 && typeof historyArray[0] !== "undefined") {
-        //loops through array to create table rows
-        for (let i = 0; i < historyArray.length; i++) {
+    // Filter the history array based on provider/subscriber logic
+    const filteredHistory = useMemo(() => {
+        return historyArray.filter(item => {
             if (isProvider) {
-                if (Number(historyArray[i].subScriptEvent) === 5) {
-                    continue;
+                return Number(item.subScriptEvent) !== 5;
+            } else {
+                return Number(item.subScriptEvent) !== 2;
+            }
+        }).filter(item => typeof item.amount !== "undefined");
+    }, [historyArray, isProvider]);
+
+    // Calculate pagination
+    const totalPages = Math.ceil(filteredHistory.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = filteredHistory.slice(startIndex, endIndex);
+
+    // Generate page numbers for pagination
+    const pageNumbers = useMemo(() => {
+        const pages = [];
+        const maxVisiblePages = 5;
+        
+        if (totalPages <= maxVisiblePages) {
+            for (let i = 1; i <= totalPages; i++) {
+                pages.push(i);
+            }
+        } else {
+            if (currentPage <= 3) {
+                for (let i = 1; i <= 4; i++) {
+                    pages.push(i);
+                }
+                pages.push('...');
+                pages.push(totalPages);
+            } else if (currentPage >= totalPages - 2) {
+                pages.push(1);
+                pages.push('...');
+                for (let i = totalPages - 3; i <= totalPages; i++) {
+                    pages.push(i);
                 }
             } else {
-                if (Number(historyArray[i].subScriptEvent) === 2) {
-                    continue;
+                pages.push(1);
+                pages.push('...');
+                for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                    pages.push(i);
                 }
-            }
-            
-            if (typeof historyArray[i].amount !== "undefined") {
-                let row: React.ReactElement[] = [];
-                let subAmount = formatEther(BigInt(historyArray[i].amount));
-                let formatDate = dayjs.unix(Number(historyArray[i].timestamp)).format('MM/DD/YYYY h:mm:ss A');
-                let ticker = tickerLookup(historyArray[i].token);
-        
-                row.push(
-                    <td key={String(historyArray[i].subscriber)+1} className="text-center">
-                        {historyArray[i].subscriber !== "0x0000000000000000000000000000000000000000" ? 
-                            <Link to={`../account/${historyArray[i].subscriber}`}>{historyArray[i].subscriber}</Link> 
-                            : "N/A"
-                        }
-                    </td>, 
-                    <td key={String(historyArray[i].transactionHash)} className="text-center">
-                        <a href={`${chain?.explorerUrl}tx/${historyArray[i].transactionHash}`}>TX</a>
-                    </td>,
-                    <td key={String(historyArray[i].subScriptEvent)+2} className="text-center">
-                        {SUBSCRIPTEVENT_LOOKUP[Number(historyArray[i].subScriptEvent)]}
-                    </td>,
-                    <td key={String(historyArray[i].timestamp)+3} className="text-center">{formatDate}</td>,
-                    <td key={String(subAmount)+4} className="text-center">
-                        {Number(historyArray[i].subScriptEvent) !== 7 && Number(historyArray[i].subScriptEvent) !== 6 ? 
-                            Number(subAmount).toFixed(2) 
-                            : "N/A"
-                        }&nbsp;&nbsp;{ticker}
-                    </td>,
-                );
-                
-                table.push(<tr key={String(historyArray[i].subscriber)+i}>{row}</tr>);
+                pages.push('...');
+                pages.push(totalPages);
             }
         }
-  
-        tableTop.push(
-            <Table key="table" striped bordered hover size="sm" className={styles.history_table}>
-                <thead key="tableHead">
-                    <tr key="headRow">
-                        <th key="subHead" className="text-center">Subscriber</th>
-                        <th key="txHead" className="text-center">TX</th>
-                        <th key="eventHead" className="text-center">Event Type</th>
-                        <th key="dateHead" className="text-center">Timestamp</th>
-                        <th key="amountHead" className="text-center">Amount</th>
+        return pages;
+    }, [currentPage, totalPages]);
+
+    const handlePageChange = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handleItemsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newItemsPerPage = parseInt(event.target.value);
+        setItemsPerPage(newItemsPerPage);
+        setCurrentPage(1); // Reset to first page when changing items per page
+    };
+
+    let table: React.ReactElement[] = [];
+
+    if (currentItems.length > 0 && typeof currentItems[0] !== "undefined") {
+        //loops through array to create table rows
+        for (let i = 0; i < currentItems.length; i++) {
+            let row: React.ReactElement[] = [];
+            let subAmount = formatEther(BigInt(currentItems[i].amount));
+            let formatDate = dayjs.unix(Number(currentItems[i].timestamp)).format('MM/DD/YYYY h:mm:ss A');
+            let ticker = tickerLookup(currentItems[i].token);
+    
+            row.push(
+                <td key={String(currentItems[i].subscriber)+1} className="text-center">
+                    {currentItems[i].subscriber !== "0x0000000000000000000000000000000000000000" ? 
+                        <Link to={`../account/${currentItems[i].subscriber}`}>{currentItems[i].subscriber}</Link> 
+                        : "N/A"
+                    }
+                </td>, 
+                <td key={String(currentItems[i].transactionHash)} className="text-center">
+                    <a href={`${chain?.explorerUrl}tx/${currentItems[i].transactionHash}`}>TX</a>
+                </td>,
+                <td key={String(currentItems[i].subScriptEvent)+2} className="text-center">
+                    {SUBSCRIPTEVENT_LOOKUP[Number(currentItems[i].subScriptEvent)]}
+                </td>,
+                <td key={String(currentItems[i].timestamp)+3} className="text-center">{formatDate}</td>,
+                <td key={String(subAmount)+4} className="text-center">
+                    {Number(currentItems[i].subScriptEvent) !== 7 && Number(currentItems[i].subScriptEvent) !== 6 ? 
+                        Number(subAmount).toFixed(2) 
+                        : "N/A"
+                    }&nbsp;&nbsp;{ticker}
+                </td>,
+            );
+            
+            table.push(<tr key={String(currentItems[i].subscriber)+i}>{row}</tr>);
+        }
+    }
+    
+    return (
+        <div>
+            <Row className="mb-3 mx-2">
+                <Col md={6}>
+                    <div className="d-flex align-items-center">
+                        <span className="me-2">Items per page:</span>
+                        <Form.Select 
+                            value={itemsPerPage} 
+                            onChange={handleItemsPerPageChange}
+                            style={{ width: 'auto' }}
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                        </Form.Select>
+                    </div>
+                </Col>
+                <Col md={6} className="text-end">
+                    <small className="text-muted">
+                        Showing {startIndex + 1} to {Math.min(endIndex, filteredHistory.length)} of {filteredHistory.length} entries
+                    </small>
+                </Col>
+            </Row>
+            
+            <Table striped bordered hover size="sm" className={styles.history_table}>
+                <thead>
+                    <tr>
+                        <th className="text-center">Subscriber</th>
+                        <th className="text-center">TX</th>
+                        <th className="text-center">Event Type</th>
+                        <th className="text-center">Timestamp</th>
+                        <th className="text-center">Amount</th>
                     </tr>
                 </thead>
-                <tbody key="tableBody">
+                <tbody>
                     {table}
                 </tbody>
             </Table>
-        );
-    }
-    
-    return tableTop;
+
+            {totalPages > 1 && (
+                <div className="d-flex justify-content-center" style={{ marginTop: '3rem' }}>
+                    <Pagination>
+                        <Pagination.First 
+                            onClick={() => handlePageChange(1)}
+                            disabled={currentPage === 1}
+                        />
+                        <Pagination.Prev 
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        />
+                        
+                        {pageNumbers.map((page, index) => (
+                            <Pagination.Item
+                                key={index}
+                                active={page === currentPage}
+                                onClick={() => typeof page === 'number' ? handlePageChange(page) : null}
+                                disabled={page === '...'}
+                            >
+                                {page}
+                            </Pagination.Item>
+                        ))}
+                        
+                        <Pagination.Next 
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        />
+                        <Pagination.Last 
+                            onClick={() => handlePageChange(totalPages)}
+                            disabled={currentPage === totalPages}
+                        />
+                    </Pagination>
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default SubHistoryTable; 

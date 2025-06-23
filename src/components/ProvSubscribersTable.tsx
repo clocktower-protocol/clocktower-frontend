@@ -52,18 +52,20 @@ const ProvSubscribersTable: React.FC<ProvSubscribersTableProps> = (props) => {
     }
 
     tableTop.push(
-        <Table key="table" striped bordered hover className="provTable">
-            <thead key="tableHead">
-                <tr key="headRow" className="text-center">
-                    <th key="provAddressHead">Subscriber</th>
-                    <th key="feeBalanceHead">Fee Balance</th>
-                    <th key="cyclesLeftHead">Remaining Cycles</th>
-                </tr>
-            </thead>
-            <tbody key="tableBody">
-                {table}
-            </tbody>
-        </Table>
+        <div key="table-container" className="table-responsive">
+            <Table key="table" striped bordered hover className="provTable">
+                <thead key="tableHead">
+                    <tr key="headRow" className="text-center">
+                        <th key="provAddressHead">Subscriber</th>
+                        <th key="feeBalanceHead">Fee Balance</th>
+                        <th key="cyclesLeftHead">Remaining Cycles</th>
+                    </tr>
+                </thead>
+                <tbody key="tableBody">
+                    {table}
+                </tbody>
+            </Table>
+        </div>
     );
 
     return tableTop;

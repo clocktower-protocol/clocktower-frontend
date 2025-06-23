@@ -111,18 +111,20 @@ const CallerHistoryTable: React.FC<CallerHistoryTableProps> = (props) => {
                 </Col>
             </Row>
             
-            <Table striped bordered hover size="sm" className="provTable">
-                <thead>
-                    <tr className="text-center">
-                        <th>Caller</th>
-                        <th>Timestamp</th>
-                        <th>Checked Day</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {table}
-                </tbody>
-            </Table>
+            <div className="table-responsive">
+                <Table striped bordered hover size="sm" className="provTable">
+                    <thead>
+                        <tr className="text-center">
+                            <th>Caller</th>
+                            <th>Timestamp</th>
+                            <th>Checked Day</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {table}
+                    </tbody>
+                </Table>
+            </div>
 
             {totalPages > 1 && (
                 <div className="d-flex justify-content-center" style={{ marginTop: '3rem' }}>

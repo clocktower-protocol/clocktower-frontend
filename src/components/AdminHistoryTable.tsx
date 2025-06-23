@@ -32,18 +32,20 @@ const AdminHistoryTable: React.FC<AdminHistoryTableProps> = (props) => {
     });
 
     return (
-        <Table striped bordered hover size="sm" className="provTable">
-            <thead>
-                <tr className="text-center">
-                    <th>Subscription</th>
-                    <th>Event Type</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                {table}
-            </tbody>
-        </Table>
+        <div className="table-responsive">
+            <Table striped bordered hover size="sm" className="provTable">
+                <thead>
+                    <tr className="text-center">
+                        <th>Subscription</th>
+                        <th>Event Type</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {table}
+                </tbody>
+            </Table>
+        </div>
     );
 };
 

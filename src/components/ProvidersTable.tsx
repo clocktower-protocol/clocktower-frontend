@@ -125,18 +125,20 @@ const ProvidersTable: React.FC<ProvidersTableProps> = (props) => {
                 </Col>
             </Row>
             
-            <Table striped bordered hover className="provTable">
-                <thead>
-                    <tr className="text-center">
-                        <th>Provider</th>
-                        <th>History</th>
-                        <th>Subscriptions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {table}
-                </tbody>
-            </Table>
+            <div className="table-responsive">
+                <Table striped bordered hover className="provTable">
+                    <thead>
+                        <tr className="text-center">
+                            <th>Provider</th>
+                            <th>History</th>
+                            <th>Subscriptions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {table}
+                    </tbody>
+                </Table>
+            </div>
 
             {totalPages > 1 && (
                 <div className="d-flex justify-content-center" style={{ marginTop: '3rem' }}>

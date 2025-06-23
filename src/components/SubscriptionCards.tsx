@@ -6,6 +6,7 @@ import { formatEther } from 'viem';
 import Avatar from "boring-avatars";
 import { v4 as uuidv4 } from 'uuid';
 import { SubView, DetailsLog, Subscription } from '../types/subscription';
+import styles from '../css/clocktower.module.css';
 
 interface SubscriptionCardsProps {
     subscriptionArray: SubView[];
@@ -143,7 +144,6 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
             let textBarWidth = "300px";
             let titleBarWidth = "140px";
             let linkNamePadding = "0px";
-            let cardWidth = "500px";
             let dynamicwidth1 = "33%";
             let dynamicwidth2 = "33%";
             //dynamic name padding
@@ -151,13 +151,12 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                 linkNamePadding = "78px";
                 titleBarWidth = "125px";
                 textBarWidth = "500px";
-                cardWidth = "650px";
                 dynamicwidth1 = "19%";
                 dynamicwidth2 = "81%";
             }
 
             cards.push(
-                <Card key={uuidv4()} style={{ width: cardWidth, marginBottom: "20px" }}>
+                <Card key={uuidv4()} className={`${props.isLink ? styles.subscription_card_link : styles.subscription_card} card-responsive`} style={{ marginBottom: "20px" }}>
                     <Card.Body>
                         <Card.Title>
                             <div key={uuidv4()} style={{ display: "flex", flexGrow: "1", flexBasis: "0", alignItems: "center", flexWrap: "wrap", width: "100%" }}>
@@ -167,6 +166,7 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                                     square={true}
                                     variant="marble"
                                     colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+                                    className="avatar-responsive"
                                 />
 
                                 <div key={uuidv4()} style={{ display: "flex", justifyContent: "center", flexGrow: "1", paddingRight: linkNamePadding, width: dynamicwidth2 }}>
@@ -195,19 +195,19 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                         <div key={uuidv4()} style={{ display: "flex", justifyContent: "center" }}>
                             <Stack gap={1}>
 
-                                <ListGroup horizontal={'sm'} style={{ display: "flex", justifyContent: "center" }} >
+                                <ListGroup horizontal={'sm'} className="listgroup-horizontal" style={{ display: "flex", justifyContent: "center" }} >
                                     <ListGroup.Item variant="info" style={{ width: titleBarWidth, textAlign: "center", fontSize: "15px" }}>Amount</ListGroup.Item>
                                     <ListGroup.Item variant="light" style={{ width: textBarWidth, textAlign: "center", fontSize: "15px" }}>{subAmount}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                                 </ListGroup>
 
 
-                                <ListGroup horizontal={'sm'} style={{ display: "flex", justifyContent: "center" }}>
+                                <ListGroup horizontal={'sm'} className="listgroup-horizontal" style={{ display: "flex", justifyContent: "center" }}>
                                     <ListGroup.Item variant="info" style={{ width: titleBarWidth, textAlign: "center", fontSize: "15px" }}>{dueString}</ListGroup.Item>
                                     <ListGroup.Item variant="light" style={{ width: textBarWidth, textAlign: "center", fontSize: "15px" }}>{paydayString}</ListGroup.Item>
                                 </ListGroup>
 
                                 {props.isProvider && !props.isLink ?
-                                    <ListGroup horizontal={'sm'} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                    <ListGroup horizontal={'sm'} className="listgroup-horizontal" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                         <ListGroup.Item variant="info" style={{ width: titleBarWidth, textAlign: "center", fontSize: "15px" }}>Pay Per Period</ListGroup.Item>
                                         <ListGroup.Item variant="light" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: textBarWidth, textAlign: "center", fontSize: "15px", height: "100%" }}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</ListGroup.Item>
                                     </ListGroup>
@@ -215,11 +215,11 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
 
                                 {props.isLink ?
                                     <>
-                                        <ListGroup horizontal={'sm'} style={{ display: "flex", justifyContent: "center" }}>
+                                        <ListGroup horizontal={'sm'} className="listgroup-horizontal" style={{ display: "flex", justifyContent: "center" }}>
                                             <ListGroup.Item variant="info" style={{ width: titleBarWidth, textAlign: "center", fontSize: "15px" }}>URL</ListGroup.Item>
                                             <ListGroup.Item variant="light" style={{ width: textBarWidth, textAlign: "center", fontSize: "15px" }}><Link to={props.detailsArray[i].url}>{urlDisplayed}</Link></ListGroup.Item>
                                         </ListGroup>
-                                        <ListGroup horizontal={'sm'} style={{ display: "flex", justifyContent: "center" }}>
+                                        <ListGroup horizontal={'sm'} className="listgroup-horizontal" style={{ display: "flex", justifyContent: "center" }}>
                                             <ListGroup.Item variant="info" style={{ width: titleBarWidth, textAlign: "center", fontSize: "15px" }}>Provider</ListGroup.Item>
                                             <ListGroup.Item variant="light" style={{ width: textBarWidth, textAlign: "center", fontSize: "15px" }}><Link to={`../account/${subscriptionArray[i].subscription.provider}`}>{subscriptionArray[i].subscription.provider}</Link></ListGroup.Item>
                                         </ListGroup>
@@ -234,7 +234,7 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                             <></> :
                             <hr key={uuidv4()}></hr>
                         }
-                        <div key={uuidv4()} style={{ display: "flex", justifyContent: "space-evenly" }}>
+                        <div key={uuidv4()} className="btn-group" style={{ display: "flex", justifyContent: "space-evenly" }}>
                             {props.isProvider && !props.isLink ?
                                 <>
                                     <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => navigate(`../history/${subscriptionArray[i].subscription.id}`)}>History</Button>

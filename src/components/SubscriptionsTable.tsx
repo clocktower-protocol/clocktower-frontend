@@ -156,30 +156,32 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = (props) => {
     }
 
     tableTop.push(
-        <Table key={uuidv4()} striped bordered hover size="sm">
-            <thead key={uuidv4()}>
-                <tr key={uuidv4()} className="text-center">
-                    {isAdmin ? <th key={uuidv4()}>ID</th> : null}
-                    <th key={uuidv4()}></th>
-                    <th key={uuidv4()}>Description</th>
-                    <th key={uuidv4()}>Amount</th>
-                    <th key={uuidv4()}>Frequency</th>
-                    <th key={uuidv4()}>Due Day</th>
-                    {role === 1 || role === 0 ? <th key={uuidv4()}>Link</th> : null}
-                    {role === 1 || (role === 0 && !bySubscriber) ? <th key={uuidv4()}>Subscribers</th> : null}
-                    {role === 1 || (role === 0 && !bySubscriber) ? <th key={uuidv4()}>Pay per Period</th> : null}
-                    {isAdmin && bySubscriber ? <th key={uuidv4()}>Fee Balance</th> : null}
-                    {isAdmin && bySubscriber ? <th key={uuidv4()}>Remaining Cycles</th> : null}
-                    {!isAdmin ? <th key={uuidv4()}>History</th> : null}
-                    {role === 1 ? <th key={uuidv4()}>Edit Details</th> : null}
-                    {role === 1 ? <th key={uuidv4()}>Cancel</th> : null}
-                    {role === 2 ? <th key={uuidv4()}>Unsubscribe</th> : null}
-                </tr>
-            </thead>
-            <tbody key={uuidv4()}>
-                {table}
-            </tbody>
-        </Table>
+        <div key="table-container" className="table-responsive">
+            <Table key={uuidv4()} striped bordered hover size="sm">
+                <thead key={uuidv4()}>
+                    <tr key={uuidv4()} className="text-center">
+                        {isAdmin ? <th key={uuidv4()}>ID</th> : null}
+                        <th key={uuidv4()}></th>
+                        <th key={uuidv4()}>Description</th>
+                        <th key={uuidv4()}>Amount</th>
+                        <th key={uuidv4()}>Frequency</th>
+                        <th key={uuidv4()}>Due Day</th>
+                        {role === 1 || role === 0 ? <th key={uuidv4()}>Link</th> : null}
+                        {role === 1 || (role === 0 && !bySubscriber) ? <th key={uuidv4()}>Subscribers</th> : null}
+                        {role === 1 || (role === 0 && !bySubscriber) ? <th key={uuidv4()}>Pay per Period</th> : null}
+                        {isAdmin && bySubscriber ? <th key={uuidv4()}>Fee Balance</th> : null}
+                        {isAdmin && bySubscriber ? <th key={uuidv4()}>Remaining Cycles</th> : null}
+                        {!isAdmin ? <th key={uuidv4()}>History</th> : null}
+                        {role === 1 ? <th key={uuidv4()}>Edit Details</th> : null}
+                        {role === 1 ? <th key={uuidv4()}>Cancel</th> : null}
+                        {role === 2 ? <th key={uuidv4()}>Unsubscribe</th> : null}
+                    </tr>
+                </thead>
+                <tbody key={uuidv4()}>
+                    {table}
+                </tbody>
+            </Table>
+        </div>
     );
     
     return tableTop;

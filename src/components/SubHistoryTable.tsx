@@ -171,20 +171,22 @@ const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
                 </Col>
             </Row>
             
-            <Table striped bordered hover size="sm" className={styles.history_table}>
-                <thead>
-                    <tr>
-                        <th className="text-center">Subscriber</th>
-                        <th className="text-center">TX</th>
-                        <th className="text-center">Event Type</th>
-                        <th className="text-center">Timestamp</th>
-                        <th className="text-center">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {table}
-                </tbody>
-            </Table>
+            <div className="table-responsive">
+                <Table striped bordered hover size="sm" className={styles.history_table}>
+                    <thead>
+                        <tr>
+                            <th className="text-center">Subscriber</th>
+                            <th className="text-center">TX</th>
+                            <th className="text-center">Event Type</th>
+                            <th className="text-center">Timestamp</th>
+                            <th className="text-center">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {table}
+                    </tbody>
+                </Table>
+            </div>
 
             {totalPages > 1 && (
                 <div className="d-flex justify-content-center" style={{ marginTop: '3rem' }}>

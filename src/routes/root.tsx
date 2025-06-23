@@ -149,13 +149,24 @@ const Root: React.FC = () => {
                                         </Navbar.Brand>
                                     </Link>
                                 </div>
-                                <div style={{ flex: '1', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft: '20px' }}>
+                                
+                                {/* Desktop Navigation */}
+                                <div className="d-none d-lg-flex" style={{ flex: '1', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft: '20px' }}>
                                     <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
                                     <Button variant="outline-info" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subscriptions</Button>
                                     <Button variant="outline-info" className={styles.calendar_button} onClick={handleOnClickCalendar}>Calendar</Button>
                                     {account === adminAccount && <Button variant="outline-info" style={{ margin: "5px" }} onClick={handleOnClickAdmin}>Admin</Button>}
                                 </div>
-                                <div style={{ flex: '0 0 400px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px', paddingRight: '20px' }}>
+                                
+                                {/* Mobile Navigation */}
+                                <div className="d-lg-none" style={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '5px' }}>
+                                    <Button variant="outline-info" size="sm" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
+                                    <Button variant="outline-info" size="sm" className={styles.subscriptions_button} onClick={handleOnClickSubscriptions}>Subs</Button>
+                                    <Button variant="outline-info" size="sm" className={styles.calendar_button} onClick={handleOnClickCalendar}>Cal</Button>
+                                    {account === adminAccount && <Button variant="outline-info" size="sm" style={{ margin: "2px" }} onClick={handleOnClickAdmin}>Admin</Button>}
+                                </div>
+                                
+                                <div className="d-none d-md-flex" style={{ flex: '0 0 400px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px', paddingRight: '20px' }}>
                                     {chains.length > 1 ?
                                         <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown" style={{ marginRight: 'auto' }}>
                                             {chains.map((chain) => (
@@ -184,6 +195,18 @@ const Root: React.FC = () => {
                                             (<Navbar.Text className={styles.account_text_nav} style={{ margin: 0 }}>Account: {address?.slice(0, 5) + "..." + address?.slice(37, 42)}</Navbar.Text>)
                                             :
                                             (<Button variant="outline-success" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in Wallet</Button>)
+                                        }
+                                    </Nav>
+                                </div>
+                                
+                                {/* Mobile Right Side */}
+                                <div className="d-md-none" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <ThemeToggle />
+                                    <Nav key="nav" style={{ margin: 0, whiteSpace: 'nowrap' }}>
+                                        {isConnected && !isDisconnected ?
+                                            (<Navbar.Text className={styles.account_text_nav} style={{ margin: 0, fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
+                                            :
+                                            (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
                                         }
                                     </Nav>
                                 </div>

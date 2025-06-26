@@ -578,7 +578,7 @@
         top: 100%;
         right: 0;
         width: 250px;
-        background-color: var(--background-primary);
+        background-color: #000000;
         border: 1px solid var(--border-color);
         border-top: none;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -590,20 +590,40 @@
     
     .navbar-collapse.show {
         z-index: 1031;
-        background-color: var(--background-primary);
+        background-color: #000000;
     }
     
-    /* Ensure all content inside the menu has solid background */
+    /* Ensure all content inside the menu has solid background and right alignment */
     .navbar-collapse .d-lg-none {
-        background-color: var(--background-primary);
+        background-color: #000000;
+        text-align: right;
     }
     
     .navbar-collapse .btn {
         background-color: transparent;
+        text-align: right;
+        justify-content: flex-end;
     }
     
     .navbar-collapse .dropdown-menu {
-        background-color: var(--background-primary);
+        background-color: #000000;
         border: 1px solid var(--border-color);
+    }
+    
+    /* Right align all text and buttons in mobile menu */
+    .navbar-collapse .text-light {
+        text-align: right;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .navbar-collapse .navbar-text {
+        text-align: right;
+        width: 100%;
+    }
+    
+    .navbar-collapse .d-lg-none > div {
+        text-align: right;
+        width: 100%;
     }
 }

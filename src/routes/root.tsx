@@ -200,19 +200,19 @@ const Root: React.FC = () => {
                                     </Nav>
                                 </Nav>
                                 
-                                {/* Mobile Right Side */}
-                                <Nav className="d-lg-none align-items-center">
+                                {/* Mobile Right Side - In Menu */}
+                                <div className="d-lg-none" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px', justifyContent: 'flex-start' }}>
                                     <ThemeToggle />
                                     {isConnected && !isDisconnected ?
                                         (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
                                         :
                                         (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
                                     }
-                                </Nav>
+                                </div>
                                 
                                 {/* Mobile Chain Dropdown */}
                                 {chains.length > 1 && (
-                                    <Nav className="d-lg-none mb-2">
+                                    <div className="d-lg-none mb-2" style={{ textAlign: 'left' }}>
                                         <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="mobile-chain-dropdown">
                                             {chains.map((chain) => (
                                                 <NavDropdown.Item key={uuidv4()} className={styles.chain_pulldown2}>
@@ -229,7 +229,7 @@ const Root: React.FC = () => {
                                                 </NavDropdown.Item>
                                             ))}
                                         </NavDropdown>
-                                    </Nav>
+                                    </div>
                                 )}
                             </Navbar.Collapse>
                         </Container>

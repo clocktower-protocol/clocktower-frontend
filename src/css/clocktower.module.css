@@ -560,3 +560,33 @@
 }
 
 /* Remove all carousel styles */
+
+/* Navbar z-index and positioning */
+.navbar {
+    position: relative;
+    z-index: 1030;
+}
+
+.navbar-collapse {
+    z-index: 1031;
+}
+
+/* Ensure mobile menu appears above alerts */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 250px;
+        background-color: var(--background-primary);
+        border: 1px solid var(--border-color);
+        border-top: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        z-index: 1031;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .navbar-collapse.show {
+        z-index: 1031;
+    }
+}

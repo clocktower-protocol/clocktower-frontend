@@ -98,6 +98,12 @@
 
 .navbar {
     height: 75px;
+    position: relative;
+    z-index: 1030;
+}
+
+.navbar-collapse {
+    z-index: 1031;
 }
 
 .chain_pulldown {
@@ -560,94 +566,3 @@
 }
 
 /* Remove all carousel styles */
-
-/* Navbar z-index and positioning */
-.navbar {
-    position: relative;
-    z-index: 1030;
-}
-
-.navbar-collapse {
-    z-index: 1031;
-}
-
-/* Ensure mobile menu appears above alerts */
-@media (max-width: 991px) {
-    /* Target the specific navbar collapse with maximum specificity */
-    .navbar .navbar-collapse,
-    .navbar .navbar-collapse.show,
-    .navbar .navbar-collapse.collapsing {
-        position: absolute !important;
-        top: 100% !important;
-        right: 0 !important;
-        width: 180px !important;
-        background-color: #000000 !important;
-        background: #000000 !important;
-        border: 1px solid var(--border-color) !important;
-        border-top: none !important;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
-        z-index: 1031 !important;
-        border-radius: 0 0 12px 12px !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-    }
-    
-    /* Force black background on all elements with maximum specificity */
-    .navbar .navbar-collapse,
-    .navbar .navbar-collapse *,
-    .navbar .navbar-collapse .d-lg-none,
-    .navbar .navbar-collapse .d-lg-none *,
-    .navbar .navbar-collapse .btn,
-    .navbar .navbar-collapse .navbar-text,
-    .navbar .navbar-collapse .dropdown-menu,
-    .navbar .navbar-collapse .dropdown-item,
-    .navbar .navbar-collapse div,
-    .navbar .navbar-collapse span,
-    .navbar .navbar-collapse button {
-        background-color: #000000 !important;
-        background: #000000 !important;
-    }
-    
-    /* Ensure all content inside the menu has solid background and right alignment */
-    .navbar .navbar-collapse .d-lg-none {
-        background-color: #000000 !important;
-        background: #000000 !important;
-        text-align: right !important;
-    }
-    
-    .navbar .navbar-collapse .btn {
-        background-color: transparent !important;
-        text-align: right !important;
-        justify-content: flex-end !important;
-    }
-    
-    .navbar .navbar-collapse .dropdown-menu {
-        background-color: #000000 !important;
-        background: #000000 !important;
-        border: 1px solid var(--border-color) !important;
-    }
-    
-    /* Right align all text and buttons in mobile menu */
-    .navbar .navbar-collapse .text-light {
-        text-align: right !important;
-        width: 100% !important;
-        justify-content: flex-end !important;
-    }
-    
-    .navbar .navbar-collapse .navbar-text {
-        text-align: right !important;
-        width: 100% !important;
-    }
-    
-    .navbar .navbar-collapse .d-lg-none > div {
-        text-align: right !important;
-        width: 100% !important;
-    }
-}
-
-/* Additional global override for navbar collapse */
-.navbar-collapse {
-    --bs-bg-opacity: 1;
-    background-color: #000000 !important;
-    background: #000000 !important;
-}

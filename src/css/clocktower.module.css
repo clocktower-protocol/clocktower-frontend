@@ -574,56 +574,68 @@
 /* Ensure mobile menu appears above alerts */
 @media (max-width: 991px) {
     .navbar-collapse {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        width: 250px;
-        background-color: #000000;
-        border: 1px solid var(--border-color);
-        border-top: none;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        z-index: 1031;
-        border-radius: 0 0 8px 8px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        position: absolute !important;
+        top: 100% !important;
+        right: 0 !important;
+        width: 250px !important;
+        background-color: #000000 !important;
+        border: 1px solid var(--border-color) !important;
+        border-top: none !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+        z-index: 1031 !important;
+        border-radius: 0 0 8px 8px !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
     }
     
     .navbar-collapse.show {
-        z-index: 1031;
-        background-color: #000000;
+        z-index: 1031 !important;
+        background-color: #000000 !important;
+    }
+    
+    /* Force black background on all elements */
+    .navbar-collapse,
+    .navbar-collapse *,
+    .navbar-collapse .d-lg-none,
+    .navbar-collapse .d-lg-none *,
+    .navbar-collapse .btn,
+    .navbar-collapse .navbar-text,
+    .navbar-collapse .dropdown-menu,
+    .navbar-collapse .dropdown-item {
+        background-color: #000000 !important;
     }
     
     /* Ensure all content inside the menu has solid background and right alignment */
     .navbar-collapse .d-lg-none {
-        background-color: #000000;
-        text-align: right;
+        background-color: #000000 !important;
+        text-align: right !important;
     }
     
     .navbar-collapse .btn {
-        background-color: transparent;
-        text-align: right;
-        justify-content: flex-end;
+        background-color: transparent !important;
+        text-align: right !important;
+        justify-content: flex-end !important;
     }
     
     .navbar-collapse .dropdown-menu {
-        background-color: #000000;
-        border: 1px solid var(--border-color);
+        background-color: #000000 !important;
+        border: 1px solid var(--border-color) !important;
     }
     
     /* Right align all text and buttons in mobile menu */
     .navbar-collapse .text-light {
-        text-align: right;
-        width: 100%;
-        justify-content: flex-end;
+        text-align: right !important;
+        width: 100% !important;
+        justify-content: flex-end !important;
     }
     
     .navbar-collapse .navbar-text {
-        text-align: right;
-        width: 100%;
+        text-align: right !important;
+        width: 100% !important;
     }
     
     .navbar-collapse .d-lg-none > div {
-        text-align: right;
-        width: 100%;
+        text-align: right !important;
+        width: 100% !important;
     }
 }

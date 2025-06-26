@@ -18,6 +18,7 @@ interface Token {
     ticker: string;
     decimals: number;
     icon: React.ComponentType;
+    chain: number;
 }
 
 const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
@@ -73,11 +74,13 @@ const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
     }, [invalidAmount, invalidUrl, invalidDay, invalidDescription, invalidFrequency, invalidToken]);
 
     const tokenPulldown3 = () => {
-        return TOKEN_LOOKUP.map((token) => (
-            <Dropdown.Item onClick={() => setTokenSelection(token as Token)} key={uuidv4()}>
-                <Icon icon={token.icon}></Icon>{token.ticker}
-            </Dropdown.Item>
-        ));
+        return TOKEN_LOOKUP
+            .filter((token) => token.chain === chainId)
+            .map((token) => (
+                <Dropdown.Item onClick={() => setTokenSelection(token as Token)} key={uuidv4()}>
+                    <Icon icon={token.icon}></Icon>{token.ticker}
+                </Dropdown.Item>
+            ));
     };
 
     //populates select info for frequency based on lookup in config

@@ -17,6 +17,7 @@ interface Token {
     ticker: string;
     decimals: number;
     icon: React.ComponentType;
+    chain: number;
 }
 
 interface Chain {
@@ -57,7 +58,8 @@ export const TOKEN_LOOKUP: Token[] = [
         address: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
         ticker: "USDC",
         decimals: 6,
-        icon: USDCLogo
+        icon: USDCLogo,
+        chain: 84532
     }
 ];
 

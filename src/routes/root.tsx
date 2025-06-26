@@ -158,7 +158,18 @@ const Root: React.FC = () => {
                                 <Navbar.Toggle aria-controls="navbar-nav" />
                             </div>
                             
-                            <Navbar.Collapse id="navbar-nav" style={{ borderRadius: '0 0 12px 12px', width: '180px' }}>
+                            <Navbar.Collapse id="navbar-nav" style={{ 
+                                borderRadius: '0 0 12px 12px', 
+                                width: '150px',
+                                marginTop: '5px',
+                                marginBottom: '10px',
+                                paddingTop: '10px',
+                                paddingBottom: '10px',
+                                position: 'absolute',
+                                top: '100%',
+                                right: '0',
+                                backgroundColor: '#000000'
+                            }}>
                                 {/* Desktop Navigation */}
                                 <Nav className="d-none d-lg-flex me-auto">
                                     <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
@@ -168,7 +179,11 @@ const Root: React.FC = () => {
                                 </Nav>
                                 
                                 {/* Mobile Navigation */}
-                                <div className="d-lg-none mb-3" style={{ backgroundColor: '#000000' }}>
+                                <div className="d-lg-none mb-3" style={{ 
+                                    backgroundColor: '#000000',
+                                    borderRadius: '0 0 12px 12px',
+                                    padding: '10px 0'
+                                }}>
                                     <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000', marginRight: '15px' }}>
                                         <Button variant="link" className="text-light p-0" onClick={handleOnClickAccount} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Account</Button>
                                     </div>

@@ -159,7 +159,7 @@ const Root: React.FC = () => {
                                 </Nav>
                                 
                                 {/* Mobile Right Side - In Menu (Top) */}
-                                <div className="d-lg-none mb-3" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-start' }}>
+                                <div className="d-lg-none mb-3" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end' }}>
                                     <ThemeToggle />
                                     {isConnected && !isDisconnected ?
                                         (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
@@ -170,18 +170,18 @@ const Root: React.FC = () => {
                                 
                                 {/* Mobile Navigation */}
                                 <div className="d-lg-none mb-3">
-                                    <div className="mb-2">
-                                        <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickAccount} style={{ textDecoration: 'none' }}>Account</Button>
+                                    <div className="mb-2" style={{ textAlign: 'right' }}>
+                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickAccount} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Account</Button>
                                     </div>
-                                    <div className="mb-2">
-                                        <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickSubscriptions} style={{ textDecoration: 'none' }}>Subscriptions</Button>
+                                    <div className="mb-2" style={{ textAlign: 'right' }}>
+                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickSubscriptions} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Subscriptions</Button>
                                     </div>
-                                    <div className="mb-2">
-                                        <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickCalendar} style={{ textDecoration: 'none' }}>Calendar</Button>
+                                    <div className="mb-2" style={{ textAlign: 'right' }}>
+                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickCalendar} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Calendar</Button>
                                     </div>
                                     {account === adminAccount && (
-                                        <div className="mb-2">
-                                            <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickAdmin} style={{ textDecoration: 'none' }}>Admin</Button>
+                                        <div className="mb-2" style={{ textAlign: 'right' }}>
+                                            <Button variant="link" className="text-light p-0" onClick={handleOnClickAdmin} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Admin</Button>
                                         </div>
                                     )}
                                 </div>

@@ -147,9 +147,18 @@ const Root: React.FC = () => {
                                 </Link>
                             </Navbar.Brand>
                             
-                            <Navbar.Toggle aria-controls="navbar-nav" className="d-lg-none" />
+                            {/* Mobile Right Side - Always Visible */}
+                            <div className="d-lg-none" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <ThemeToggle />
+                                {isConnected && !isDisconnected ?
+                                    (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
+                                    :
+                                    (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
+                                }
+                                <Navbar.Toggle aria-controls="navbar-nav" />
+                            </div>
                             
-                            <Navbar.Collapse id="navbar-nav" style={{ backgroundColor: '#000000' }}>
+                            <Navbar.Collapse id="navbar-nav" style={{ borderRadius: '0 0 12px 12px', width: '180px' }}>
                                 {/* Desktop Navigation */}
                                 <Nav className="d-none d-lg-flex me-auto">
                                     <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
@@ -158,29 +167,19 @@ const Root: React.FC = () => {
                                     {account === adminAccount && <Button variant="outline-info" style={{ margin: "5px" }} onClick={handleOnClickAdmin}>Admin</Button>}
                                 </Nav>
                                 
-                                {/* Mobile Right Side - In Menu (Top) */}
-                                <div className="d-lg-none mb-3" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end', backgroundColor: '#000000' }}>
-                                    <ThemeToggle />
-                                    {isConnected && !isDisconnected ?
-                                        (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem', backgroundColor: '#000000' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
-                                        :
-                                        (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()} style={{ backgroundColor: '#000000' }}>Sign in</Button>)
-                                    }
-                                </div>
-                                
                                 {/* Mobile Navigation */}
                                 <div className="d-lg-none mb-3" style={{ backgroundColor: '#000000' }}>
-                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000', marginRight: '15px' }}>
                                         <Button variant="link" className="text-light p-0" onClick={handleOnClickAccount} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Account</Button>
                                     </div>
-                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000', marginRight: '15px' }}>
                                         <Button variant="link" className="text-light p-0" onClick={handleOnClickSubscriptions} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Subscriptions</Button>
                                     </div>
-                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000', marginRight: '15px' }}>
                                         <Button variant="link" className="text-light p-0" onClick={handleOnClickCalendar} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Calendar</Button>
                                     </div>
                                     {account === adminAccount && (
-                                        <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                        <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000', marginRight: '15px' }}>
                                             <Button variant="link" className="text-light p-0" onClick={handleOnClickAdmin} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Admin</Button>
                                         </div>
                                     )}

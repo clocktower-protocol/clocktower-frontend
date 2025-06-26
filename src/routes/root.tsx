@@ -159,12 +159,22 @@ const Root: React.FC = () => {
                                 </Nav>
                                 
                                 {/* Mobile Navigation */}
-                                <Nav className="d-lg-none me-auto mb-2 mb-lg-0">
-                                    <Nav.Link onClick={handleOnClickAccount}>Account</Nav.Link>
-                                    <Nav.Link onClick={handleOnClickSubscriptions}>Subscriptions</Nav.Link>
-                                    <Nav.Link onClick={handleOnClickCalendar}>Calendar</Nav.Link>
-                                    {account === adminAccount && <Nav.Link onClick={handleOnClickAdmin}>Admin</Nav.Link>}
-                                </Nav>
+                                <div className="d-lg-none mb-3">
+                                    <div className="mb-2">
+                                        <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickAccount} style={{ textDecoration: 'none' }}>Account</Button>
+                                    </div>
+                                    <div className="mb-2">
+                                        <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickSubscriptions} style={{ textDecoration: 'none' }}>Subscriptions</Button>
+                                    </div>
+                                    <div className="mb-2">
+                                        <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickCalendar} style={{ textDecoration: 'none' }}>Calendar</Button>
+                                    </div>
+                                    {account === adminAccount && (
+                                        <div className="mb-2">
+                                            <Button variant="link" className="text-light p-0 text-start" onClick={handleOnClickAdmin} style={{ textDecoration: 'none' }}>Admin</Button>
+                                        </div>
+                                    )}
+                                </div>
                                 
                                 {/* Desktop Right Side */}
                                 <Nav className="d-none d-lg-flex align-items-center" style={{ gap: '20px', paddingRight: '20px' }}>

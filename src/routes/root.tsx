@@ -158,6 +158,16 @@ const Root: React.FC = () => {
                                     {account === adminAccount && <Button variant="outline-info" style={{ margin: "5px" }} onClick={handleOnClickAdmin}>Admin</Button>}
                                 </Nav>
                                 
+                                {/* Mobile Right Side - In Menu (Top) */}
+                                <div className="d-lg-none mb-3" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-start' }}>
+                                    <ThemeToggle />
+                                    {isConnected && !isDisconnected ?
+                                        (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
+                                        :
+                                        (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
+                                    }
+                                </div>
+                                
                                 {/* Mobile Navigation */}
                                 <div className="d-lg-none mb-3">
                                     <div className="mb-2">
@@ -209,38 +219,6 @@ const Root: React.FC = () => {
                                         }
                                     </Nav>
                                 </Nav>
-                                
-                                {/* Mobile Right Side - In Menu */}
-                                <div className="d-lg-none" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px', justifyContent: 'flex-start' }}>
-                                    <ThemeToggle />
-                                    {isConnected && !isDisconnected ?
-                                        (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
-                                        :
-                                        (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
-                                    }
-                                </div>
-                                
-                                {/* Mobile Chain Dropdown */}
-                                {chains.length > 1 && (
-                                    <div className="d-lg-none mb-2" style={{ textAlign: 'left' }}>
-                                        <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="mobile-chain-dropdown">
-                                            {chains.map((chain) => (
-                                                <NavDropdown.Item key={uuidv4()} className={styles.chain_pulldown2}>
-                                                    {CHAIN_LOOKUP.map((lchain) => {
-                                                        if (lchain.id === chain.id) {
-                                                            return <Icon key={uuidv4()} className={styles.chain_icon} icon={lchain.icon}></Icon>;
-                                                        } else {
-                                                            return "";
-                                                        }
-                                                    })}
-                                                    <Button variant="outline-info" key={chain.id} onClick={() => changeChain(chain.id)}>
-                                                        {chain.name}
-                                                    </Button>
-                                                </NavDropdown.Item>
-                                            ))}
-                                        </NavDropdown>
-                                    </div>
-                                )}
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>

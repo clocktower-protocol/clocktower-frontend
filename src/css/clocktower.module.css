@@ -581,12 +581,29 @@
         background-color: var(--background-primary);
         border: 1px solid var(--border-color);
         border-top: none;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         z-index: 1031;
         border-radius: 0 0 8px 8px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
     }
     
     .navbar-collapse.show {
         z-index: 1031;
+        background-color: var(--background-primary);
+    }
+    
+    /* Ensure all content inside the menu has solid background */
+    .navbar-collapse .d-lg-none {
+        background-color: var(--background-primary);
+    }
+    
+    .navbar-collapse .btn {
+        background-color: transparent;
+    }
+    
+    .navbar-collapse .dropdown-menu {
+        background-color: var(--background-primary);
+        border: 1px solid var(--border-color);
     }
 }

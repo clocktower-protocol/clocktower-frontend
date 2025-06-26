@@ -149,7 +149,7 @@ const Root: React.FC = () => {
                             
                             <Navbar.Toggle aria-controls="navbar-nav" className="d-lg-none" />
                             
-                            <Navbar.Collapse id="navbar-nav">
+                            <Navbar.Collapse id="navbar-nav" style={{ backgroundColor: '#000000' }}>
                                 {/* Desktop Navigation */}
                                 <Nav className="d-none d-lg-flex me-auto">
                                     <Button variant="outline-info" className={styles.account_button} onClick={handleOnClickAccount}>Account</Button>
@@ -159,29 +159,29 @@ const Root: React.FC = () => {
                                 </Nav>
                                 
                                 {/* Mobile Right Side - In Menu (Top) */}
-                                <div className="d-lg-none mb-3" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end' }}>
+                                <div className="d-lg-none mb-3" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end', backgroundColor: '#000000' }}>
                                     <ThemeToggle />
                                     {isConnected && !isDisconnected ?
-                                        (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
+                                        (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem', backgroundColor: '#000000' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
                                         :
-                                        (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
+                                        (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()} style={{ backgroundColor: '#000000' }}>Sign in</Button>)
                                     }
                                 </div>
                                 
                                 {/* Mobile Navigation */}
-                                <div className="d-lg-none mb-3">
-                                    <div className="mb-2" style={{ textAlign: 'right' }}>
-                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickAccount} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Account</Button>
+                                <div className="d-lg-none mb-3" style={{ backgroundColor: '#000000' }}>
+                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickAccount} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Account</Button>
                                     </div>
-                                    <div className="mb-2" style={{ textAlign: 'right' }}>
-                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickSubscriptions} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Subscriptions</Button>
+                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickSubscriptions} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Subscriptions</Button>
                                     </div>
-                                    <div className="mb-2" style={{ textAlign: 'right' }}>
-                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickCalendar} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Calendar</Button>
+                                    <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                        <Button variant="link" className="text-light p-0" onClick={handleOnClickCalendar} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Calendar</Button>
                                     </div>
                                     {account === adminAccount && (
-                                        <div className="mb-2" style={{ textAlign: 'right' }}>
-                                            <Button variant="link" className="text-light p-0" onClick={handleOnClickAdmin} style={{ textDecoration: 'none', textAlign: 'right', width: '100%' }}>Admin</Button>
+                                        <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000' }}>
+                                            <Button variant="link" className="text-light p-0" onClick={handleOnClickAdmin} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Admin</Button>
                                         </div>
                                     )}
                                 </div>

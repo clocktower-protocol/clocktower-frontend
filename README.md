@@ -35,6 +35,7 @@ A modern, user-friendly frontend for the Clocktower Protocol - a decentralized s
   - Domain verification
 
 ## Technical Stack
+- **TypeScript** - Primary programming language
 - React-based frontend
 - Vite for build tooling
 - Wagmi for wallet integration

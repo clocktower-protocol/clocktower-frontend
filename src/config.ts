@@ -1,5 +1,6 @@
 import { ReactComponent as HardhatLogo } from "./images/hardhat.svg";
 import { ReactComponent as SepoliaLogo } from "./images/base_sepolia.svg";
+import { ReactComponent as BaseLogo } from "./images/base.svg";
 import { ReactComponent as MetamaskLogo } from "./images/metamask.svg";
 import { ReactComponent as BraveLogo } from "./images/brave.svg";
 import { ReactComponent as USDCLogo } from "./images/usdc.svg";
@@ -27,7 +28,6 @@ interface Chain {
     displayName: string;
     explorerUrl: string;
     contractAddress: `0x${string}`;
-    start_block: bigint;
 }
 
 interface Wallet {
@@ -68,10 +68,9 @@ export const CHAIN_LOOKUP: Chain[] = [
         name: "baseSepolia",
         id: 84532,
         icon: SepoliaLogo,
-        displayName: "Base Sepolia",
+        displayName: "Base Sepolia (Testnet)",
         explorerUrl: "https://sepolia.basescan.org/",
-        contractAddress: "0x6A0791Cd884f2199dC8F372f6715f675D2950922",
-        start_block: 26042632n
+        contractAddress: "0x6A0791Cd884f2199dC8F372f6715f675D2950922"
     },
     {
         name: "hardhat",
@@ -79,8 +78,15 @@ export const CHAIN_LOOKUP: Chain[] = [
         icon: HardhatLogo,
         displayName: "Hardhat",
         explorerUrl: "",
-        contractAddress: "0x0000000000000000000000000000000000000000",
-        start_block: 0n
+        contractAddress: "0x0000000000000000000000000000000000000000"
+    },
+    {
+        name: "base",
+        id: 8453,
+        icon: BaseLogo,
+        displayName: "Base",
+        explorerUrl: "https://basescan.org/",
+        contractAddress: "0xFaF5fc2f77b21BC188f492b827D366B03a07c61f"
     }
 ];
 

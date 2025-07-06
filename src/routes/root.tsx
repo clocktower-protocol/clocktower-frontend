@@ -210,7 +210,7 @@ const Root: React.FC = () => {
                                                         }
                                                     })}
                                                     <Button variant="outline-info" key={chain.id} onClick={() => changeChain(chain.id)}>
-                                                        {chain.name}
+                                                        {CHAIN_LOOKUP.find(lchain => lchain.id === chain.id)?.displayName || chain.name}
                                                     </Button>
                                                 </NavDropdown.Item>
                                             ))}

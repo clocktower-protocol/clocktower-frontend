@@ -3,13 +3,13 @@ import { Alert } from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router";
 import { ADMIN_ACCOUNT } from "../config"; 
 import AdminHistoryTable from '../components/AdminHistoryTable';
-import { gql } from '@apollo/client';
-import { apolloClient } from '../apolloclient';
+import { gql, useApolloClient } from '@apollo/client';
 import { SubLog } from '../types/subscription';
 
 const AdminHistory: React.FC = () => {
     const [account] = useOutletContext<[string]>();
     const { a, isp } = useParams();
+    const apolloClient = useApolloClient();
 
     const [history, setHistory] = useState<SubLog[]>([]);
     const [title, setTitle] = useState("");

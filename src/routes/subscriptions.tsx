@@ -10,14 +10,14 @@ import SubscriptionsTable from "../components/SubscriptionsTable";
 import EditDetailsForm2 from "../components/EditDetailsForm";
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
-import { gql } from '@apollo/client';
-import { apolloClient } from '../apolloclient';
+import { gql, useApolloClient } from '@apollo/client';
 import { SubView, Subscription, SubscriptionEditParams, SubscriptionEditResult, CreateSubscriptionParams, DetailsLog, SubscriptionResult } from '../types/subscription';
 
 const Subscriptions: React.FC = () => {
     let isMounting = useRef(true);
     const { t } = useParams<{ t: string }>();
     const { address, chainId } = useAccount();
+    const apolloClient = useApolloClient();
 
     // Modal triggers
     const [showCreateSub, setShowCreateSub] = useState(false);
@@ -244,7 +244,7 @@ const Subscriptions: React.FC = () => {
         } catch (Err) {
             console.log(Err);
         }
-    }, [address, chainId, GET_LATEST_DETAILS_LOG]);
+    }, [address, chainId, GET_LATEST_DETAILS_LOG, apolloClient]);
 
     const getSubscriberSubs = useCallback(async () => {
         if (typeof address === "undefined") {
@@ -282,7 +282,7 @@ const Subscriptions: React.FC = () => {
         } catch (Err) {
             console.log(Err);
         }
-    }, [address, chainId, GET_LATEST_DETAILS_LOG]);
+    }, [address, chainId, GET_LATEST_DETAILS_LOG, apolloClient]);
 
     const getSub = useCallback(async (editSubParams: SubscriptionEditParams) => {
         const chainConfig = CHAIN_LOOKUP.find(item => item.id === chainId);
@@ -320,7 +320,7 @@ const Subscriptions: React.FC = () => {
         } catch (Err) {
             console.log(Err);
         }
-    }, [GET_LATEST_DETAILS_LOG, chainId]);
+    }, [GET_LATEST_DETAILS_LOG, chainId, apolloClient]);
 
     // Page hooks
     useEffect(() => {

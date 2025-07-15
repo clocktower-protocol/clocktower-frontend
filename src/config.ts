@@ -60,6 +60,13 @@ export const TOKEN_LOOKUP: Token[] = [
         decimals: 6,
         icon: USDCLogo,
         chain: 84532
+    },
+    {
+        address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        ticker: "USDC",
+        decimals: 6,
+        icon: USDCLogo,
+        chain: 8453
     }
 ];
 

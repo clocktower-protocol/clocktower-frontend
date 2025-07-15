@@ -6,8 +6,7 @@ import Avatar from "boring-avatars";
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { recoverMessageAddress } from 'viem';
 import EditAccountForm from "../components/EditAccountForm";
-import { gql } from '@apollo/client';
-import { apolloClient } from '../apolloclient';
+import { gql, useApolloClient } from '@apollo/client';
 import styles from '../css/clocktower.module.css';
 import { AccountDetails, ProvDetailsLog } from '../types/account';
 
@@ -16,6 +15,7 @@ const Account: React.FC = () => {
     const { a } = useParams<{ a: string }>();
     const { address, chainId } = useAccount();
     const [account] = useOutletContext<[string]>();
+    const apolloClient = useApolloClient();
 
     // Modal triggers
     const [showEditWarn, setShowEditWarn] = useState(false);
@@ -188,7 +188,7 @@ const Account: React.FC = () => {
         } catch (Err) {
             console.log(Err);
         }
-    }, [a, address]);
+    }, [a, address, apolloClient]);
 
     // Sets mounting bool to not mounting after initial load
     useEffect(() => {

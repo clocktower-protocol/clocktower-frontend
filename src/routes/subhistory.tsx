@@ -6,8 +6,7 @@ import SubHistoryTable from '../components/SubHistoryTable';
 //import { usePublicClient  } from 'wagmi'
 //import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
-import { gql } from '@apollo/client';
-import { apolloClient } from '../apolloclient';
+import { gql, useApolloClient } from '@apollo/client';
 import { SubLog } from '../types/subscription';
 
 const GET_LATEST_SUBLOG = gql`
@@ -29,6 +28,7 @@ const GET_LATEST_SUBLOG = gql`
 
 const SubHistory: React.FC = () => {
     const [account] = useOutletContext<[string]>();
+    const apolloClient = useApolloClient();
 
     //gets public client for log lookup
     //const publicClient = usePublicClient()
@@ -51,7 +51,7 @@ const SubHistory: React.FC = () => {
         });
         const logs = result.data.subLogs;
         setHistoryArray(logs);
-    }, [account, id]);
+    }, [account, id, apolloClient]);
 
     useEffect(() => {
         //gets subscriber events

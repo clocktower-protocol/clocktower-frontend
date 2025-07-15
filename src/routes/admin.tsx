@@ -8,8 +8,7 @@ import SubscribersTable from '../components/SubscribersTable';
 import { useAccount } from 'wagmi';
 import { readContract } from 'wagmi/actions';
 import { config } from '../wagmiconfig';
-import { gql } from '@apollo/client';
-import { apolloClient } from '../apolloclient';
+import { gql, useApolloClient } from '@apollo/client';
 
 interface SubIndex {
     id: `0x${string}`; // bytes32
@@ -37,6 +36,7 @@ interface CallerLog {
 const Admin: React.FC = () => {
     const { chainId } = useAccount();
     const [account] = useOutletContext<[string]>();
+    const apolloClient = useApolloClient();
 
     const [allProviders, setAllProviders] = useState<Account[]>([]);
     const [allSubscribers, setAllSubscribers] = useState<Account[]>([]);
@@ -126,7 +126,7 @@ const Admin: React.FC = () => {
         }
 
         setAllSubscribers(subscribers);
-    }, [account, ALL_PROVIDERS_QUERY, ALL_SUBCRIBERS_QUERY, chainId]);
+    }, [account, ALL_PROVIDERS_QUERY, ALL_SUBCRIBERS_QUERY, chainId, apolloClient]);
 
     //loads caller list upon login
     useEffect(() => {
@@ -138,7 +138,7 @@ const Admin: React.FC = () => {
         };
 
         fetchAllCallers();
-    }, [account, getAllAccounts, ALL_CALLERS_QUERY]);
+    }, [account, getAllAccounts, ALL_CALLERS_QUERY, apolloClient]);
 
     //checks that user has logged in 
     if (account !== ADMIN_ACCOUNT) {
@@ -149,31 +149,21 @@ const Admin: React.FC = () => {
 
     return (
         <div>
-            <div>
-                <Alert className="text-center" variant="secondary">Admin Dashboard</Alert>
-                <Tabs
-                    defaultActiveKey="profile"
-                    id="admin-tabs"
-                    className="mb-3"
-                    justify
-                >
-                    <Tab eventKey="home" title="Caller">
-                        <CallerHistoryTable
-                            callerHistory={callerHistory}
-                        />
-                    </Tab>
-                    <Tab eventKey="profile" title="Providers">
-                        <ProvidersTable 
-                            allProviders={allProviders}
-                        />
-                    </Tab>
-                    <Tab eventKey="longer-tab" title="Subscribers">
-                        <SubscribersTable               
-                            allSubscribers={allSubscribers}                   
-                        />
-                    </Tab>
-                </Tabs>
-            </div>
+            <Tabs
+                defaultActiveKey="providers"
+                id="admin-tabs"
+                className="mb-3"
+            >
+                <Tab eventKey="providers" title="Providers">
+                    <ProvidersTable allProviders={allProviders} />
+                </Tab>
+                <Tab eventKey="subscribers" title="Subscribers">
+                    <SubscribersTable allSubscribers={allSubscribers} />
+                </Tab>
+                <Tab eventKey="caller-history" title="Caller History">
+                    <CallerHistoryTable callerHistory={callerHistory} />
+                </Tab>
+            </Tabs>
         </div>
     );
 };

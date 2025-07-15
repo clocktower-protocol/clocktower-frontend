@@ -6,8 +6,7 @@ import SubHistoryTable from '../components/SubHistoryTable';
 //import { usePublicClient } from 'wagmi'
 //import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
-import { gql } from '@apollo/client';
-import { apolloClient } from '../apolloclient';
+import { gql, useApolloClient } from '@apollo/client';
 import { SubLog } from '../types/subscription';
 
 const GET_SUBLOGS = gql`
@@ -32,6 +31,7 @@ const ProvSubHistory: React.FC = () => {
     const lowerAccount = account.toLowerCase();
     const [historyArray, setHistoryArray] = useState<SubLog[]>([]);
     const { id, t } = useParams();
+    const apolloClient = useApolloClient();
 
     const getLogs = useCallback(async () => {
         if (!id) return;
@@ -42,7 +42,7 @@ const ProvSubHistory: React.FC = () => {
         });
         const logs = result.data.subLogs;
         setHistoryArray(logs);
-    }, [id]);
+    }, [id, apolloClient]);
 
     //loads once
     useEffect(() => {

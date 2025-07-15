@@ -6,8 +6,7 @@ import SubscriptionsTable from '../components/SubscriptionsTable';
 import { useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { config } from '../wagmiconfig'
-import { gql } from '@apollo/client';
-import { apolloClient } from '../apolloclient';
+import { gql, useApolloClient } from '@apollo/client';
 import { DetailsLog, SubView } from '../types/subscription';
 
 interface FeeObject {
@@ -19,6 +18,7 @@ const AdminSubscriptions: React.FC = () => {
     const [account] = useOutletContext<[string]>();
     const { t, s } = useParams();
     const { chainId } = useAccount();
+    const apolloClient = useApolloClient();
 
     const [subscriptionArray, setSubscriptionArray] = useState<SubView[]>([]);
     const [detailsArray, setDetailsArray] = useState<DetailsLog[]>([]);
@@ -148,7 +148,7 @@ const AdminSubscriptions: React.FC = () => {
         setTitleMessage(titleMessage);
         setSubscriptionArray(subscriptions);
         setDetailsArray(detailsArray);
-    }, [account, detailsArray, GET_LATEST_DETAILS_PROVIDER_LOG, GET_LATEST_DETAILS_SUBSCRIBER_LOG, chainId]);
+    }, [account, detailsArray, GET_LATEST_DETAILS_PROVIDER_LOG, GET_LATEST_DETAILS_SUBSCRIBER_LOG, chainId, apolloClient]);
 
     //loads provider subscription list upon login
     useEffect(() => {

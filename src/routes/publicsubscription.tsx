@@ -30,6 +30,7 @@ const PublicSubscription: React.FC = () => {
     const [formattedDetails, setFormattedDetails] = useState<DetailsLog[]>([]);
     const [showToast, setShowToast] = useState(false);
     const [toastHeader, setToastHeader] = useState("");
+    const [hasEnoughBalance, setHasEnoughBalance] = useState(false);
 
     const { data, variables, writeContract } = useWriteContract();
     
@@ -166,6 +167,29 @@ const PublicSubscription: React.FC = () => {
         }
     }, [account, d, f, id, publicClient, setAlert, setAlertText, GET_LATEST_DETAILS_LOG, chainId, apolloClient]);
 
+    // Check token balance when subscription or address changes
+    useEffect(() => {
+        if (subscription && address) {
+            const checkTokenBalance = async () => {
+                try {
+                    const balance = await readContract(config, {
+                        address: subscription.token,
+                        abi: erc20Abi,
+                        functionName: 'balanceOf',
+                        args: [address]
+                    }) as bigint;
+
+                    setHasEnoughBalance(balance >= subscription.amount);
+                } catch (error) {
+                    console.error("Error checking token balance:", error);
+                    setHasEnoughBalance(false);
+                }
+            };
+
+            checkTokenBalance();
+        }
+    }, [subscription, address]);
+
     //Creates alert
     const alertMaker = () => {
         if (alert) {
@@ -182,6 +206,14 @@ const PublicSubscription: React.FC = () => {
     //subscribes to contract
     const subscribe = useCallback(async () => {
         if (!subscription || !address) return;
+
+        // Check if user has enough token balance
+        if (!hasEnoughBalance) {
+            setAlertType("danger");
+            setAlert(true);
+            setAlertText("Insufficient token balance to subscribe");
+            return;
+        }
 
         setToastHeader("Waiting on wallet transaction...");
         setShowToast(true);
@@ -262,6 +294,7 @@ const PublicSubscription: React.FC = () => {
                     isLink={true}
                     isSubscribed={subscribed}
                     subscribe={subscribe}
+                    hasEnoughBalance={hasEnoughBalance}
                 />
             </div>
         </div>

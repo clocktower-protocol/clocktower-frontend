@@ -19,6 +19,7 @@ interface SubscriptionCardsProps {
     setEditSubParams?: (params: { id: `0x${string}`; f: number; d: number }) => void;
     setLinkDisplayed?: (link: string) => void;
     subscribe?: () => void;
+    hasEnoughBalance?: boolean;
 }
 
 const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
@@ -254,9 +255,22 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                                             {!props.isSubscribed && !props.isProvider ?
                                                 <>
                                                     <Stack gap={3}>
-                                                        <Button style={{ width: "100%" }} type="submit" variant="outline-secondary" onClick={() => props.subscribe?.()}>Subscribe</Button>
+                                                        <Button 
+                                                            style={{ width: "100%" }} 
+                                                            type="submit" 
+                                                            variant={props.hasEnoughBalance === false ? "outline-danger" : "outline-secondary"}
+                                                            onClick={() => props.subscribe?.()}
+                                                            disabled={props.hasEnoughBalance === false}
+                                                        >
+                                                            {props.hasEnoughBalance === false ? "Insufficient Balance" : "Subscribe"}
+                                                        </Button>
                                                         <ListGroup horizontal={'sm'} style={{ display: "flex", justifyContent: "center" }} >
-                                                            <ListGroup.Item variant="light" style={{ width: "100%", textAlign: "center", fontSize: "15px" }}>Clicking subscribe will charge your wallet {warnPaydayString}</ListGroup.Item>
+                                                            <ListGroup.Item variant="light" style={{ width: "100%", textAlign: "center", fontSize: "15px" }}>
+                                                                {props.hasEnoughBalance === false 
+                                                                    ? "You don't have enough tokens to subscribe" 
+                                                                    : `Clicking subscribe will charge your wallet ${warnPaydayString}`
+                                                                }
+                                                            </ListGroup.Item>
                                                         </ListGroup>
                                                     </Stack>
                                                 </>

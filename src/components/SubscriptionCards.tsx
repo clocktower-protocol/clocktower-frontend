@@ -94,14 +94,14 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
         if (subscriptionArray[i].status < 1) {
             let totalSubscribers = 0;
 
-            let urlDisplayed = props.detailsArray[i].url;
+            let urlDisplayed = props.detailsArray[i]?.url || '---';
 
             //if this is a link card
             if (props.isLink) {
                 //Sets pay string depending on if this is a link or not
                 dueString = "Due";
                 //shortens url displayed if too long
-                if (props.detailsArray[i].url.split("").length > 40) {
+                if (props.detailsArray[i]?.url && props.detailsArray[i].url.split("").length > 40) {
                     urlDisplayed = props.detailsArray[i].url.slice(0, 40) + "...";
                 }
             }
@@ -218,7 +218,12 @@ const SubscriptionCards: React.FC<SubscriptionCardsProps> = (props) => {
                                     <>
                                         <ListGroup horizontal={'sm'} className="listgroup-horizontal" style={{ display: "flex", justifyContent: "center" }}>
                                             <ListGroup.Item variant="info" style={{ width: titleBarWidth, textAlign: "center", fontSize: "15px" }}>URL</ListGroup.Item>
-                                            <ListGroup.Item variant="light" style={{ width: textBarWidth, textAlign: "center", fontSize: "15px" }}><Link to={props.detailsArray[i].url}>{urlDisplayed}</Link></ListGroup.Item>
+                                            <ListGroup.Item variant="light" style={{ width: textBarWidth, textAlign: "center", fontSize: "15px" }}>
+                                                {props.detailsArray[i]?.url ? 
+                                                    <Link to={props.detailsArray[i].url}>{urlDisplayed}</Link> : 
+                                                    urlDisplayed
+                                                }
+                                            </ListGroup.Item>
                                         </ListGroup>
                                         <ListGroup horizontal={'sm'} className="listgroup-horizontal" style={{ display: "flex", justifyContent: "center" }}>
                                             <ListGroup.Item variant="info" style={{ width: titleBarWidth, textAlign: "center", fontSize: "15px" }}>Provider</ListGroup.Item>

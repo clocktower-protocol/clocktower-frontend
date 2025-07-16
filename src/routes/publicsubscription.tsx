@@ -61,42 +61,82 @@ const PublicSubscription: React.FC = () => {
             const chainConfig = CHAIN_LOOKUP.find(item => item.id === chainId);
             if (!chainConfig?.contractAddress) {
                 console.error("Contract address not found for chain ID:", chainId);
+                setAlertType("danger");
+                setAlert(true);
+                setAlertText("This chain is not supported. Please switch to a supported chain (Base or Base Sepolia).");
                 return;
             }
             const contractAddress = chainConfig.contractAddress as `0x${string}`;
 
-            const result = await readContract(config, {
-                address: contractAddress,
-                abi: CLOCKTOWERSUB_ABI,
-                functionName: 'idSubMap',
-                args: [id]
-            }) as SubscriptionResult;
+                        try {
+                const result = await readContract(config, {
+                    address: contractAddress,
+                    abi: CLOCKTOWERSUB_ABI,
+                    functionName: 'idSubMap',
+                    args: [id]
+                }) as SubscriptionResult;
 
-            const resultSub: Subscription = {
-                id: result[0],
-                amount: result[1],
-                provider: result[2],
-                token: result[3],
-                cancelled: result[4],
-                frequency: result[5],
-                dueDay: result[6]
-            };
+                // Check if subscription exists (provider address will be zero if not found)
+                if (result[2] === "0x0000000000000000000000000000000000000000") {
+                    setAlertType("warning");
+                    setAlert(true);
+                    setAlertText("This subscription doesn't exist on the current chain. Please switch to the correct chain to view this subscription");
+                    setSubscription(null);
+                    setFormattedDetails([]);
+                    setFormattedSub([]);
+                    return;
+                }
 
-            const result2 = await apolloClient.query({
-                query: GET_LATEST_DETAILS_LOG,
-                variables: { subscriptionId: resultSub.id.toLowerCase(), first: 1 }
-            });
+                const resultSub: Subscription = {
+                    id: result[0],
+                    amount: result[1],
+                    provider: result[2],
+                    token: result[3],
+                    cancelled: result[4],
+                    frequency: result[5],
+                    dueDay: result[6]
+                };
 
-            const tempDetails = [result2.data.detailsLogs[0]];
-            setFormattedDetails(tempDetails);
-            setSubscription(resultSub);
-            setToken(resultSub.token);
-            const tempSub: FormattedSubscription[] = [{
-                subscription: resultSub,
-                status: 0,
-                totalSubscribers: 0
-            }];
-            setFormattedSub(tempSub);
+                try {
+                    const result2 = await apolloClient.query({
+                        query: GET_LATEST_DETAILS_LOG,
+                        variables: { subscriptionId: resultSub.id.toLowerCase(), first: 1 }
+                    });
+
+                    // Check if details logs exist and have data
+                    const tempDetails = result2.data.detailsLogs && result2.data.detailsLogs.length > 0 
+                        ? [result2.data.detailsLogs[0]] 
+                        : [];
+                    
+                    setFormattedDetails(tempDetails);
+                } catch (error) {
+                    console.error("Error fetching details logs:", error);
+                    setFormattedDetails([]);
+                }
+                setSubscription(resultSub);
+                setToken(resultSub.token);
+                const tempSub: FormattedSubscription[] = [{
+                    subscription: resultSub,
+                    status: 0,
+                    totalSubscribers: 0
+                }];
+                setFormattedSub(tempSub);
+                
+                // Clear any previous error states when subscription is successfully loaded
+                if (alert) {
+                    setAlert(false);
+                }
+            } catch (error) {
+                console.error("Error fetching subscription:", error);
+                setSubscription(null);
+                setFormattedDetails([]);
+                setFormattedSub([]);
+                
+                // Show user-friendly error message for wrong chain
+                setAlertType("warning");
+                setAlert(true);
+                setAlertText("This subscription doesn't exist on the current chain. Please switch to the correct chain to view this subscription.");
+            }
         };
 
         const isSubscribed = async () => {
@@ -107,29 +147,34 @@ const PublicSubscription: React.FC = () => {
             }
             const contractAddress = chainConfig.contractAddress as `0x${string}`;
 
-            const result = await readContract(config, {
-                address: contractAddress,
-                abi: CLOCKTOWERSUB_ABI,
-                functionName: 'getSubscribersById',
-                args: [id]
-            }) as Subscriber[];
+            try {
+                const result = await readContract(config, {
+                    address: contractAddress,
+                    abi: CLOCKTOWERSUB_ABI,
+                    functionName: 'getSubscribersById',
+                    args: [id]
+                }) as Subscriber[];
 
-            let status = false;
-            
-            result.forEach((element) => {
-                if (element.subscriber === account) {
-                    setIsSubscribed(true);
-                    status = true;
-                    return;
+                let status = false;
+                
+                result.forEach((element) => {
+                    if (element.subscriber === account) {
+                        setIsSubscribed(true);
+                        status = true;
+                        return;
+                    }
+                });
+
+                if (status) {
+                    setAlertType("warning");
+                    setAlert(true);
+                    setAlertText("Already Subscribed");
                 }
-            });
-
-            if (status) {
-                setAlertType("warning");
-                setAlert(true);
-                setAlertText("Already Subscribed");
+                setIsSubscribed(status);
+            } catch (error) {
+                console.error("Error checking subscription status:", error);
+                setIsSubscribed(false);
             }
-            setIsSubscribed(status);
         };
 
         const isProviderSame = async () => {
@@ -140,24 +185,29 @@ const PublicSubscription: React.FC = () => {
             }
             const contractAddress = chainConfig.contractAddress as `0x${string}`;
 
-            const result = await readContract(config, {
-                address: contractAddress,
-                abi: CLOCKTOWERSUB_ABI,
-                functionName: 'idSubMap',
-                args: [id]
-            }) as SubscriptionResult;
+            try {
+                const result = await readContract(config, {
+                    address: contractAddress,
+                    abi: CLOCKTOWERSUB_ABI,
+                    functionName: 'idSubMap',
+                    args: [id]
+                }) as SubscriptionResult;
 
-            const resultSub: Subscription = {
-                id: result[0],
-                amount: result[1],
-                provider: result[2],
-                token: result[3],
-                cancelled: result[4],
-                frequency: result[5],
-                dueDay: result[6]
-            };
+                const resultSub: Subscription = {
+                    id: result[0],
+                    amount: result[1],
+                    provider: result[2],
+                    token: result[3],
+                    cancelled: result[4],
+                    frequency: result[5],
+                    dueDay: result[6]
+                };
 
-            setIsProvider(resultSub.provider === account);
+                setIsProvider(resultSub.provider === account);
+            } catch (error) {
+                console.error("Error checking provider status:", error);
+                setIsProvider(false);
+            }
         };
 
         if (typeof account !== "undefined") {
@@ -189,6 +239,37 @@ const PublicSubscription: React.FC = () => {
             checkTokenBalance();
         }
     }, [subscription, address]);
+
+    // Clear alert when subscription is successfully loaded
+    useEffect(() => {
+        if (subscription && alert) {
+            setAlert(false);
+        }
+    }, [subscription, alert]);
+
+    // Retry fetching details if subscription exists but details are missing
+    useEffect(() => {
+        const retryFetchDetails = async () => {
+            if (subscription && formattedDetails.length === 0) {
+                try {
+                    const result2 = await apolloClient.query({
+                        query: GET_LATEST_DETAILS_LOG,
+                        variables: { subscriptionId: subscription.id.toLowerCase(), first: 1 }
+                    });
+
+                    const tempDetails = result2.data.detailsLogs && result2.data.detailsLogs.length > 0 
+                        ? [result2.data.detailsLogs[0]] 
+                        : [];
+                    
+                    setFormattedDetails(tempDetails);
+                } catch (error) {
+                    console.error("Error retrying details fetch:", error);
+                }
+            }
+        };
+
+        retryFetchDetails();
+    }, [subscription, formattedDetails.length, apolloClient]);
 
     //Creates alert
     const alertMaker = () => {

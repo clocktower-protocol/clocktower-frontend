@@ -41,7 +41,7 @@ const Account: React.FC = () => {
     // Display Link
     const [linkDisplayed, setLinkDisplayed] = useState("");
     
-    const msg = 'clocktower_is_awesome';
+    const msg = 'clocktower';
 
     const { data: hash, writeContract } = useWriteContract();
 

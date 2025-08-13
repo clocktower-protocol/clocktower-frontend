@@ -7,10 +7,17 @@ export async function onRequest(context) {
     const city = request.headers.get('cf-ipcity');
     const ip = request.headers.get('cf-connecting-ip');
     
-    console.log('Debug headers:', { country, region, city, ip });
+    // Get geolocation from the cf object (more reliable)
+    const cf = request.cf;
+    const cfCountry = cf?.country;
+    const cfRegion = cf?.regionCode;
+    const cfCity = cf?.city;
     
-    // Block New York State users
-    if (country === 'US' && region === 'NY') {
+    console.log('Debug headers:', { country, region, city, ip });
+    console.log('CF object:', { cfCountry, cfRegion, cfCity });
+    
+    // Block New York State users - use cf object data
+    if ((country === 'US' && region === 'New York') || (cfCountry === 'US' && cfRegion === 'NY')) {
         return new Response(`
             <!DOCTYPE html>
             <html>

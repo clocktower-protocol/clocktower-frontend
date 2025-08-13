@@ -1,10 +1,15 @@
 export async function onRequest(context) {
     const { request, next, env } = context;
     
-    // Block New York State users
+    // Debug: Log all headers to see what we're getting
     const country = request.headers.get('cf-ipcountry');
     const region = request.headers.get('cf-ipregion');
+    const city = request.headers.get('cf-ipcity');
+    const ip = request.headers.get('cf-connecting-ip');
     
+    console.log('Debug headers:', { country, region, city, ip });
+    
+    // Block New York State users
     if (country === 'US' && region === 'NY') {
         return new Response(`
             <!DOCTYPE html>

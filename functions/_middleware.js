@@ -1,5 +1,11 @@
 export async function onRequest(context) {
     const { request, next, env } = context;
+    
+    // Skip authentication if ENABLE_AUTH is not set to 'true'
+    if (env.ENABLE_AUTH !== 'true') {
+        return next();
+    }
+    
     const USERNAME = env.CFP_USERNAME; 
     const PASSWORD = env.CFP_PASSWORD; 
     const REALM = 'Secure Clocktower Frontend';

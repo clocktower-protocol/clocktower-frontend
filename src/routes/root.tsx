@@ -7,7 +7,7 @@ import Icon from '../components/Icon';
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../css/clocktower.module.css';
 import ThemeToggle from '../components/ThemeToggle';
-import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain } from 'wagmi';
+import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain, useDisconnect } from 'wagmi';
 import { createApolloClient } from '../apolloclient';
 import { ApolloProvider } from '@apollo/client';
 
@@ -22,6 +22,7 @@ const Root: React.FC = () => {
     }, [chainId]);
 
     const { chains, switchChain } = useSwitchChain();
+    const { disconnect } = useDisconnect();
     const location = useLocation();
     const [account, setAccount] = useState<string>("");
     const [showWalletChoice, setShowWalletChoice] = useState<boolean>(false);
@@ -40,6 +41,10 @@ const Root: React.FC = () => {
     };
 
     const handleShow = () => setShowWalletChoice(true);
+
+    const handleDisconnect = () => {
+        disconnect();
+    };
 
     useAccountEffect({
         config,
@@ -150,11 +155,14 @@ const Root: React.FC = () => {
                             {/* Mobile Right Side - Always Visible */}
                             <div className="d-lg-none" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <ThemeToggle />
-                                {isConnected && !isDisconnected ?
-                                    (<Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>)
-                                    :
-                                    (<Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>)
-                                }
+                                {isConnected && !isDisconnected ? (
+                                    <>
+                                        <Navbar.Text className={styles.account_text_nav} style={{ fontSize: '0.8rem' }}>{address?.slice(0, 4) + "..." + address?.slice(38, 42)}</Navbar.Text>
+                                        <Button variant="outline-danger" size="sm" className={styles.wallet_button} onClick={handleDisconnect}>Disconnect</Button>
+                                    </>
+                                ) : (
+                                    <Button variant="outline-success" size="sm" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in</Button>
+                                )}
                                 <Navbar.Toggle aria-controls="navbar-nav" />
                             </div>
                             
@@ -194,6 +202,11 @@ const Root: React.FC = () => {
                                             <Button variant="link" className="text-light p-0" onClick={handleOnClickAdmin} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Admin</Button>
                                         </div>
                                     )}
+                                    {isConnected && !isDisconnected && (
+                                        <div className="mb-2" style={{ textAlign: 'right', backgroundColor: '#000000', marginRight: '15px' }}>
+                                            <Button variant="link" className="text-danger p-0" onClick={handleDisconnect} style={{ textDecoration: 'none', textAlign: 'right', width: '100%', backgroundColor: '#000000' }}>Disconnect</Button>
+                                        </div>
+                                    )}
                                 </div>
                                 
                                 {/* Desktop Right Side */}
@@ -220,14 +233,38 @@ const Root: React.FC = () => {
                                             <span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[0].icon}></Icon> {CHAIN_LOOKUP[0].displayName} </span>
                                         </Navbar.Text>
                                     }
-                                    <ThemeToggle />
-                                    <Nav key="nav" style={{ margin: 0, whiteSpace: 'nowrap' }}>
-                                        {isConnected && !isDisconnected ?
-                                            (<Navbar.Text className={styles.account_text_nav} style={{ margin: 0 }}>Account: {address?.slice(0, 5) + "..." + address?.slice(37, 42)}</Navbar.Text>)
-                                            :
-                                            (<Button variant="outline-success" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in Wallet</Button>)
-                                        }
-                                    </Nav>
+                                    {isConnected && !isDisconnected ? (
+                                        <Navbar.Text className={styles.account_text_nav} style={{ margin: 0 }}>Account: {address?.slice(0, 5) + "..." + address?.slice(37, 42)}</Navbar.Text>
+                                    ) : (
+                                        <Button variant="outline-success" className={styles.wallet_button} onClick={() => walletButtonClick()}>Sign in Wallet</Button>
+                                    )}
+                                    
+                                    {/* Desktop Hamburger Menu */}
+                                    <NavDropdown 
+                                        title={<span style={{ fontSize: '1.2rem' }}>☰</span>} 
+                                        id="desktop-hamburger-dropdown"
+                                        className={styles.desktop_hamburger_menu}
+                                        drop="start"
+                                    >
+                                        <NavDropdown.Item>
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                                                <span>Theme</span>
+                                                <ThemeToggle />
+                                            </div>
+                                        </NavDropdown.Item>
+                                        {isConnected && !isDisconnected && (
+                                            <NavDropdown.Item>
+                                                <Button 
+                                                    variant="outline-danger" 
+                                                    size="sm" 
+                                                    onClick={handleDisconnect}
+                                                    style={{ width: '100%' }}
+                                                >
+                                                    Disconnect
+                                                </Button>
+                                            </NavDropdown.Item>
+                                        )}
+                                    </NavDropdown>
                                 </Nav>
                             </Navbar.Collapse>
                         </Container>

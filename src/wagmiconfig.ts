@@ -17,8 +17,7 @@ export const config: Config = createConfig({
           name: 'Clocktower',
           description: 'Clocktower Protocol',
           url: 'https://app.clocktower.finance',
-          //icons: ['https://app.clocktower.finance/clocktower-icon.svg'],
-          icons: []
+          icons: ['https://app.clocktower.finance/clocktower-icon.svg']
         }
       }),
     ],

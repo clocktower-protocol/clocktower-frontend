@@ -24,20 +24,40 @@ jobs:
       run: npm run build
     
     - name: Deploy to Pinata
-      uses: pinata/action-deploy@v1
-      with:
-        pinata-api-token: ${{ secrets.PINATA_API_TOKEN }}
-        pinata-secret-access-token: ${{ secrets.PINATA_SECRET_ACCESS_TOKEN }}
-        source-path: './build'
-        remove-old-files: true
+      run: |
+        echo "📤 Deploying to Pinata..."
+        
+        # Create a temporary file for the request
+        echo '{"pinataOptions": {"cidVersion": 1}, "pinataMetadata": {"name": "clocktower-frontend", "keyvalues": {"deployed": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"}}}' > pinata-metadata.json
+        
+        # Upload to Pinata
+        response=$(curl -X POST \
+          -H "pinata_api_key: ${{ secrets.PINATA_API_TOKEN }}" \
+          -H "pinata_secret_api_key: ${{ secrets.PINATA_SECRET_ACCESS_TOKEN }}" \
+          -F "file=@build" \
+          -F "pinataMetadata=@pinata-metadata.json" \
+          https://api.pinata.cloud/pinning/pinFileToIPFS)
+        
+        # Extract the IPFS hash
+        ipfs_hash=$(echo $response | jq -r '.IpfsHash')
+        
+        # Set output for next steps
+        echo "ipfs_hash=$ipfs_hash" >> $GITHUB_OUTPUT
+        
+        echo "✅ Deployed to IPFS: $ipfs_hash"
+        echo "🌐 Gateway URL: https://gateway.pinata.cloud/ipfs/$ipfs_hash"
     
     - name: Update Cloudflare Worker KV
       run: |
+        echo "🔄 Updating Cloudflare KV with hash: ${{ steps.deploy.outputs.ipfs_hash }}"
+        
         curl -X PUT \
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
           -H "Content-Type: application/json" \
-          -d '{"value": "${{ steps.deploy.outputs.hash }}"}' \
+          -d '{"value": "${{ steps.deploy.outputs.ipfs_hash }}"}' \
           "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/storage/kv/namespaces/${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}/values/latest"
+        
+        echo "✅ Cloudflare KV updated successfully"
     
     - name: Comment on PR
       if: github.event_name == 'pull_request'
@@ -48,5 +68,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `🌐 **IPFS Deployment Complete!**\n\nYour app is now available at:\n- IPFS Gateway: https://gateway.pinata.cloud/ipfs/${{ steps.deploy.outputs.hash }}\n- Custom Domain: https://ipfs.clocktower.finance\n- IPFS Hash: \`${{ steps.deploy.outputs.hash }}\``
+            body: `🌐 **IPFS Deployment Complete!**\n\nYour app is now available at:\n- IPFS Gateway: https://gateway.pinata.cloud/ipfs/${{ steps.deploy.outputs.ipfs_hash }}\n- Custom Domain: https://ipfs.clocktower.finance\n- IPFS Hash: \`${{ steps.deploy.outputs.ipfs_hash }}\``
           })

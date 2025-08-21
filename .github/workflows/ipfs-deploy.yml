@@ -31,27 +31,36 @@ jobs:
         echo "📁 Checking build directory..."
         ls -la build/
         
+        # Create a zip file of the build directory
+        echo "📦 Creating zip file..."
+        cd build
+        zip -r ../build.zip .
+        cd ..
+        
+        echo "📄 Build zip file size:"
+        ls -la build.zip
+        
         # Create a temporary file for the request
         echo '{"pinataOptions": {"cidVersion": 1}, "pinataMetadata": {"name": "clocktower-frontend", "keyvalues": {"deployed": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"}}}' > pinata-metadata.json
         
-        echo "📄 Pinata metadata:"
+        echo " Pinata metadata:"
         cat pinata-metadata.json
         
         # Upload to Pinata using v3 API
         echo "🔄 Uploading to Pinata v3 API..."
         response=$(curl -X POST \
           -H "Authorization: Bearer ${{ secrets.PINATA_JWT_TOKEN }}" \
-          -F "file=@build" \
+          -F "file=@build.zip" \
           -F "pinataMetadata=@pinata-metadata.json" \
           https://uploads.pinata.cloud/v3/files \
           -w "\nHTTP_STATUS:%{http_code}\n")
         
-        echo "📥 Pinata response:"
+        echo " Pinata response:"
         echo "$response"
         
         # Extract HTTP status
         http_status=$(echo "$response" | grep "HTTP_STATUS:" | cut -d: -f2)
-        echo "🌐 HTTP Status: $http_status"
+        echo " HTTP Status: $http_status"
         
         # Extract the IPFS hash (only if status is 200)
         if [ "$http_status" = "200" ]; then
@@ -67,7 +76,7 @@ jobs:
         echo "ipfs_hash=$ipfs_hash" >> $GITHUB_OUTPUT
         
         echo "✅ Deployed to IPFS: $ipfs_hash"
-        echo "🌐 Gateway URL: https://gateway.pinata.cloud/ipfs/$ipfs_hash"
+        echo " Gateway URL: https://gateway.pinata.cloud/ipfs/$ipfs_hash"
     
     - name: Update Cloudflare Worker KV
       run: |

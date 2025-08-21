@@ -10,7 +10,7 @@ A modern, user-friendly frontend for the Clocktower Protocol - a decentralized s
   - Support for multiple payment frequencies (weekly, monthly, etc.)
   - Customizable subscription amounts and tokens
   - Subscription history tracking
-  - Calendar view for payment schedules
+  - Calendar view for payment schedules 
 
 ### User Features
 - **Multi-chain Support**

@@ -27,19 +27,42 @@ jobs:
       run: |
         echo "📤 Deploying to Pinata..."
         
+        # Debug: Check if build directory exists
+        echo "📁 Checking build directory..."
+        ls -la build/
+        
         # Create a temporary file for the request
         echo '{"pinataOptions": {"cidVersion": 1}, "pinataMetadata": {"name": "clocktower-frontend", "keyvalues": {"deployed": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"}}}' > pinata-metadata.json
         
-        # Upload to Pinata
+        echo "📄 Pinata metadata:"
+        cat pinata-metadata.json
+        
+        # Upload to Pinata with verbose output
+        echo "🔄 Uploading to Pinata..."
         response=$(curl -X POST \
           -H "pinata_api_key: ${{ secrets.PINATA_API_TOKEN }}" \
           -H "pinata_secret_api_key: ${{ secrets.PINATA_SECRET_ACCESS_TOKEN }}" \
           -F "file=@build" \
           -F "pinataMetadata=@pinata-metadata.json" \
-          https://api.pinata.cloud/pinning/pinFileToIPFS)
+          https://api.pinata.cloud/pinning/pinFileToIPFS \
+          -w "\nHTTP_STATUS:%{http_code}\n")
         
-        # Extract the IPFS hash
-        ipfs_hash=$(echo $response | jq -r '.IpfsHash')
+        echo "📥 Pinata response:"
+        echo "$response"
+        
+        # Extract HTTP status
+        http_status=$(echo "$response" | grep "HTTP_STATUS:" | cut -d: -f2)
+        echo "🌐 HTTP Status: $http_status"
+        
+        # Extract the IPFS hash (only if status is 200)
+        if [ "$http_status" = "200" ]; then
+          ipfs_hash=$(echo "$response" | grep -v "HTTP_STATUS:" | jq -r '.IpfsHash')
+          echo "🎯 Extracted IPFS hash: $ipfs_hash"
+        else
+          echo "❌ Upload failed with status: $http_status"
+          echo "🔍 Full response: $response"
+          exit 1
+        fi
         
         # Set output for next steps
         echo "ipfs_hash=$ipfs_hash" >> $GITHUB_OUTPUT

@@ -37,11 +37,10 @@ jobs:
         echo "📄 Pinata metadata:"
         cat pinata-metadata.json
         
-        # Upload to Pinata with verbose output
+        # Upload to Pinata with Bearer token authentication
         echo "🔄 Uploading to Pinata..."
         response=$(curl -X POST \
-          -H "pinata_api_key: ${{ secrets.PINATA_API_TOKEN }}" \
-          -H "pinata_secret_api_key: ${{ secrets.PINATA_SECRET_ACCESS_TOKEN }}" \
+          -H "Authorization: Bearer ${{ secrets.PINATA_JWT_TOKEN }}" \
           -F "file=@build" \
           -F "pinataMetadata=@pinata-metadata.json" \
           https://api.pinata.cloud/pinning/pinFileToIPFS \

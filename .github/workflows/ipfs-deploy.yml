@@ -43,7 +43,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.PINATA_JWT_TOKEN }}" \
           -F "file=@build" \
           -F "pinataMetadata=@pinata-metadata.json" \
-          https://api.pinata.cloud/v3/pinning/pinFileToIPFS \
+          https://uploads.pinata.cloud/v3/files \
           -w "\nHTTP_STATUS:%{http_code}\n")
         
         echo "📥 Pinata response:"

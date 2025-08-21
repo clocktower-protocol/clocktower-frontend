@@ -12,7 +12,7 @@ export const INFINITE_APPROVAL = BigInt(Math.pow(2, 255));
 export const ADMIN_ACCOUNT = "0xeaB2c4C12eac9EC14EA615E721c9d0D9027Fa85a";
 
  
-export const DOMAIN = "https://app.clocktower.finance";
+export const DOMAIN = window.location.origin;
 
 interface Token {
     address: `0x${string}`;

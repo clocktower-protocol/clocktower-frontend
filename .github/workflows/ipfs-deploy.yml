@@ -64,7 +64,7 @@ jobs:
         
         # Extract the IPFS hash (only if status is 200)
         if [ "$http_status" = "200" ]; then
-          ipfs_hash=$(echo "$response" | grep -v "HTTP_STATUS:" | jq -r '.IpfsHash')
+          ipfs_hash=$(echo "$response" | grep -v "HTTP_STATUS:" | jq -r '.data.cid')
           echo "🎯 Extracted IPFS hash: $ipfs_hash"
         else
           echo "❌ Upload failed with status: $http_status"

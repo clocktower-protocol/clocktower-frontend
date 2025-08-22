@@ -33,11 +33,12 @@ jobs:
       run: |
         echo "📤 Deploying to Pinata using SDK..."
         
-        # Run the deployment script
-        node .github/workflows/deploy-to-pinata.js
+        # Run the deployment script and capture output
+        output=$(node .github/workflows/deploy-to-pinata.js 2>&1)
+        echo "$output"
         
         # Extract the IPFS hash from the script output
-        ipfs_hash=$(node .github/workflows/deploy-to-pinata.js 2>&1 | grep "ipfs_hash=" | cut -d= -f2)
+        ipfs_hash=$(echo "$output" | grep "ipfs_hash=" | cut -d= -f2)
         
         if [ -z "$ipfs_hash" ]; then
           echo "❌ Failed to extract IPFS hash from script output"

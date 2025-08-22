@@ -52,6 +52,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.PINATA_JWT_TOKEN }}" \
           -F "file=@build.zip" \
           -F "pinataMetadata=@pinata-metadata.json" \
+          -F "network=public" \
           https://uploads.pinata.cloud/v3/files \
           -w "\nHTTP_STATUS:%{http_code}\n")
         
@@ -82,13 +83,38 @@ jobs:
       run: |
         echo "🔄 Updating Cloudflare KV with hash: ${{ steps.deploy.outputs.ipfs_hash }}"
         
-        curl -X PUT \
+        # Debug: Check if hash is available
+        if [ -z "${{ steps.deploy.outputs.ipfs_hash }}" ]; then
+          echo "❌ Error: IPFS hash is empty!"
+          exit 1
+        fi
+        
+        echo "🎯 Hash to store: ${{ steps.deploy.outputs.ipfs_hash }}"
+        echo "🔑 Account ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+        echo "📦 Namespace ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}"
+        
+        # Update Cloudflare KV
+        kv_response=$(curl -X PUT \
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
           -H "Content-Type: application/json" \
           -d '{"value": "${{ steps.deploy.outputs.ipfs_hash }}"}' \
-          "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/storage/kv/namespaces/${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}/values/latest"
+          "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/storage/kv/namespaces/${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}/values/latest" \
+          -w "\nHTTP_STATUS:%{http_code}\n")
         
-        echo "✅ Cloudflare KV updated successfully"
+        echo "📥 Cloudflare KV response:"
+        echo "$kv_response"
+        
+        # Extract HTTP status
+        kv_status=$(echo "$kv_response" | grep "HTTP_STATUS:" | cut -d: -f2)
+        echo "🌐 KV HTTP Status: $kv_status"
+        
+        if [ "$kv_status" = "200" ]; then
+          echo "✅ Cloudflare KV updated successfully"
+        else
+          echo "❌ Cloudflare KV update failed with status: $kv_status"
+          echo "🔍 Full response: $kv_response"
+          exit 1
+        fi
     
     - name: Comment on PR
       if: github.event_name == 'pull_request'

@@ -33,6 +33,15 @@ jobs:
       run: |
         echo "📤 Deploying to Pinata using SDK..."
         
+        # Debug: Check if environment variable is set
+        if [ -z "$PINATA_JWT_TOKEN" ]; then
+          echo "❌ PINATA_JWT_TOKEN environment variable is not set!"
+          echo "🔍 This means the GitHub secret is not configured."
+          exit 1
+        else
+          echo "✅ PINATA_JWT_TOKEN is set (length: ${#PINATA_JWT_TOKEN})"
+        fi
+        
         # Run the deployment script and capture output
         output=$(node .github/workflows/deploy-to-pinata.js 2>&1)
         echo "$output"

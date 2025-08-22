@@ -19,6 +19,9 @@ jobs:
     
     - name: Install dependencies
       run: npm ci
+      
+    - name: Install Pinata SDK
+      run: npm install pinata
     
     - name: Build project
       run: npm run build
@@ -26,42 +29,16 @@ jobs:
     - name: Deploy to Pinata
       id: deploy
       run: |
-        echo "📤 Deploying to Pinata..."
+        echo "📤 Deploying to Pinata using SDK..."
         
-        # Debug: Check if build directory exists
-        echo "📁 Checking build directory..."
-        ls -la build/
+        # Run the deployment script
+        node .github/workflows/deploy-to-pinata.js
         
-        # Create a temporary file for the request
-        echo '{"pinataOptions": {"cidVersion": 1}, "pinataMetadata": {"name": "clocktower-frontend", "keyvalues": {"deployed": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"}}}' > pinata-metadata.json
+        # Extract the IPFS hash from the script output
+        ipfs_hash=$(node .github/workflows/deploy-to-pinata.js 2>&1 | grep "ipfs_hash=" | cut -d= -f2)
         
-        echo " Pinata metadata:"
-        cat pinata-metadata.json
-        
-        # Upload to Pinata using v3 API - upload directory directly
-        echo "🔄 Uploading directory to Pinata v3 API..."
-        response=$(curl -X POST \
-          -H "Authorization: Bearer ${{ secrets.PINATA_JWT_TOKEN }}" \
-          -F "file=@build" \
-          -F "pinataMetadata=@pinata-metadata.json" \
-          -F "network=private" \
-          https://uploads.pinata.cloud/v3/files \
-          -w "\nHTTP_STATUS:%{http_code}\n")
-        
-        echo " Pinata response:"
-        echo "$response"
-        
-        # Extract HTTP status
-        http_status=$(echo "$response" | grep "HTTP_STATUS:" | cut -d: -f2)
-        echo " HTTP Status: $http_status"
-        
-        # Extract the IPFS hash (only if status is 200)
-        if [ "$http_status" = "200" ]; then
-          ipfs_hash=$(echo "$response" | grep -v "HTTP_STATUS:" | jq -r '.data.cid')
-          echo "🎯 Extracted IPFS hash: $ipfs_hash"
-        else
-          echo "❌ Upload failed with status: $http_status"
-          echo "🔍 Full response: $response"
+        if [ -z "$ipfs_hash" ]; then
+          echo "❌ Failed to extract IPFS hash from script output"
           exit 1
         fi
         

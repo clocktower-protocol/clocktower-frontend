@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT_TOKEN
+  pinataJWTKey: process.env.PINATA_JWT_TOKEN
 });
 
 async function deployToPinata() {

@@ -3,12 +3,27 @@ import fs from 'fs';
 import path from 'path';
 
 const pinata = new PinataSDK({
-  pinataJWTKey: process.env.PINATA_JWT_TOKEN
+  pinataJwt: process.env.PINATA_JWT_TOKEN
 });
 
 async function deployToPinata() {
   try {
     console.log('📤 Starting Pinata deployment...');
+    
+    // Debug: Check if token is available (don't log the full token for security)
+    if (!process.env.PINATA_JWT_TOKEN) {
+      throw new Error('PINATA_JWT_TOKEN environment variable is not set');
+    }
+    
+    const tokenLength = process.env.PINATA_JWT_TOKEN.length;
+    const tokenStart = process.env.PINATA_JWT_TOKEN.substring(0, 10);
+    console.log(`🔑 Token available: ${tokenStart}... (length: ${tokenLength})`);
+    
+    // JWT tokens should have 3 segments separated by dots
+    const segments = process.env.PINATA_JWT_TOKEN.split('.');
+    if (segments.length !== 3) {
+      throw new Error(`Invalid JWT token format. Expected 3 segments, got ${segments.length}`);
+    }
     
     // Check if build directory exists
     if (!fs.existsSync('build')) {

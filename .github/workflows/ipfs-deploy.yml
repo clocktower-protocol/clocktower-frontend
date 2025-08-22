@@ -33,37 +33,11 @@ jobs:
       run: |
         echo "📤 Deploying to Pinata using SDK..."
         
-        # Debug: Check if environment variable is set
-        if [ -z "$PINATA_JWT_TOKEN" ]; then
-          echo "❌ PINATA_JWT_TOKEN environment variable is not set!"
-          echo "🔍 This means the GitHub secret is not configured."
-          exit 1
-        else
-          echo "✅ PINATA_JWT_TOKEN is set (length: ${#PINATA_JWT_TOKEN})"
-        fi
-        
-        # Run the deployment script and capture output
-        echo "🔄 Running Node.js script..."
-        echo "🔍 Node.js version:"
-        node --version
-        echo "🔍 Current directory:"
-        pwd
-        echo "🔍 Checking if script exists:"
-        ls -la .github/workflows/deploy-to-pinata.js
-        echo "🔍 Running script with verbose output:"
-        output=$(node --trace-warnings .github/workflows/deploy-to-pinata.js 2>&1)
-        script_exit_code=$?
-        echo "📄 Script output:"
-        echo "$output"
-        echo "🔢 Script exit code: $script_exit_code"
-        
-        if [ $script_exit_code -ne 0 ]; then
-          echo "❌ Node.js script failed with exit code $script_exit_code"
-          exit 1
-        fi
+        # Run the deployment script
+        node .github/workflows/deploy-to-pinata.js
         
         # Extract the IPFS hash from the script output
-        ipfs_hash=$(echo "$output" | grep "ipfs_hash=" | cut -d= -f2)
+        ipfs_hash=$(node .github/workflows/deploy-to-pinata.js 2>&1 | grep "ipfs_hash=" | cut -d= -f2)
         
         if [ -z "$ipfs_hash" ]; then
           echo "❌ Failed to extract IPFS hash from script output"

@@ -20,6 +20,7 @@
     "dayjs": "^1.11.6",
     "graphql": "^16.11.0",
     "jwt-decode": "^4.0.0",
+    "pinata": "^2.5.0",
     "react": "^19.1.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^19.1.0",

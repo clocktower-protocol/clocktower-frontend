@@ -50,8 +50,8 @@ async function deployToPinata() {
     
     console.log('🔄 Uploading files to Pinata using fileArray method...');
     
-    // Upload type set to private
-    const uploadType = 'private';
+    // Upload type set to public (private doesn't support fileArray)
+    const uploadType = 'public';
     console.log(`🔐 Upload type: ${uploadType}`);
     
     // Upload using fileArray method

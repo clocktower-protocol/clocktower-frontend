@@ -81,8 +81,8 @@ async function deployToPinata() {
     console.log(`📊 Size: ${upload.size} bytes`);
     console.log(`📁 Files: ${upload.number_of_files}`);
     
-    // Output the CID for GitHub Actions
-    console.log(`::set-output name=ipfs_hash::${upload.cid}`);
+    // Output the CID for GitHub Actions (new format)
+    console.log(`ipfs_hash=${upload.cid}`);
     
     return upload.cid;
     

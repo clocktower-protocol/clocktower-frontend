@@ -28,6 +28,8 @@ jobs:
     
     - name: Deploy to Pinata
       id: deploy
+      env:
+        PINATA_JWT_TOKEN: ${{ secrets.PINATA_JWT_TOKEN }}
       run: |
         echo "📤 Deploying to Pinata using SDK..."
         

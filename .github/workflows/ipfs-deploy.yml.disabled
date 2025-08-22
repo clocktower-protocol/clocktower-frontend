@@ -2,7 +2,7 @@ name: Deploy to IPFS
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ master, main, ipfs_deploy ]
 
 jobs:
   build-and-deploy:
@@ -24,6 +24,7 @@ jobs:
       run: npm run build
     
     - name: Deploy to Pinata
+      id: deploy
       run: |
         echo "📤 Deploying to Pinata..."
         
@@ -31,28 +32,19 @@ jobs:
         echo "📁 Checking build directory..."
         ls -la build/
         
-        # Create a zip file of the build directory
-        echo "📦 Creating zip file..."
-        cd build
-        zip -r ../build.zip .
-        cd ..
-        
-        echo "📄 Build zip file size:"
-        ls -la build.zip
-        
         # Create a temporary file for the request
         echo '{"pinataOptions": {"cidVersion": 1}, "pinataMetadata": {"name": "clocktower-frontend", "keyvalues": {"deployed": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"}}}' > pinata-metadata.json
         
         echo " Pinata metadata:"
         cat pinata-metadata.json
         
-        # Upload to Pinata using v3 API
-        echo "🔄 Uploading to Pinata v3 API..."
+        # Upload to Pinata using v3 API - upload directory directly
+        echo "🔄 Uploading directory to Pinata v3 API..."
         response=$(curl -X POST \
           -H "Authorization: Bearer ${{ secrets.PINATA_JWT_TOKEN }}" \
-          -F "file=@build.zip" \
+          -F "file=@build" \
           -F "pinataMetadata=@pinata-metadata.json" \
-          -F "network=public" \
+          -F "network=private" \
           https://uploads.pinata.cloud/v3/files \
           -w "\nHTTP_STATUS:%{http_code}\n")
         
@@ -93,11 +85,11 @@ jobs:
         echo "🔑 Account ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
         echo "📦 Namespace ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}"
         
-        # Update Cloudflare KV
+        # Update Cloudflare KV - using the correct API endpoint
         kv_response=$(curl -X PUT \
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          -d '{"value": "${{ steps.deploy.outputs.ipfs_hash }}"}' \
+          -H "Content-Type: text/plain" \
+          --data-raw "${{ steps.deploy.outputs.ipfs_hash }}" \
           "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/storage/kv/namespaces/${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}/values/latest" \
           -w "\nHTTP_STATUS:%{http_code}\n")
         

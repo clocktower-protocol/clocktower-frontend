@@ -44,7 +44,14 @@ jobs:
         
         # Run the deployment script and capture output
         echo "🔄 Running Node.js script..."
-        output=$(node .github/workflows/deploy-to-pinata.js 2>&1)
+        echo "🔍 Node.js version:"
+        node --version
+        echo "🔍 Current directory:"
+        pwd
+        echo "🔍 Checking if script exists:"
+        ls -la .github/workflows/deploy-to-pinata.js
+        echo "🔍 Running script with verbose output:"
+        output=$(node --trace-warnings .github/workflows/deploy-to-pinata.js 2>&1)
         script_exit_code=$?
         echo "📄 Script output:"
         echo "$output"

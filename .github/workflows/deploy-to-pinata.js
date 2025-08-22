@@ -62,7 +62,7 @@ async function deployToPinata() {
         type: getMimeType(file.path)
       });
     });
-    
+     
     console.log('🔄 Uploading files to Pinata using fileArray method...');
     
     // Upload type set to public (private doesn't support fileArray)

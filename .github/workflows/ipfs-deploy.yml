@@ -43,8 +43,17 @@ jobs:
         fi
         
         # Run the deployment script and capture output
+        echo "🔄 Running Node.js script..."
         output=$(node .github/workflows/deploy-to-pinata.js 2>&1)
+        script_exit_code=$?
+        echo "📄 Script output:"
         echo "$output"
+        echo "🔢 Script exit code: $script_exit_code"
+        
+        if [ $script_exit_code -ne 0 ]; then
+          echo "❌ Node.js script failed with exit code $script_exit_code"
+          exit 1
+        fi
         
         # Extract the IPFS hash from the script output
         ipfs_hash=$(echo "$output" | grep "ipfs_hash=" | cut -d= -f2)

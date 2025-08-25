@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Alert, Toast, ToastContainer, Spinner } from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate } from "react-router";
-import { CLOCKTOWERSUB_ABI, INFINITE_APPROVAL, ZERO_ADDRESS, CHAIN_LOOKUP } from "../config"; 
+import { CLOCKTOWERSUB_ABI, INFINITE_APPROVAL, ZERO_ADDRESS, CHAIN_LOOKUP, TOKEN_LOOKUP } from "../config"; 
 import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { erc20Abi } from 'viem'
@@ -229,7 +229,18 @@ const PublicSubscription: React.FC = () => {
                         args: [address]
                     }) as bigint;
 
-                    setHasEnoughBalance(balance >= subscription.amount);
+                    // Get token info to determine decimals
+                    const token = TOKEN_LOOKUP.find(t => t.address === subscription.token);
+                    
+                    if (token) {
+                        // Convert user's balance from token decimals to 18 decimals for comparison
+                        const balanceIn18Decimals = balance * BigInt(10 ** (18 - token.decimals));
+                        
+                        setHasEnoughBalance(balanceIn18Decimals >= subscription.amount);
+                    } else {
+                        // Fallback: assume 18 decimals if token not found
+                        setHasEnoughBalance(balance >= subscription.amount);
+                    }
                 } catch (error) {
                     console.error("Error checking token balance:", error);
                     setHasEnoughBalance(false);

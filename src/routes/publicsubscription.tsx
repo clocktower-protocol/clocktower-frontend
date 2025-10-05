@@ -15,7 +15,7 @@ const PublicSubscription: React.FC = () => {
     const { address, chainId } = useAccount();
     const publicClient = usePublicClient();
     const [account] = useOutletContext<[string]>();
-    const { id, f, d } = useParams();
+    const { id, f, d, return_url } = useParams();
     const navigate = useNavigate();
     const apolloClient = useApolloClient();
 
@@ -346,9 +346,27 @@ const PublicSubscription: React.FC = () => {
         }
     }, [subscription, address, token, writeContract, chainId, showToast]);
 
-    const sendToAccount = useCallback(() => 
-        navigate(`/subscriptions/subscribed`)
-    , [navigate]);
+    //sends to account page or return url
+    const sendToAccount = useCallback(() => {
+        if (return_url) {
+            try {
+                const decodedUrl = decodeURIComponent(return_url);
+                const url = new URL(decodedUrl);
+                url.searchParams.set('subscription_success', 'true');
+                url.searchParams.set('subscription_id', id || '');
+                url.searchParams.set('user_address', address || '');
+                
+                // Redirect to external site
+                window.location.href = url.toString();
+            } catch (error) {
+                console.error('Invalid return URL:', error);
+                // Fallback to default behavior
+                navigate(`/subscriptions/subscribed`);
+            }
+        } else {
+            navigate(`/subscriptions/subscribed`)
+        }
+    }, [navigate, return_url, id, address]);
 
     //shows alert when waiting for transaction to finish
     useEffect(() => {

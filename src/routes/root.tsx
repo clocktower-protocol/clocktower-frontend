@@ -14,12 +14,18 @@ import { ApolloProvider } from '@apollo/client/react';
 const Root: React.FC = () => {
     const { address, isConnected, isDisconnected, chainId } = useConnection({ config });
     const [client, setClient] = useState(() => createApolloClient(chainId));
+    const [isInIframe, setIsInIframe] = useState(false);
 
     useEffect(() => {
         if (chainId) {
             setClient(createApolloClient(chainId));
         }
     }, [chainId]);
+
+    // Detect if we're in an iframe
+    useEffect(() => {
+        setIsInIframe(window.self !== window.top);
+    }, []);
 
     const switchChain = useSwitchChain();
     const disconnect = useDisconnect();
@@ -148,9 +154,10 @@ const Root: React.FC = () => {
                     </Modal.Body>
                 </Modal>
             </div>
-            <div key={"topDiv"}>
-                <div key={"navBarKey"} className="navBar">
-                    <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar}>
+            <div key={"topDiv"} className={isInIframe ? styles.iframe_mode : ''}>
+                {!isInIframe && (
+                    <div key={"navBarKey"} className="navBar">
+                        <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar}>
                         <Container fluid>
                             <Navbar.Brand>
                                 <Link to="/subscriptions/created" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -275,7 +282,8 @@ const Root: React.FC = () => {
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>
-                </div>
+                    </div>
+                )}
                 <div key={"mainDiv"} id="detail" className="mainDiv">
                     {!isConnected ? (
                         <Alert className={`text-center ${styles.connect_wallet_alert}`} variant="info">Please Connect Wallet</Alert>

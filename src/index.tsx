@@ -46,7 +46,7 @@ const router = createHashRouter([
         element: <ProvSubscribers />
       },
       {
-        path: "public_subscription/:id/:f/:d/:return_url?",
+        path: "public_subscription/:id/:return_url?",
         element: <PublicSubscription />,
       },
       {

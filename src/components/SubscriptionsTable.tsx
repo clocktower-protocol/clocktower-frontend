@@ -108,7 +108,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = (props) => {
 
             if(role === 0 && bySubscriber && props.feeObjects) {
                 row.push(
-                    <td key={uuidv4()}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
+                    <td key={uuidv4()}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}`}>Link</Link></td>,
                     <td key={uuidv4()}>{Number(formatEther(BigInt(props.feeObjects[i].feeBalance))).toFixed(4)}&nbsp;&nbsp; {tickerLookup(subscriptionArray[i].subscription.token)}</td>,
                     <td key={uuidv4()}>{Math.floor(props.feeObjects[i].remainingCycles)}</td>
                 );
@@ -116,7 +116,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = (props) => {
 
             if(role === 0 && !bySubscriber) {
                 row.push(
-                    <td key={uuidv4()}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`}>Link</Link></td>,
+                    <td key={uuidv4()}><Link to={`../public_subscription/${subscriptionArray[i].subscription.id}`}>Link</Link></td>,
                     <td key={uuidv4()}>{Number(totalSubscribers)}</td>,
                     <td key={uuidv4()}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>
                 );
@@ -124,7 +124,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = (props) => {
 
             if(role === 1 && Number(totalSubscribers) > 0) {
                 row.push(
-                    <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed?.(`${DOMAIN}/#/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
+                    <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed?.(`${DOMAIN}/#/public_subscription/${subscriptionArray[i].subscription.id}`)}>Link</Button></td>,
                     <td key={uuidv4()}><Link to={`../subscribers/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.amount}/${tickerLookup(subscriptionArray[i].subscription.token)}/${subscriptionArray[i].subscription.provider}`}>{Number(totalSubscribers)}</Link></td>,
                     <td key={uuidv4()}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
                     <td key={uuidv4()}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,
@@ -135,7 +135,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = (props) => {
 
             if(role === 1 && Number(totalSubscribers) === 0) {
                 row.push(
-                    <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed?.(`${DOMAIN}/#/public_subscription/${subscriptionArray[i].subscription.id}/${subscriptionArray[i].subscription.frequency}/${subscriptionArray[i].subscription.dueDay}`)}>Link</Button></td>,
+                    <td key={uuidv4()}><Button type="submit" variant="outline-info" onClick={() => props.setLinkDisplayed?.(`${DOMAIN}/#/public_subscription/${subscriptionArray[i].subscription.id}`)}>Link</Button></td>,
                     <td key={uuidv4()}>{Number(totalSubscribers)}</td>,
                     <td key={uuidv4()}>{Number(totalSubscribers) * Number(subAmount)}&nbsp;&nbsp;{tickerLookup(subscriptionArray[i].subscription.token)}</td>,
                     <td key={uuidv4()}><Link to={`../history/${subscriptionArray[i].subscription.id}`}>History</Link></td>,

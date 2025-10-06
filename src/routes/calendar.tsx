@@ -50,7 +50,7 @@ const Calendar: React.FC = () => {
     
     //link functions
     const eventClick = useCallback((info: any) => {
-        navigate('/public_subscription/' + info.event.extendedProps.id + "/" + info.event.extendedProps.frequency + "/" + info.event.extendedProps.dueDay, { replace: false });
+        navigate('/public_subscription/' + info.event.extendedProps.id, { replace: false });
     }, [navigate]);
 
     //converts dueDay and frequency to cal events

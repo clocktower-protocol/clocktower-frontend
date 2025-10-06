@@ -18,6 +18,7 @@ const PublicSubscription: React.FC = () => {
     const { id, f, d, return_url } = useParams();
     const navigate = useNavigate();
     const apolloClient = useApolloClient();
+    const [isInIframe, setIsInIframe] = useState(false);
 
     const [subscription, setSubscription] = useState<Subscription | null>(null);
     const [token, setToken] = useState<`0x${string}`>(ZERO_ADDRESS);
@@ -54,6 +55,11 @@ const PublicSubscription: React.FC = () => {
             }
         }
     `;
+
+    // Detect if we're in an iframe
+    useEffect(() => {
+        setIsInIframe(window.self !== window.top);
+    }, []);
 
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
@@ -396,7 +402,7 @@ const PublicSubscription: React.FC = () => {
                     </Toast.Header>
                 </Toast>
             </ToastContainer>
-            <div style={{justifyContent:"center", display:"flex", paddingTop:"30px"}}>
+            <div className={isInIframe ? styles.widget_container : ''} style={isInIframe ? {} : {justifyContent:"center", display:"flex", paddingTop:"30px"}}>
                 <SubscriptionCards
                     subscriptionArray={formattedSub}
                     detailsArray={formattedDetails}

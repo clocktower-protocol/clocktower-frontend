@@ -14,6 +14,7 @@ import AdminHistory from './routes/adminhistory';
 import Account from './routes/account';
 import Calendar from './routes/calendar';
 import Subscriptions from './routes/subscriptions';
+import IframeTest from './routes/iframetest';
 import { WagmiProvider } from 'wagmi';
 import { config } from './wagmiconfig';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -71,6 +72,10 @@ const router = createHashRouter([
       {
         path: "subscriptions/:t",
         element: <Subscriptions />
+      },
+      {
+        path: "iframetest",
+        element: <IframeTest />
       }
     ]
   }

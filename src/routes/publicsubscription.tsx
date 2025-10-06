@@ -15,7 +15,7 @@ const PublicSubscription: React.FC = () => {
     const { address, chainId } = useAccount();
     const publicClient = usePublicClient();
     const [account] = useOutletContext<[string]>();
-    const { id, f, d, return_url } = useParams();
+    const { id, return_url } = useParams();
     const navigate = useNavigate();
     const apolloClient = useApolloClient();
     const [isInIframe, setIsInIframe] = useState(false);
@@ -221,7 +221,7 @@ const PublicSubscription: React.FC = () => {
             isSubscribed();
             isProviderSame();
         }
-    }, [account, d, f, id, publicClient, setAlert, setAlertText, GET_LATEST_DETAILS_LOG, chainId, apolloClient]);
+    }, [account, id, publicClient, setAlert, setAlertText, GET_LATEST_DETAILS_LOG, chainId, apolloClient]);
 
     // Check token balance when subscription or address changes
     useEffect(() => {

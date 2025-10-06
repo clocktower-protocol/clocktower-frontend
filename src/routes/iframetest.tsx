@@ -4,14 +4,12 @@ import styles from '../css/clocktower.module.css';
 
 const IframeTest: React.FC = () => {
     const [subscriptionId, setSubscriptionId] = useState('123');
-    const [frequency, setFrequency] = useState('0');
-    const [dueDay, setDueDay] = useState('0');
     const [returnUrl, setReturnUrl] = useState('https://example.com/callback');
     const [iframeUrl, setIframeUrl] = useState('');
 
     const generateIframeUrl = () => {
         const baseUrl = window.location.origin + window.location.pathname;
-        const hashRoute = `#/public_subscription/${subscriptionId}/${frequency}/${dueDay}`;
+        const hashRoute = `#/public_subscription/${subscriptionId}`;
         const encodedReturnUrl = encodeURIComponent(returnUrl);
         const fullUrl = `${baseUrl}${hashRoute}?return_url=${encodedReturnUrl}`;
         setIframeUrl(fullUrl);
@@ -40,28 +38,6 @@ const IframeTest: React.FC = () => {
                                         value={subscriptionId}
                                         onChange={(e) => setSubscriptionId(e.target.value)}
                                         placeholder="Enter subscription ID"
-                                    />
-                                </div>
-                                
-                                <div className="mb-3">
-                                    <label className="form-label">Frequency:</label>
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        value={frequency}
-                                        onChange={(e) => setFrequency(e.target.value)}
-                                        placeholder="0"
-                                    />
-                                </div>
-                                
-                                <div className="mb-3">
-                                    <label className="form-label">Due Day:</label>
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        value={dueDay}
-                                        onChange={(e) => setDueDay(e.target.value)}
-                                        placeholder="0"
                                     />
                                 </div>
                                 

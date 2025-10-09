@@ -65,6 +65,16 @@ const PublicSubscription: React.FC = () => {
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
         const getSub = async () => {
+             // Clean and debug the ID
+            const originalId = id;
+            const cleanId = id?.replace(/\s/g, '') || ''; // Remove all whitespace
+            
+            console.log('🔍 ID Debug Info:');
+            console.log('  Original ID:', originalId);
+            console.log('  Cleaned ID:', cleanId);
+            console.log('  ID length:', cleanId.length);
+            console.log('  ID starts with 0x:', cleanId.startsWith('0x'));
+            
             const chainConfig = CHAIN_LOOKUP.find(item => item.id === chainId);
             if (!chainConfig?.contractAddress) {
                 console.error("Contract address not found for chain ID:", chainId);

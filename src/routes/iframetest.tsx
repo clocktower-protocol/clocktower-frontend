@@ -129,7 +129,8 @@ const IframeTest: React.FC = () => {
                                     <div>
                                         <p>Copy this HTML code to embed the subscription widget on your site:</p>
                                         <pre style={{ 
-                                            backgroundColor: '#f8f9fa', 
+                                            backgroundColor: '#000000', 
+                                            color: '#ffffff',
                                             padding: '15px', 
                                             borderRadius: '4px',
                                             overflow: 'auto'

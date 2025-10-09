@@ -7,6 +7,7 @@ import { readContract } from 'wagmi/actions'
 import { erc20Abi } from 'viem'
 import { config } from '../wagmiconfig'
 import SubscriptionCards from "../components/SubscriptionCards";
+import SubscriptionWidget from "../components/SubscriptionWidget";
 import styles from '../css/clocktower.module.css';
 import { gql, useApolloClient } from '@apollo/client';
 import { Subscription, DetailsLog, FormattedSubscription, Subscriber, SubscriptionResult } from '../types/subscription';
@@ -32,6 +33,7 @@ const PublicSubscription: React.FC = () => {
     const [showToast, setShowToast] = useState(false);
     const [toastHeader, setToastHeader] = useState("");
     const [hasEnoughBalance, setHasEnoughBalance] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { data, variables, writeContract } = useWriteContract();
     
@@ -100,6 +102,7 @@ const PublicSubscription: React.FC = () => {
                     setSubscription(null);
                     setFormattedDetails([]);
                     setFormattedSub([]);
+                    setIsLoading(false);
                     return;
                 }
 
@@ -137,6 +140,7 @@ const PublicSubscription: React.FC = () => {
                     totalSubscribers: 0
                 }];
                 setFormattedSub(tempSub);
+                setIsLoading(false);
                 
                 // Clear any previous error states when subscription is successfully loaded
                 if (alert) {
@@ -147,6 +151,7 @@ const PublicSubscription: React.FC = () => {
                 setSubscription(null);
                 setFormattedDetails([]);
                 setFormattedSub([]);
+                setIsLoading(false);
                 
                 // Show user-friendly error message for wrong chain
                 setAlertType("warning");
@@ -413,15 +418,26 @@ const PublicSubscription: React.FC = () => {
                 </Toast>
             </ToastContainer>
             <div className={isInIframe ? styles.widget_container : ''} style={isInIframe ? {} : {justifyContent:"center", display:"flex", paddingTop:"30px"}}>
-                <SubscriptionCards
-                    subscriptionArray={formattedSub}
-                    detailsArray={formattedDetails}
-                    isProvider={isProvider}
-                    isLink={true}
-                    isSubscribed={subscribed}
-                    subscribe={subscribe}
-                    hasEnoughBalance={hasEnoughBalance}
-                />
+                {isInIframe ? (
+                    <SubscriptionWidget
+                        subscriptionArray={formattedSub}
+                        detailsArray={formattedDetails}
+                        isSubscribed={subscribed}
+                        subscribe={subscribe}
+                        hasEnoughBalance={hasEnoughBalance}
+                        isLoading={isLoading}
+                    />
+                ) : (
+                    <SubscriptionCards
+                        subscriptionArray={formattedSub}
+                        detailsArray={formattedDetails}
+                        isProvider={isProvider}
+                        isLink={true}
+                        isSubscribed={subscribed}
+                        subscribe={subscribe}
+                        hasEnoughBalance={hasEnoughBalance}
+                    />
+                )}
             </div>
         </div>
     );

@@ -138,13 +138,18 @@ const SubscriptionWidget: React.FC<SubscriptionWidgetProps> = (props) => {
                                     Insufficient Balance
                                 </Button>
                             ) : (
-                                <Button 
-                                    variant="primary" 
-                                    onClick={props.subscribe}
-                                    style={{ width: "100%", padding: "12px", fontSize: "16px", fontWeight: "bold" }}
-                                >
-                                    Subscribe
-                                </Button>
+                                <>
+                                    <div style={{ fontSize: "14px", color: "#6c757d", marginBottom: "10px" }}>
+                                        Click below to subscribe
+                                    </div>
+                                    <Button 
+                                        variant="primary" 
+                                        onClick={props.subscribe}
+                                        style={{ width: "100%", padding: "12px", fontSize: "16px", fontWeight: "bold" }}
+                                    >
+                                        Subscribe
+                                    </Button>
+                                </>
                             )}
                         </div>
                     </Card.Body>

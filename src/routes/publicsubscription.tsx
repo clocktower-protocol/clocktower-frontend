@@ -299,11 +299,36 @@ const PublicSubscription: React.FC = () => {
     const subscribe = useCallback(async () => {
         if (!subscription || !address) return;
 
-        // Check if user has enough token balance
-        if (!hasEnoughBalance) {
+        // Re-check token balance to avoid race conditions
+        try {
+            const balance = await readContract(config, {
+                address: subscription.token,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address]
+            }) as bigint;
+
+            const token = TOKEN_LOOKUP.find(t => t.address === subscription.token);
+            let hasEnoughBalanceNow = false;
+            
+            if (token) {
+                const balanceIn18Decimals = balance * BigInt(10 ** (18 - token.decimals));
+                hasEnoughBalanceNow = balanceIn18Decimals >= subscription.amount;
+            } else {
+                hasEnoughBalanceNow = balance >= subscription.amount;
+            }
+
+            if (!hasEnoughBalanceNow) {
+                setAlertType("danger");
+                setAlert(true);
+                setAlertText("Insufficient token balance to subscribe");
+                return;
+            }
+        } catch (error) {
+            console.error("Error checking token balance:", error);
             setAlertType("danger");
             setAlert(true);
-            setAlertText("Insufficient token balance to subscribe");
+            setAlertText("Error checking token balance");
             return;
         }
 

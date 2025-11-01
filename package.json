@@ -35,6 +35,11 @@
     "wagmi": "^2.13.0",
     "wrangler": "^4.12.0"
   },
+  "overrides": {
+    "@walletconnect/logger": {
+      "pino": "10.0.0"
+    }
+  },
   "scripts": {
     "start": "vite",
     "build": "vite build",

@@ -25,6 +25,7 @@ export const config: Config = createConfig({
       coinbaseWallet(),
       walletConnect({
         projectId: '0168b93563a3f610bb1c0ff1f29444bb',
+        showQrModal: true,
         metadata: {
           name: 'Clocktower',
           description: 'Clocktower Protocol',

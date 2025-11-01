@@ -83,3 +83,32 @@ export interface SubView {
     status: number;
     totalSubscribers?: number;
 }
+
+// Apollo Client Query Result Types
+export interface DetailsLogsQueryResult {
+    detailsLogs: DetailsLog[];
+}
+
+export interface SubLogsQueryResult {
+    subLogs: SubLog[];
+}
+
+export interface ProviderSubLogsQueryResult {
+    subLogs: { provider: string }[];
+}
+
+export interface SubscriberSubLogsQueryResult {
+    subLogs: { subscriber: string }[];
+}
+
+export interface CallerLogsQueryResult {
+    callerLogs: {
+        timestamp: string;
+        checkedDay: string;
+        caller: string;
+        isFinished: boolean;
+        blockNumber: string;
+        blockTimestamp: string;
+        transactionHash: string;
+    }[];
+}

@@ -16,4 +16,9 @@ export interface ProvDetailsLog {
     domain: string;
     email: string;
     misc: string;
+}
+
+// Apollo Client Query Result Types
+export interface ProvDetailsLogsQueryResult {
+    provDetailsLogs: ProvDetailsLog[];
 } 

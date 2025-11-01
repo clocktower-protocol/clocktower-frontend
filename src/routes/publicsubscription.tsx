@@ -9,8 +9,9 @@ import { config } from '../wagmiconfig'
 import SubscriptionCards from "../components/SubscriptionCards";
 import SubscriptionWidget from "../components/SubscriptionWidget";
 import styles from '../css/clocktower.module.css';
-import { gql, useApolloClient } from '@apollo/client';
-import { Subscription, DetailsLog, FormattedSubscription, Subscriber, SubscriptionResult } from '../types/subscription';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
+import { Subscription, DetailsLog, FormattedSubscription, Subscriber, SubscriptionResult, DetailsLogsQueryResult } from '../types/subscription';
 
 const PublicSubscription: React.FC = () => {
     const { address, chainId } = useAccount();
@@ -123,8 +124,9 @@ const PublicSubscription: React.FC = () => {
                     });
 
                     // Check if details logs exist and have data
-                    const tempDetails = result2.data.detailsLogs && result2.data.detailsLogs.length > 0 
-                        ? [result2.data.detailsLogs[0]] 
+                    const data = result2.data as DetailsLogsQueryResult;
+                    const tempDetails = data.detailsLogs && data.detailsLogs.length > 0 
+                        ? [data.detailsLogs[0]] 
                         : [];
                     
                     setFormattedDetails(tempDetails);
@@ -289,8 +291,9 @@ const PublicSubscription: React.FC = () => {
                         variables: { subscriptionId: subscription.id.toLowerCase(), first: 1 }
                     });
 
-                    const tempDetails = result2.data.detailsLogs && result2.data.detailsLogs.length > 0 
-                        ? [result2.data.detailsLogs[0]] 
+                    const data = result2.data as DetailsLogsQueryResult;
+                    const tempDetails = data.detailsLogs && data.detailsLogs.length > 0 
+                        ? [data.detailsLogs[0]] 
                         : [];
                     
                     setFormattedDetails(tempDetails);

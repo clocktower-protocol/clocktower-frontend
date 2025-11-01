@@ -3,8 +3,9 @@ import { Alert } from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router";
 import { ADMIN_ACCOUNT } from "../config"; 
 import AdminHistoryTable from '../components/AdminHistoryTable';
-import { gql, useApolloClient } from '@apollo/client';
-import { SubLog } from '../types/subscription';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
+import { SubLog, SubLogsQueryResult } from '../types/subscription';
 
 const AdminHistory: React.FC = () => {
     const [account] = useOutletContext<[string]>();
@@ -60,7 +61,8 @@ const AdminHistory: React.FC = () => {
                 variables: { providerAddress: a }
             });
 
-            logs = result.data.subLogs;
+            const data = result.data as SubLogsQueryResult;
+            logs = data.subLogs;
             setTitle("Provider: ");
         } else {
             const result2 = await apolloClient.query({
@@ -68,7 +70,8 @@ const AdminHistory: React.FC = () => {
                 variables: { subscriberAddress: a }
             });
 
-            logs = result2.data.subLogs;
+            const data2 = result2.data as SubLogsQueryResult;
+            logs = data2.subLogs;
             setTitle("Subscriber: ");
         }
 

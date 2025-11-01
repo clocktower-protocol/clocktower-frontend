@@ -6,8 +6,9 @@ import SubHistoryTable from '../components/SubHistoryTable';
 //import { usePublicClient } from 'wagmi'
 //import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
-import { gql, useApolloClient } from '@apollo/client';
-import { SubLog } from '../types/subscription';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
+import { SubLog, SubLogsQueryResult } from '../types/subscription';
 
 const GET_SUBLOGS = gql`
     query GetSubLog($subscriptionId: Bytes!) {
@@ -40,7 +41,8 @@ const ProvSubHistory: React.FC = () => {
             query: GET_SUBLOGS,
             variables: { subscriptionId: id.toLowerCase() }
         });
-        const logs = result.data.subLogs;
+        const data = result.data as SubLogsQueryResult;
+        const logs = data.subLogs;
         setHistoryArray(logs);
     }, [id, apolloClient]);
 

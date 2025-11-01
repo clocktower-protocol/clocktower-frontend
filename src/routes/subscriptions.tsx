@@ -10,8 +10,9 @@ import SubscriptionsTable from "../components/SubscriptionsTable";
 import EditDetailsForm2 from "../components/EditDetailsForm";
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
-import { gql, useApolloClient } from '@apollo/client';
-import { SubView, Subscription, SubscriptionEditParams, SubscriptionEditResult, CreateSubscriptionParams, DetailsLog, SubscriptionResult } from '../types/subscription';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
+import { SubView, Subscription, SubscriptionEditParams, SubscriptionEditResult, CreateSubscriptionParams, DetailsLog, SubscriptionResult, DetailsLogsQueryResult } from '../types/subscription';
 
 const Subscriptions: React.FC = () => {
     let isMounting = useRef(true);
@@ -234,7 +235,8 @@ const Subscriptions: React.FC = () => {
                         query: GET_LATEST_DETAILS_LOG,
                         variables: { subscriptionId: sub.subscription.id.toLowerCase(), first: 1 },
                     });
-                    return result.data.detailsLogs[0];
+                    const data = result.data as DetailsLogsQueryResult;
+                    return data.detailsLogs[0];
                 })
             );
 
@@ -273,7 +275,8 @@ const Subscriptions: React.FC = () => {
                         query: GET_LATEST_DETAILS_LOG,
                         variables: { subscriptionId: sub.subscription.id.toLowerCase(), first: 1 },
                     });
-                    return result.data.detailsLogs[0];
+                    const data = result.data as DetailsLogsQueryResult;
+                    return data.detailsLogs[0];
                 })
             );
 
@@ -315,7 +318,8 @@ const Subscriptions: React.FC = () => {
                 variables: { subscriptionId: resultSub.id.toLowerCase(), first: 1 }
             });
 
-            setPreEditDetails(result3.data.detailsLogs[0]);
+            const data = result3.data as DetailsLogsQueryResult;
+            setPreEditDetails(data.detailsLogs[0]);
             setEditSub(resultSub);
         } catch (Err) {
             console.log(Err);

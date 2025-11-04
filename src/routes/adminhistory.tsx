@@ -3,7 +3,8 @@ import { Alert } from 'react-bootstrap';
 import { useParams, useOutletContext } from "react-router";
 import { ADMIN_ACCOUNT } from "../config"; 
 import AdminHistoryTable from '../components/AdminHistoryTable';
-import { gql, useApolloClient } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
 import { SubLog } from '../types/subscription';
 
 const AdminHistory: React.FC = () => {

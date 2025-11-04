@@ -10,7 +10,8 @@ import SubscriptionsTable from "../components/SubscriptionsTable";
 import EditDetailsForm2 from "../components/EditDetailsForm";
 import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
-import { gql, useApolloClient } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
 import { SubView, Subscription, SubscriptionEditParams, SubscriptionEditResult, CreateSubscriptionParams, DetailsLog, SubscriptionResult } from '../types/subscription';
 
 const Subscriptions: React.FC = () => {

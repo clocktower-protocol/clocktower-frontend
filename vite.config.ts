@@ -27,5 +27,15 @@ export default defineConfig(() => {
             */
         ],
         base: './', // Ensures relative paths for assets
+        test: {
+            globals: true,
+            environment: 'jsdom',
+            setupFiles: './src/setupTests.ts',
+            css: true,
+            coverage: {
+                provider: 'v8',
+                reporter: ['text', 'json', 'html'],
+            },
+        },
     };
 }); 

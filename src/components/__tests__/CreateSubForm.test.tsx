@@ -82,7 +82,9 @@ describe('CreateSubForm', () => {
     it('renders the form with all fields', () => {
         render(<CreateSubForm setChangedCreateSub={mockSetChangedCreateSub} />);
 
-        expect(screen.getByLabelText(/token/i)).toBeInTheDocument();
+        // Token uses a Dropdown, so check for the label text and dropdown button
+        expect(screen.getByText(/^token:$/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /select token/i })).toBeInTheDocument();
         expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/frequency/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/due day/i)).toBeInTheDocument();

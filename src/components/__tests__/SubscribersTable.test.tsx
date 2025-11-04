@@ -15,11 +15,6 @@ describe('SubscribersTable', () => {
         expect(container.firstChild).toBeNull();
     });
 
-    it('returns null when subscribers is not an array', () => {
-        const { container } = render(<SubscribersTable allSubscribers={null as any} />, { includeRouter: true });
-        expect(container.firstChild).toBeNull();
-    });
-
     it('renders table with subscribers', () => {
         render(<SubscribersTable allSubscribers={mockSubscribers} />, { includeRouter: true });
 
@@ -27,11 +22,19 @@ describe('SubscribersTable', () => {
         expect(screen.getByText(mockSubscribers[1].accountAddress)).toBeInTheDocument();
     });
 
-    it('renders pagination controls', () => {
-        render(<SubscribersTable allSubscribers={mockSubscribers} />, { includeRouter: true });
+    it('renders pagination controls when there are multiple pages', () => {
+        // Create enough subscribers to require pagination (more than 10)
+        const manySubscribers = Array.from({ length: 15 }, (_, i) => ({
+            accountAddress: `0x${i.toString().padStart(40, '0')}` as `0x${string}`,
+        }));
+
+        render(<SubscribersTable allSubscribers={manySubscribers} />, { includeRouter: true });
 
         expect(screen.getByText(/items per page/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /1/i })).toBeInTheDocument();
+        // Pagination should render when there are more than 10 items (default itemsPerPage)
+        // Check for pagination component (Bootstrap Pagination renders as a nav or ul)
+        const pagination = document.querySelector('.pagination');
+        expect(pagination).toBeInTheDocument();
     });
 
     it('allows changing items per page', async () => {

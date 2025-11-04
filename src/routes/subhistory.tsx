@@ -6,7 +6,8 @@ import SubHistoryTable from '../components/SubHistoryTable';
 //import { usePublicClient  } from 'wagmi'
 //import { parseAbiItem } from 'viem'
 import styles from '../css/clocktower.module.css';
-import { gql, useApolloClient } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
 import { SubLog } from '../types/subscription';
 
 const GET_LATEST_SUBLOG = gql`

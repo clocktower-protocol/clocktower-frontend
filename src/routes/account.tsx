@@ -6,7 +6,8 @@ import Avatar from "boring-avatars";
 import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { recoverMessageAddress } from 'viem';
 import EditAccountForm from "../components/EditAccountForm";
-import { gql, useApolloClient } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
 import styles from '../css/clocktower.module.css';
 import { AccountDetails, ProvDetailsLog } from '../types/account';
 

@@ -8,7 +8,8 @@ import SubscribersTable from '../components/SubscribersTable';
 import { useAccount } from 'wagmi';
 import { readContract } from 'wagmi/actions';
 import { config } from '../wagmiconfig';
-import { gql, useApolloClient } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
 
 interface SubIndex {
     id: `0x${string}`; // bytes32

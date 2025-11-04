@@ -9,7 +9,7 @@ import styles from '../css/clocktower.module.css';
 import ThemeToggle from '../components/ThemeToggle';
 import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain, useDisconnect } from 'wagmi';
 import { createApolloClient } from '../apolloclient';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 
 const Root: React.FC = () => {
     const { address, isConnected, isDisconnected, chainId } = useAccount({ config });

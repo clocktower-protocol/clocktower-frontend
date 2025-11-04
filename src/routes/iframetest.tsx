@@ -32,12 +32,13 @@ const IframeTest: React.FC = () => {
     // Listen for postMessage from iframe
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            // Security: Validate origin (in production, should check specific origin)
-            // For now, accept messages from same origin
+            // Security: Validate origin
+            // In production, you may want to allow specific origins from a config list
+            // For now, we accept same-origin messages (iframe must be same-origin)
             if (event.origin !== window.location.origin) {
                 console.warn('Message from unexpected origin:', event.origin);
-                // In production, you should reject messages from unknown origins
-                // return;
+                // Reject messages from unknown origins for security
+                return;
             }
 
             // Check if message is subscription completion

@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Alert } from 'react-bootstrap';
 import styles from '../css/clocktower.module.css';
+
+interface SubscriptionCompleteMessage {
+    type: 'subscription_complete';
+    subscription_id: string;
+    user_address: string;
+    success: boolean;
+    return_url: string | null;
+}
 
 const IframeTest: React.FC = () => {
     const [subscriptionId, setSubscriptionId] = useState('123');
     const [returnUrl, setReturnUrl] = useState('https://example.com/callback');
     const [iframeUrl, setIframeUrl] = useState('');
+    const [subscriptionSuccess, setSubscriptionSuccess] = useState<SubscriptionCompleteMessage | null>(null);
 
     const generateIframeUrl = () => {
         const baseUrl = window.location.origin + window.location.pathname;
@@ -19,6 +28,32 @@ const IframeTest: React.FC = () => {
         navigator.clipboard.writeText(iframeUrl);
         alert('URL copied to clipboard!');
     };
+
+    // Listen for postMessage from iframe
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            // Security: Validate origin (in production, should check specific origin)
+            // For now, accept messages from same origin
+            if (event.origin !== window.location.origin) {
+                console.warn('Message from unexpected origin:', event.origin);
+                // In production, you should reject messages from unknown origins
+                // return;
+            }
+
+            // Check if message is subscription completion
+            if (event.data && event.data.type === 'subscription_complete') {
+                const message = event.data as SubscriptionCompleteMessage;
+                setSubscriptionSuccess(message);
+                console.log('Subscription completed:', message);
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
+    }, []);
 
     return (
         <div className={styles.top_level_public}>
@@ -118,6 +153,31 @@ const IframeTest: React.FC = () => {
                     </Col>
                 </Row>
                 
+                {subscriptionSuccess && (
+                    <Row className="mt-4">
+                        <Col>
+                            <Card>
+                                <Card.Header>
+                                    <h4>✅ Subscription Completed!</h4>
+                                </Card.Header>
+                                <Card.Body>
+                                    <Alert variant="success">
+                                        <strong>Subscription Success:</strong>
+                                        <ul style={{ marginTop: '10px', marginBottom: 0 }}>
+                                            <li><strong>Subscription ID:</strong> {subscriptionSuccess.subscription_id}</li>
+                                            <li><strong>User Address:</strong> {subscriptionSuccess.user_address}</li>
+                                            <li><strong>Status:</strong> {subscriptionSuccess.success ? 'Success' : 'Failed'}</li>
+                                        </ul>
+                                    </Alert>
+                                    <p className="text-muted">
+                                        This is how the parent window receives subscription completion events via postMessage.
+                                    </p>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                )}
+
                 <Row className="mt-4">
                     <Col>
                         <Card>
@@ -143,6 +203,36 @@ const IframeTest: React.FC = () => {
   style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 </iframe>`}
                                         </pre>
+                                        <div className="mt-3">
+                                            <p><strong>JavaScript Integration:</strong></p>
+                                            <pre style={{ 
+                                                backgroundColor: '#f8f9fa', 
+                                                color: '#000000',
+                                                padding: '15px', 
+                                                borderRadius: '4px',
+                                                overflow: 'auto',
+                                                border: '1px solid #dee2e6'
+                                            }}>
+{`// Listen for subscription completion events
+window.addEventListener('message', (event) => {
+    // Security: Validate origin in production
+    if (event.origin !== '${window.location.origin}') {
+        return; // Reject messages from unknown origins
+    }
+    
+    if (event.data.type === 'subscription_complete') {
+        const { subscription_id, user_address, success } = event.data;
+        console.log('Subscription completed:', subscription_id);
+        
+        // Handle success - redirect, show message, etc.
+        if (success) {
+            // Your success handling code here
+            alert('Subscription successful!');
+        }
+    }
+});`}
+                                            </pre>
+                                        </div>
                                     </div>
                                 ) : (
                                     <Alert variant="info">

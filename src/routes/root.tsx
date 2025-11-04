@@ -27,6 +27,32 @@ const Root: React.FC = () => {
         setIsInIframe(window.self !== window.top);
     }, []);
 
+    // Detect if extension wallets are available in iframe context
+    const detectWalletAvailability = useCallback((connectorId: string): boolean => {
+        // WalletConnect works in iframes, so always available
+        if (connectorId === 'walletConnect') {
+            return true;
+        }
+
+        // In iframe context, extension wallets may not be available
+        if (isInIframe) {
+            // Check if MetaMask is available
+            if (connectorId === 'metaMask' || connectorId === 'io.metamask') {
+                return typeof (window as any).ethereum !== 'undefined' && 
+                       ((window as any).ethereum as any).isMetaMask === true;
+            }
+            
+            // Check if Coinbase Wallet is available
+            if (connectorId === 'coinbaseWallet' || connectorId === 'coinbaseWalletSDK') {
+                return typeof (window as any).ethereum !== 'undefined' && 
+                       ((window as any).ethereum as any).isCoinbaseWallet === true;
+            }
+        }
+
+        // For non-iframe contexts or unknown wallets, assume available
+        return true;
+    }, [isInIframe]);
+
     const switchChain = useSwitchChain();
     const disconnect = useDisconnect();
     const location = useLocation();
@@ -95,6 +121,38 @@ const Root: React.FC = () => {
         handleShow();
     };
 
+    // Handle wallet connection in iframe context
+    const handleWalletConnectInIframe = useCallback((connectorId: string) => {
+        const connector = connectors.find(c => c.id === connectorId);
+        if (!connector) {
+            return;
+        }
+
+        if (!isInIframe) {
+            // Normal flow - connect directly
+            connect.mutate({ connector });
+            handleClose();
+            return;
+        }
+
+        // In iframe - check if extension wallet needs redirect
+        const isAvailable = detectWalletAvailability(connectorId);
+        
+        if (!isAvailable && (connectorId === 'metaMask' || connectorId === 'io.metamask' || connectorId === 'coinbaseWallet' || connectorId === 'coinbaseWalletSDK')) {
+            // Extension wallet not available in iframe - redirect to full page
+            const baseUrl = window.location.origin + window.location.pathname;
+            const currentUrl = window.location.href;
+            const encodedReturnUrl = encodeURIComponent(currentUrl);
+            const encodedIframeUrl = encodeURIComponent(currentUrl);
+            const walletConnectUrl = `${baseUrl}#/wallet_connect/${connectorId}?return_url=${encodedReturnUrl}&iframe_url=${encodedIframeUrl}`;
+            window.location.href = walletConnectUrl;
+        } else {
+            // WalletConnect or available extension wallet - connect normally
+            connect.mutate({ connector });
+            handleClose();
+        }
+    }, [isInIframe, detectWalletAvailability, connectors, connect, handleClose]);
+
     const changeChain = (chain_id: number) => {
         switchChain.mutate({ chainId: chain_id });
         const chainIndex = CHAIN_LOOKUP.findIndex((lchain) => lchain.id === chain_id);
@@ -128,6 +186,12 @@ const Root: React.FC = () => {
                                     const displayName = walletInfo?.name || connector.name;
                                     const walletIcon = walletInfo?.icon;
                                     
+                                    // Check if wallet needs redirect in iframe context
+                                    const isAvailable = detectWalletAvailability(connector.id);
+                                    const needsRedirect = isInIframe && !isAvailable && 
+                                        (connector.id === 'metaMask' || connector.id === 'io.metamask' || 
+                                         connector.id === 'coinbaseWallet' || connector.id === 'coinbaseWalletSDK');
+                                    
                                     return (
                                         <Row key={connector.id}>
                                             <Col md="auto">
@@ -136,14 +200,12 @@ const Root: React.FC = () => {
                                             <Col>
                                                 <Button
                                                     style={{ width: "100%" }}
-                                                    variant="info"
-                                                    onClick={() => {
-                                                        connect.mutate({ connector });
-                                                        handleClose();
-                                                    }}
+                                                    variant={needsRedirect ? "warning" : "info"}
+                                                    onClick={() => handleWalletConnectInIframe(connector.id)}
                                                 >
                                                     {displayName}
-                                                    {connect.isPending && ' (connecting)'}
+                                                    {needsRedirect && ' (opens in new window)'}
+                                                    {connect.isPending && !needsRedirect && ' (connecting)'}
                                                 </Button>
                                             </Col>
                                         </Row>

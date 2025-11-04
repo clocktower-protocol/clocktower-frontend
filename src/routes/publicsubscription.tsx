@@ -67,15 +67,8 @@ const PublicSubscription: React.FC = () => {
     //loads provider subscription list upon receiving parameter
     useEffect(() => {
         const getSub = async () => {
-             // Clean and debug the ID
-            const originalId = id;
+             // Clean the ID
             const cleanId = id?.replace(/\s/g, '') || ''; // Remove all whitespace
-            
-            console.log('🔍 ID Debug Info:');
-            console.log('  Original ID:', originalId);
-            console.log('  Cleaned ID:', cleanId);
-            console.log('  ID length:', cleanId.length);
-            console.log('  ID starts with 0x:', cleanId.startsWith('0x'));
             
             const chainConfig = CHAIN_LOOKUP.find(item => item.id === chainId);
             if (!chainConfig?.contractAddress) {
@@ -408,9 +401,33 @@ const PublicSubscription: React.FC = () => {
                     return_url: return_url || null
                 };
 
-                // Send message to parent window
-                // Note: Using '*' for origin - in production, should validate specific origins
-                window.parent.postMessage(message, '*');
+                // Determine target origin for postMessage (security best practice)
+                let targetOrigin = '*'; // Default fallback
+                
+                if (return_url) {
+                    try {
+                        const decodedUrl = decodeURIComponent(return_url);
+                        const url = new URL(decodedUrl);
+                        targetOrigin = url.origin;
+                    } catch (error) {
+                        console.warn('Could not extract origin from return_url, using fallback');
+                    }
+                } else {
+                    // If no return_url, try to get origin from referrer
+                    try {
+                        const referrer = document.referrer;
+                        if (referrer) {
+                            const referrerUrl = new URL(referrer);
+                            targetOrigin = referrerUrl.origin;
+                        }
+                    } catch (error) {
+                        // If referrer is not available or invalid, use fallback
+                        console.warn('Could not extract origin from referrer, using wildcard fallback');
+                    }
+                }
+
+                // Send message to parent window with validated origin
+                window.parent.postMessage(message, targetOrigin);
 
                 // Show success message in iframe
                 setAlertType("success");

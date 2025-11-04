@@ -397,25 +397,85 @@ const PublicSubscription: React.FC = () => {
 
     //sends to account page or return url
     const sendToAccount = useCallback(() => {
-        if (return_url) {
+        if (isInIframe) {
+            // In iframe - use postMessage to communicate with parent window
             try {
-                const decodedUrl = decodeURIComponent(return_url);
-                const url = new URL(decodedUrl);
-                url.searchParams.set('subscription_success', 'true');
-                url.searchParams.set('subscription_id', id || '');
-                url.searchParams.set('user_address', address || '');
-                
-                // Redirect to external site
-                window.location.href = url.toString();
+                const message = {
+                    type: 'subscription_complete',
+                    subscription_id: id || '',
+                    user_address: address || '',
+                    success: true,
+                    return_url: return_url || null
+                };
+
+                // Send message to parent window
+                // Note: Using '*' for origin - in production, should validate specific origins
+                window.parent.postMessage(message, '*');
+
+                // Show success message in iframe
+                setAlertType("success");
+                setAlert(true);
+                setAlertText("Subscription successful! The parent window has been notified.");
+
+                // Fallback: If postMessage fails or parent doesn't respond, redirect after delay
+                setTimeout(() => {
+                    if (return_url) {
+                        try {
+                            const decodedUrl = decodeURIComponent(return_url);
+                            const url = new URL(decodedUrl);
+                            url.searchParams.set('subscription_success', 'true');
+                            url.searchParams.set('subscription_id', id || '');
+                            url.searchParams.set('user_address', address || '');
+                            window.location.href = url.toString();
+                        } catch (error) {
+                            console.error('Invalid return URL:', error);
+                            navigate(`/subscriptions/subscribed`);
+                        }
+                    } else {
+                        navigate(`/subscriptions/subscribed`);
+                    }
+                }, 2000); // Give parent window time to handle postMessage
             } catch (error) {
-                console.error('Invalid return URL:', error);
-                // Fallback to default behavior
-                navigate(`/subscriptions/subscribed`);
+                console.error('Failed to send postMessage:', error);
+                // Fallback to redirect if postMessage fails
+                if (return_url) {
+                    try {
+                        const decodedUrl = decodeURIComponent(return_url);
+                        const url = new URL(decodedUrl);
+                        url.searchParams.set('subscription_success', 'true');
+                        url.searchParams.set('subscription_id', id || '');
+                        url.searchParams.set('user_address', address || '');
+                        window.location.href = url.toString();
+                    } catch (err) {
+                        console.error('Invalid return URL:', err);
+                        navigate(`/subscriptions/subscribed`);
+                    }
+                } else {
+                    navigate(`/subscriptions/subscribed`);
+                }
             }
         } else {
-            navigate(`/subscriptions/subscribed`)
+            // NOT in iframe - use existing redirect behavior (unchanged)
+            if (return_url) {
+                try {
+                    const decodedUrl = decodeURIComponent(return_url);
+                    const url = new URL(decodedUrl);
+                    url.searchParams.set('subscription_success', 'true');
+                    url.searchParams.set('subscription_id', id || '');
+                    url.searchParams.set('user_address', address || '');
+                    
+                    // Redirect to external site
+                    window.location.href = url.toString();
+                } catch (error) {
+                    console.error('Invalid return URL:', error);
+                    // Fallback to default behavior
+                    navigate(`/subscriptions/subscribed`);
+                }
+            } else {
+                navigate(`/subscriptions/subscribed`)
+            }
         }
-    }, [navigate, return_url, id, address]);
+    }, [navigate, return_url, id, address, isInIframe, setAlertType, setAlert, setAlertText]);
 
     //shows alert when waiting for transaction to finish
     useEffect(() => {

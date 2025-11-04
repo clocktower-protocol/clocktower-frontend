@@ -15,6 +15,7 @@ import Account from './routes/account';
 import Calendar from './routes/calendar';
 import Subscriptions from './routes/subscriptions';
 import IframeTest from './routes/iframetest';
+import WalletConnect from './routes/walletconnect';
 import { WagmiProvider } from 'wagmi';
 import { config } from './wagmiconfig';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -76,6 +77,10 @@ const router = createHashRouter([
       {
         path: "iframetest",
         element: <IframeTest />
+      },
+      {
+        path: "wallet_connect/:connector?",
+        element: <WalletConnect />
       }
     ]
   }

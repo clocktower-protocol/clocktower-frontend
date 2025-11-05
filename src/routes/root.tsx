@@ -102,7 +102,7 @@ const Root: React.FC = () => {
     useEffect(() => {
         setAccount(address || "");
         if (address !== undefined && address !== account) {
-            if ((location.pathname.slice(0, 20) !== "/public_subscription") && (location.pathname.slice(0, 8) !== "/history")) {
+            if ((location.pathname.slice(0, 20) !== "/public_subscription") && (location.pathname.slice(0, 8) !== "/history") && (location.pathname.slice(0, 11) !== "/iframetest")) {
                 accountSwitch(address);
             }
         }
@@ -345,7 +345,10 @@ const Root: React.FC = () => {
                     </div>
                 )}
                 <div key={"mainDiv"} id="detail" className="mainDiv">
-                    {!isConnected ? (
+                    {/* Allow iframetest route without wallet connection */}
+                    {location.pathname === '/iframetest' ? (
+                        <Outlet context={[account]} />
+                    ) : !isConnected ? (
                         <Alert className={`text-center ${styles.connect_wallet_alert}`} variant="info">Please Connect Wallet</Alert>
                     ) : supportedChainIds.includes(chainId || 0) ? (
                         <Outlet context={[account]} />

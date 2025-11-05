@@ -96,13 +96,12 @@ test.describe('Iframe Integration', () => {
     await page.waitForFunction(() => window.location.hash.includes('iframetest'), { timeout: 10000 });
     await page.waitForLoadState('networkidle');
     
-    // Wait for React to render - check for any card or container element
-    await page.waitForSelector('.card, [class*="card"], .container', { timeout: 15000 });
-    await page.waitForTimeout(2000); // Additional render time
+    // Wait for the page content to appear (iframetest no longer requires wallet connection)
+    await page.waitForSelector('h4:has-text("Iframe Test Configuration")', { timeout: 15000 });
     
-    // Find input - get first text input (should be subscription ID)
-    const subscriptionIdInput = page.locator('input[type="text"]').first();
-    await subscriptionIdInput.waitFor({ state: 'attached', timeout: 10000 });
+    // Find input - get first text input with form-control class (should be subscription ID)
+    const subscriptionIdInput = page.locator('input.form-control').first();
+    await subscriptionIdInput.waitFor({ state: 'visible', timeout: 10000 });
     
     // Clear and fill - use force if needed since input might be in a form
     await subscriptionIdInput.clear();
@@ -129,10 +128,14 @@ test.describe('Iframe Integration', () => {
       }));
     }, MOCK_ACCOUNT);
 
-    // Verify success message appears
-    await expect(page.locator('text=Subscription Completed')).toBeVisible({ timeout: 5000 });
-    await expect(page.locator('text=0x123')).toBeVisible();
-    await expect(page.locator(`text=${MOCK_ACCOUNT}`)).toBeVisible();
+    // Wait for the success message to appear
+    await page.waitForTimeout(1000);
+
+    // Verify success message appears - look for the heading text (with emoji)
+    await expect(page.locator('h4:has-text("Subscription Completed")')).toBeVisible({ timeout: 5000 });
+    // Use more specific selectors to avoid matching multiple elements (e.g., in iframe URL code)
+    await expect(page.locator('li:has-text("Subscription ID: 0x123")')).toBeVisible();
+    await expect(page.locator(`li:has-text("User Address: ${MOCK_ACCOUNT}")`)).toBeVisible();
   });
 
   test('should show WalletConnect option in iframe wallet modal', async ({ page }) => {
@@ -230,8 +233,8 @@ test.describe('Iframe Integration', () => {
     // Wait a bit
     await page.waitForTimeout(1000);
 
-    // Should NOT display success message
-    await expect(page.locator('text=Subscription Completed')).not.toBeVisible();
+    // Should NOT display success message - check for the heading with emoji
+    await expect(page.locator('h4:has-text("Subscription Completed")')).not.toBeVisible();
   });
 
   test('should show JavaScript integration code in iframetest', async ({ page }) => {
@@ -241,13 +244,12 @@ test.describe('Iframe Integration', () => {
     await page.waitForFunction(() => window.location.hash.includes('iframetest'), { timeout: 10000 });
     await page.waitForLoadState('networkidle');
     
-    // Wait for React to render - check for any card or container element
-    await page.waitForSelector('.card, [class*="card"], .container', { timeout: 15000 });
-    await page.waitForTimeout(2000); // Additional render time
+    // Wait for the page content to appear (iframetest no longer requires wallet connection)
+    await page.waitForSelector('h4:has-text("Iframe Test Configuration")', { timeout: 15000 });
     
-    // Find input - get first text input (should be subscription ID)
-    const subscriptionIdInput = page.locator('input[type="text"]').first();
-    await subscriptionIdInput.waitFor({ state: 'attached', timeout: 10000 });
+    // Find input - get first text input with form-control class (should be subscription ID)
+    const subscriptionIdInput = page.locator('input.form-control').first();
+    await subscriptionIdInput.waitFor({ state: 'visible', timeout: 10000 });
     
     // Clear and fill - use force if needed since input might be in a form
     await subscriptionIdInput.clear();

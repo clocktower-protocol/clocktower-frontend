@@ -34,6 +34,96 @@ A modern, user-friendly frontend for the Clocktower Protocol - a decentralized s
   - Company information management
   - Domain verification
 
+### Third-Party Integration (Iframe Widget)
+
+- **Embeddable Subscription Widget**
+  - Seamless integration into third-party websites
+  - Users can subscribe with crypto wallets without leaving your site
+  - PostMessage API for secure communication
+  - Automatic redirect back to your site after subscription
+
+#### Integration Workflow
+
+1. **User clicks subscribe button** on your website
+2. **Iframe opens** with the Clocktower subscription widget
+3. **User connects wallet** and completes subscription inside iframe
+4. **PostMessage sent** to parent window with subscription details
+5. **Parent window redirects** user back to your callback URL with subscription confirmation
+
+#### Quick Start for Third Parties
+
+**1. Generate Iframe URL:**
+
+```html
+<iframe 
+  src="https://clocktower-frontend.com/#/public_subscription/{subscriptionId}?return_url={encodedCallbackUrl}"
+  width="450" 
+  height="600"
+  frameborder="0"
+  style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+</iframe>
+```
+
+**2. Listen for Subscription Completion:**
+
+```javascript
+window.addEventListener('message', (event) => {
+  // Security: Validate origin - CRITICAL for production
+  if (event.origin !== 'https://clocktower-frontend.com') {
+    console.warn('Rejected message from unexpected origin:', event.origin);
+    return;
+  }
+  
+  if (event.data && event.data.type === 'subscription_complete') {
+    const { subscription_id, user_address, success, return_url } = event.data;
+    
+    if (success) {
+      // Redirect to your callback URL with subscription details
+      if (return_url) {
+        const callbackUrl = new URL(return_url);
+        callbackUrl.searchParams.set('subscription_id', subscription_id);
+        callbackUrl.searchParams.set('user_address', user_address);
+        callbackUrl.searchParams.set('subscription_success', 'true');
+        
+        // Redirect the parent window
+        window.location.href = callbackUrl.toString();
+      }
+    }
+  }
+});
+```
+
+**3. Test Your Integration:**
+
+Visit `https://clocktower-frontend.com/#/iframetest` to:
+- Generate test iframe URLs
+- See example integration code
+- Test postMessage communication
+- View HTML and JavaScript integration examples
+
+#### Security Considerations
+
+- **Origin Validation**: Always validate the `event.origin` in your message listener
+- **HTTPS Required**: Use HTTPS for both your site and the Clocktower frontend
+- **Return URL**: Pass your callback URL as the `return_url` query parameter (URL-encoded)
+- **Cross-Origin**: The iframe must be from the same origin or properly configured for cross-origin communication
+
+#### Message Format
+
+The iframe sends the following message structure:
+
+```typescript
+{
+  type: 'subscription_complete',
+  subscription_id: string,
+  user_address: string,
+  success: boolean,
+  return_url: string | null
+}
+```
+
+For more details and examples, visit the [iframe test page](https://clocktower-frontend.com/#/iframetest) or see the integration code in `src/routes/iframetest.tsx`.
+
 ## Technical Stack
 - **TypeScript** - Primary programming language
 - React-based frontend

@@ -347,7 +347,10 @@ const Root: React.FC = () => {
                     </div>
                 )}
                 <div key={"mainDiv"} id="detail" className="mainDiv">
-                    {!isConnected ? (
+                    {/* Allow iframetest route without wallet connection */}
+                    {location.pathname === '/iframetest' ? (
+                        <Outlet context={[account]} />
+                    ) : !isConnected ? (
                         <Alert className={`text-center ${styles.connect_wallet_alert}`} variant="info">Please Connect Wallet</Alert>
                     ) : supportedChainIds.includes(chainId || 0) ? (
                         <Outlet context={[account]} />

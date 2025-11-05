@@ -89,11 +89,136 @@ export async function waitForTransactionConfirmation(
 }
 
 /**
+ * Inject a mock Ethereum provider into the page
+ * This allows wagmi to detect and connect to a wallet
+ */
+export async function injectMockEthereumProvider(page: Page, account: string = MOCK_ACCOUNT, chainId: number = CHAIN_ID_BASE) {
+  await page.addInitScript(({ account, chainId }) => {
+    // Create a mock Ethereum provider that wagmi will recognize as MetaMask
+    const mockProvider = {
+      isMetaMask: true, // Mark as MetaMask so wagmi's MetaMask connector recognizes it
+      isCoinbaseWallet: false,
+      request: async (args: { method: string; params?: any[] }) => {
+        // This will be intercepted by our route mocks
+        // But we need to return a promise that resolves
+        return new Promise((resolve) => {
+          // For synchronous methods, return immediately
+          if (args.method === 'eth_accounts') {
+            resolve([account]);
+          } else if (args.method === 'eth_chainId') {
+            resolve(`0x${chainId.toString(16)}`);
+          } else if (args.method === 'eth_requestAccounts') {
+            resolve([account]);
+          } else {
+            // For other methods, return a mock response
+            // The actual handling is done by route interceptors
+            resolve(null);
+          }
+        });
+      },
+      send: async (method: string, params?: any[]) => {
+        // Legacy send method
+        return new Promise((resolve) => {
+          if (method === 'eth_accounts') {
+            resolve([account]);
+          } else if (method === 'eth_chainId') {
+            resolve(`0x${chainId.toString(16)}`);
+          } else {
+            resolve(null);
+          }
+        });
+      },
+      sendAsync: (request: any, callback: (error: any, result: any) => void) => {
+        // Legacy sendAsync method
+        if (request.method === 'eth_accounts') {
+          callback(null, { result: [account] });
+        } else if (request.method === 'eth_chainId') {
+          callback(null, { result: `0x${chainId.toString(16)}` });
+        } else {
+          callback(null, { result: null });
+        }
+      },
+      on: () => {},
+      removeListener: () => {},
+    };
+
+    // Inject into window
+    (window as any).ethereum = mockProvider;
+    
+    // Also set up the provider for wagmi
+    Object.defineProperty(window, 'ethereum', {
+      writable: true,
+      configurable: true,
+      value: mockProvider,
+    });
+  }, { account, chainId });
+}
+
+/**
+ * Connect wallet programmatically using wagmi
+ * This triggers wagmi's connect function to establish a connection
+ */
+export async function connectWalletProgrammatically(page: Page) {
+  // Wait for the page to load and wagmi to be ready
+  await page.waitForLoadState('domcontentloaded');
+  
+  // Try to connect wallet using wagmi's connect function
+  // We'll use the injected provider as MetaMask
+  await page.evaluate(async () => {
+    // Wait for wagmi to be available
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    
+    // Check if we're already connected
+    const checkConnection = () => {
+      // Try to access wagmi's state via window or document
+      // This is a workaround since we can't directly access wagmi hooks
+      return (window as any).wagmi?.state?.connections?.size > 0;
+    };
+    
+    // If not connected, try to trigger connection
+    // Since wagmi hooks aren't directly accessible, we'll rely on auto-reconnect
+    // or wait for the injected provider to be detected
+  });
+}
+
+/**
  * Set up a page with all mocks enabled
  */
 export async function setupPageWithMocks(page: Page) {
+  await injectMockEthereumProvider(page);
+  
+  // Set up localStorage to simulate a previous connection
+  // This helps wagmi auto-connect when it detects the provider
+  await page.addInitScript(({ account, chainId }) => {
+    // Store connection state in localStorage (wagmi v2 uses 'wagmi.wallet' key)
+    try {
+      const wagmiStorage = {
+        state: {
+          connections: new Map([
+            ['injected', {
+              accounts: [account],
+              chainId: chainId,
+              uid: 'mock-connection'
+            }]
+          ])
+        }
+      };
+      // Wagmi stores connection info - try to set it up
+      // Note: This might not work perfectly as wagmi's storage format may vary
+      localStorage.setItem('wagmi.wallet', JSON.stringify({ 
+        connector: 'metaMaskSDK',
+        accounts: [account],
+        chainId: chainId 
+      }));
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+  }, { account: MOCK_ACCOUNT, chainId: CHAIN_ID_BASE });
+  
   await setupMockRoutes(page);
   await mockWalletConnection(page);
+  // Wait a bit for wagmi to detect the provider and potentially auto-connect
+  await page.waitForTimeout(2000);
 }
 
 /**

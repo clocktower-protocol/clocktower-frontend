@@ -46,6 +46,14 @@ const IframeTest: React.FC = () => {
                 const message = event.data as SubscriptionCompleteMessage;
                 setSubscriptionSuccess(message);
                 console.log('Subscription completed:', message);
+                
+                // In a real third-party integration, you would redirect here:
+                // if (message.return_url) {
+                //     const callbackUrl = new URL(message.return_url);
+                //     callbackUrl.searchParams.set('subscription_id', message.subscription_id);
+                //     callbackUrl.searchParams.set('user_address', message.user_address);
+                //     window.location.href = callbackUrl.toString();
+                // }
             }
         };
 
@@ -214,21 +222,36 @@ const IframeTest: React.FC = () => {
                                                 overflow: 'auto',
                                                 border: '1px solid #dee2e6'
                                             }}>
-{`// Listen for subscription completion events
+{`// Listen for subscription completion events from iframe
 window.addEventListener('message', (event) => {
-    // Security: Validate origin in production
+    // Security: Validate origin - CRITICAL for production
+    // Replace with your actual Clocktower frontend domain
     if (event.origin !== '${window.location.origin}') {
+        console.warn('Rejected message from unexpected origin:', event.origin);
         return; // Reject messages from unknown origins
     }
     
-    if (event.data.type === 'subscription_complete') {
-        const { subscription_id, user_address, success } = event.data;
+    if (event.data && event.data.type === 'subscription_complete') {
+        const { subscription_id, user_address, success, return_url } = event.data;
         console.log('Subscription completed:', subscription_id);
         
-        // Handle success - redirect, show message, etc.
         if (success) {
-            // Your success handling code here
-            alert('Subscription successful!');
+            // Option 1: Use the return_url from the message (recommended)
+            if (return_url) {
+                // Redirect to callback URL with subscription details as query params
+                const callbackUrl = new URL(return_url);
+                callbackUrl.searchParams.set('subscription_id', subscription_id);
+                callbackUrl.searchParams.set('user_address', user_address);
+                callbackUrl.searchParams.set('subscription_success', 'true');
+                
+                // Redirect the parent window (not the iframe)
+                window.location.href = callbackUrl.toString();
+            } else {
+                // Option 2: Handle success without redirect (show message, close iframe, etc.)
+                alert('Subscription successful!');
+                // You can also close/hide the iframe here if needed
+                // document.getElementById('subscription-iframe').style.display = 'none';
+            }
         }
     }
 });`}

@@ -83,3 +83,7 @@ export interface SubView {
     status: number;
     totalSubscribers?: number;
 }
+
+export interface DetailsLogsQueryResult {
+    detailsLogs: DetailsLog[];
+}

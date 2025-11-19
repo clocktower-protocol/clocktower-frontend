@@ -497,14 +497,14 @@ const Subscriptions: React.FC = () => {
                     </div>
                     <div>    
                         <ButtonGroup aria-label="Table or Card" className={styles.subs_table_card_button_route}>
-                            <Button variant={isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(true)}}>Table</Button>
-                            <Button variant={!isTableView ? "secondary" : "light"} onClick={() => {setIsTableView(false)}}>Card</Button>
+                            <Button variant={isTableView ? "light" : "secondary"} onClick={() => {setIsTableView(true)}}>Table</Button>
+                            <Button variant={!isTableView ? "light" : "secondary"} onClick={() => {setIsTableView(false)}}>Card</Button>
                         </ButtonGroup>
                         <br></br>
                         <div style={{display:"flex", width:"100%", justifyContent:"space-between"}}>
                             <ButtonGroup style={{flexGrow: "1"}} aria-label="Tab switcher" className={styles.subs_tabs}>
-                                <Button variant={tab === "created" ? "secondary" : "light"} onClick={() => {setTab("created")}}>Created</Button>
-                                <Button variant={tab !== "created" ? "secondary" : "light"} onClick={() => {setTab("subscribed")}}>Subscribed To</Button>
+                                <Button variant={tab === "created" ? "light" : "secondary"} onClick={() => {setTab("created")}}>Created</Button>
+                                <Button variant={tab !== "created" ? "light" : "secondary"} onClick={() => {setTab("subscribed")}}>Subscribed To</Button>
                             </ButtonGroup>
                         </div>
                         

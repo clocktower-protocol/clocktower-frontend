@@ -33,7 +33,7 @@ const Root: React.FC = () => {
     const handleOnClickAccount = useCallback(() => navigate('/account/' + account, { replace: true }), [navigate, account]);
     const handleOnClickSubscriptions = useCallback(() => navigate(`/subscriptions/created`, { replace: true }), [navigate]);
     const handleOnClickAdmin = useCallback(() => navigate('/admin', { replace: true }), [navigate]);
-    const accountSwitch = useCallback((passedAddress: string) => navigate('/account/' + passedAddress), [navigate]);
+    // const accountSwitch = useCallback((passedAddress: string) => navigate('/account/' + passedAddress), [navigate]);
     const linkToMain = useCallback(() => navigate('/', { replace: true }), [navigate]);
 
     const handleClose = () => {
@@ -70,11 +70,16 @@ const Root: React.FC = () => {
     useEffect(() => {
         setAccount(address || "");
         if (address !== undefined && address !== account) {
-            if ((location.pathname.slice(0, 20) !== "/public_subscription") && (location.pathname.slice(0, 8) !== "/history")) {
-                accountSwitch(address);
+            if ((location.pathname.slice(0, 20) !== "/public_subscription") && 
+                (location.pathname.slice(0, 8) !== "/history") && 
+                (location.pathname.slice(0, 11) !== "/iframetest") &&
+                (location.pathname.slice(0, 13) !== "/subscriptions") &&
+                (location.pathname.slice(0, 8) !== "/account") &&
+                (location.pathname.slice(0, 9) !== "/calendar")) {
+                navigate('/subscriptions/created', { replace: true });
             }
         }
-    }, [address, chains, accountSwitch, location, account]);
+    }, [address, chains, navigate, location, account]);
 
     const adminAccount = ADMIN_ACCOUNT;
 
@@ -147,7 +152,7 @@ const Root: React.FC = () => {
                     <Navbar key="navBar" bg="dark" variant="dark" expand="lg" className={styles.navbar}>
                         <Container fluid>
                             <Navbar.Brand>
-                                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Link to="/subscriptions/created" style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className={styles.clocktower_brand}>Clocktower</div>
                                 </Link>
                             </Navbar.Brand>

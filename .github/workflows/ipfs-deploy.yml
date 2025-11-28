@@ -3,6 +3,7 @@ name: Deploy to IPFS
 on:
   push:
     branches: [ master, main, ipfs_deploy ]
+  workflow_dispatch:  # Allow manual triggering from GitHub Actions UI
 
 jobs:
   build-and-deploy:
@@ -37,11 +38,12 @@ jobs:
       run: |
         echo "📤 Deploying to Pinata using SDK..."
         
-        # Run the deployment script
-        node .github/workflows/deploy-to-pinata.js
+        # Run the deployment script and capture output
+        DEPLOY_OUTPUT=$(node .github/workflows/deploy-to-pinata.js 2>&1)
+        echo "$DEPLOY_OUTPUT"
         
         # Extract the IPFS hash from the script output
-        ipfs_hash=$(node .github/workflows/deploy-to-pinata.js 2>&1 | grep "ipfs_hash=" | cut -d= -f2)
+        ipfs_hash=$(echo "$DEPLOY_OUTPUT" | grep "ipfs_hash=" | cut -d= -f2)
         
         if [ -z "$ipfs_hash" ]; then
           echo "❌ Failed to extract IPFS hash from script output"

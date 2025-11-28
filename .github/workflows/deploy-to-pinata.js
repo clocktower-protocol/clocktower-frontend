@@ -1,3 +1,9 @@
+// Load environment variables from .env or .env.local file (for local testing)
+// Load .env first, then .env.local (so .env.local overrides .env)
+import dotenv from 'dotenv';
+dotenv.config(); // Load .env
+dotenv.config({ path: '.env.local' }); // Override with .env.local if it exists
+
 import { PinataSDK } from 'pinata';
 import fs from 'fs';
 import path from 'path';

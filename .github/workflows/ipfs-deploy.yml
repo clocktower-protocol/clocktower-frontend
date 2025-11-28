@@ -91,6 +91,26 @@ jobs:
           exit 1
         fi
     
+    - name: Update ENS Contenthash
+      env:
+        IPFS_CID: ${{ steps.deploy.outputs.ipfs_hash }}
+        PINATA_JWT_TOKEN: ${{ secrets.PINATA_JWT_TOKEN }}
+        ETH_PRIVATE_KEY: ${{ secrets.ETH_PRIVATE_KEY }}
+        ETH_MAINNET_RPC_URL: ${{ secrets.ETH_MAINNET_RPC_URL }}
+        ENS_DOMAIN: clocktower.eth
+      run: |
+        echo "🌐 Updating ENS contenthash record..."
+        
+        # Run the ENS update script
+        node .github/workflows/update-ens.js
+        
+        if [ $? -ne 0 ]; then
+          echo "❌ Failed to update ENS contenthash"
+          exit 1
+        fi
+        
+        echo "✅ ENS contenthash updated successfully"
+    
     - name: Comment on PR
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v7

@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   build-and-deploy:
@@ -116,15 +115,3 @@ jobs:
         fi
         
         echo "✅ ENS contenthash updated successfully"
-    
-    - name: Comment on PR
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: `🌐 **IPFS Deployment Complete!**\n\nYour app is now available at:\n- IPFS Gateway: https://gateway.pinata.cloud/ipfs/${{ steps.deploy.outputs.ipfs_hash }}\n- Custom Domain: https://ipfs.clocktower.finance\n- IPFS Hash: \`${{ steps.deploy.outputs.ipfs_hash }}\``
-          })

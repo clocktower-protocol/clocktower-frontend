@@ -5,6 +5,10 @@ on:
     branches: [ master, main, ipfs_deploy ]
   workflow_dispatch:  # Allow manual triggering from GitHub Actions UI
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

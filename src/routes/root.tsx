@@ -7,7 +7,7 @@ import Icon from '../components/Icon';
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../css/clocktower.module.css';
 import ThemeToggle from '../components/ThemeToggle';
-import { useConnection, useConnect, useConnectionEffect, useWatchPendingTransactions, useSwitchChain, useDisconnect } from 'wagmi';
+import { useConnection, useConnect, useConnectionEffect, useWatchPendingTransactions, useSwitchChain, useDisconnect, useConnectors, useChains } from 'wagmi';
 import { createApolloClient } from '../apolloclient';
 import { ApolloProvider } from '@apollo/client/react';
 
@@ -64,6 +64,8 @@ const Root: React.FC = () => {
     });
 
     const connect = useConnect({ config });
+    const connectors = useConnectors();
+    const chains = useChains({ config });
 
     const supportedChainIds = config.chains.map(chain => chain.id);
 
@@ -79,7 +81,7 @@ const Root: React.FC = () => {
                 navigate('/subscriptions/created', { replace: true });
             }
         }
-    }, [address, switchChain.chains, navigate, location, account]);
+    }, [address, chains, navigate, location, account]);
 
     const adminAccount = ADMIN_ACCOUNT;
 
@@ -115,7 +117,7 @@ const Root: React.FC = () => {
                     <Modal.Body>
                         <Container>
                             <Stack gap={3}>
-                                {connect.connectors.map((connector) => (
+                                {connectors.map((connector) => (
                                     <Row key={uuidv4()}>
                                         <Col key={uuidv4()} md="auto">
                                             {WALLET_LOOKUP.map((lWallet) => {
@@ -216,9 +218,9 @@ const Root: React.FC = () => {
                                 
                                 {/* Desktop Right Side */}
                                 <Nav className="d-none d-lg-flex align-items-center" style={{ gap: '20px', paddingRight: '20px' }}>
-                                    {switchChain.chains.length > 1 ?
+                                    {chains.length > 1 ?
                                         <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown" style={{ marginRight: 'auto' }}>
-                                            {switchChain.chains.map((chain) => (
+                                            {chains.map((chain) => (
                                                 <NavDropdown.Item key={uuidv4()} className={styles.chain_pulldown2}>
                                                     {CHAIN_LOOKUP.map((lchain) => {
                                                         if (lchain.id === chain.id) {

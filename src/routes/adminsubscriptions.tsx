@@ -8,7 +8,7 @@ import { readContract } from 'wagmi/actions'
 import { config } from '../wagmiconfig'
 import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client/react';
-import { DetailsLog, SubView } from '../types/subscription';
+import { DetailsLog, SubView, DetailsLogsQueryResult } from '../types/subscription';
 
 interface FeeObject {
     feeBalance: number;
@@ -135,13 +135,15 @@ const AdminSubscriptions: React.FC = () => {
                     query: GET_LATEST_DETAILS_PROVIDER_LOG,
                     variables: { userAddress: subscriptions[i].subscription.provider, first: 1 }
                 });
-                detailsArray[subIndex] = result.data.detailsLogs[0];
+                const data = result.data as DetailsLogsQueryResult;
+                detailsArray[subIndex] = data.detailsLogs[0];
             } else {
                 const result = await apolloClient.query({
                     query: GET_LATEST_DETAILS_SUBSCRIBER_LOG,
                     variables: { userAddress: subscriptions[i].subscription.subscriber, first: 1 }
                 });
-                detailsArray[subIndex] = result.data.detailsLogs[0];
+                const data = result.data as DetailsLogsQueryResult;
+                detailsArray[subIndex] = data.detailsLogs[0];
             }
         }
        

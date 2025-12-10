@@ -8,7 +8,7 @@ import SubHistoryTable from '../components/SubHistoryTable';
 import styles from '../css/clocktower.module.css';
 import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client/react';
-import { SubLog } from '../types/subscription';
+import { SubLog, SubLogsQueryResult } from '../types/subscription';
 
 const GET_LATEST_SUBLOG = gql`
     query GetSubLog($subscriptionId: Bytes!, $subscriber: Bytes!) {
@@ -50,7 +50,8 @@ const SubHistory: React.FC = () => {
                 subscriber: account.toLowerCase()
             }
         });
-        const logs = result.data.subLogs;
+        const data = result.data as SubLogsQueryResult;
+        const logs = data.subLogs;
         setHistoryArray(logs);
     }, [account, id, apolloClient]);
 

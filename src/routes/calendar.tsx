@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { readContract } from 'wagmi/actions';
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
 import { formatEther } from 'viem';
 import { config } from '../wagmiconfig';
 import { CLOCKTOWERSUB_ABI, TOKEN_LOOKUP, CHAIN_LOOKUP } from "../config"; 
@@ -34,7 +34,7 @@ interface CalendarEvent {
 
 const Calendar: React.FC = () => {
     const [account] = useOutletContext<[string]>();
-    const { address, chainId } = useAccount();
+    const { address, chainId } = useConnection();
     const navigate = useNavigate();
     
     const [eventsArray, setEventsArray] = useState<CalendarEvent[]>([]);

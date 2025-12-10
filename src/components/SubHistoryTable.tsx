@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { TOKEN_LOOKUP, CHAIN_LOOKUP } from "../config";
 import { formatEther } from 'viem';
 import styles from '../css/clocktower.module.css';
-import { useAccount } from 'wagmi';
+import { useConnection } from 'wagmi';
 import { config } from '../wagmiconfig';
 import { SubLog } from '../types/subscription';
 
@@ -18,7 +18,7 @@ interface SubHistoryTableProps {
 
 const SubHistoryTable: React.FC<SubHistoryTableProps> = (props) => {
     const { historyArray, isProvider } = props;
-    const { chainId } = useAccount({ config });
+    const { chainId } = useConnection({ config });
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);

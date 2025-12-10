@@ -5,7 +5,7 @@ import { useOutletContext } from "react-router";
 import ProvidersTable from '../components/ProvidersTable';
 import CallerHistoryTable from '../components/CallerHistoryTable';
 import SubscribersTable from '../components/SubscribersTable';
-import { useAccount } from 'wagmi';
+import { useConnection } from 'wagmi';
 import { readContract } from 'wagmi/actions';
 import { config } from '../wagmiconfig';
 import { gql } from '@apollo/client';
@@ -35,7 +35,7 @@ interface CallerLog {
 }
 
 const Admin: React.FC = () => {
-    const { chainId } = useAccount();
+    const { chainId } = useConnection();
     const [account] = useOutletContext<[string]>();
     const apolloClient = useApolloClient();
 

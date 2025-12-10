@@ -3,7 +3,7 @@ import { useOutletContext, useParams } from "react-router";
 import { Alert } from 'react-bootstrap';
 import { CLOCKTOWERSUB_ABI, CHAIN_LOOKUP } from "../config"; 
 import ProvSubscribersTable from '../components/ProvSubscribersTable';
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { config } from '../wagmiconfig'
 import { Subscriber } from '../types/subscription';
@@ -11,7 +11,7 @@ import { Subscriber } from '../types/subscription';
 const ProvSubscribers: React.FC = () => {
     const [account] = useOutletContext<[string]>();
     const { id, a, t, p } = useParams();
-    const { chainId } = useAccount();
+    const { chainId } = useConnection();
 
     const [subscribersArray, setSubscribersArray] = useState<Subscriber[]>([]);
     const [remainingCycles, setRemainingCycles] = useState<number[]>([]);

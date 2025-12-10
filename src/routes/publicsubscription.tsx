@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { Alert, Toast, ToastContainer, Spinner } from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate } from "react-router";
 import { CLOCKTOWERSUB_ABI, INFINITE_APPROVAL, ZERO_ADDRESS, CHAIN_LOOKUP, TOKEN_LOOKUP } from "../config"; 
-import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useAccount } from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useConnection } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { erc20Abi } from 'viem'
 import { config } from '../wagmiconfig'
@@ -13,7 +13,7 @@ import { useApolloClient } from '@apollo/client/react';
 import { Subscription, DetailsLog, FormattedSubscription, Subscriber, SubscriptionResult } from '../types/subscription';
 
 const PublicSubscription: React.FC = () => {
-    const { address, chainId } = useAccount();
+    const { address, chainId } = useConnection();
     const publicClient = usePublicClient();
     const [account] = useOutletContext<[string]>();
     const { id, f, d } = useParams();

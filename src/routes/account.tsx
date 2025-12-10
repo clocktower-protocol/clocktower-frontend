@@ -44,23 +44,23 @@ const Account: React.FC = () => {
     
     const msg = 'clocktower';
 
-    const { data: hash, writeContract } = useWriteContract();
+    const writeContract = useWriteContract();
 
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
         confirmations: 2,
-        hash
+        hash: writeContract.data
     });
 
     // Hook for signing messages
-    const { data: signMessageData, signMessage, variables } = useSignMessage();
+    const signMessage = useSignMessage();
 
     // Gets signed message
     useEffect(() => {
         ;(async () => {
-            if (signMessageData && variables?.message) {
+            if (signMessage.data && signMessage.variables?.message) {
                 const recoveredAddress = await recoverMessageAddress({
-                    message: variables.message,
-                    signature: signMessageData,
+                    message: signMessage.variables.message,
+                    signature: signMessage.data,
                 });
                 if (recoveredAddress === address) {
                     setCopyTitle("Copy");
@@ -69,7 +69,7 @@ const Account: React.FC = () => {
                 }
             }
         })();
-    }, [signMessageData, address, variables?.message]);
+    }, [signMessage.data, address, signMessage.variables?.message]);
 
     // Hook for account form changes
     useEffect(() => {
@@ -82,7 +82,7 @@ const Account: React.FC = () => {
         if (Object.keys(changedAccountDetails).length > 0) {
             setToastHeader("Waiting on wallet transaction...");
             setShowToast(true);
-            writeContract({
+            writeContract.mutate({
                 address: contractAddress as `0x${string}`,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'editProvDetails',
@@ -275,15 +275,15 @@ const Account: React.FC = () => {
                         </Modal.Header>
                         <Modal.Body className={styles.tight_text}>Create the following domain record: 
                             <p></p> Step 1: Use the copy button below to copy the hash 
-                            <p></p> {String(signMessageData).slice(0,85)}<br></br>{String(signMessageData).slice(86,170)}
+                            <p></p> {String(signMessage.data).slice(0,85)}<br></br>{String(signMessage.data).slice(86,170)}
                             <p></p> Step 2: Create a new txt record at your domain registrar name &quot;ct&quot;
                             <p></p> Step 3: Paste hash into data field of new record
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="primary" 
                                 onClick={() => {
-                                    if (signMessageData) {
-                                        navigator.clipboard.writeText(signMessageData);
+                                    if (signMessage.data) {
+                                        navigator.clipboard.writeText(signMessage.data);
                                         setIsDisabled(true);
                                         setCopyTitle("Copied");
                                     }
@@ -420,7 +420,7 @@ const Account: React.FC = () => {
                                             <Col>
                                                 <ListGroup horizontal={'lg'} style={{justifyContent:"center"}}>
                                                     <Button variant="outline-info" onClick={async () => {
-                                                        signMessage({message: msg});
+                                                        signMessage.mutate({message: msg});
                                                     }}>Verify Domain</Button>
                                                 </ListGroup>
                                             </Col>

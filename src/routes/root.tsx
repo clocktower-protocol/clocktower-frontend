@@ -21,8 +21,8 @@ const Root: React.FC = () => {
         }
     }, [chainId]);
 
-    const { chains, switchChain } = useSwitchChain();
-    const { disconnect } = useDisconnect();
+    const switchChain = useSwitchChain();
+    const disconnect = useDisconnect();
     const location = useLocation();
     const [account, setAccount] = useState<string>("");
     const [showWalletChoice, setShowWalletChoice] = useState<boolean>(false);
@@ -43,7 +43,7 @@ const Root: React.FC = () => {
     const handleShow = () => setShowWalletChoice(true);
 
     const handleDisconnect = () => {
-        disconnect();
+        disconnect.mutate();
     };
 
     useConnectionEffect({
@@ -63,7 +63,7 @@ const Root: React.FC = () => {
         }
     });
 
-    const { connect, connectors, isPending } = useConnect({ config });
+    const connect = useConnect({ config });
 
     const supportedChainIds = config.chains.map(chain => chain.id);
 
@@ -79,7 +79,7 @@ const Root: React.FC = () => {
                 navigate('/subscriptions/created', { replace: true });
             }
         }
-    }, [address, chains, navigate, location, account]);
+    }, [address, switchChain.chains, navigate, location, account]);
 
     const adminAccount = ADMIN_ACCOUNT;
 
@@ -88,7 +88,7 @@ const Root: React.FC = () => {
     };
 
     const changeChain = (chain_id: number) => {
-        switchChain({ chainId: chain_id });
+        switchChain.mutate({ chainId: chain_id });
         const chainIndex = CHAIN_LOOKUP.findIndex((lchain) => lchain.id === chain_id);
         if (chainIndex !== -1) {
             setSelectedChain(chainIndex);
@@ -115,7 +115,7 @@ const Root: React.FC = () => {
                     <Modal.Body>
                         <Container>
                             <Stack gap={3}>
-                                {connectors.map((connector) => (
+                                {connect.connectors.map((connector) => (
                                     <Row key={uuidv4()}>
                                         <Col key={uuidv4()} md="auto">
                                             {WALLET_LOOKUP.map((lWallet) => {
@@ -132,12 +132,12 @@ const Root: React.FC = () => {
                                                 variant="info"
                                                 key={uuidv4()}
                                                 onClick={() => {
-                                                    connect({ connector });
+                                                    connect.mutate({ connector });
                                                     handleClose();
                                                 }}
                                             >
                                                 {connector.name}
-                                                {isPending && ' (connecting)'}
+                                                {connect.isPending && ' (connecting)'}
                                             </Button>
                                         </Col>
                                     </Row>
@@ -216,9 +216,9 @@ const Root: React.FC = () => {
                                 
                                 {/* Desktop Right Side */}
                                 <Nav className="d-none d-lg-flex align-items-center" style={{ gap: '20px', paddingRight: '20px' }}>
-                                    {chains.length > 1 ?
+                                    {switchChain.chains.length > 1 ?
                                         <NavDropdown title={<span className={styles.chain_pulldown}>Chain: <Icon key={uuidv4()} icon={CHAIN_LOOKUP[selectedChain].icon}></Icon> {CHAIN_LOOKUP[selectedChain].displayName} </span>} id="basic-nav-dropdown" style={{ marginRight: 'auto' }}>
-                                            {chains.map((chain) => (
+                                            {switchChain.chains.map((chain) => (
                                                 <NavDropdown.Item key={uuidv4()} className={styles.chain_pulldown2}>
                                                     {CHAIN_LOOKUP.map((lchain) => {
                                                         if (lchain.id === chain.id) {

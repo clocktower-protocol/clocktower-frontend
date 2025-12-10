@@ -33,11 +33,11 @@ const PublicSubscription: React.FC = () => {
     const [toastHeader, setToastHeader] = useState("");
     const [hasEnoughBalance, setHasEnoughBalance] = useState(false);
 
-    const { data, variables, writeContract } = useWriteContract();
+    const writeContract = useWriteContract();
     
     const subscribeWait = useWaitForTransactionReceipt({
         confirmations: 2,
-        hash: data,
+        hash: writeContract.data,
     });
 
     // Query for DetailsLog events
@@ -351,7 +351,7 @@ const PublicSubscription: React.FC = () => {
         }) as bigint;
 
         if (allowanceBalance < 100000000000000000000000n) {
-            writeContract({
+            writeContract.mutate({
                 address: token,
                 abi: erc20Abi,
                 functionName: 'approve',
@@ -363,7 +363,7 @@ const PublicSubscription: React.FC = () => {
                 setShowToast(true);
             }
 
-            writeContract({
+            writeContract.mutate({
                 address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'subscribe',
@@ -385,13 +385,13 @@ const PublicSubscription: React.FC = () => {
         if (subscribeWait.isSuccess) {
             setShowToast(false);
 
-            if (variables?.functionName === "approve") {
+            if (writeContract.variables?.functionName === "approve") {
                 subscribe();
             } else {
                 sendToAccount();
             }
         }
-    }, [subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, variables, subscribe]);
+    }, [subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, writeContract.variables, subscribe]);
 
     return (
         <div className={styles.top_level_public}> 

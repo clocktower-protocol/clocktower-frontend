@@ -86,10 +86,10 @@ const Subscriptions: React.FC = () => {
     }, [t]);
 
     // WAGMI write contract hooks
-    const { data: hash, writeContract } = useWriteContract();
+    const writeContract = useWriteContract();
 
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-        hash,
+        hash: writeContract.data,
         confirmations: 2,
     });
 
@@ -105,7 +105,7 @@ const Subscriptions: React.FC = () => {
 
             setToastHeader("Waiting on wallet transaction...");
             setShowToast(true);
-            writeContract({
+            writeContract.mutate({
                 address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'createSubscription',
@@ -128,7 +128,7 @@ const Subscriptions: React.FC = () => {
 
             setToastHeader("Waiting on wallet transaction...");
             setShowToast(true);
-            writeContract({
+            writeContract.mutate({
                 address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'cancelSubscription',
@@ -151,7 +151,7 @@ const Subscriptions: React.FC = () => {
 
             setToastHeader("Waiting on wallet transaction...");
             setShowToast(true);
-            writeContract({
+            writeContract.mutate({
                 address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'unsubscribe',
@@ -174,7 +174,7 @@ const Subscriptions: React.FC = () => {
 
             setToastHeader("Waiting on wallet transaction...");
             setShowToast(true);
-            writeContract({
+            writeContract.mutate({
                 address: contractAddress,
                 abi: CLOCKTOWERSUB_ABI,
                 functionName: 'editDetails',

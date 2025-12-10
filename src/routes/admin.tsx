@@ -10,6 +10,7 @@ import { readContract } from 'wagmi/actions';
 import { config } from '../wagmiconfig';
 import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client/react';
+import { SubLogsProvidersQueryResult, SubLogsSubscribersQueryResult, CallerLogsQueryResult, CallerLog } from '../types/subscription';
 
 interface SubIndex {
     id: `0x${string}`; // bytes32
@@ -24,15 +25,6 @@ interface Account {
     provSubs: SubIndex[]; // SubIndex[]
 }
 
-interface CallerLog {
-    timestamp: string;
-    checkedDay: string;
-    caller: string;
-    isFinished: boolean;
-    blockNumber: string;
-    blockTimestamp: string;
-    transactionHash: string;
-}
 
 const Admin: React.FC = () => {
     const { chainId } = useConnection();
@@ -93,8 +85,10 @@ const Admin: React.FC = () => {
 
         const result = await apolloClient.query({ query: ALL_PROVIDERS_QUERY });
         const result2 = await apolloClient.query({ query: ALL_SUBCRIBERS_QUERY });
-        const providerSubLogs = result.data.subLogs;
-        const subscriberSubLogs = result2.data.subLogs;
+        const providerData = result.data as SubLogsProvidersQueryResult;
+        const subscriberData = result2.data as SubLogsSubscribersQueryResult;
+        const providerSubLogs = providerData.subLogs;
+        const subscriberSubLogs = subscriberData.subLogs;
 
         // Deduplicate providers and subscribers using a Set
         const uniqueProviders = [...new Set(providerSubLogs.map((log: { provider: string }) => log.provider))];
@@ -133,7 +127,8 @@ const Admin: React.FC = () => {
     useEffect(() => {
         const fetchAllCallers = async () => {
             const result3 = await apolloClient.query({ query: ALL_CALLERS_QUERY });
-            const callerLogs = result3.data.callerLogs;
+            const callerData = result3.data as CallerLogsQueryResult;
+            const callerLogs = callerData.callerLogs;
             setCallerHistory(callerLogs);
             getAllAccounts();
         };

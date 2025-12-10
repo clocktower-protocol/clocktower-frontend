@@ -87,3 +87,52 @@ export interface SubView {
 export interface DetailsLogsQueryResult {
     detailsLogs: DetailsLog[];
 }
+
+export interface SubLogsQueryResult {
+    subLogs: SubLog[];
+}
+
+export interface ProvDetailsLog {
+    provider: string;
+    timestamp: string;
+    description: string;
+    company: string;
+    url: string;
+    domain: string;
+    email: string;
+    misc: string;
+}
+
+export interface ProvDetailsLogsQueryResult {
+    provDetailsLogs: ProvDetailsLog[];
+}
+
+export interface CallerLog {
+    timestamp: string;
+    checkedDay: string;
+    caller: string;
+    isFinished: boolean;
+    blockNumber: string;
+    blockTimestamp: string;
+    transactionHash: string;
+}
+
+export interface CallerLogsQueryResult {
+    callerLogs: CallerLog[];
+}
+
+export interface SubLogsWithProvider {
+    provider: string;
+}
+
+export interface SubLogsWithSubscriber {
+    subscriber: string;
+}
+
+export interface SubLogsProvidersQueryResult {
+    subLogs: SubLogsWithProvider[];
+}
+
+export interface SubLogsSubscribersQueryResult {
+    subLogs: SubLogsWithSubscriber[];
+}

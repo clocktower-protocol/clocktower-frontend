@@ -11,7 +11,7 @@ console.log('  Environment check - URL exists:', !!import.meta.env.VITE_SUBGRAPH
 console.log('  Environment check - URL length:', import.meta.env.VITE_SUBGRAPH_URL?.length || 0);
 
 // Function to create a new client with chain ID
-export const createApolloClient = (chainId: number | undefined): ApolloClient<any> => {
+export const createApolloClient = (chainId: number | undefined): ApolloClient => {
     return new ApolloClient({
         link: new HttpLink({ 
             uri: SUBGRAPH_URL,

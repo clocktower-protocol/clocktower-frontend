@@ -10,7 +10,7 @@ import SubscriptionCards from "../components/SubscriptionCards";
 import styles from '../css/clocktower.module.css';
 import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client/react';
-import { Subscription, DetailsLog, FormattedSubscription, Subscriber, SubscriptionResult } from '../types/subscription';
+import { Subscription, DetailsLog, FormattedSubscription, Subscriber, SubscriptionResult, DetailsLogsQueryResult } from '../types/subscription';
 
 const PublicSubscription: React.FC = () => {
     const { address, chainId } = useConnection();
@@ -105,8 +105,9 @@ const PublicSubscription: React.FC = () => {
                     });
 
                     // Check if details logs exist and have data
-                    const tempDetails = result2.data.detailsLogs && result2.data.detailsLogs.length > 0 
-                        ? [result2.data.detailsLogs[0]] 
+                    const detailsData = result2.data as DetailsLogsQueryResult;
+                    const tempDetails = detailsData.detailsLogs && detailsData.detailsLogs.length > 0 
+                        ? [detailsData.detailsLogs[0]] 
                         : [];
                     
                     setFormattedDetails(tempDetails);
@@ -269,8 +270,9 @@ const PublicSubscription: React.FC = () => {
                         variables: { subscriptionId: subscription.id.toLowerCase(), first: 1 }
                     });
 
-                    const tempDetails = result2.data.detailsLogs && result2.data.detailsLogs.length > 0 
-                        ? [result2.data.detailsLogs[0]] 
+                    const detailsData = result2.data as DetailsLogsQueryResult;
+                    const tempDetails = detailsData.detailsLogs && detailsData.detailsLogs.length > 0 
+                        ? [detailsData.detailsLogs[0]] 
                         : [];
                     
                     setFormattedDetails(tempDetails);

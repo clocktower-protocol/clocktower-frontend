@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { CLOCKTOWERSUB_ABI, CHAIN_LOOKUP } from "../config"; 
 import { Row, Col, Card, ListGroup, Button, Stack, Modal, Toast, ToastContainer, Spinner } from 'react-bootstrap';
 import Avatar from "boring-avatars";
-import { useSignMessage, useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useSignMessage, useConnection, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { recoverMessageAddress } from 'viem';
 import EditAccountForm from "../components/EditAccountForm";
 import { gql } from '@apollo/client';
@@ -14,7 +14,7 @@ import { AccountDetails, ProvDetailsLog } from '../types/account';
 const Account: React.FC = () => {
     let isMounting = useRef(true);
     const { a } = useParams<{ a: string }>();
-    const { address, chainId } = useAccount();
+    const { address, chainId } = useConnection();
     const [account] = useOutletContext<[string]>();
     const apolloClient = useApolloClient();
 

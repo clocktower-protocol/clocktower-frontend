@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Dropdown } from 'react-bootstrap';
 import { TOKEN_LOOKUP, FREQUENCY_LOOKUP, DUEDAY_RANGE, CLOCKTOWERSUB_ABI, DAY_OF_WEEK_LOOKUP, CHAIN_LOOKUP } from '../config';
 import { parseEther, formatEther } from 'viem';
 import { readContract } from 'wagmi/actions';
-import { useAccount } from 'wagmi';
+import { useConnection } from 'wagmi';
 import { config } from '../wagmiconfig';
 import Icon from './Icon';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,7 +22,7 @@ interface Token {
 }
 
 const CreateSubForm: React.FC<CreateSubFormProps> = (props) => {
-    const { chainId } = useAccount();
+    const { chainId } = useConnection();
 
     const [invalidToken, setInvalidToken] = useState(true);
     const [invalidFrequency, setInvalidFrequency] = useState(true);

@@ -38,7 +38,7 @@ const SubHistory: React.FC = () => {
 
     const { id, t } = useParams();
 
-    //const { chainId } = useAccount()
+    //const { chainId } = useConnection()
 
     const getLogs = useCallback(async () => {
         if (!id || !account) return;

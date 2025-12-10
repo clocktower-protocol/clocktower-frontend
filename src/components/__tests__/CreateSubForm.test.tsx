@@ -9,7 +9,7 @@ vi.mock('wagmi', async (importOriginal) => {
     const actual = await importOriginal<typeof import('wagmi')>();
     return {
         ...actual,
-        useAccount: vi.fn(() => ({
+        useConnection: vi.fn(() => ({
             chainId: 8453,
         })),
     };

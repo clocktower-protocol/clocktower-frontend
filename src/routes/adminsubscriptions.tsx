@@ -3,7 +3,7 @@ import { useOutletContext, useParams } from "react-router";
 import { Alert } from 'react-bootstrap';
 import { CLOCKTOWERSUB_ABI, CHAIN_LOOKUP } from "../config"; 
 import SubscriptionsTable from '../components/SubscriptionsTable';
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { config } from '../wagmiconfig'
 import { gql } from '@apollo/client';
@@ -18,7 +18,7 @@ interface FeeObject {
 const AdminSubscriptions: React.FC = () => {
     const [account] = useOutletContext<[string]>();
     const { t, s } = useParams();
-    const { chainId } = useAccount();
+    const { chainId } = useConnection();
     const apolloClient = useApolloClient();
 
     const [subscriptionArray, setSubscriptionArray] = useState<SubView[]>([]);

@@ -7,12 +7,12 @@ import Icon from '../components/Icon';
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../css/clocktower.module.css';
 import ThemeToggle from '../components/ThemeToggle';
-import { useAccount, useConnect, useAccountEffect, useWatchPendingTransactions, useSwitchChain, useDisconnect } from 'wagmi';
+import { useConnection, useConnect, useConnectionEffect, useWatchPendingTransactions, useSwitchChain, useDisconnect } from 'wagmi';
 import { createApolloClient } from '../apolloclient';
 import { ApolloProvider } from '@apollo/client/react';
 
 const Root: React.FC = () => {
-    const { address, isConnected, isDisconnected, chainId } = useAccount({ config });
+    const { address, isConnected, isDisconnected, chainId } = useConnection({ config });
     const [client, setClient] = useState(() => createApolloClient(chainId));
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const Root: React.FC = () => {
         disconnect();
     };
 
-    useAccountEffect({
+    useConnectionEffect({
         config,
         onConnect() {
             console.log('Connected!');

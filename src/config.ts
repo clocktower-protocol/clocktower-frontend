@@ -5,7 +5,9 @@ import { ReactComponent as MetamaskLogo } from "./images/metamask.svg";
 import { ReactComponent as BraveLogo } from "./images/brave.svg";
 import { ReactComponent as USDCLogo } from "./images/usdc.svg";
 import { ReactComponent as CBWLogo } from "./images/cbw.svg";
-import { ReactComponent as WCLogo } from "./images/walletconnect.svg";
+import { ReactComponent as RabbyLogo } from "./images/rabby.svg";
+// WalletConnect support is currently disabled. To re-enable, uncomment below:
+// import { ReactComponent as WCLogo } from "./images/walletconnect.svg";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2, 255));
@@ -115,10 +117,17 @@ export const WALLET_LOOKUP: Wallet[] = [
         icon: CBWLogo
     },
     {
-        name: "walletConnect",
-        id: "walletConnect",
-        icon: WCLogo
+        name: "rabby",
+        id: "io.rabby",
+        icon: RabbyLogo
     }
+    // WalletConnect support is currently disabled. To re-enable, uncomment below:
+    // ,
+    // {
+    //     name: "walletConnect",
+    //     id: "walletConnect",
+    //     icon: WCLogo
+    // }
 ];
 
 export const FREQUENCY_LOOKUP: Frequency[] = [

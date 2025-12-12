@@ -87,6 +87,14 @@
     letter-spacing: var(--letter-spacing);
 }
 
+/* Adjust Rabby wallet icon vertical alignment */
+.wallet_modal svg[viewBox*="66 -37 291 362"],
+.wallet_modal svg[viewBox*="66 -37"] {
+    transform: translateY(-4px);
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .connect_wallet_alert {
     font-family: var(--font-family); 
     letter-spacing: var(--letter-spacing);

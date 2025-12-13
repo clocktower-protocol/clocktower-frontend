@@ -1,7 +1,7 @@
 import { createConfig, http, fallback, Config } from 'wagmi'
 import { baseSepolia } from 'wagmi/chains'
 import { base } from 'wagmi/chains'
-import { coinbaseWallet, metaMask, baseAccount } from 'wagmi/connectors'
+import { coinbaseWallet, metaMask, baseAccount, gemini } from 'wagmi/connectors'
 import { walletConnect } from 'wagmi/connectors'
 
 const transport1: string = import.meta.env.VITE_TRANSPORT1
@@ -23,6 +23,13 @@ export const config: Config = createConfig({
     connectors: [
       metaMask(),
       coinbaseWallet(),
+      gemini({
+        appMetadata: { 
+          name: 'Clocktower', 
+          url: 'https://app.clocktower.finance', 
+          icon: window.location.origin + '/logo.svg', 
+        }, 
+      }),
       baseAccount({
         appName: 'Clocktower',
         appLogoUrl: window.location.origin + '/logo.svg',
@@ -32,7 +39,7 @@ export const config: Config = createConfig({
         metadata: {
           name: 'Clocktower',
           description: 'Clocktower Protocol',
-          url: window.location.origin,
+          url: 'https://app.clocktower.finance',
           icons: [window.location.origin + '/clocktower-icon.svg']
         }
       }),

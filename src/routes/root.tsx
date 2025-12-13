@@ -117,33 +117,32 @@ const Root: React.FC = () => {
                     <Modal.Body>
                         <Container>
                             <Stack gap={3}>
-                                {connectors.map((connector) => (
-                                    <Row key={uuidv4()}>
-                                        <Col key={uuidv4()} md="auto">
-                                            {WALLET_LOOKUP.map((lWallet) => {
-                                                if (lWallet.id === connector.id) {
-                                                    return <Icon key={uuidv4()} icon={lWallet.icon}></Icon>;
-                                                } else {
-                                                    return "";
-                                                }
-                                            })}
-                                        </Col>
-                                        <Col key={uuidv4()}>
-                                            <Button
-                                                style={{ width: "100%" }}
-                                                variant="info"
-                                                key={uuidv4()}
-                                                onClick={() => {
-                                                    connect.mutate({ connector });
-                                                    handleClose();
-                                                }}
-                                            >
-                                                {connector.name}
-                                                {connect.isPending && ' (connecting)'}
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                ))}
+                                {connectors.map((connector) => {
+                                    const walletInfo = WALLET_LOOKUP.find((lWallet) => lWallet.id === connector.id);
+                                    const displayName = walletInfo?.name || connector.name;
+                                    const walletIcon = walletInfo?.icon;
+                                    
+                                    return (
+                                        <Row key={connector.id}>
+                                            <Col md="auto">
+                                                {walletIcon && <Icon icon={walletIcon}></Icon>}
+                                            </Col>
+                                            <Col>
+                                                <Button
+                                                    style={{ width: "100%" }}
+                                                    variant="info"
+                                                    onClick={() => {
+                                                        connect.mutate({ connector });
+                                                        handleClose();
+                                                    }}
+                                                >
+                                                    {displayName}
+                                                    {connect.isPending && ' (connecting)'}
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    );
+                                })}
                             </Stack>
                         </Container>
                     </Modal.Body>

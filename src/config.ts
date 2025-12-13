@@ -7,6 +7,7 @@ import { ReactComponent as USDCLogo } from "./images/usdc.svg";
 import { ReactComponent as CBWLogo } from "./images/cbw.svg";
 import { ReactComponent as RabbyLogo } from "./images/rabby.svg";
 import { ReactComponent as WCLogo } from "./images/walletconnect.svg";
+import { ReactComponent as BaseAccountLogo } from "./images/baseaccount.svg";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2, 255));
@@ -101,27 +102,32 @@ export const CHAIN_LOOKUP: Chain[] = [
 
 export const WALLET_LOOKUP: Wallet[] = [
     {
-        name: "metaMask",
+        name: "MetaMask",
         id: "metaMaskSDK",
         icon: MetamaskLogo
     },
     {
-        name: "brave wallet",
+        name: "Brave Wallet",
         id: "com.brave.wallet",
         icon: BraveLogo
     },
     {
-        name: "coinbaseWallet",
+        name: "Base",
+        id: "baseAccount",
+        icon: BaseAccountLogo
+    },
+    {
+        name: "Coinbase Wallet",
         id: "coinbaseWalletSDK",
         icon: CBWLogo
     },
     {
-        name: "rabby",
+        name: "Rabby",
         id: "io.rabby",
         icon: RabbyLogo
     },
     {
-        name: "walletConnect",
+        name: "WalletConnect",
         id: "walletConnect",
         icon: WCLogo
     }

@@ -108,14 +108,14 @@ export const WALLET_LOOKUP: Wallet[] = [
         icon: MetamaskLogo
     },
     {
-        name: "Gemini",
-        id: "gemini",
-        icon: GeminiLogo
+        name: "Coinbase Wallet",
+        id: "coinbaseWalletSDK",
+        icon: CBWLogo
     },
     {
-        name: "Brave Wallet",
-        id: "com.brave.wallet",
-        icon: BraveLogo
+        name: "WalletConnect",
+        id: "walletConnect",
+        icon: WCLogo
     },
     {
         name: "Base Wallet",
@@ -123,19 +123,19 @@ export const WALLET_LOOKUP: Wallet[] = [
         icon: BaseAccountLogo
     },
     {
-        name: "Coinbase Wallet",
-        id: "coinbaseWalletSDK",
-        icon: CBWLogo
-    },
-    {
         name: "Rabby",
         id: "io.rabby",
         icon: RabbyLogo
     },
     {
-        name: "WalletConnect",
-        id: "walletConnect",
-        icon: WCLogo
+        name: "Brave Wallet",
+        id: "com.brave.wallet",
+        icon: BraveLogo
+    },
+    {
+        name: "Gemini",
+        id: "gemini",
+        icon: GeminiLogo
     }
 ];
 

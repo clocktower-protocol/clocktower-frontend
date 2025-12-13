@@ -23,17 +23,6 @@ export const config: Config = createConfig({
     connectors: [
       metaMask(),
       coinbaseWallet(),
-      gemini({
-        appMetadata: { 
-          name: 'Clocktower', 
-          url: 'https://app.clocktower.finance', 
-          icon: window.location.origin + '/logo.svg', 
-        }, 
-      }),
-      baseAccount({
-        appName: 'Clocktower',
-        appLogoUrl: window.location.origin + '/logo.svg',
-      }),
       walletConnect({
         projectId: '0168b93563a3f610bb1c0ff1f29444bb',
         metadata: {
@@ -42,6 +31,17 @@ export const config: Config = createConfig({
           url: 'https://app.clocktower.finance',
           icons: [window.location.origin + '/clocktower-icon.svg']
         }
+      }),
+      baseAccount({
+        appName: 'Clocktower',
+        appLogoUrl: window.location.origin + '/logo.svg',
+      }),
+      gemini({
+        appMetadata: { 
+          name: 'Clocktower', 
+          url: 'https://app.clocktower.finance', 
+          icon: window.location.origin + '/logo.svg', 
+        }, 
       }),
     ],
     transports: { 

@@ -118,7 +118,7 @@ export const WALLET_LOOKUP: Wallet[] = [
         icon: BraveLogo
     },
     {
-        name: "Base",
+        name: "Base Wallet",
         id: "baseAccount",
         icon: BaseAccountLogo
     },

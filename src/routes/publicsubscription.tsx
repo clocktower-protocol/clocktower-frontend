@@ -85,7 +85,7 @@ const PublicSubscription: React.FC = () => {
                     address: contractAddress,
                     abi: CLOCKTOWERSUB_ABI,
                     functionName: 'idSubMap',
-                    args: [id]
+                    args: [cleanId]
                 }) as SubscriptionResult;
 
                 // Check if subscription exists (provider address will be zero if not found)

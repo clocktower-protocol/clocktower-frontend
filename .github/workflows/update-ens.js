@@ -457,7 +457,7 @@ async function updateEnsContenthash() {
     process.exit(1);
   }
 }
-
+ 
 // Run the update
 updateEnsContenthash();
 

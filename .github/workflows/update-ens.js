@@ -6,7 +6,7 @@ dotenv.config({ path: '.env.local' }); // Override with .env.local if it exists
 
 // Pinata SDK only needed for fallback query
 let PinataSDK;
-import { createWalletClient, createPublicClient, http, namehash } from 'viem';
+import { createWalletClient, createPublicClient, http, namehash, parseGwei } from 'viem';
 import { normalize } from 'viem/ens';
 import { mainnet } from 'viem/chains';
 import { privateKeyToAccount } from 'viem/accounts';
@@ -420,11 +420,19 @@ async function updateEnsContenthash() {
     
     // Send transaction to update contenthash
     console.log('📤 Sending transaction to update ENS contenthash...');
+    const priorityFeeGwei = 3n;
+    const block = await publicClient.getBlock({ blockTag: 'pending' });
+    const baseFee = block?.baseFeePerGas ?? 0n;
+    const maxFeePerGas = (baseFee * 120n) / 100n + parseGwei(priorityFeeGwei.toString());
+    const maxPriorityFeePerGas = parseGwei(priorityFeeGwei.toString());
+    console.log(`⛽ Gas: maxFeePerGas=${maxFeePerGas}, maxPriorityFeePerGas=${maxPriorityFeePerGas}`);
     const hash = await walletClient.writeContract({
       address: contractAddress,
       abi: contractABI,
       functionName: 'setContenthash',
       args: [domainNode, contenthash],
+      maxPriorityFeePerGas,
+      maxFeePerGas,
     });
     
     console.log(`✅ Transaction sent: ${hash}`);

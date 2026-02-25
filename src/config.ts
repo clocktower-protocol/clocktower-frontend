@@ -8,7 +8,7 @@ import { ReactComponent as CBWLogo } from "./images/cbw.svg";
 import { ReactComponent as RabbyLogo } from "./images/rabby.svg";
 import { ReactComponent as WCLogo } from "./images/walletconnect.svg";
 import { ReactComponent as BaseAccountLogo } from "./images/baseaccount.svg";
-import { ReactComponent as GeminiLogo } from "./images/gemini.svg";
+//import { ReactComponent as GeminiLogo } from "./images/gemini.svg";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const INFINITE_APPROVAL = BigInt(Math.pow(2, 255));
@@ -132,11 +132,6 @@ export const WALLET_LOOKUP: Wallet[] = [
         id: "com.brave.wallet",
         icon: BraveLogo
     },
-    {
-        name: "Gemini",
-        id: "gemini",
-        icon: GeminiLogo
-    }
 ];
 
 export const FREQUENCY_LOOKUP: Frequency[] = [

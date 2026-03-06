@@ -50,5 +50,16 @@ export const RPC_METHODS = {
   SIGN: 'personal_sign',
   SWITCH_CHAIN: 'wallet_switchEthereumChain',
   GET_BALANCE: 'eth_getBalance',
+  // EIP-5792 batch / wallet call API
+  WALLET_GET_CAPABILITIES: 'wallet_getCapabilities',
+  WALLET_SEND_CALLS: 'wallet_sendCalls',
+  WALLET_GET_CALLS_STATUS: 'wallet_getCallsStatus',
 } as const;
+
+/** E2E options for EIP-5792: when true, mock batch support (capabilities + sendCalls) */
+export let E2E_EIP5792_BATCH_SUPPORTED = false;
+
+export function setE2eEip5792BatchSupported(value: boolean) {
+  E2E_EIP5792_BATCH_SUPPORTED = value;
+}
 

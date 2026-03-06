@@ -89,6 +89,7 @@ const Account: React.FC = () => {
                 functionName: 'editProvDetails',
                 args: [changedAccountDetails]
             });
+            setChangedAccountDetails({});
         } else {
             isMounting.current = false;
         }
@@ -221,6 +222,7 @@ const Account: React.FC = () => {
 
         if (isConfirmed) {
             editFormHandleClose();
+            setChangedAccountDetails({});
             setToastHeader("Fetching Data");
             
             const delayAndRefresh = async () => {

@@ -47,7 +47,7 @@ vi.mock('wagmi', async (importOriginal) => {
             chainId: MOCK_CHAIN_ID,
         })),
         usePublicClient: vi.fn(() => null),
-        useCapabilities: vi.fn(() => ({ data: undefined as Record<number, unknown> | undefined })),
+        useCapabilities: vi.fn(() => ({ data: undefined as { atomic?: unknown } | undefined })),
         useSendCalls: vi.fn(() => ({
             mutateAsync: mockSendCallsMutateAsync,
         })),
@@ -224,7 +224,7 @@ describe('PublicSubscription EIP-5792 batch and fallback', () => {
 
     it('batch path: when capabilities present and low allowance, calls sendCalls with approve + subscribe', async () => {
         vi.mocked(useCapabilities).mockReturnValue({
-            data: { [MOCK_CHAIN_ID]: { atomic: 'supported' } } as Record<number, unknown>,
+            data: { atomic: { status: 'supported' } },
         } as ReturnType<typeof useCapabilities>);
 
         renderPublicSubscription();
@@ -349,7 +349,7 @@ describe('PublicSubscription EIP-5792 batch and fallback', () => {
     it('fallback path: when sendCalls fails, calls writeContract with approve', async () => {
         const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         vi.mocked(useCapabilities).mockReturnValue({
-            data: { [MOCK_CHAIN_ID]: { atomic: 'supported' } } as Record<number, unknown>,
+            data: { atomic: { status: 'supported' } },
         } as ReturnType<typeof useCapabilities>);
         mockSendCallsMutateAsync.mockRejectedValueOnce(new Error('Method not supported'));
 
@@ -454,7 +454,7 @@ describe('PublicSubscription EIP-5792 batch and fallback', () => {
 
     it('batch path: when calls status succeeds, navigates to subscribed', async () => {
         vi.mocked(useCapabilities).mockReturnValue({
-            data: { [MOCK_CHAIN_ID]: { atomic: 'supported' } } as Record<number, unknown>,
+            data: { atomic: { status: 'supported' } },
         } as ReturnType<typeof useCapabilities>);
         vi.mocked(useWaitForCallsStatus).mockReturnValue({
             isSuccess: true,

@@ -3,17 +3,18 @@ import { parseRpcRequest, handleRpcMethod, createRpcResponse } from './rpc-mocks
 import { parseGraphQLRequest, handleGraphQLRequest } from './graphql-mocks';
 import { MOCK_ACCOUNT, CHAIN_ID_BASE } from '../helpers/constants';
 
+/** Path the injected mock wallet uses for RPC; route handler fulfills these. */
+const E2E_WALLET_RPC_PATH = '/__e2e-wallet-rpc__';
+
 /**
- * Set up all route interceptors for RPC and GraphQL
+ * Set up all route interceptors for RPC and GraphQL.
+ * Wallet RPC from the injected mock (POST to E2E_WALLET_RPC_PATH) is fulfilled here.
  */
 export async function setupMockRoutes(page: Page) {
-  // Intercept RPC calls (JSON-RPC requests)
   await page.route('**', async (route) => {
     const request = route.request();
-    const url = request.url();
     const method = request.method();
 
-    // Only intercept POST requests (RPC and GraphQL are POST)
     if (method !== 'POST') {
       await route.continue();
       return;
@@ -21,8 +22,7 @@ export async function setupMockRoutes(page: Page) {
 
     try {
       const postData = request.postData();
-      
-      // Check if it's a JSON-RPC request
+
       const rpcRequest = parseRpcRequest(postData);
       if (rpcRequest) {
         const response = handleRpcMethod(rpcRequest.method, rpcRequest.params, rpcRequest.id);
@@ -34,7 +34,6 @@ export async function setupMockRoutes(page: Page) {
         return;
       }
 
-      // Check if it's a GraphQL request
       const graphqlRequest = parseGraphQLRequest(postData);
       if (graphqlRequest && graphqlRequest.query) {
         const response = handleGraphQLRequest(graphqlRequest.query, graphqlRequest.variables);
@@ -46,13 +45,39 @@ export async function setupMockRoutes(page: Page) {
         return;
       }
     } catch (error) {
-      // If parsing fails, continue with the request
       console.error('Error parsing request:', error);
     }
 
-    // Continue with original request if not matched
     await route.continue();
   });
+}
+
+/**
+ * Injects a mock window.ethereum so the app can connect and send wallet RPC to our route.
+ * Call before first navigation. After connect in the UI, wallet RPC goes to E2E_WALLET_RPC_PATH.
+ */
+export async function injectMockWalletProvider(page: Page) {
+  await page.addInitScript((rpcPath: string) => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const rpcUrl = origin + rpcPath;
+    const request = async (args: { method: string; params?: unknown[] }) => {
+      const id = Math.floor(Math.random() * 1e9);
+      const res = await fetch(rpcUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id,
+          method: args.method,
+          params: args.params ?? [],
+        }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message || 'RPC error');
+      return data.result;
+    };
+    (window as unknown as { ethereum?: { request: typeof request } }).ethereum = { request };
+  }, E2E_WALLET_RPC_PATH);
 }
 
 /**
@@ -89,11 +114,34 @@ export async function waitForTransactionConfirmation(
 }
 
 /**
- * Set up a page with all mocks enabled
+ * Set up a page with all mocks enabled.
+ * Optionally inject a mock wallet so connectWalletInE2e can simulate connection.
  */
-export async function setupPageWithMocks(page: Page) {
+export async function setupPageWithMocks(page: Page, options?: { injectWallet?: boolean }) {
   await setupMockRoutes(page);
   await mockWalletConnection(page);
+  if (options?.injectWallet) {
+    await injectMockWalletProvider(page);
+  }
+}
+
+/**
+ * Connect the mock wallet in the UI: open wallet modal and click the first connector.
+ * Requires injectMockWalletProvider to have been called before the first goto.
+ */
+export async function connectWalletInE2e(page: Page): Promise<boolean> {
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  const signInBtn = page.getByRole('button', { name: /sign in/i }).first();
+  if (!(await signInBtn.isVisible().catch(() => false))) return false;
+  await signInBtn.click();
+  await page.waitForTimeout(500);
+  const connectorBtn = page.getByRole('button', { name: /metamask|injected|browser/i }).first();
+  if (!(await connectorBtn.isVisible().catch(() => false))) return false;
+  await connectorBtn.click();
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(1000);
+  return true;
 }
 
 /**

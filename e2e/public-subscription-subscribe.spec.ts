@@ -84,4 +84,55 @@ test.describe('Public subscription – EIP-5792 batch and fallback', () => {
       }
     }
   });
+
+  test('fallback path: when wallet does not support EIP-5792, eth_sendTransaction is used and wallet_sendCalls is not', async ({ page }) => {
+    setE2eEip5792BatchSupported(false);
+
+    let sendCallsRequested = false;
+    let sendTransactionCount = 0;
+    await page.route('**', async (route) => {
+      const request = route.request();
+      if (request.method() === 'POST' && request.postData()) {
+        try {
+          const body = JSON.parse(request.postData()!);
+          if (body.method === 'wallet_sendCalls') {
+            sendCallsRequested = true;
+          }
+          if (body.method === 'eth_sendTransaction') {
+            sendTransactionCount += 1;
+          }
+        } catch {
+          // ignore
+        }
+      }
+      await route.fallback();
+    });
+
+    const connected = await connectWalletInE2e(page);
+
+    await navigateToRoute(
+      page,
+      '/public_subscription/0x0000000000000000000000000000000000000000000000000000000000000001/1/15'
+    );
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1500);
+
+    expect(page.url()).toContain('public_subscription');
+    expect(sendCallsRequested).toBe(false);
+
+    if (connected) {
+      const subscribeBtn = page.getByRole('button', { name: /subscribe/i }).first();
+      const visible = await subscribeBtn.isVisible().catch(() => false);
+      const enabled = visible && !(await subscribeBtn.isDisabled().catch(() => true));
+
+      if (enabled) {
+        await subscribeBtn.click();
+        await page.waitForTimeout(5000);
+        const navigatedToSubscribed = page.url().includes('subscriptions/subscribed');
+        expect(sendCallsRequested).toBe(false);
+        expect(sendTransactionCount).toBeGreaterThanOrEqual(1);
+        expect(navigatedToSubscribed).toBe(true);
+      }
+    }
+  });
 });

@@ -97,7 +97,7 @@ vi.mock('@apollo/client/react', async (importOriginal) => {
 });
 
 import { readContract } from 'wagmi/actions';
-import { useCapabilities, useWaitForCallsStatus } from 'wagmi';
+import { useCapabilities, useWaitForCallsStatus, useWaitForTransactionReceipt } from 'wagmi';
 
 const mockNavigate = vi.fn();
 vi.mock('react-router', async (importOriginal) => {
@@ -147,6 +147,22 @@ function setupReadContract() {
         if (o.functionName === 'getSubscribersById') return Promise.resolve([]) as ReturnType<typeof readContract>;
         if (o.functionName === 'balanceOf') return Promise.resolve(1000000000000000000000000n) as ReturnType<typeof readContract>;
         if (o.functionName === 'allowance') return Promise.resolve(mockAllowance) as ReturnType<typeof readContract>;
+        return Promise.resolve(null) as ReturnType<typeof readContract>;
+    }) as typeof readContract);
+}
+
+/** Use in tests that need first allowance read low, subsequent high (e.g. fallback two-step). */
+function setupReadContractAllowanceFirstLowThenHigh() {
+    let allowanceReadCount = 0;
+    vi.mocked(readContract).mockImplementation(((_config: unknown, opts: unknown) => {
+        const o = opts as { functionName?: string };
+        if (o.functionName === 'idSubMap') return Promise.resolve(mockSubscriptionResult) as ReturnType<typeof readContract>;
+        if (o.functionName === 'getSubscribersById') return Promise.resolve([]) as ReturnType<typeof readContract>;
+        if (o.functionName === 'balanceOf') return Promise.resolve(1000000000000000000000000n) as ReturnType<typeof readContract>;
+        if (o.functionName === 'allowance') {
+            const value = allowanceReadCount++ === 0 ? 0n : ALLOWANCE_THRESHOLD + 1n;
+            return Promise.resolve(value) as ReturnType<typeof readContract>;
+        }
         return Promise.resolve(null) as ReturnType<typeof readContract>;
     }) as typeof readContract);
 }
@@ -276,6 +292,60 @@ describe('PublicSubscription EIP-5792 batch and fallback', () => {
         );
     });
 
+    it('fallback path: full two-step flow — approve then subscribe after receipt', async () => {
+        vi.mocked(useCapabilities).mockReturnValue({ data: {} } as ReturnType<typeof useCapabilities>);
+        setupReadContractAllowanceFirstLowThenHigh();
+
+        let waitReceiptCallCount = 0;
+        vi.mocked(useWaitForTransactionReceipt).mockImplementation(() => {
+            waitReceiptCallCount++;
+            return {
+                isLoading: false,
+                isSuccess: waitReceiptCallCount > 1,
+                data: undefined,
+            } as ReturnType<typeof useWaitForTransactionReceipt>;
+        });
+
+        renderPublicSubscription();
+
+        await waitFor(
+            () => {
+                const calls = vi.mocked(readContract).mock.calls;
+                expect(calls.some(([, opts]) => (opts as { functionName?: string }).functionName === 'balanceOf')).toBe(true);
+            },
+            { timeout: 5000 }
+        );
+
+        const subscribeBtn = screen.getByRole('button', { name: /subscribe/i });
+        const user = userEvent.setup();
+        await user.click(subscribeBtn);
+
+        await waitFor(
+            () => {
+                expect(mockMutate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        functionName: 'approve',
+                        address: MOCK_TOKEN,
+                    })
+                );
+            },
+            { timeout: 3000 }
+        );
+
+        await waitFor(
+            () => {
+                expect(mockMutate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        functionName: 'subscribe',
+                        address: MOCK_CONTRACT,
+                    })
+                );
+            },
+            { timeout: 3000 }
+        );
+        expect(mockMutate).toHaveBeenCalledTimes(2);
+    });
+
     it('fallback path: when sendCalls fails, calls writeContract with approve', async () => {
         const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         vi.mocked(useCapabilities).mockReturnValue({
@@ -308,6 +378,46 @@ describe('PublicSubscription EIP-5792 batch and fallback', () => {
             { timeout: 3000 }
         );
         warnSpy.mockRestore();
+    });
+
+    it('insufficient balance: does not call sendCalls or writeContract when balance re-check fails', async () => {
+        vi.mocked(useCapabilities).mockReturnValue({ data: {} } as ReturnType<typeof useCapabilities>);
+        setupReadContract();
+
+        renderPublicSubscription();
+
+        await waitFor(
+            () => {
+                const calls = vi.mocked(readContract).mock.calls;
+                expect(calls.some(([, opts]) => (opts as { functionName?: string }).functionName === 'balanceOf')).toBe(true);
+            },
+            { timeout: 5000 }
+        );
+
+        const subscribeBtn = screen.getByRole('button', { name: /subscribe/i });
+        await waitFor(() => expect(subscribeBtn).not.toBeDisabled(), { timeout: 3000 });
+
+        vi.mocked(readContract).mockImplementation(((_config: unknown, opts: unknown) => {
+            const o = opts as { functionName?: string };
+            if (o.functionName === 'idSubMap') return Promise.resolve(mockSubscriptionResult) as ReturnType<typeof readContract>;
+            if (o.functionName === 'getSubscribersById') return Promise.resolve([]) as ReturnType<typeof readContract>;
+            if (o.functionName === 'balanceOf') return Promise.resolve(0n) as ReturnType<typeof readContract>;
+            if (o.functionName === 'allowance') return Promise.resolve(mockAllowance) as ReturnType<typeof readContract>;
+            return Promise.resolve(null) as ReturnType<typeof readContract>;
+        }) as typeof readContract);
+
+        const user = userEvent.setup();
+        await user.click(subscribeBtn);
+
+        await waitFor(() => {
+            expect(mockMutate).not.toHaveBeenCalled();
+            expect(mockSendCallsMutateAsync).not.toHaveBeenCalled();
+        }, { timeout: 2000 });
+
+        const allowanceCalls = vi.mocked(readContract).mock.calls.filter(
+            ([, opts]) => (opts as { functionName?: string }).functionName === 'allowance'
+        );
+        expect(allowanceCalls.length).toBe(0);
     });
 
     it('single-call path: when allowance sufficient, calls writeContract with subscribe only', async () => {

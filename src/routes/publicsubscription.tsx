@@ -43,7 +43,11 @@ const PublicSubscription: React.FC = () => {
     });
 
     const capabilities = useCapabilities({ chainId });
-    const supportsBatch = Boolean(chainId && capabilities?.data && (capabilities.data as Record<number, unknown>)?.[chainId]);
+    const capsByChain = (capabilities?.data ?? {}) as Record<string | number, unknown>;
+    const chainCaps = chainId
+        ? capsByChain[chainId] ?? capsByChain[`0x${chainId.toString(16)}`]
+        : undefined;
+    const supportsBatch = Boolean(chainCaps);
 
     const sendCalls = useSendCalls();
     const callsStatus = useWaitForCallsStatus({

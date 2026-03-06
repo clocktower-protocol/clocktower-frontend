@@ -111,6 +111,7 @@ const Subscriptions: React.FC = () => {
                 functionName: 'createSubscription',
                 args: [changedCreateSub.amount, changedCreateSub.token, changedCreateSub.details, changedCreateSub.frequency, changedCreateSub.dueDay]
             });
+            setChangedCreateSub({} as CreateSubscriptionParams);
         } else {
             isMounting.current = false;
         }
@@ -134,6 +135,7 @@ const Subscriptions: React.FC = () => {
                 functionName: 'cancelSubscription',
                 args: [cancelledSub]
             });
+            setCancelledSub({} as Subscription);
         } else {
             isMounting.current = false;
         }
@@ -157,6 +159,7 @@ const Subscriptions: React.FC = () => {
                 functionName: 'unsubscribe',
                 args: [unsubscribedSub]
             });
+            setUnsubscribedSub({} as Subscription);
         } else {
             isMounting.current = false;
         }
@@ -180,6 +183,7 @@ const Subscriptions: React.FC = () => {
                 functionName: 'editDetails',
                 args: [editResult.details, editResult.id]
             });
+            setEditResult({} as SubscriptionEditResult);
 
             subEditDetailsHandleClose();
         } else {
@@ -356,7 +360,10 @@ const Subscriptions: React.FC = () => {
             setShowToast(false);
             createSubHandleClose();
             setUnsubscribedSub({} as Subscription);
-            
+            setCancelledSub({} as Subscription);
+            setChangedCreateSub({} as CreateSubscriptionParams);
+            setEditResult({} as SubscriptionEditResult);
+
             setIsLoading(true);
             Promise.all([
                 getProviderSubs(),

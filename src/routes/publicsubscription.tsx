@@ -42,12 +42,10 @@ const PublicSubscription: React.FC = () => {
         hash: writeContract.data,
     });
 
-    const capabilities = useCapabilities({ chainId });
-    const capsByChain = (capabilities?.data ?? {}) as Record<string | number, unknown>;
-    const chainCaps = chainId
-        ? capsByChain[chainId] ?? capsByChain[`0x${chainId.toString(16)}`]
-        : undefined;
-    const supportsBatch = Boolean(chainCaps);
+    const capabilities = useCapabilities({ chainId, account: address ?? undefined });
+    // When chainId is passed, wagmi/viem return the single-chain capability object (see viem getCapabilities docs).
+    const chainCaps = capabilities?.data as { atomic?: unknown } | undefined;
+    const supportsBatch = Boolean(chainId && chainCaps?.atomic);
 
     const sendCalls = useSendCalls();
     const callsStatus = useWaitForCallsStatus({

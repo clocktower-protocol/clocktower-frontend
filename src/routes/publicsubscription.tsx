@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { Alert, Toast, ToastContainer, Spinner } from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate } from "react-router";
 import { CLOCKTOWERSUB_ABI, INFINITE_APPROVAL, ZERO_ADDRESS, CHAIN_LOOKUP, TOKEN_LOOKUP } from "../config"; 
-import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useConnection } from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt, usePublicClient, useConnection, useCapabilities, useSendCalls, useWaitForCallsStatus } from 'wagmi'
 import { readContract } from 'wagmi/actions'
 import { erc20Abi } from 'viem'
 import { config } from '../wagmiconfig'
@@ -32,12 +32,22 @@ const PublicSubscription: React.FC = () => {
     const [showToast, setShowToast] = useState(false);
     const [toastHeader, setToastHeader] = useState("");
     const [hasEnoughBalance, setHasEnoughBalance] = useState(false);
+    const [batchId, setBatchId] = useState<string | null>(null);
 
     const writeContract = useWriteContract();
     
     const subscribeWait = useWaitForTransactionReceipt({
         confirmations: 2,
         hash: writeContract.data,
+    });
+
+    const capabilities = useCapabilities({ chainId });
+    const supportsBatch = Boolean(chainId && capabilities?.data && (capabilities.data as Record<number, unknown>)?.[chainId]);
+
+    const sendCalls = useSendCalls();
+    const callsStatus = useWaitForCallsStatus({
+        id: batchId ?? undefined,
+        query: { enabled: !!batchId },
     });
 
     // Query for DetailsLog events
@@ -311,11 +321,11 @@ const PublicSubscription: React.FC = () => {
                 args: [address]
             }) as bigint;
 
-            const token = TOKEN_LOOKUP.find(t => t.address === subscription.token);
+            const tokenInfo = TOKEN_LOOKUP.find(t => t.address === subscription.token);
             let hasEnoughBalanceNow = false;
             
-            if (token) {
-                const balanceIn18Decimals = balance * BigInt(10 ** (18 - token.decimals));
+            if (tokenInfo) {
+                const balanceIn18Decimals = balance * BigInt(10 ** (18 - tokenInfo.decimals));
                 hasEnoughBalanceNow = balanceIn18Decimals >= subscription.amount;
             } else {
                 hasEnoughBalanceNow = balance >= subscription.amount;
@@ -352,7 +362,38 @@ const PublicSubscription: React.FC = () => {
             args: [address, contractAddress]
         }) as bigint;
 
-        if (allowanceBalance < 100000000000000000000000n) {
+        const needsApproval = allowanceBalance < 100000000000000000000000n;
+
+        if (needsApproval && supportsBatch) {
+            try {
+                const result = await sendCalls.mutateAsync({
+                    chainId: chainId!,
+                    account: address,
+                    calls: [
+                        {
+                            to: token,
+                            abi: erc20Abi,
+                            functionName: 'approve',
+                            args: [contractAddress, INFINITE_APPROVAL],
+                        },
+                        {
+                            to: contractAddress,
+                            abi: CLOCKTOWERSUB_ABI,
+                            functionName: 'subscribe',
+                            args: [subscription],
+                        },
+                    ],
+                });
+                if (result?.id) {
+                    setBatchId(result.id);
+                    return;
+                }
+            } catch (error) {
+                console.warn("Batch sendCalls failed, falling back to two-step flow:", error);
+            }
+        }
+
+        if (needsApproval) {
             writeContract.mutate({
                 address: token,
                 abi: erc20Abi,
@@ -372,14 +413,32 @@ const PublicSubscription: React.FC = () => {
                 args: [subscription]
             });
         }
-    }, [subscription, address, token, writeContract, chainId, showToast]);
+    }, [subscription, address, token, writeContract, chainId, showToast, supportsBatch, sendCalls]);
 
     const sendToAccount = useCallback(() => 
         navigate(`/subscriptions/subscribed`)
     , [navigate]);
 
-    //shows alert when waiting for transaction to finish
+    // Batch path: when calls status is confirmed, clear batch and navigate
     useEffect(() => {
+        if (batchId && callsStatus.isSuccess) {
+            setBatchId(null);
+            setShowToast(false);
+            sendToAccount();
+        }
+    }, [batchId, callsStatus.isSuccess, sendToAccount]);
+
+    // Toast loading state for batch path
+    useEffect(() => {
+        if (batchId && callsStatus.isFetching) {
+            setToastHeader("Transaction Pending");
+        }
+    }, [batchId, callsStatus.isFetching]);
+
+    //shows alert when waiting for transaction to finish (fallback path)
+    useEffect(() => {
+        if (batchId) return;
+
         if (subscribeWait.isLoading) {
             setToastHeader("Transaction Pending");
         }
@@ -393,7 +452,7 @@ const PublicSubscription: React.FC = () => {
                 sendToAccount();
             }
         }
-    }, [subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, writeContract.variables, subscribe]);
+    }, [batchId, subscribeWait.isLoading, subscribeWait.isSuccess, sendToAccount, writeContract.variables, subscribe]);
 
     return (
         <div className={styles.top_level_public}> 

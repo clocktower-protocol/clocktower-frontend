@@ -6,6 +6,7 @@ import {
   MOCK_BALANCE_ETH,
   MOCK_SIGNATURE,
   RPC_METHODS,
+  E2E_EIP5792_BATCH_SUPPORTED,
 } from '../helpers/constants';
 
 /**
@@ -149,6 +150,50 @@ export function handleRpcMethod(
     case RPC_METHODS.CALL:
       // For contract calls, return a default zero value
       return createRpcResponse(requestId, '0x0000000000000000000000000000000000000000000000000000000000000000');
+
+    case RPC_METHODS.WALLET_GET_CAPABILITIES:
+      if (E2E_EIP5792_BATCH_SUPPORTED) {
+        const chainIds = Array.isArray(params?.[1]) ? params[1] : Array.isArray(params?.[0]) ? params[0] : [];
+        const capabilities: Record<string, { atomic: { status: string } }> = {};
+        chainIds.forEach((chainId: string) => {
+          capabilities[chainId] = { atomic: { status: 'supported' } };
+        });
+        if (chainIds.length === 0) {
+          capabilities['0x14A34'] = { atomic: { status: 'supported' } };
+          capabilities['0x2105'] = { atomic: { status: 'supported' } };
+        }
+        return createRpcResponse(requestId, capabilities);
+      }
+      return createRpcResponse(requestId, {});
+
+    case RPC_METHODS.WALLET_SEND_CALLS:
+      if (E2E_EIP5792_BATCH_SUPPORTED) {
+        return createRpcResponse(requestId, { id: 'e2e-batch-1' });
+      }
+      return createRpcResponse(
+        requestId,
+        null,
+        { code: -32601, message: 'Method not found: wallet_sendCalls' }
+      );
+
+    case RPC_METHODS.WALLET_GET_CALLS_STATUS:
+      if (E2E_EIP5792_BATCH_SUPPORTED && params?.[0]) {
+        return createRpcResponse(requestId, {
+          status: 'CONFIRMED',
+          receipts: [
+            {
+              transactionHash: MOCK_TX_HASH,
+              blockNumber: `0x${MOCK_BLOCK_NUMBER.toString(16)}`,
+              status: 'success',
+            },
+          ],
+        });
+      }
+      return createRpcResponse(
+        requestId,
+        null,
+        { code: -32601, message: 'Method not found: wallet_getCallsStatus' }
+      );
 
     default:
       return createRpcResponse(

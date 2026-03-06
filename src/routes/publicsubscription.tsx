@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { Alert, Toast, ToastContainer, Spinner } from 'react-bootstrap';
 import { useOutletContext, useParams, useNavigate } from "react-router";
 import { CLOCKTOWERSUB_ABI, INFINITE_APPROVAL, ZERO_ADDRESS, CHAIN_LOOKUP, TOKEN_LOOKUP } from "../config"; 
@@ -33,6 +33,7 @@ const PublicSubscription: React.FC = () => {
     const [toastHeader, setToastHeader] = useState("");
     const [hasEnoughBalance, setHasEnoughBalance] = useState(false);
     const [batchId, setBatchId] = useState<string | null>(null);
+    const hasTriggeredSubscribeAfterApprove = useRef(false);
 
     const writeContract = useWriteContract();
     
@@ -394,6 +395,7 @@ const PublicSubscription: React.FC = () => {
         }
 
         if (needsApproval) {
+            hasTriggeredSubscribeAfterApprove.current = false;
             writeContract.mutate({
                 address: token,
                 abi: erc20Abi,
@@ -447,7 +449,10 @@ const PublicSubscription: React.FC = () => {
             setShowToast(false);
 
             if (writeContract.variables?.functionName === "approve") {
-                subscribe();
+                if (!hasTriggeredSubscribeAfterApprove.current) {
+                    hasTriggeredSubscribeAfterApprove.current = true;
+                    subscribe();
+                }
             } else {
                 sendToAccount();
             }

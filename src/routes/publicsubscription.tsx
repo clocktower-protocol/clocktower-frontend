@@ -12,6 +12,12 @@ import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client/react';
 import { Subscription, DetailsLog, FormattedSubscription, Subscriber, SubscriptionResult, DetailsLogsQueryResult } from '../types/subscription';
 
+/** Subset of EIP-5792 `wallet_getCapabilities` payload for the active chain (viem `CapabilitiesSchema`). */
+type ChainCapabilities = {
+    atomic?: unknown;
+    paymasterService?: { supported?: boolean };
+};
+
 const PublicSubscription: React.FC = () => {
     const { address, chainId } = useConnection();
     const publicClient = usePublicClient();
@@ -44,8 +50,14 @@ const PublicSubscription: React.FC = () => {
 
     const capabilities = useCapabilities({ chainId, account: address ?? undefined });
     // When chainId is passed, wagmi/viem return the single-chain capability object (see viem getCapabilities docs).
-    const chainCaps = capabilities?.data as { atomic?: unknown } | undefined;
-    const supportsBatch = Boolean(chainId && chainCaps?.atomic);
+    const chainCaps = capabilities?.data as ChainCapabilities | undefined;
+    const walletCaps = {
+        supportsBatch: Boolean(chainId && chainCaps?.atomic),
+        /** From wallet_getCapabilities / EIP-5792; not wired into sendCalls yet. */
+        supportsPaymaster: Boolean(
+            chainId && chainCaps?.paymasterService?.supported === true,
+        ),
+    };
 
     const sendCalls = useSendCalls();
     const callsStatus = useWaitForCallsStatus({
@@ -367,7 +379,7 @@ const PublicSubscription: React.FC = () => {
 
         const needsApproval = allowanceBalance < 100000000000000000000000n;
 
-        if (needsApproval && supportsBatch) {
+        if (needsApproval && walletCaps.supportsBatch) {
             try {
                 const result = await sendCalls.mutateAsync({
                     chainId: chainId!,
@@ -417,7 +429,7 @@ const PublicSubscription: React.FC = () => {
                 args: [subscription]
             });
         }
-    }, [subscription, address, token, writeContract, chainId, showToast, supportsBatch, sendCalls]);
+    }, [subscription, address, token, writeContract, chainId, showToast, walletCaps.supportsBatch, sendCalls]);
 
     const sendToAccount = useCallback(() => 
         navigate(`/subscriptions/subscribed`)

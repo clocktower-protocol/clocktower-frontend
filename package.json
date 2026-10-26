@@ -109,15 +109,14 @@
     "browserslist": ">=4.28.7 <5",
     "nanoid": ">=3.3.18 <4",
     "follow-redirects": ">=1.16.1 <2",
-    "zod": ">=4.6.6",
     "launch-editor": ">=2.14.2 <3",
-    "tinypool": ">=2.1.2 <3",
-    "abitype": ">=1.0.10"
+    "tinypool": ">=2.1.2 <3"
   },
   "allowScripts": {
     "esbuild": true,
     "workerd": true,
     "fsevents": true,
     "@reown/appkit": false
-  }
+  },
+  "_comment_zod_audit": "Do not add a root zod>=4 override: @reown/appkit-wallet and @coinbase/cdp-sdk still require Zod 3. Residual npm audit highs on zod/abitype/wallet packages are accepted until those stacks move to Zod 4."
 }

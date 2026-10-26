@@ -33,13 +33,14 @@
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-router": "^7.18.2",
+    "rxjs": "^7.8.2",
     "typescript": "^5.7.3",
     "usehooks-ts": "^3.1.0",
     "uuid": "^14.0.0",
     "valtio": "^2.1.4",
     "viem": "^2.7.11",
     "wagmi": "^3.1.0",
-    "wrangler": "^4.12.0"
+    "wrangler": "^4.153.0"
   },
   "_comment_walletconnect": "WalletConnect support is currently disabled. To re-enable, uncomment the walletConnect code in src/wagmiconfig.ts and src/config.ts, and ensure @walletconnect/ethereum-provider is installed. The pino override has been removed for testing - add it back if dependency conflicts occur.",
   "scripts": {
@@ -77,28 +78,29 @@
   "devDependencies": {
     "@eslint/js": "^9.27.0",
     "@playwright/test": "^1.56.1",
+    "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^5.1.0",
-    "@vitest/coverage-v8": "^4.1.11",
-    "@vitest/ui": "^4.1.11",
+    "@vitest/coverage-v8": "^4.1.12",
+    "@vitest/ui": "^4.1.12",
     "depcheck": "^1.4.7",
     "eslint": "^9.27.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^17.0.0",
     "jsdom": "^27.1.0",
-    "vite": "^7.1.12",
+    "vite": "^7.3.7",
     "vite-plugin-svgr": "^4.3.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   },
   "overrides": {
     "esbuild": ">=0.28.1",
     "ws": ">=8.21.0",
     "axios": "^1.20.0",
     "bn.js": ">=5.2.3",
-    "undici": ">=8.10.2",
+    "undici": ">=8.12.2",
     "js-yaml": ">=5.4.1",
     "defu": ">=6.1.5",
     "brace-expansion": ">=5.0.12",
@@ -106,7 +108,11 @@
     "sharp": ">=0.35.4",
     "browserslist": ">=4.28.7 <5",
     "nanoid": ">=3.3.18 <4",
-    "follow-redirects": ">=1.16.1 <2"
+    "follow-redirects": ">=1.16.1 <2",
+    "zod": ">=4.6.6",
+    "launch-editor": ">=2.14.2 <3",
+    "tinypool": ">=2.1.2 <3",
+    "abitype": ">=1.0.10"
   },
   "allowScripts": {
     "esbuild": true,
